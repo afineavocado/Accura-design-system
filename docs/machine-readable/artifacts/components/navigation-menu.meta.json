@@ -1,0 +1,310 @@
+{
+  "name": "navigation-menu",
+  "figmaNodeId": "127:193",
+  "description": "A horizontal site navigation bar with dropdown panels. Built on Radix UI NavigationMenu. Three component sets: nav-button (trigger or link), nav-panel (dropdown panel), and nav-panel-link (link row inside panel).",
+  "category": "navigation",
+  "shadcnBase": "navigation-menu",
+  "primitiveBase": "Radix UI NavigationMenu (@radix-ui/react-navigation-menu)",
+  "componentSets": {
+    "nav-button": {
+      "figmaNodeId": "127:193",
+      "variants": 8,
+      "purpose": "Clickable item in the nav bar — Type=Trigger (opens panel) or Type=Link (navigates directly)."
+    },
+    "nav-panel": {
+      "figmaNodeId": "127:353",
+      "variants": 3,
+      "purpose": "Dropdown panel — Layout=List/Grid/Featured."
+    },
+    "nav-panel-link": {
+      "figmaNodeId": "127:157",
+      "variants": 4,
+      "purpose": "Individual link row inside nav-panel — State=Default/Focus/Hover/Disabled."
+    }
+  },
+  "variants": {
+    "nav-button Type": {
+      "type": "enum",
+      "values": [
+        "Trigger",
+        "Link"
+      ],
+      "default": "Trigger",
+      "intent": {
+        "Trigger": "Opens a nav-panel dropdown. Has leading icon + label + trailing chevron.",
+        "Link": "Navigates directly. Has leading icon + label. No chevron, no dropdown."
+      }
+    },
+    "nav-button State": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Focus",
+        "Hover",
+        "Disabled"
+      ],
+      "default": "Default"
+    },
+    "nav-panel Layout": {
+      "type": "enum",
+      "values": [
+        "List",
+        "Grid",
+        "Featured"
+      ],
+      "default": "List",
+      "intent": {
+        "List": "Single column of up to 3 nav-panel-link instances + 2 extra SLOTs.",
+        "Grid": "Two columns (column-left, column-right), each with 3 links + 1 SLOT.",
+        "Featured": "featured SLOT (160px, image/callout) alongside column of 3 links + 1 SLOT."
+      }
+    },
+    "nav-panel-link State": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Focus",
+        "Hover",
+        "Disabled"
+      ],
+      "default": "Default"
+    }
+  },
+  "tokens": {
+    "navButton": {
+      "containerFill": {
+        "Default": "color/background/default",
+        "Focus": "color/background/default",
+        "Hover": "color/background/accent",
+        "Disabled": "color/background/default"
+      },
+      "containerStroke": {
+        "Focus": "color/ring 2px OUTSIDE"
+      },
+      "radius": "radius/md",
+      "padding": {
+        "topBottom": "spacing/component/sm",
+        "leftRight": "spacing/component/md"
+      },
+      "gap": "spacing/component/xs",
+      "labelFill": {
+        "Default": "color/background/default/foreground",
+        "Focus": "color/background/default/foreground",
+        "Hover": "color/background/default/foreground",
+        "Disabled": "color/text/disabled"
+      },
+      "iconStroke": {
+        "Default": "color/background/default/foreground",
+        "Focus": "color/background/default/foreground",
+        "Hover": "color/background/accent/foreground",
+        "Disabled": "color/icon/disabled"
+      },
+      "note": "Use color/background/* tokens on nav-button — it sits on the page canvas, not a surface."
+    },
+    "navPanel": {
+      "fill": "color/surface/overlay",
+      "stroke": "color/border/default",
+      "strokeWeight": 1,
+      "strokeAlign": "inside",
+      "radius": "radius/base",
+      "effect": "shadows/shadow",
+      "padding": "spacing/component/lg",
+      "gap": "spacing/component/sm"
+    },
+    "navPanelLink": {
+      "containerFill": {
+        "Default": "transparent",
+        "Focus": "transparent",
+        "Hover": "color/background/accent",
+        "Disabled": "transparent"
+      },
+      "containerStroke": {
+        "Focus": "color/ring 2px OUTSIDE"
+      },
+      "radius": "radius/md",
+      "padding": {
+        "topBottom": "spacing/component/sm",
+        "leftRight": "spacing/component/md"
+      },
+      "titleFill": {
+        "Default": "color/surface/default/foreground",
+        "Focus": "color/surface/default/foreground",
+        "Hover": "color/surface/default/foreground",
+        "Disabled": "color/text/disabled"
+      },
+      "descriptionFill": {
+        "Default": "color/text/secondary",
+        "Focus": "color/text/secondary",
+        "Hover": "color/text/secondary",
+        "Disabled": "color/text/disabled"
+      }
+    }
+  },
+  "composition": {
+    "navButtonTrigger": "H AUTO-LAYOUT: icon (16×16) → label → chevron (16×16). Chevron present in Trigger type only.",
+    "navButtonLink": "H AUTO-LAYOUT: icon (16×16) → label. No chevron.",
+    "navPanelList": "V AUTO-LAYOUT: link-1 → link-2 → link-3 → extra-4 SLOT → extra-5 SLOT",
+    "navPanelGrid": "H AUTO-LAYOUT: column-left (3 links + extra-2 SLOT) + column-right (3 links + extra-3 SLOT)",
+    "navPanelFeatured": "H AUTO-LAYOUT: featured SLOT (160px) + links-column (3 links + extra-1 SLOT)",
+    "navPanelLink": "V AUTO-LAYOUT: title + description"
+  },
+  "behavior": {
+    "openDelay": "200ms hover delay before panel opens (Radix UI NavigationMenu default: delayDuration=200)",
+    "closeGrace": "300ms grace period when cursor moves from trigger toward panel (skipDelayDuration=300)",
+    "escapeDismiss": "Escape closes panel and returns focus to the trigger",
+    "oneAtATime": "Only one NavigationMenuContent open at a time — opening a second closes the first",
+    "animation": "data-motion='from-start'/'from-end' on panel for directional enter/exit animation",
+    "viewport": "NavigationMenuViewport renders panel inside a shared viewport positioned below the trigger list, repositioning to align with the active trigger"
+  },
+  "accessibility": {
+    "role": "<nav> with aria-label='Main' (customise via aria-label prop)",
+    "trigger": "NavigationMenuTrigger renders <button aria-expanded aria-controls> — expanded state announced automatically",
+    "panel": "NavigationMenuContent has aria-labelledby pointing to its trigger",
+    "links": "NavigationMenuLink renders <a> — use asChild with router Link for SPA navigation",
+    "focusTrap": "Panel is NOT a modal — focus is not trapped; Tab moves through all panel links",
+    "keyboard": [
+      "Tab to move between nav items",
+      "Enter/Space to activate trigger or follow link",
+      "Escape to close panel and return focus to trigger",
+      "Arrow Right/Left to move between trigger list items",
+      "Arrow Down to move into open panel content",
+      "Home/End to first/last item in trigger list"
+    ]
+  },
+  "constraints": [
+    "Use Type=Trigger only when there is a nav-panel to open — never a trigger with no associated content.",
+    "Use Type=Link for direct-navigation items (About, Pricing, Contact).",
+    "Layout=List for ≤5 links; Layout=Grid for 6–12 links; Layout=Featured for a strong visual anchor.",
+    "Always provide both title and description in nav-panel-link.",
+    "Keep nav bar to 5–7 triggers/links maximum.",
+    "Place <NavigationMenu> once per page — in site header layout, not inside a page component.",
+    "Never nest a NavigationMenuTrigger inside NavigationMenuContent — navigation menus are one level deep.",
+    "Use NavigationMenuLink with asChild + router Link in Next.js/React Router for proper SPA navigation."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "A SaaS app header has 'Products', 'Solutions', and 'Pricing' — Products and Solutions each expand to a panel of sub-links",
+      "A marketing site top nav includes 'Features' (opens a grid of feature links), 'Docs' (direct link), and 'Blog' (direct link)",
+      "A platform nav bar shows 'Integrations' with a featured panel highlighting a new integration alongside a list of categories",
+      "An enterprise app header organises a large link library into two columns under each top-level trigger",
+      "A documentation site uses a nav bar with trigger buttons that reveal categorised article links in a list panel",
+      "A commerce site's top nav shows 'Collections' with a featured image panel linking to seasonal categories"
+    ],
+    "variantExamples": {
+      "Trigger": {
+        "whenToUse": "Top-level nav item that opens a dropdown panel of sub-links",
+        "examples": [
+          "'Products' with a panel of product categories",
+          "'Solutions' with use-case links"
+        ]
+      },
+      "Link": {
+        "whenToUse": "Top-level route that navigates directly without a dropdown",
+        "examples": [
+          "Pricing",
+          "About",
+          "Contact"
+        ]
+      },
+      "List": {
+        "whenToUse": "≤5 sub-links in a single column",
+        "examples": [
+          "Simple product tier list",
+          "Short docs category list"
+        ]
+      },
+      "Grid": {
+        "whenToUse": "6–12 sub-links grouped in two columns",
+        "examples": [
+          "Full feature index",
+          "Large integration directory"
+        ]
+      },
+      "Featured": {
+        "whenToUse": "One nav section has a strong visual anchor alongside sub-links",
+        "examples": [
+          "New product highlight with screenshot",
+          "Featured article with cover image"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Horizontal top nav bar with dropdown panels for site-level navigation",
+        "use": "navigation-menu",
+        "notInstead": "sidebar"
+      },
+      {
+        "situation": "Persistent vertical nav along the left edge of a product layout",
+        "use": "sidebar",
+        "notInstead": "navigation-menu"
+      },
+      {
+        "situation": "Within-page section switching that stays on the same URL",
+        "use": "tabs",
+        "notInstead": "navigation-menu"
+      },
+      {
+        "situation": "Shows the user's current location in a page hierarchy",
+        "use": "breadcrumb",
+        "notInstead": "navigation-menu"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/navigation-menu",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/navigation-menu"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Navigation Menu.md",
+    "storyFile": "src/stories/NavigationMenu.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "nav-button uses color/background/* tokens (not color/surface/*) because it sits on the page canvas, not a component surface."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-03",
+        "change": "Panel link title token corrected: color/surface/default/foreground → color/surface/overlay/foreground (paired-surface fix — panel fills with color/surface/overlay).",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "Panel link title uses color/surface/overlay/foreground (corrected from surface/default/foreground). Both resolve identically in light mode (#18181b) but differ in dark.",
+      "pairedSurfaceRisk": "color/surface/overlay/foreground — must pair with color/surface/overlay (panel background). Using surface/default/foreground would break in dark mode."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/navigation-menu.tsx",
+    "packageDeps": [
+      "@radix-ui/react-navigation-menu"
+    ],
+    "exports": [
+      "NavigationMenu"
+    ],
+    "notes": [
+      "Viewport uses max-w-max on root + flex justify-center — panel centers under nav bar, not individual trigger."
+    ]
+  },
+  "storybook": {
+    "file": "src/stories/NavigationMenu.stories.tsx",
+    "title": "Navigation/NavigationMenu",
+    "stories": [
+      "ListPanel",
+      "GridPanel",
+      "FeaturedPanel",
+      "LinkType",
+      "FullNavBar",
+      "DisabledLink"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": "Panel link title token corrected: color/surface/default/foreground → color/surface/overlay/foreground (paired-surface fix — panel fills with color/surface/overlay)."
+  }
+}

@@ -1,0 +1,381 @@
+{
+  "name": "table",
+  "figmaNodeId": "105:25960",
+  "description": "A semantic data table. Purely presentational — renders HTML table elements. Three component sets: table-head (header cells), table-cell (47 content types), and _table-row (rows with state). No built-in sorting or filtering — use TanStack Table for that.",
+  "category": "data-display",
+  "shadcnBase": "table",
+  "primitiveBase": null,
+  "componentSets": {
+    "table-head": {
+      "figmaNodeId": "105:25960",
+      "variants": 3,
+      "purpose": "Column header cell — label + optional sort indicator (Sort=None/Asc/Desc)."
+    },
+    "table-cell": {
+      "figmaNodeId": "105:29158",
+      "variants": 47,
+      "purpose": "Data cell — 25 content Types across Default and Compact sizes."
+    },
+    "_table-row": {
+      "figmaNodeId": "124:8531",
+      "variants": 12,
+      "purpose": "Row container — Type=Regular/Header/Footer × State × Size."
+    }
+  },
+  "variants": {
+    "table-head Sort": {
+      "type": "enum",
+      "values": [
+        "None",
+        "Asc",
+        "Desc"
+      ],
+      "default": "None",
+      "intent": {
+        "None": "Column is not sortable or sort is inactive — label only.",
+        "Asc": "Column sorted ascending — label + upward chevron.",
+        "Desc": "Column sorted descending — label + downward chevron."
+      }
+    },
+    "table-cell Type": {
+      "type": "enum",
+      "values": [
+        "Text",
+        "Icon-Text",
+        "Checkbox-Text",
+        "Radio-Text",
+        "Toggle-Text",
+        "Avatar-Text",
+        "Avatar-Checkbox",
+        "Avatar-Radio",
+        "Avatar-Toggle",
+        "Badge",
+        "Input",
+        "Select",
+        "Trend-Up",
+        "Trend-Down",
+        "Button",
+        "Action-dropdown",
+        "Drag",
+        "Checkbox-Only",
+        "Radio-Only",
+        "Toggle-Only",
+        "Star-Ratings",
+        "Slot-1",
+        "Slot-2",
+        "Slot-3",
+        "Slot-4"
+      ],
+      "default": "Text",
+      "notes": "Avatar-Text, Input, and Select are Default size only."
+    },
+    "table-cell Size": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Compact"
+      ],
+      "default": "Default",
+      "dimensions": {
+        "Default": {
+          "rowHeight": 48
+        },
+        "Compact": {
+          "rowHeight": 40
+        }
+      }
+    },
+    "_table-row Type": {
+      "type": "enum",
+      "values": [
+        "Regular",
+        "Header",
+        "Footer"
+      ],
+      "default": "Regular"
+    },
+    "_table-row State": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Hover",
+        "Selected"
+      ],
+      "default": "Default",
+      "notes": "Header has Default only; Footer has Default and Hover; Regular has all three."
+    },
+    "_table-row Size": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Compact"
+      ],
+      "default": "Default"
+    }
+  },
+  "tokens": {
+    "tableContainer": {
+      "fill": "transparent",
+      "stroke": "color/border/default",
+      "radius": "radius/base",
+      "note": "ALWAYS use radius/base — canonical table radius. Never use radius/lg, radius/md, or hardcoded values."
+    },
+    "tableHead": {
+      "containerFill": "color/surface/raised",
+      "containerStroke": "color/border/default",
+      "labelFill": "color/surface/raised/foreground",
+      "sortIconStroke": "color/surface/raised/foreground"
+    },
+    "tableCell": {
+      "contentFill": "color/surface/default/foreground",
+      "supportingTextFill": "color/text/secondary",
+      "iconStroke": "color/surface/default/foreground",
+      "trendUpIconStroke": "color/icon/success",
+      "trendUpLabelFill": "color/text/success",
+      "trendDownIconStroke": "color/icon/danger",
+      "trendDownLabelFill": "color/text/invalid",
+      "starFill": "color/chart/4",
+      "starFrameFill": "color/surface/default",
+      "gap": {
+        "default": "spacing/component/sm",
+        "trendTypes": "spacing/component/xs",
+        "starRatings": "spacing/component/xxs"
+      }
+    },
+    "tableRow": {
+      "Regular": {
+        "Default": {
+          "fill": "transparent",
+          "stroke": "color/border/default"
+        },
+        "Hover": {
+          "fill": "color/background/accent",
+          "stroke": "color/border/default"
+        },
+        "Selected": {
+          "fill": "color/background/accent",
+          "stroke": "color/border/default",
+          "leftBorder": "color/brand/primary"
+        }
+      },
+      "Header": {
+        "Default": {
+          "fill": "color/surface/raised",
+          "stroke": "color/border/default"
+        }
+      },
+      "Footer": {
+        "Default": {
+          "fill": "color/surface/raised",
+          "stroke": "color/border/default"
+        },
+        "Hover": {
+          "fill": "color/background/accent",
+          "stroke": "color/border/default"
+        }
+      }
+    }
+  },
+  "composition": {
+    "assembly": "The full table is a FRAME (not a component) containing _table-row instances. No 'table' component set exists.",
+    "structure": "FRAME (container) → _table-row Type=Header → _table-row Type=Regular × N → _table-row Type=Footer (optional)",
+    "rowContents": "_table-row is H AUTO-LAYOUT containing table-cell or table-head instances.",
+    "containerRadiusRule": "Outer FRAME radius must be radius/base. Individual rows have no radius — corner clipping is handled by the container's overflow:hidden.",
+    "slotTypes": "Slot-1 (1 SLOT, 56px), Slot-2 (2 SLOTs, 84px), Slot-3 (3 SLOTs, 112px), Slot-4 (4 SLOTs, 140px). Buttons in slot cells: always Size=Small."
+  },
+  "behavior": {
+    "sortingNotes": "Sort=Asc/Desc are visual states only — implement sorting in TanStack Table or parent state.",
+    "rowSelectionNotes": "State=Selected is visual only — selection logic lives in parent state.",
+    "hoverNotes": "State=Hover is Figma-only. In code use CSS :hover pseudo-class.",
+    "inlineEditing": "Type=Input renders <input> inside <td>; Type=Select renders <select> inside <td>.",
+    "dragReorder": "Type=Drag shows drag handle — wire to dnd-kit or similar for actual reordering."
+  },
+  "accessibility": {
+    "tableRole": "native <table> landmark — no additional role needed",
+    "columnHeaders": "<th scope='col'> on all TableHead cells",
+    "rowHeaders": "<th scope='row'> on first cell when it's a meaningful row identifier",
+    "sortState": "aria-sort='ascending'/'descending'/'none' on sortable <th>",
+    "selectedRow": "aria-selected='true' on <tr> for State=Selected rows",
+    "dragHandle": "role='button' + aria-label='Drag to reorder'",
+    "keyboard": [
+      "Tab between interactive cells",
+      "Enter/Space to activate checkbox/radio/button/toggle",
+      "Sort header Enter to toggle sort direction",
+      "Drag: Space to pick up, Arrow keys to move"
+    ]
+  },
+  "constraints": [
+    "Always use radius/base on the outer table container FRAME — never radius/lg, radius/md, or hardcoded values.",
+    "Never apply radius to individual _table-row instances — the container handles corner clipping.",
+    "Always use Type=Header row for column headers — never style a Regular row to look like a header.",
+    "Always use Type=Footer for totals/summaries — never use a Regular row.",
+    "Type=Input and Type=Select are Default size only — never use in Compact tables.",
+    "Button cells in Slot types must use Size=Small.",
+    "Type=Button is for one row action; use Type=Action-dropdown for two or more."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Invoice or transaction lists where each row has a fixed set of columns (date, amount, status, actions)",
+      "User or member management panels with sortable columns and row-level actions",
+      "Product inventory tables with filtering, inline editing, and status badges per row",
+      "Analytics dashboards displaying metric breakdowns by dimension (channel, campaign, cohort)",
+      "Order management views combining avatar, status badge, trend indicators, and action dropdowns",
+      "Admin data grids that require drag-to-reorder rows and column sorting"
+    ],
+    "variantExamples": {
+      "table-head Sort=None": {
+        "whenToUse": "Column is informational and not sortable",
+        "examples": [
+          "ID column",
+          "Avatar column",
+          "Fixed category labels"
+        ]
+      },
+      "table-head Sort=Asc": {
+        "whenToUse": "Column is actively sorted ascending",
+        "examples": [
+          "Date oldest-first",
+          "Name A–Z",
+          "Amount low-to-high"
+        ]
+      },
+      "table-head Sort=Desc": {
+        "whenToUse": "Column is actively sorted descending",
+        "examples": [
+          "Date newest-first",
+          "Amount high-to-low",
+          "Score top-ranked"
+        ]
+      },
+      "table-cell Type=Text": {
+        "whenToUse": "Plain string or number data",
+        "examples": [
+          "Customer name",
+          "Order number",
+          "Description field"
+        ]
+      },
+      "table-cell Type=Avatar-Text": {
+        "whenToUse": "Row represents a person entity",
+        "examples": [
+          "Team member list",
+          "Assignee column",
+          "Customer table"
+        ]
+      },
+      "table-cell Type=Badge": {
+        "whenToUse": "Categorical status that needs a visual chip",
+        "examples": [
+          "Order status (Pending/Shipped/Cancelled)",
+          "Priority label",
+          "Tag column"
+        ]
+      },
+      "table-cell Type=Trend-Up": {
+        "whenToUse": "Percentage change with positive semantic color",
+        "examples": [
+          "Revenue growth",
+          "Conversion rate delta",
+          "MoM change"
+        ]
+      },
+      "table-cell Type=Button": {
+        "whenToUse": "Single row-level action",
+        "examples": [
+          "Edit row",
+          "View details",
+          "Download"
+        ]
+      },
+      "table-cell Type=Action-dropdown": {
+        "whenToUse": "Two or more row-level actions",
+        "examples": [
+          "Edit · Duplicate · Archive · Delete"
+        ]
+      },
+      "_table-row Size=Default": {
+        "whenToUse": "Standard data density — readable without strain",
+        "examples": [
+          "Main entity lists",
+          "Customer tables",
+          "Dashboard grids"
+        ]
+      },
+      "_table-row Size=Compact": {
+        "whenToUse": "High data density needed — secondary or nested panels",
+        "examples": [
+          "Sub-table inside a panel",
+          "Mobile-width table",
+          "Analytics breakdown"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Many rows of uniform structured data with column headers and sorting",
+        "use": "table",
+        "notInstead": "item list"
+      },
+      {
+        "situation": "A vertical list of richer entries with image, multi-line text, and action button",
+        "use": "item",
+        "notInstead": "table"
+      },
+      {
+        "situation": "A single self-contained block of information (metric, profile, settings)",
+        "use": "card",
+        "notInstead": "table"
+      },
+      {
+        "situation": "A small set of non-tabular key-value pairs within a panel",
+        "use": "card with card-content",
+        "notInstead": "table"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/table",
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Table.md",
+    "storyFile": "src/stories/Table.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Table is assembled as a FRAME — there is no single <Table> wrapper component in Figma. In code, use shadcn Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/table.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Table"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Table.stories.tsx",
+    "title": "Data/Table",
+    "stories": [
+      "Basic",
+      "WithSort",
+      "WithSelection",
+      "WithAvatars",
+      "WithTrends"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

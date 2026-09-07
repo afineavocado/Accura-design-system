@@ -1,0 +1,205 @@
+{
+  "name": "accordion",
+  "figmaNodeId": "27:3059",
+  "description": "A vertically stacked set of interactive headings that each reveal a section of content.",
+  "category": "display",
+  "shadcnBase": "accordion",
+  "componentSets": {
+    "accordion": {
+      "figmaNodeId": "27:3059",
+      "purpose": "Single accordion item — compose multiple instances at page level."
+    }
+  },
+  "variants": {
+    "State": {
+      "type": "enum",
+      "values": [
+        "Closed",
+        "Open",
+        "Disabled"
+      ],
+      "default": "Closed",
+      "reactProp": "open / disabled",
+      "reactValues": {
+        "Closed": "open={false}",
+        "Open": "open={true}",
+        "Disabled": "disabled={true}"
+      }
+    }
+  },
+  "tokens": {
+    "container": {
+      "fill": "transparent",
+      "stroke": "color/border/default",
+      "strokeWeight": "1px",
+      "strokeAlign": "INSIDE",
+      "cornerRadius": "none",
+      "note": "Bottom border acts as the separator between stacked items. No fill — transparent."
+    },
+    "trigger": {
+      "paddingTop": "spacing/component/lg",
+      "paddingBottom": "spacing/component/lg",
+      "paddingLeft": "none",
+      "paddingRight": "none",
+      "gap": "spacing/component/sm",
+      "note": "No horizontal padding — trigger spans full width."
+    },
+    "label": {
+      "Default": "color/surface/default/foreground",
+      "Open": "color/surface/default/foreground",
+      "Disabled": "color/text/disabled"
+    },
+    "chevronIcon": {
+      "Default": "color/surface/default/foreground",
+      "Open": "color/surface/default/foreground",
+      "Disabled": "color/text/disabled",
+      "note": "Icon Placeholder — stroke-based. Color bound on VECTOR node strokes, never on instance fill."
+    },
+    "content": {
+      "paddingBottom": "spacing/component/lg",
+      "paddingTop": "none",
+      "paddingLeft": "none",
+      "paddingRight": "none",
+      "note": "Only present in Open state. No top padding — body text sits flush below trigger."
+    },
+    "contentText": "color/text/secondary"
+  },
+  "composition": {
+    "trigger": "FRAME — contains label (TEXT) and chevron (Icon Placeholder INSTANCE)",
+    "content": "FRAME — present in Open state only, contains content-text (TEXT)",
+    "chevron": "Icon Placeholder instance — stroke-based; bind color on VECTOR node strokes",
+    "pageLevel": "Accordion is a single item. Stack multiple instances with itemSpacing=0 to build a full accordion list."
+  },
+  "behavior": {
+    "type": "single or multiple — controlled by Radix UI type prop",
+    "collapsible": "boolean, default false — when false, an open item cannot be closed by clicking its trigger again",
+    "defaultValue": "sets which item opens by default",
+    "disabled": "per-item — disabled items cannot be opened or focused",
+    "animation": "Radix exposes --radix-accordion-content-height CSS variable for height animation; timing is implementation-defined"
+  },
+  "accessibility": {
+    "role": "button on trigger, region on content panel",
+    "keyboard": [
+      "Space / Enter — toggle focused item open or closed",
+      "Tab / Shift+Tab — move focus between focusable elements",
+      "Arrow Down — move focus to next trigger",
+      "Arrow Up — move focus to previous trigger",
+      "Home — move focus to first trigger",
+      "End — move focus to last trigger"
+    ],
+    "aria": "aria-expanded on trigger, aria-controls linking trigger to content panel",
+    "focusIndicator": "color/ring — 2px outside"
+  },
+  "constraints": [
+    "Accordion is a single item — compose multiple instances at page level with no gap.",
+    "Do not set a fill on the accordion container — it is intentionally transparent.",
+    "Do not set fills on the chevron instance — bind stroke on the VECTOR node inside.",
+    "Trigger has no horizontal padding — do not add padLeft or padRight.",
+    "Content body text uses color/text/secondary, not the primary foreground token.",
+    "Use type=single for FAQ lists. Use type=multiple when users compare sections.",
+    "Set collapsible=true unless a default-open item must always remain visible.",
+    "Do not use for primary navigation."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "FAQ pages where users scan question headings and only open relevant answers",
+      "Settings panels with multiple grouped sections (Notifications, Privacy, Billing) where users rarely need all groups open at once",
+      "Help centre or onboarding documentation that groups topics into collapsible categories",
+      "Subscription or pricing pages that reveal plan details on demand without overwhelming the page",
+      "Form sections with optional advanced configuration hidden by default",
+      "Mobile views where vertical space is constrained and progressive disclosure is essential"
+    ],
+    "variantExamples": {
+      "Closed": {
+        "whenToUse": "Default resting state — content is hidden, trigger is visible",
+        "examples": [
+          "FAQ list at page load",
+          "Settings categories before any interaction",
+          "Collapsed filter panel"
+        ]
+      },
+      "Open": {
+        "whenToUse": "User has expanded the item to read its content",
+        "examples": [
+          "Active answer on a FAQ page",
+          "Expanded billing section in account settings",
+          "Open notification preferences panel"
+        ]
+      },
+      "Disabled": {
+        "whenToUse": "A section is unavailable in the current context (permissions, plan tier, incomplete prerequisite)",
+        "examples": [
+          "Locked plan features on a free tier",
+          "Incomplete step in a wizard",
+          "Read-only archived record"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Stacked sections where each reveals long-form content, multiple can be open",
+        "use": "accordion",
+        "notInstead": "tabs"
+      },
+      {
+        "situation": "Mutually exclusive views where only one panel is visible at a time and sections have equal weight",
+        "use": "tabs",
+        "notInstead": "accordion"
+      },
+      {
+        "situation": "Top-level app navigation with persistent sections",
+        "use": "sidebar",
+        "notInstead": "accordion"
+      },
+      {
+        "situation": "A single disclosure toggle (one item, no stack)",
+        "use": "button + conditional render",
+        "notInstead": "accordion"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/accordion",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/accordion"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Accordion.md",
+    "storyFile": "src/stories/Accordion.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "No focus or hover state variants exist in Figma — these are implementation-level CSS states only."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/accordion.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Accordion"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Accordion.stories.tsx",
+    "title": "Display/Accordion",
+    "stories": [
+      "Default",
+      "DefaultOpen",
+      "WithDisabledItem",
+      "Multiple"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

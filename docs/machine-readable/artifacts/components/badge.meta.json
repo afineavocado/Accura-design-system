@@ -1,0 +1,456 @@
+{
+  "name": "badge",
+  "figmaNodeId": "107:40465",
+  "description": "A small status label used to categorise, tag, or communicate state. Supports 11 visual variants, 3 shapes, and 3 sizes.",
+  "category": "display",
+  "shadcnBase": "badge",
+  "variants": {
+    "Variant": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Secondary",
+        "Destructive",
+        "Outline",
+        "Success",
+        "Error",
+        "Warning",
+        "Blue",
+        "Online",
+        "Offline",
+        "Notification counters"
+      ],
+      "default": "Default",
+      "reactProp": "variant",
+      "reactValues": {
+        "Default": "default",
+        "Secondary": "secondary",
+        "Destructive": "destructive",
+        "Outline": "outline",
+        "Success": "success",
+        "Error": "error",
+        "Warning": "warning",
+        "Blue": "blue",
+        "Online": "online",
+        "Offline": "offline",
+        "Notification counters": "notification"
+      }
+    },
+    "Shape": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Pill",
+        "Dashed"
+      ],
+      "default": "Default",
+      "reactProp": "shape",
+      "reactValues": {
+        "Default": "default",
+        "Pill": "pill",
+        "Dashed": "dashed"
+      }
+    },
+    "Size": {
+      "type": "enum",
+      "values": [
+        "Small",
+        "Medium",
+        "Large"
+      ],
+      "default": "Small",
+      "reactProp": "size",
+      "reactValues": {
+        "Small": "sm",
+        "Medium": "md",
+        "Large": "lg"
+      },
+      "dimensions": {
+        "Small": {
+          "height": 16,
+          "paddingH": 4,
+          "gap": 4,
+          "textStyle": "label/sm"
+        },
+        "Medium": {
+          "height": 20,
+          "paddingH": 8,
+          "gap": 4,
+          "textStyle": "label/sm"
+        },
+        "Large": {
+          "height": 24,
+          "paddingH": 8,
+          "gap": 4,
+          "textStyle": "label/md"
+        }
+      }
+    }
+  },
+  "componentProperties": {
+    "Leading icon": {
+      "type": "BOOLEAN",
+      "default": true
+    },
+    "Trailing icon": {
+      "type": "BOOLEAN",
+      "default": false
+    },
+    "Leading icon swap": {
+      "type": "INSTANCE_SWAP",
+      "default": "placeholder"
+    },
+    "Trailing icon swap": {
+      "type": "INSTANCE_SWAP",
+      "default": "placeholder"
+    }
+  },
+  "availability": {
+    "Default": [
+      "Default",
+      "Pill"
+    ],
+    "Secondary": [
+      "Default",
+      "Pill"
+    ],
+    "Destructive": [
+      "Default",
+      "Pill"
+    ],
+    "Outline": [
+      "Default",
+      "Pill",
+      "Dashed"
+    ],
+    "Success": [
+      "Pill"
+    ],
+    "Error": [
+      "Pill"
+    ],
+    "Warning": [
+      "Pill"
+    ],
+    "Blue": [
+      "Pill"
+    ],
+    "Online": [
+      "Pill"
+    ],
+    "Offline": [
+      "Pill"
+    ],
+    "Notification counters": [
+      "Pill"
+    ],
+    "Notification counters sizes": [
+      "Small"
+    ]
+  },
+  "tokens": {
+    "variant": {
+      "Default": {
+        "fill": "color/brand/primary",
+        "fg": "color/brand/primary/foreground"
+      },
+      "Secondary": {
+        "fill": "color/surface/accent",
+        "border": "color/border/default",
+        "fg": "color/surface/accent/foreground"
+      },
+      "Destructive": {
+        "fill": "color/brand/destructive",
+        "fg": "color/brand/destructive/foreground"
+      },
+      "Outline": {
+        "fill": "transparent",
+        "border": "color/border/default",
+        "fg": "color/surface/default/foreground"
+      },
+      "Outline Dashed": {
+        "fill": "transparent",
+        "border": "color/border/strong",
+        "fg": "color/surface/default/foreground"
+      },
+      "Success": {
+        "fill": "color/status/success-subtle",
+        "fg": "color/status/success-subtle/foreground"
+      },
+      "Error": {
+        "fill": "color/status/danger-subtle",
+        "border": "color/border/error",
+        "fg": "color/status/danger-subtle/foreground"
+      },
+      "Warning": {
+        "fill": "color/status/warning-subtle",
+        "border": "color/border/warning",
+        "fg": "color/status/warning-subtle/foreground"
+      },
+      "Blue": {
+        "fill": "color/status/info-subtle",
+        "border": "color/border/subtle",
+        "fg": "color/status/info-subtle/foreground"
+      },
+      "Online": {
+        "fill": "transparent",
+        "border": "color/border/default",
+        "fg": "color/surface/default/foreground"
+      },
+      "Offline": {
+        "fill": "transparent",
+        "border": "color/border/default",
+        "fg": "color/surface/default/foreground"
+      },
+      "Notification counters": {
+        "fill": "color/brand/primary",
+        "fg": "color/brand/primary/foreground"
+      }
+    },
+    "presenceDot": {
+      "Online": {
+        "fill": "color/status/success",
+        "radius": "radius/full"
+      },
+      "Offline": {
+        "fill": "color/status/offline",
+        "radius": "radius/full"
+      }
+    },
+    "shape": {
+      "Default": {
+        "radius": "radius/md"
+      },
+      "Pill": {
+        "radius": "radius/full"
+      },
+      "Dashed": {
+        "radius": "radius/md",
+        "strokeStyle": "dashed"
+      }
+    },
+    "size": {
+      "height": {
+        "Small": "badge/Badge-height-small",
+        "Medium": "badge/Badge-height-medium",
+        "Large": "badge/Badge-height-large"
+      },
+      "paddingH": {
+        "Small": "spacing/component/xs",
+        "Medium": "spacing/component/sm",
+        "Large": "spacing/component/sm"
+      },
+      "gap": "spacing/component/xs"
+    }
+  },
+  "composition": {
+    "standardSlots": [
+      "leading-icon",
+      "label",
+      "trailing-icon"
+    ],
+    "presenceSlots": [
+      "dot-slot",
+      "leading-icon",
+      "label"
+    ],
+    "presenceTrailingIcon": false,
+    "notificationSlots": [
+      "number"
+    ],
+    "notificationNote": "Number-only badge — no icon slots. Always Size=Small, Shape=Pill."
+  },
+  "accessibility": {
+    "role": "none",
+    "screenReader": "Text content is read as-is. Always include a visible label.",
+    "colorAlone": "Never rely on colour alone to communicate meaning.",
+    "icons": "Leading and trailing icons are decorative and should use aria-hidden=true.",
+    "dynamicContent": "Notification counters, Online, and Offline variants update in real time — wrap in role=status or aria-live=polite. Static variants do not need aria-live.",
+    "presenceDot": "The dot-slot in Online and Offline is decorative — mark with aria-hidden=true. The label text carries the accessible meaning.",
+    "notificationCap": "Cap Notification counters display at 99+ to prevent layout overflow."
+  },
+  "constraints": [
+    "Badge is non-interactive by default.",
+    "Badge must not be wrapped in a button to become clickable.",
+    "Use tag from combobox for dismissible or selectable chips.",
+    "Status and presence variants use Pill shape only.",
+    "Online must include visible text such as Online or Available."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Displaying the status of a record in a table row ('Active', 'Expired', 'Pending review')",
+      "Labelling a list item with a category or tag ('Design', 'Engineering', 'Billing')",
+      "Showing an unread notification count on a sidebar nav item or inbox icon",
+      "Indicating user presence next to a name in a team list ('Online', 'Away')",
+      "Marking a new or recently changed item with a 'New' or 'Updated' label",
+      "Flagging a failed or blocked state on a data record ('Failed', 'Blocked')"
+    ],
+    "variantExamples": {
+      "Default": {
+        "whenToUse": "Highest-attention label — primary category or active state",
+        "examples": [
+          "New Feature",
+          "Active",
+          "Important"
+        ]
+      },
+      "Secondary": {
+        "whenToUse": "Neutral metadata that provides context without competing for attention",
+        "examples": [
+          "Draft",
+          "General",
+          "Category: Design"
+        ]
+      },
+      "Outline": {
+        "whenToUse": "Present but not prominent — ghost tags and secondary metadata",
+        "examples": [
+          "Filter chip selections",
+          "Secondary metadata tags",
+          "Optional labels"
+        ]
+      },
+      "Destructive": {
+        "whenToUse": "Critical or irreversible — something is broken or gone",
+        "examples": [
+          "Failed",
+          "Deleted",
+          "Rejected",
+          "Blocked"
+        ]
+      },
+      "Success": {
+        "whenToUse": "Positive or healthy state — item is active or complete",
+        "examples": [
+          "Active",
+          "Connected",
+          "Completed",
+          "Live"
+        ]
+      },
+      "Error": {
+        "whenToUse": "Soft recoverable error — needs attention but not critical",
+        "examples": [
+          "Invalid",
+          "Expired",
+          "Limit Reached"
+        ]
+      },
+      "Warning": {
+        "whenToUse": "Caution — something needs attention before it fails",
+        "examples": [
+          "Expiring Soon",
+          "Low Balance",
+          "Needs Review"
+        ]
+      },
+      "Blue": {
+        "whenToUse": "Informational or in-progress — neutral signal, no urgency",
+        "examples": [
+          "In Progress",
+          "Pending",
+          "Syncing"
+        ]
+      },
+      "Online": {
+        "whenToUse": "User or entity is currently available",
+        "examples": [
+          "Online",
+          "Available",
+          "Active now"
+        ]
+      },
+      "Offline": {
+        "whenToUse": "User or entity is absent or unavailable",
+        "examples": [
+          "Offline",
+          "Away",
+          "Unavailable"
+        ]
+      },
+      "Notification counters": {
+        "whenToUse": "Unread count on a nav item or icon",
+        "examples": [
+          "3",
+          "12",
+          "99+ on a mail icon or sidebar item"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "The label needs to be dismissible by the user (a selected filter chip, a tag in a combobox)",
+        "use": "tag",
+        "notInstead": "badge (badge has no interactive states and cannot be dismissed)"
+      },
+      {
+        "situation": "The label needs to be clickable to trigger navigation or filtering",
+        "use": "tag or button Type=Ghost",
+        "notInstead": "badge (badge is display-only; wrapping in a button breaks accessible semantics)"
+      },
+      {
+        "situation": "User presence changes in real time and needs screen reader announcement",
+        "use": "badge Variant=Online/Offline with aria-live=polite",
+        "notInstead": "a static colored dot without a label (colour alone is never sufficient)"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/badge",
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Badge.md",
+    "storyFile": "src/stories/Badge.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Figma R1–R8 audit passed 2026-05-28 — 0 issues across 42 variants.",
+      "2026-05-28: Notification counters, Offline variants added. Avatar variant removed. Open questions resolved — aria-live required for dynamic variants; presence dot label is sufficient for a11y."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/badge.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Badge"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Badge.stories.tsx",
+    "title": "Display/Badge",
+    "stories": [
+      "Default",
+      "Secondary",
+      "Destructive",
+      "Outline",
+      "Success",
+      "Warning",
+      "Error",
+      "Blue",
+      "Online",
+      "Offline",
+      "Notification",
+      "Dashed",
+      "Sizes",
+      "WithLeadingIcon",
+      "WithTrailingIcon",
+      "InfoWithIcon",
+      "FailedWithIcon"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

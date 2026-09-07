@@ -1,0 +1,908 @@
+{
+  "color": {
+    "white": {
+      "$value": "#ffffff",
+      "$type": "color"
+    },
+    "black": {
+      "$value": "#000000",
+      "$type": "color"
+    },
+    "zinc": {
+      "50": {
+        "$value": "#fafafa",
+        "$type": "color"
+      },
+      "100": {
+        "$value": "#f4f4f5",
+        "$type": "color"
+      },
+      "200": {
+        "$value": "#e4e4e7",
+        "$type": "color"
+      },
+      "300": {
+        "$value": "#d4d4d8",
+        "$type": "color"
+      },
+      "400": {
+        "$value": "#a1a1aa",
+        "$type": "color"
+      },
+      "500": {
+        "$value": "#71717a",
+        "$type": "color"
+      },
+      "600": {
+        "$value": "#52525b",
+        "$type": "color"
+      },
+      "700": {
+        "$value": "#3f3f46",
+        "$type": "color"
+      },
+      "800": {
+        "$value": "#27272a",
+        "$type": "color"
+      },
+      "900": {
+        "$value": "#18181b",
+        "$type": "color"
+      },
+      "950": {
+        "$value": "#09090b",
+        "$type": "color"
+      }
+    },
+    "blue": {
+      "50": {
+        "$value": "#eef6ff",
+        "$type": "color"
+      },
+      "100": {
+        "$value": "#dbeafe",
+        "$type": "color"
+      },
+      "200": {
+        "$value": "#bedbff",
+        "$type": "color"
+      },
+      "300": {
+        "$value": "#8ec5ff",
+        "$type": "color"
+      },
+      "400": {
+        "$value": "#51a2ff",
+        "$type": "color"
+      },
+      "500": {
+        "$value": "#2b7fff",
+        "$type": "color"
+      },
+      "600": {
+        "$value": "#155dfc",
+        "$type": "color"
+      },
+      "700": {
+        "$value": "#1447e6",
+        "$type": "color"
+      },
+      "800": {
+        "$value": "#193cb8",
+        "$type": "color"
+      },
+      "900": {
+        "$value": "#1c398e",
+        "$type": "color"
+      },
+      "950": {
+        "$value": "#162455",
+        "$type": "color"
+      }
+    },
+    "red": {
+      "50": {
+        "$value": "#fef2f2",
+        "$type": "color"
+      },
+      "100": {
+        "$value": "#fee2e2",
+        "$type": "color"
+      },
+      "200": {
+        "$value": "#fecaca",
+        "$type": "color"
+      },
+      "300": {
+        "$value": "#fca5a5",
+        "$type": "color"
+      },
+      "400": {
+        "$value": "#f87171",
+        "$type": "color"
+      },
+      "500": {
+        "$value": "#ef4444",
+        "$type": "color"
+      },
+      "600": {
+        "$value": "#dc2626",
+        "$type": "color"
+      },
+      "700": {
+        "$value": "#b91c1c",
+        "$type": "color"
+      },
+      "800": {
+        "$value": "#991b1b",
+        "$type": "color"
+      },
+      "900": {
+        "$value": "#7f1d1d",
+        "$type": "color"
+      },
+      "950": {
+        "$value": "#450a0a",
+        "$type": "color"
+      }
+    },
+    "green": {
+      "50": {
+        "$value": "#f0fdf4",
+        "$type": "color"
+      },
+      "100": {
+        "$value": "#dcfce7",
+        "$type": "color"
+      },
+      "200": {
+        "$value": "#bbf7d0",
+        "$type": "color"
+      },
+      "300": {
+        "$value": "#86efac",
+        "$type": "color"
+      },
+      "400": {
+        "$value": "#4ade80",
+        "$type": "color"
+      },
+      "500": {
+        "$value": "#22c55e",
+        "$type": "color"
+      },
+      "600": {
+        "$value": "#16a34a",
+        "$type": "color"
+      },
+      "700": {
+        "$value": "#15803d",
+        "$type": "color"
+      },
+      "800": {
+        "$value": "#166534",
+        "$type": "color"
+      },
+      "900": {
+        "$value": "#14532d",
+        "$type": "color"
+      },
+      "950": {
+        "$value": "#052e16",
+        "$type": "color"
+      }
+    },
+    "yellow": {
+      "50": {
+        "$value": "#fefce8",
+        "$type": "color"
+      },
+      "100": {
+        "$value": "#fef9c3",
+        "$type": "color"
+      },
+      "200": {
+        "$value": "#fef08a",
+        "$type": "color"
+      },
+      "300": {
+        "$value": "#fde047",
+        "$type": "color"
+      },
+      "400": {
+        "$value": "#facc15",
+        "$type": "color"
+      },
+      "500": {
+        "$value": "#eab308",
+        "$type": "color"
+      },
+      "600": {
+        "$value": "#ca8a04",
+        "$type": "color"
+      },
+      "700": {
+        "$value": "#a16207",
+        "$type": "color"
+      },
+      "800": {
+        "$value": "#854d0e",
+        "$type": "color"
+      },
+      "900": {
+        "$value": "#713f12",
+        "$type": "color"
+      },
+      "950": {
+        "$value": "#422006",
+        "$type": "color"
+      }
+    },
+    "chart": {
+      "1": {
+        "$value": "#e76e50",
+        "$type": "color"
+      },
+      "2": {
+        "$value": "#2a9d90",
+        "$type": "color"
+      },
+      "3": {
+        "$value": "#274754",
+        "$type": "color"
+      },
+      "4": {
+        "$value": "#e8c468",
+        "$type": "color"
+      },
+      "5": {
+        "$value": "#f4a362",
+        "$type": "color"
+      }
+    }
+  },
+  "spacing": {
+    "0": {
+      "$value": "0px",
+      "$type": "dimension"
+    },
+    "1": {
+      "$value": "4px",
+      "$type": "dimension"
+    },
+    "2": {
+      "$value": "8px",
+      "$type": "dimension"
+    },
+    "3": {
+      "$value": "12px",
+      "$type": "dimension"
+    },
+    "4": {
+      "$value": "16px",
+      "$type": "dimension"
+    },
+    "5": {
+      "$value": "20px",
+      "$type": "dimension"
+    },
+    "6": {
+      "$value": "24px",
+      "$type": "dimension"
+    },
+    "7": {
+      "$value": "28px",
+      "$type": "dimension"
+    },
+    "8": {
+      "$value": "32px",
+      "$type": "dimension"
+    },
+    "9": {
+      "$value": "36px",
+      "$type": "dimension"
+    },
+    "10": {
+      "$value": "40px",
+      "$type": "dimension"
+    },
+    "11": {
+      "$value": "44px",
+      "$type": "dimension"
+    },
+    "12": {
+      "$value": "48px",
+      "$type": "dimension"
+    },
+    "14": {
+      "$value": "56px",
+      "$type": "dimension"
+    },
+    "16": {
+      "$value": "64px",
+      "$type": "dimension"
+    },
+    "20": {
+      "$value": "80px",
+      "$type": "dimension"
+    },
+    "24": {
+      "$value": "96px",
+      "$type": "dimension"
+    },
+    "28": {
+      "$value": "112px",
+      "$type": "dimension"
+    },
+    "32": {
+      "$value": "128px",
+      "$type": "dimension"
+    },
+    "px": {
+      "$value": "1px",
+      "$type": "dimension"
+    },
+    "0-5": {
+      "$value": "2px",
+      "$type": "dimension"
+    },
+    "1-5": {
+      "$value": "6px",
+      "$type": "dimension"
+    },
+    "2-5": {
+      "$value": "10px",
+      "$type": "dimension"
+    },
+    "3-5": {
+      "$value": "14px",
+      "$type": "dimension"
+    }
+  },
+  "radius": {
+    "none": {
+      "$value": "0px",
+      "$type": "dimension"
+    },
+    "sm": {
+      "$value": "4px",
+      "$type": "dimension"
+    },
+    "md": {
+      "$value": "6px",
+      "$type": "dimension"
+    },
+    "base": {
+      "$value": "8px",
+      "$type": "dimension"
+    },
+    "lg": {
+      "$value": "8px",
+      "$type": "dimension"
+    },
+    "xl": {
+      "$value": "12px",
+      "$type": "dimension"
+    },
+    "2xl": {
+      "$value": "14px",
+      "$type": "dimension"
+    },
+    "3xl": {
+      "$value": "18px",
+      "$type": "dimension"
+    },
+    "4xl": {
+      "$value": "21px",
+      "$type": "dimension"
+    },
+    "full": {
+      "$value": "9999px",
+      "$type": "dimension"
+    }
+  },
+  "font-size": {
+    "xs": {
+      "$value": 12,
+      "$type": "number",
+      "$description": "Intent: Smallest readable text size; used for supplementary information.\nUse when: Captions, timestamps, helper text below inputs, legal footnotes, badge labels.\nDo not use: For body copy or any text that requires sustained reading — too small for comfort.\nUse instead: font-size/sm for secondary body text.\nStatus: Stable"
+    },
+    "sm": {
+      "$value": 14,
+      "$type": "number",
+      "$description": "Intent: Secondary text size; slightly smaller than body.\nUse when: Supporting copy, table cell content, sidebar labels, secondary descriptions, input helper text.\nDo not use: For primary headings or hero content.\nStatus: Stable"
+    },
+    "base": {
+      "$value": 16,
+      "$type": "number",
+      "$description": "Intent: Default body text size — the readable baseline for the system.\nUse when: Main body copy, paragraph text, form labels, default UI text.\nDo not use: For headings — use font-size/lg and above.\nStatus: Stable"
+    },
+    "lg": {
+      "$value": 18,
+      "$type": "number",
+      "$description": "Intent: Slightly emphasised text; between body and heading.\nUse when: Subheadings, lead paragraphs, card titles on smaller cards, section intros.\nDo not use: For primary page headings — use font-size/xl or above.\nStatus: Stable"
+    },
+    "xl": {
+      "$value": 20,
+      "$type": "number",
+      "$description": "Intent: Small heading size.\nUse when: Panel headers, dialog titles, section headings in sidebars or compact layouts.\nDo not use: For body text — will feel too large and reduce density.\nStatus: Stable"
+    },
+    "2xl": {
+      "$value": 24,
+      "$type": "number",
+      "$description": "Intent: Medium heading size.\nUse when: Card group headings, page section titles, modal headers.\nDo not use: For body or supporting text.\nStatus: Stable"
+    },
+    "3xl": {
+      "$value": 30,
+      "$type": "number",
+      "$description": "Intent: Large heading; primary content section titles.\nUse when: Page-level h2 headings, feature section titles, prominent labels.\nDo not use: Below 600px viewport — scale down to font-size/2xl on mobile.\nStatus: Stable"
+    },
+    "4xl": {
+      "$value": 36,
+      "$type": "number",
+      "$description": "Intent: Major display heading.\nUse when: Page h1 titles, onboarding screen headings, large dashboard figures.\nDo not use: For anything other than the primary heading on a view.\nStatus: Stable"
+    },
+    "5xl": {
+      "$value": 48,
+      "$type": "number",
+      "$description": "Intent: Hero display text; the largest regular text size.\nUse when: Marketing hero headings, splash screens, empty state primary messages.\nDo not use: In dense product UI or data-heavy screens — too dominant for functional layouts.\nUse instead: font-size/4xl for product UI headings.\nStatus: Stable"
+    },
+    "6xl": {
+      "$value": 60,
+      "$type": "number"
+    },
+    "7xl": {
+      "$value": 72,
+      "$type": "number"
+    },
+    "8xl": {
+      "$value": 96,
+      "$type": "number",
+      "$description": "Intent: Oversized display text for maximum visual impact.\nUse when: Large hero numbers (pricing, statistics), splash screen numerals, bold marketing headlines where 7xl is not dominant enough.\nDo not use: In product UI or anywhere text needs to coexist with other content — this size dominates everything around it.\nUse instead: font-size/7xl or font-size/6xl for standard hero headings.\nStatus: Stable"
+    },
+    "9xl": {
+      "$value": 128,
+      "$type": "number",
+      "$description": "Intent: Maximum display size; purely decorative or typographic statement.\nUse when: Full-screen typographic art direction, giant background numerals, editorial splash layouts where the number or letter itself is the visual.\nDo not use: Anywhere legibility of surrounding content matters — at 128px a single word fills a viewport.\nUse instead: font-size/8xl for large but still functional display text.\nStatus: Stable"
+    }
+  },
+  "font-weight": {
+    "thin": {
+      "$value": 100,
+      "$type": "number",
+      "$description": "Intent: Hairline weight; purely decorative at large display sizes.\nUse when: Giant typographic backdrops, display numerals where the lightness itself is the aesthetic.\nDo not use: In product UI at any functional size — illegible below 32px on most screens.\nUse instead: font-weight/light for the lightest usable UI weight.\nStatus: Stable"
+    },
+    "extralight": {
+      "$value": 200,
+      "$type": "number",
+      "$description": "Intent: Very light weight; editorial and display use only.\nUse when: Large marketing headlines where an airy, refined feel is intentional.\nDo not use: In product UI — too light for legible labels or body text.\nUse instead: font-weight/light at minimum for UI contexts.\nStatus: Stable"
+    },
+    "light": {
+      "$value": 300,
+      "$type": "number",
+      "$description": "Intent: Below-normal weight for large display text in marketing contexts.\nUse when: Hero headings at font-size/4xl or above where the regular weight feels visually heavy — common in Apple-style or editorial layouts.\nDo not use: In product UI at any size below 24px — 300 at small sizes is hard to read, especially on non-retina screens. Neither shadcn nor Ant Design uses light weight in product components.\nUse instead: font-weight/normal for all product UI text.\nStatus: Stable"
+    },
+    "normal": {
+      "$value": 400,
+      "$type": "number",
+      "$description": "Intent: Default reading weight for all body and descriptive text.\nUse when: Paragraphs, descriptions, helper text, secondary labels, captions, table cell content. Ant Design uses 400 for all body/description text; shadcn uses it for CardDescription, DialogDescription, p elements.\nDo not use: For interactive controls (buttons, tabs, nav links) or headings — those need 500 or 600 to register hierarchy.\nUse instead: font-weight/medium for labels and controls.\nStatus: Stable"
+    },
+    "medium": {
+      "$value": 500,
+      "$type": "number",
+      "$description": "Intent: Slightly emphasised weight for interactive controls and UI labels.\nUse when: Navigation links, form labels, tab labels, table column headers, secondary buttons, badge text. Ant Design uses 500 for emphasized interactive text; shadcn uses it for Label, nav items, TableHead.\nDo not use: For headings — too close to body weight to signal a clear hierarchy jump.\nUse instead: font-weight/semibold for titles and headings.\nStatus: Stable"
+    },
+    "semibold": {
+      "$value": 600,
+      "$type": "number",
+      "$description": "Intent: Primary heading weight and strong emphasis for UI titles.\nUse when: All component headings — card titles, dialog titles, section titles, sidebar headers, alert titles. Ant Design's fontWeightStrong token is 600; shadcn uses 600 for CardTitle, DialogTitle, AlertTitle, h1–h4.\nDo not use: For body copy — creates visual noise when overused at paragraph level.\nStatus: Stable"
+    },
+    "bold": {
+      "$value": 700,
+      "$type": "number",
+      "$description": "Intent: Maximum typographic emphasis; use sparingly.\nUse when: Critical callouts, marketing hero text where extra impact is needed beyond semibold, numerical figures in dashboards that need immediate attention (revenue totals, error counts).\nDo not use: Routinely in product UI — Ant Design almost never recommends 700; shadcn rarely uses it. Bold loses hierarchy value when overused.\nUse instead: font-weight/semibold for all standard headings and emphasis.\nStatus: Stable"
+    },
+    "extrabold": {
+      "$value": 800,
+      "$type": "number",
+      "$description": "Intent: Very heavy weight for extreme emphasis; rarely needed in UI.\nUse when: Display numerals on marketing pages, typographic art direction where maximum weight contrast is the design intent.\nDo not use: In product UI — heavier than bold without meaningful visual benefit at normal sizes.\nUse instead: font-weight/bold for the heaviest practical UI weight.\nStatus: Stable"
+    },
+    "black": {
+      "$value": 900,
+      "$type": "number",
+      "$description": "Intent: Maximum weight; typographic statement only.\nUse when: Giant numerals, poster-style marketing layouts, logotype treatments where the weight itself is the visual element.\nDo not use: In any functional UI context — illegibly heavy at body sizes, and unnecessarily dominant at heading sizes.\nUse instead: font-weight/bold or font-weight/extrabold for strong emphasis.\nStatus: Stable"
+    }
+  },
+  "line-height": {
+    "none": {
+      "$value": 100,
+      "$type": "number",
+      "$description": "CSS reference value: 1 (unitless) = leading-none in Tailwind.\nFor Figma use: do not bind to text styles — use direct px values on each text style instead (single ratio cannot resolve to a correct px value across multiple font sizes).\nUse when (CSS/export only): Single-line UI elements — buttons, badges, nav labels.\nDo not use: Multi-line text — lines will collide.\nStatus: Stable"
+    },
+    "tight": {
+      "$value": 125,
+      "$type": "number",
+      "$description": "CSS reference value: 1.25 (unitless) = leading-tight in Tailwind.\nFor Figma use: do not bind to text styles — use direct px values on each text style instead.\nUse when (CSS/export only): Display headings, hero titles, large typographic elements.\nDo not use: Body copy at small sizes — strains readability.\nStatus: Stable"
+    },
+    "snug": {
+      "$value": 137.5,
+      "$type": "number",
+      "$description": "CSS reference value: 1.375 (unitless) = leading-snug in Tailwind.\nFor Figma use: do not bind to text styles — use direct px values on each text style instead.\nUse when (CSS/export only): h2–h4 subheadings, card titles, compact multi-line headings.\nDo not use: Long-form paragraph text.\nStatus: Stable"
+    },
+    "normal": {
+      "$value": 150,
+      "$type": "number",
+      "$description": "CSS reference value: 1.5 (unitless) = leading-normal in Tailwind.\nFor Figma use: do not bind to text styles — use direct px values on each text style instead.\nUse when (CSS/export only): Paragraphs, descriptions, form helper text, any sustained reading.\nDo not use: Headings — will feel too loose.\nStatus: Stable"
+    },
+    "relaxed": {
+      "$value": 162.5,
+      "$type": "number",
+      "$description": "CSS reference value: 1.625 (unitless) = leading-relaxed in Tailwind.\nFor Figma use: do not bind to text styles — use direct px values on each text style instead.\nUse when (CSS/export only): Long-form articles, documentation, editorial content.\nDo not use: Dense product UI — wastes vertical space.\nStatus: Stable"
+    },
+    "loose": {
+      "$value": 200,
+      "$type": "number",
+      "$description": "CSS reference value: 2 (unitless) = leading-loose in Tailwind.\nFor Figma use: do not bind to text styles — use direct px values on each text style instead.\nUse when (CSS/export only): Poetry, pull quotes, highly stylised marketing layouts.\nDo not use: Product UI or data-heavy screens.\nStatus: Stable"
+    }
+  },
+  "letter-spacing": {
+    "tighter": {
+      "$value": -2.5,
+      "$type": "number",
+      "$description": "Intent: Tightened tracking for large display text.\nUse when: Hero headings and large display type (font-size/4xl and above) where default tracking looks too loose.\nDo not use: At small font sizes — negative tracking causes letters to collide.\nUse instead: letter-spacing/normal for body and UI text.\nStatus: Stable"
+    },
+    "tight": {
+      "$value": -1.5,
+      "$type": "number",
+      "$description": "Intent: Slightly reduced tracking for headings.\nUse when: font-size/2xl to font-size/3xl headings where a more refined, condensed look is needed.\nDo not use: At font-size/base or smaller.\nStatus: Stable"
+    },
+    "normal": {
+      "$value": 0,
+      "$type": "number",
+      "$description": "Intent: Default tracking; the browser and Figma default.\nUse when: All body copy, UI labels, buttons, form elements — the safe default for everything.\nDo not use: For very large display text — may feel too loose at large sizes.\nUse instead: letter-spacing/tight or letter-spacing/tighter for large headings.\nStatus: Stable"
+    },
+    "wide": {
+      "$value": 2.5,
+      "$type": "number",
+      "$description": "Intent: Increased tracking for emphasis or legibility in specific contexts.\nUse when: Uppercase labels, small caps, overline text, metadata tags, ALL CAPS UI elements.\nDo not use: For normal mixed-case body text — wide tracking on lowercase copy looks spaced-out and hard to read.\nStatus: Stable"
+    },
+    "wider": {
+      "$value": 5,
+      "$type": "number"
+    },
+    "widest": {
+      "$value": 10,
+      "$type": "number"
+    }
+  },
+  "font-family": {
+    "sans": {
+      "$value": "Inter",
+      "$type": "string",
+      "$description": "Intent: Primary UI typeface for all interface text.\nUse when: Body copy, labels, buttons, inputs, headings — everything that is not code or editorial serif.\nDo not use: For code blocks or monospace content.\nUse instead: font-family/mono for code; font-family/serif for editorial contexts.\nStatus: Stable"
+    },
+    "mono": {
+      "$value": "Roboto Mono",
+      "$type": "string",
+      "$description": "Intent: Monospace typeface for code and technical content.\nUse when: Code blocks, inline code snippets, terminal output, token or variable names displayed in UI.\nDo not use: For general UI text — monospace has wider character width and will feel visually heavy.\nUse instead: font-family/sans for all non-code text.\nStatus: Stable"
+    },
+    "serif": {
+      "$value": "Georgia",
+      "$type": "string",
+      "$description": "Intent: Serif typeface for editorial or long-form reading contexts.\nUse when: Marketing pages, blog posts, article bodies, pull quotes where a traditional editorial tone is intentional.\nDo not use: In product UI — serif reads as editorial, not functional.\nUse instead: font-family/sans for all product UI text.\nStatus: Stable"
+    }
+  },
+  "shadow": {
+    "none": {
+      "$value": "none",
+      "$type": "string",
+      "$description": "Intent: Explicitly removes any shadow from an element.\nUse when: Resetting shadow on a component that inherits one, flat UI surfaces that must have zero elevation.\nDo not use: As the default — omitting a shadow and explicitly setting none are different in CSS cascade terms.\nStatus: Stable"
+    },
+    "sm": {
+      "$value": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+      "$type": "string",
+      "$description": "Intent: Hairline shadow for subtle lift on small elements.\nUse when: Buttons, input fields, small cards, tags — elements that need the slightest separation from the background without looking elevated.\nDo not use: For floating UI like dropdowns or modals — too subtle to communicate elevation.\nUse instead: shadow/default or shadow/md for floating elements.\nStatus: Stable"
+    },
+    "default": {
+      "$value": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+      "$type": "string",
+      "$description": "Intent: Standard shadow for cards and low-elevation surfaces.\nUse when: Content cards, list containers, standard panels — elements that sit above the page background but are not floating.\nDo not use: For interactive popups or modals — use shadow/md or above for floating UI.\nStatus: Stable"
+    },
+    "md": {
+      "$value": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+      "$type": "string",
+      "$description": "Intent: Medium elevation for floating UI elements.\nUse when: Dropdown menus, select popups, date pickers, context menus — elements that float above page content.\nDo not use: For inline cards or non-floating surfaces — shadow/default is sufficient there.\nStatus: Stable"
+    },
+    "lg": {
+      "$value": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+      "$type": "string",
+      "$description": "Intent: High elevation for prominent floating containers.\nUse when: Popovers, tooltips, command palettes, floating action panels.\nDo not use: For modals — use shadow/xl or shadow/2xl for full-screen overlays.\nStatus: Stable"
+    },
+    "xl": {
+      "$value": "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+      "$type": "string",
+      "$description": "Intent: Strong elevation for modal-level overlays.\nUse when: Dialog modals, sheet panels, drawer overlays — elements that take focus away from the page.\nDo not use: For inline elements or cards — disproportionate shadow for non-floating surfaces.\nStatus: Stable"
+    },
+    "2xl": {
+      "$value": "0 25px 50px -12px rgb(0 0 0 / 0.25)",
+      "$type": "string",
+      "$description": "Intent: Maximum elevation; deepest shadow in the scale.\nUse when: Full-screen modals, onboarding overlays, lightboxes — the topmost layer in a stacking context.\nDo not use: For anything below modal level — the opacity and spread are too heavy.\nUse instead: shadow/xl for standard dialogs.\nStatus: Stable"
+    },
+    "inner": {
+      "$value": "inset 0 2px 4px 0 rgb(0 0 0 / 0.05)",
+      "$type": "string",
+      "$description": "Intent: Inset shadow to signal a recessed or pressed surface.\nUse when: Input field backgrounds, pressed button states, search bars — surfaces that should feel sunken rather than raised.\nDo not use: On elevated or floating elements — inset shadow conflicts with the elevation metaphor.\nStatus: Stable"
+    }
+  },
+  "motion": {
+    "duration": {
+      "instant": {
+        "$value": 0,
+        "$type": "number",
+        "$description": "Intent: Zero-duration transition for changes that must feel immediate.\nUse when: Checkbox checks, toggle switches, radio selection — binary state changes where animation would feel laggy.\nDo not use: For any element that enters or exits the viewport — even instant feels jarring without a tiny transition.\nUse instead: motion/duration/fast for the smallest visible transition.\nStatus: Stable"
+      },
+      "fast": {
+        "$value": 100,
+        "$type": "number",
+        "$description": "Intent: Shortest visible transition for small, contained UI feedback.\nUse when: Button press feedback, hover state color changes, tooltip appearance on hover, badge updates.\nDo not use: For elements larger than ~100px or elements that move across the screen — too fast to track.\nUse instead: motion/duration/normal for dropdowns and popovers.\nStatus: Stable"
+      },
+      "normal": {
+        "$value": 200,
+        "$type": "number",
+        "$description": "Intent: Default transition duration for standard UI interactions.\nUse when: Dropdown menus appearing, tooltips, select popovers, accordion expand/collapse, tab switching.\nDo not use: For large elements that enter from off-screen — feels too abrupt for heavy motion.\nUse instead: motion/duration/slow for modals and drawers.\nStatus: Stable"
+      },
+      "slow": {
+        "$value": 300,
+        "$type": "number",
+        "$description": "Intent: Deliberate transition for larger elements entering or leaving the screen.\nUse when: Modal dialogs opening, side drawers sliding in, sheet panels, notification toasts entering.\nDo not use: For small inline feedback — 300ms on a button hover feels sluggish.\nUse instead: motion/duration/normal for small component transitions.\nStatus: Stable"
+      },
+      "slower": {
+        "$value": 500,
+        "$type": "number",
+        "$description": "Intent: Extended transition for page-level changes and intentional emphasis.\nUse when: Page-level route transitions, onboarding step animations, hero element reveals, progress completion celebrations.\nDo not use: For any repeated or frequent interaction — 500ms becomes frustrating on actions users trigger many times.\nUse instead: motion/duration/slow for standard modal and drawer transitions.\nStatus: Stable"
+      }
+    },
+    "easing": {
+      "standard": {
+        "$value": "cubic-bezier(0.2, 0, 0, 1)",
+        "$type": "string",
+        "$description": "Intent: Default easing for UI state changes that do not involve entering or exiting.\nUse when: Color transitions, size changes, opacity shifts on elements already present in the layout — anything that transforms in place.\nDo not use: For elements entering from off-screen — use motion/easing/enter. Do not use for elements being dismissed — use motion/easing/exit.\nStatus: Stable"
+      },
+      "enter": {
+        "$value": "cubic-bezier(0, 0, 0.2, 1)",
+        "$type": "string",
+        "$description": "Intent: Ease-out curve for elements entering the screen. Starts fast, decelerates to rest.\nUse when: Modals appearing, dropdowns opening, toasts sliding in, drawers entering — any element that arrives from outside the viewport or appears from nothing.\nDo not use: For elements being dismissed or leaving — use motion/easing/exit instead.\nUse instead: motion/easing/exit for the reverse (dismissal) animation.\nStatus: Stable"
+      },
+      "exit": {
+        "$value": "cubic-bezier(0.4, 0, 1, 1)",
+        "$type": "string",
+        "$description": "Intent: Ease-in curve for elements leaving the screen. Starts slow, accelerates out.\nUse when: Modals dismissing, dropdowns closing, toasts sliding out, drawers leaving — any element that exits the viewport or disappears.\nDo not use: For elements entering — use motion/easing/enter instead.\nUse instead: motion/easing/enter for the arrival animation of the same element.\nStatus: Stable"
+      },
+      "linear": {
+        "$value": "linear",
+        "$type": "string",
+        "$description": "Intent: Constant-speed animation with no acceleration or deceleration.\nUse when: Progress bars filling, loading indicators spinning, continuous loops, data-driven animations where the position must map exactly to a value.\nDo not use: For UI element transitions — linear motion feels mechanical and unnatural on interactive elements.\nUse instead: motion/easing/standard for UI state changes.\nStatus: Stable"
+      }
+    }
+  },
+  "opacity": {
+    "0": {
+      "$value": 0,
+      "$type": "number",
+      "$description": "Intent: Fully transparent — element is invisible but still occupies space in layout.\nUse when: Hiding elements while preserving layout (fade-out start state, visibility toggles).\nDo not use: To permanently hide elements — use display:none or visibility:hidden instead.\nStatus: Stable"
+    },
+    "10": {
+      "$value": 10,
+      "$type": "number",
+      "$description": "Intent: Near-invisible tint; barely perceptible presence.\nUse when: Very subtle watermark overlays, ghost placeholder backgrounds, extremely faint decorative elements.\nStatus: Stable"
+    },
+    "20": {
+      "$value": 20,
+      "$type": "number",
+      "$description": "Intent: Faint presence; visible but highly transparent.\nUse when: Subtle overlay tints, dimmed background decorations, light scrim effects on images.\nStatus: Stable"
+    },
+    "30": {
+      "$value": 30,
+      "$type": "number"
+    },
+    "40": {
+      "$value": 40,
+      "$type": "number",
+      "$description": "Intent: Standard disabled state opacity.\nUse when: Disabled UI elements — buttons, inputs, selects. Industry standard for signalling non-interactivity without fully hiding the element.\nDo not use: For loading states — use opacity/60. Do not use for modal scrims — use opacity/50.\nStatus: Stable"
+    },
+    "50": {
+      "$value": 50,
+      "$type": "number",
+      "$description": "Intent: Half-transparent; balanced between visible and transparent.\nUse when: Modal backdrop scrims, image overlays with text on top, split-tone effects.\nStatus: Stable"
+    },
+    "60": {
+      "$value": 60,
+      "$type": "number",
+      "$description": "Intent: Standard loading state opacity.\nUse when: Elements in a loading or processing state — buttons with spinners, skeleton content areas awaiting data.\nDo not use: For disabled elements — use opacity/40.\nStatus: Stable"
+    },
+    "70": {
+      "$value": 70,
+      "$type": "number"
+    },
+    "75": {
+      "$value": 75,
+      "$type": "number",
+      "$description": "Intent: Mostly opaque with slight transparency.\nUse when: Frosted-glass effects, translucent panels over content, secondary overlays that show through slightly.\nStatus: Stable"
+    },
+    "80": {
+      "$value": 80,
+      "$type": "number",
+      "$description": "Intent: Ghost element opacity — active but visually receded.\nUse when: Ghost buttons in default state, secondary actions that should recede visually, watermark-style elements that remain interactive.\nDo not use: For disabled elements — ghost elements are still interactive.\nStatus: Stable"
+    },
+    "90": {
+      "$value": 90,
+      "$type": "number",
+      "$description": "Intent: Near-fully opaque with a barely noticeable transparency.\nUse when: Tooltips, popovers, contextual panels where a hint of transparency signals layering without obstructing content.\nStatus: Stable"
+    },
+    "100": {
+      "$value": 100,
+      "$type": "number",
+      "$description": "Intent: Fully opaque — no transparency.\nUse when: Default state for all visible elements. Explicitly setting full opacity after a fade-in animation.\nStatus: Stable"
+    }
+  },
+  "z-index": {
+    "base": {
+      "$value": 0,
+      "$type": "number",
+      "$description": "Normal document flow"
+    },
+    "raised": {
+      "$value": 10,
+      "$type": "number",
+      "$description": "Sticky headers, floating action buttons"
+    },
+    "dropdown": {
+      "$value": 20,
+      "$type": "number",
+      "$description": "Dropdowns, select menus, popovers"
+    },
+    "sticky": {
+      "$value": 30,
+      "$type": "number",
+      "$description": "Sticky sidebars, persistent toolbars"
+    },
+    "overlay": {
+      "$value": 40,
+      "$type": "number",
+      "$description": "Modal backdrops, drawer scrims"
+    },
+    "modal": {
+      "$value": 50,
+      "$type": "number",
+      "$description": "Modals, dialogs, sheets"
+    },
+    "toast": {
+      "$value": 60,
+      "$type": "number",
+      "$description": "Sonner toasts — always above everything"
+    }
+  },
+  "breakpoint": {
+    "sm": {
+      "$value": 640,
+      "$type": "number",
+      "$description": "sm: — phones landscape, small tablets. Tailwind prefix: sm:"
+    },
+    "md": {
+      "$value": 768,
+      "$type": "number",
+      "$description": "md: — tablets. Tailwind prefix: md:"
+    },
+    "lg": {
+      "$value": 1024,
+      "$type": "number",
+      "$description": "lg: — laptops. Primary layout switch point (sidebar, nav). Tailwind prefix: lg:"
+    },
+    "xl": {
+      "$value": 1280,
+      "$type": "number",
+      "$description": "xl: — desktops. Tailwind prefix: xl:"
+    },
+    "2xl": {
+      "$value": 1536,
+      "$type": "number",
+      "$description": "2xl: — large screens. Tailwind prefix: 2xl:"
+    },
+    "frame": {
+      "mobile": {
+        "$value": 390,
+        "$type": "number",
+        "$description": "Figma artboard width for mobile designs (below sm:)"
+      },
+      "tablet": {
+        "$value": 768,
+        "$type": "number",
+        "$description": "Figma artboard width for tablet designs (md:)"
+      },
+      "laptop": {
+        "$value": 1024,
+        "$type": "number",
+        "$description": "Figma artboard width for laptop designs (lg:)"
+      },
+      "desktop": {
+        "$value": 1280,
+        "$type": "number",
+        "$description": "Figma artboard width for desktop designs (xl:)"
+      },
+      "large": {
+        "$value": 1440,
+        "$type": "number",
+        "$description": "Figma artboard design target — maps to xl: in code, max-width constraint handles the rest"
+      }
+    }
+  },
+  "layout": {
+    "container": {
+      "max-width": {
+        "$value": 1400,
+        "$type": "number",
+        "$description": "Maximum content width. Use with mx-auto. Tailwind: max-w-[1400px]"
+      },
+      "padding": {
+        "mobile": {
+          "$value": 16,
+          "$type": "number",
+          "$description": "Horizontal container padding on mobile (below md:). Tailwind: px-4"
+        },
+        "desktop": {
+          "$value": 32,
+          "$type": "number",
+          "$description": "Horizontal container padding on tablet and above (md:+). Tailwind: md:px-8"
+        }
+      }
+    },
+    "grid": {
+      "columns": {
+        "mobile": {
+          "$value": 4,
+          "$type": "number",
+          "$description": "Grid columns on mobile. Tailwind: grid-cols-4"
+        },
+        "tablet": {
+          "$value": 8,
+          "$type": "number",
+          "$description": "Grid columns on tablet (md:). Tailwind: md:grid-cols-8"
+        },
+        "desktop": {
+          "$value": 12,
+          "$type": "number",
+          "$description": "Grid columns on desktop (lg:+). Tailwind: lg:grid-cols-12"
+        }
+      },
+      "gutter": {
+        "mobile": {
+          "$value": 16,
+          "$type": "number",
+          "$description": "Gap between grid columns on mobile. Tailwind: gap-4"
+        },
+        "desktop": {
+          "$value": 24,
+          "$type": "number",
+          "$description": "Gap between grid columns on tablet and above. Tailwind: md:gap-6"
+        }
+      },
+      "margin": {
+        "mobile": {
+          "$value": 16,
+          "$type": "number",
+          "$description": "Grid margin on mobile — matches container padding"
+        },
+        "tablet": {
+          "$value": 32,
+          "$type": "number",
+          "$description": "Grid margin on tablet"
+        },
+        "desktop": {
+          "$value": 80,
+          "$type": "number",
+          "$description": "Grid margin on desktop — the 80px Figma layout guide"
+        }
+      }
+    }
+  }
+}

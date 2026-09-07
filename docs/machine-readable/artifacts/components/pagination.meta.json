@@ -1,0 +1,335 @@
+{
+  "name": "pagination",
+  "figmaNodeId": "59:18253",
+  "description": "A navigation control for moving through multi-page data sets.",
+  "category": "navigation",
+  "shadcnBase": "pagination",
+  "componentSets": {
+    "_pagination-item": {
+      "figmaNodeId": "59:17863",
+      "purpose": "Individual page cell."
+    },
+    "pagination": {
+      "figmaNodeId": "59:18253",
+      "purpose": "Full assembled control."
+    }
+  },
+  "variants": {
+    "Item Type": {
+      "type": "enum",
+      "values": [
+        "Page",
+        "Prev",
+        "Next",
+        "Ellipsis"
+      ],
+      "default": "Page",
+      "reactProp": "itemType",
+      "reactValues": {
+        "Page": "page",
+        "Prev": "prev",
+        "Next": "next",
+        "Ellipsis": "ellipsis"
+      }
+    },
+    "Item State": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Hover",
+        "Active",
+        "Disabled"
+      ],
+      "default": "Default",
+      "reactProp": "state",
+      "reactValues": {
+        "Default": "default",
+        "Hover": "hover",
+        "Active": "active",
+        "Disabled": "disabled"
+      }
+    },
+    "Type": {
+      "type": "enum",
+      "values": [
+        "Basic",
+        "More",
+        "Simple",
+        "Disabled",
+        "With Total",
+        "With Changer",
+        "With Jumper",
+        "Show All"
+      ],
+      "default": "Basic",
+      "reactProp": "type",
+      "reactValues": {
+        "Basic": "basic",
+        "More": "more",
+        "Simple": "simple",
+        "Disabled": "disabled",
+        "With Total": "with-total",
+        "With Changer": "with-changer",
+        "With Jumper": "with-jumper",
+        "Show All": "show-all"
+      }
+    }
+  },
+  "availability": {
+    "Page": [
+      "Default",
+      "Hover",
+      "Active",
+      "Disabled"
+    ],
+    "Prev": [
+      "Default",
+      "Hover",
+      "Disabled"
+    ],
+    "Next": [
+      "Default",
+      "Hover",
+      "Disabled"
+    ],
+    "Ellipsis": [
+      "single visual state"
+    ]
+  },
+  "tokens": {
+    "item": {
+      "Page Default": {
+        "fill": "color/background/default",
+        "stroke": "color/border/default",
+        "fg": "color/background/default/foreground"
+      },
+      "Page Hover": {
+        "fill": "color/background/accent",
+        "stroke": "color/border/default",
+        "fg": "color/background/accent/foreground"
+      },
+      "Page Active": {
+        "fill": "color/brand/primary",
+        "fg": "color/brand/primary/foreground"
+      },
+      "Page Disabled": {
+        "fill": "color/background/muted",
+        "stroke": "color/border/disabled",
+        "fg": "color/text/disabled"
+      },
+      "PrevNext Disabled": {
+        "fill": "color/background/muted",
+        "stroke": "color/border/disabled",
+        "icon": "color/icon/disabled"
+      },
+      "Ellipsis": {
+        "fill": "color/background/default",
+        "stroke": "color/border/default",
+        "fg": "color/background/muted/foreground"
+      },
+      "size": "32x32",
+      "radius": "radius/md"
+    },
+    "paginationGap": {
+      "Basic": "spacing/component/xxs",
+      "More": "spacing/component/xxs",
+      "Disabled": "spacing/component/xxs",
+      "Simple": "spacing/component/sm",
+      "With Changer": "spacing/component/sm",
+      "With Jumper": "spacing/component/sm",
+      "With Total": "spacing/component/lg",
+      "Show All": "spacing/component/md"
+    }
+  },
+  "composition": {
+    "basic": [
+      "Prev",
+      "Page items",
+      "Next"
+    ],
+    "more": [
+      "Prev",
+      "Page",
+      "Ellipsis",
+      "active Page",
+      "Ellipsis",
+      "Page",
+      "Next"
+    ],
+    "simple": [
+      "Prev",
+      "page-indicator",
+      "Next"
+    ],
+    "showAll": [
+      "total text",
+      "items",
+      "size-changer",
+      "jumper"
+    ]
+  },
+  "accessibility": {
+    "landmark": "nav aria-label=pagination",
+    "currentPage": "aria-current=page on active link.",
+    "previousNextDisabled": "aria-disabled=true on anchors.",
+    "ellipsis": "aria-hidden=true.",
+    "iconButtons": "Use aria-label for previous and next.",
+    "touchTarget": "32x32px item requires 6px hit-area padding or larger size."
+  },
+  "constraints": [
+    "Use pagination, never _pagination-item standalone.",
+    "Use Basic for small page counts.",
+    "Use More for large page counts.",
+    "Use Simple for constrained layouts.",
+    "Exactly one page item is Active.",
+    "Do not hide Prev or Next at boundaries; disable them.",
+    "Hide pagination entirely for zero results."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "A search results page returns 200 records and shows 20 per page — Basic or More pagination sits below the result list",
+      "An admin data table with hundreds of rows lets users jump to a specific page with the Jumper variant",
+      "A mobile article list uses Simple pagination (Prev / 1 of 12 / Next) where individual page buttons would not fit",
+      "A reports table gives users a page-size dropdown so they can switch between 10, 25, and 50 rows per page",
+      "A product listing shows 'Total 847 items' alongside page controls so users can gauge result volume",
+      "A feature-complete data grid combines total count, page-size changer, and jump-to input in a single Show All bar"
+    ],
+    "variantExamples": {
+      "Basic": {
+        "whenToUse": "Small, fixed page count (≤10 pages) where all pages can be shown at once",
+        "examples": [
+          "Short article list",
+          "Admin table with few records",
+          "Simple search results"
+        ]
+      },
+      "More": {
+        "whenToUse": "Large page count (>10 pages) — shows a window of nearby pages with ellipsis",
+        "examples": [
+          "Long search results",
+          "Large user directory",
+          "Product catalogue"
+        ]
+      },
+      "Simple": {
+        "whenToUse": "Space-constrained layouts — only Prev / current / total / Next",
+        "examples": [
+          "Mobile list view",
+          "Narrow sidebar panel",
+          "Compact widget table"
+        ]
+      },
+      "With Total": {
+        "whenToUse": "User needs to know the total record count to make informed decisions",
+        "examples": [
+          "Reports page",
+          "Export preview",
+          "Filtered dataset where count validates the filter"
+        ]
+      },
+      "With Changer": {
+        "whenToUse": "User benefits from controlling rows per page",
+        "examples": [
+          "Data-heavy admin table",
+          "Analytics export",
+          "Log viewer"
+        ]
+      },
+      "With Jumper": {
+        "whenToUse": "Direct navigation to specific pages by number is valuable",
+        "examples": [
+          "Very large datasets",
+          "Numbered report pages",
+          "Audit log with 100+ pages"
+        ]
+      },
+      "Show All": {
+        "whenToUse": "Feature-complete tables where users need full pagination control",
+        "examples": [
+          "Enterprise data tables",
+          "Advanced analytics grids",
+          "Complex admin views"
+        ]
+      },
+      "Disabled": {
+        "whenToUse": "The data is loading or the control is temporarily unavailable",
+        "examples": [
+          "Loading state on initial table fetch",
+          "Search in progress"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Navigating between numbered pages of a dataset",
+        "use": "pagination",
+        "notInstead": "tabs"
+      },
+      {
+        "situation": "Switching between content sections on the same page",
+        "use": "tabs",
+        "notInstead": "pagination"
+      },
+      {
+        "situation": "Showing the user's location in a site hierarchy",
+        "use": "breadcrumb",
+        "notInstead": "pagination"
+      },
+      {
+        "situation": "Navigating to different pages or routes in the top nav",
+        "use": "navigation-menu",
+        "notInstead": "pagination"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/pagination",
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Pagination.md",
+    "storyFile": "src/stories/Pagination.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Examples assume a higher-level PaginationBar wrapper for generated layouts; source markdown itself does not mark this component not ready."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/pagination.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Pagination"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Pagination.stories.tsx",
+    "title": "Navigation/Pagination",
+    "stories": [
+      "Basic",
+      "More",
+      "Simple",
+      "Disabled",
+      "WithTotal",
+      "FirstPage",
+      "LastPage",
+      "WithChanger",
+      "ShowAll",
+      "WithJumper"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

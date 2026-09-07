@@ -1,0 +1,311 @@
+{
+  "name": "input",
+  "figmaNodeId": "49:10806",
+  "description": "A single-line text input control. Built on the native HTML input element. Use for name, email, password, search, and any single-line text entry.",
+  "category": "forms",
+  "shadcnBase": "input",
+  "componentSets": {
+    "input": {
+      "figmaNodeId": "49:10806",
+      "purpose": "Raw input or textarea control."
+    },
+    "input-field": {
+      "figmaNodeId": "49:10848",
+      "purpose": "Complete form field with label, input, and description."
+    }
+  },
+  "variants": {
+    "Type": {
+      "type": "enum",
+      "values": [
+        "Input"
+      ],
+      "default": "Input",
+      "reactProp": "type",
+      "reactValues": {
+        "Input": "input",
+        "Textarea": "textarea"
+      },
+      "intent": {
+        "Input": "Single-line text entry. 36px height, horizontal layout."
+      }
+    },
+    "State": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Hover",
+        "Focused",
+        "Filled",
+        "Disabled",
+        "Invalid"
+      ],
+      "default": "Default",
+      "reactProp": "state",
+      "reactValues": {
+        "Default": "default",
+        "Hover": "hover",
+        "Focused": "focused",
+        "Filled": "filled",
+        "Disabled": "disabled",
+        "Invalid": "invalid"
+      }
+    },
+    "Field state": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Filled",
+        "Disabled",
+        "Invalid"
+      ],
+      "default": "Default",
+      "reactProp": "fieldState",
+      "reactValues": {
+        "Default": "default",
+        "Filled": "filled",
+        "Disabled": "disabled",
+        "Invalid": "invalid"
+      }
+    }
+  },
+  "tokens": {
+    "container": {
+      "Default": {
+        "fill": "color/input/bg",
+        "stroke": "color/input/border"
+      },
+      "Hover": {
+        "fill": "color/input/bg",
+        "stroke": "color/border/hover"
+      },
+      "Focused": {
+        "fill": "color/input/bg",
+        "stroke": "color/border/focus",
+        "effect": "focus/ring"
+      },
+      "Filled": {
+        "fill": "color/input/bg",
+        "stroke": "color/input/border"
+      },
+      "Disabled": {
+        "fill": "color/surface/muted",
+        "stroke": "color/border/disabled"
+      },
+      "Invalid": {
+        "fill": "color/input/bg",
+        "stroke": "color/border/error"
+      },
+      "radius": "radius/md"
+    },
+    "internalLayers": {
+      "placeholder": "color/input/placeholder",
+      "placeholderDisabled": "color/text/disabled",
+      "value": "color/background/default/foreground",
+      "trailingText": "color/background/muted/foreground",
+      "trailingTextDisabled": "color/text/disabled",
+      "icon": "color/icon/default",
+      "iconDisabled": "color/icon/disabled"
+    },
+    "spacing": {
+      "inputPaddingY": "spacing/component/xs",
+      "textareaPaddingY": "spacing/component/sm",
+      "paddingX": "spacing/component/md",
+      "gap": "spacing/component/sm"
+    },
+    "inputField": {
+      "descriptionDefault": "color/text/secondary",
+      "descriptionDisabled": "color/text/disabled",
+      "descriptionInvalid": "color/text/invalid",
+      "gap": "spacing/component/xs"
+    },
+    "states": {
+      "invalid": {
+        "borderToken": "color/border/error",
+        "ringToken": "color/border/error",
+        "ringGlow": "color-mix(in_srgb,var(--color-border-error)_20%,transparent)",
+        "notes": "Uses [&[aria-invalid]] compound selector to beat data-[state=open]/focus-visible specificity. Blue ring must NOT appear when invalid."
+      }
+    }
+  },
+  "composition": {
+    "input": [
+      "leading-icon",
+      "placeholder",
+      "trailing-text",
+      "trailing-icon",
+      "trailing-button"
+    ],
+    "textarea": [
+      "header-label",
+      "placeholder",
+      "trailing-text",
+      "counter"
+    ],
+    "inputField": [
+      "label",
+      "input",
+      "description"
+    ],
+    "trailingSlotRule": "Only one trailing slot should be visible at a time."
+  },
+  "accessibility": {
+    "role": "textbox; textarea uses textbox with aria-multiline=true",
+    "label": "Associate label via htmlFor and id.",
+    "invalid": "Use aria-invalid=true.",
+    "required": "Use required or aria-required=true.",
+    "disabled": "Use disabled attribute; removes from tab order.",
+    "description": "Use aria-describedby pointing to description."
+  },
+  "constraints": [
+    "Use input-field for every standard form field.",
+    "Use raw input only inside custom wrappers that provide a label association.",
+    "Use Textarea only for multi-line free text.",
+    "Do not use Textarea for structured multi-value entry.",
+    "Only one trailing slot should be visible at a time.",
+    "Invalid description should contain the specific error."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "User registration or account setup forms: name, email, phone, username fields",
+      "Login forms where a single line of text is collected (email + password)",
+      "Search bars paired with a button — use trailing-button with the input",
+      "Address entry: street, city, postcode — each as a separate input-field",
+      "API key or token display fields where the user reads or copies a value",
+      "Notes, comments, or bio fields that require multi-line entry (Type=Textarea)"
+    ],
+    "variantExamples": {
+      "Type=Input": {
+        "whenToUse": "Single-line text, number, email, password, or search entry",
+        "examples": [
+          "Login email field",
+          "Username on signup",
+          "Search bar",
+          "Postcode"
+        ]
+      },
+      "Type=Textarea": {
+        "whenToUse": "Free-form multi-line prose — the user needs more than one line",
+        "examples": [
+          "Comment box",
+          "Product description",
+          "Support message",
+          "User bio"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "User must type a free-form value — anything goes",
+        "use": "input",
+        "notInstead": "select or combobox"
+      },
+      {
+        "situation": "User enters a verification or PIN code in individual slots",
+        "use": "input-otp",
+        "notInstead": "input"
+      },
+      {
+        "situation": "User needs to pick one value from a fixed list (no typing)",
+        "use": "select",
+        "notInstead": "input"
+      },
+      {
+        "situation": "User needs to pick from a long list or select multiple values",
+        "use": "combobox",
+        "notInstead": "input"
+      },
+      {
+        "situation": "User needs to add multiple tag-like values (email recipients, labels)",
+        "use": "combobox (Type=Basic, State=Filled-chips)",
+        "notInstead": "input"
+      },
+      {
+        "situation": "User must enter an exact number (quantity, amount, port)",
+        "use": "input (type=\"number\")",
+        "notInstead": "slider"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/input",
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Input.md",
+    "storyFile": "src/stories/Input.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Examples assume InputField and Textarea wrappers around shadcn Input/Textarea; source markdown itself does not mark this component not ready.",
+      "Textarea has been separated into its own file: textarea.meta.json"
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-03",
+        "change": "Invalid state: blue focus ring replaced with red ring using [&[aria-invalid]] compound selector. Prevents blue ring appearing on focused invalid field.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "Container fill uses color/input/bg (Dark: zinc/700) — one step lighter than surface/overlay so inputs stand out from the panel. Disabled fill uses color/surface/muted (Dark: zinc/800).",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/input.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Input"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Input.stories.tsx",
+    "title": "Forms/Input",
+    "stories": [
+      "Default",
+      "Filled",
+      "Disabled",
+      "Invalid",
+      "Email",
+      "Password",
+      "WithField",
+      "WithFieldInvalid",
+      "WithFieldDisabled",
+      "WithLeadingIcon",
+      "WithTrailingIcon",
+      "WithTrailingButton",
+      "WithTrailingText",
+      "AllStates"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": "Input-only (single-line) stories. Textarea has its own separate story file and meta.json."
+  },
+  "relationships": {
+    "relatedComponents": [
+      {
+        "name": "textarea",
+        "reason": "Textarea is the multi-line version. Same token set, different height and vertical layout."
+      },
+      {
+        "name": "combobox",
+        "reason": "Use combobox for searchable/filterable lists or multi-value tag entry."
+      },
+      {
+        "name": "select",
+        "reason": "Use select for short fixed lists where typing is not needed."
+      },
+      {
+        "name": "input-otp",
+        "reason": "Use input-otp for verification codes and PINs requiring individual slot entry."
+      }
+    ]
+  }
+}

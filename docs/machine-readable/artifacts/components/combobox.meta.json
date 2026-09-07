@@ -1,0 +1,369 @@
+{
+  "name": "combobox",
+  "figmaNodeId": "75:9166",
+  "description": "A searchable, filterable dropdown control — single selection, multi-selection, search-as-you-type, free-form tag entry, or time selection.",
+  "category": "forms",
+  "shadcnBase": "combobox",
+  "componentSets": {
+    "combobox-trigger": {
+      "figmaNodeId": "75:9166",
+      "purpose": "Trigger input — Types: Basic, Search, Time-picker (Figma) + Tag Input (code-only). 19 Figma variants + 6 code-only Tag Input.",
+      "variants": 25
+    },
+    "combobox-field": {
+      "figmaNodeId": "148:2191",
+      "purpose": "Complete form field with label, trigger, description or dropdown."
+    }
+  },
+  "variants": {
+    "Type": {
+      "type": "enum",
+      "values": [
+        "Basic",
+        "Search",
+        "Time-picker",
+        "Tag Input"
+      ],
+      "default": "Basic",
+      "reactProp": "type",
+      "reactValues": {
+        "Basic": "basic",
+        "Search": "search",
+        "Tag Input": "tag-input",
+        "Time-picker": "time-picker"
+      },
+      "intent": {
+        "Time-picker": "Opens menu-dropdown Type=os-time-menu for structured HH/MM selection. Visually identical to Basic (placeholder + chevron). Use when user selects time rather than typing it."
+      }
+    },
+    "State": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Hover",
+        "Open",
+        "Filled",
+        "Filled-chips",
+        "Invalid",
+        "Disabled"
+      ],
+      "default": "Default",
+      "reactProp": "state",
+      "reactValues": {
+        "Default": "default",
+        "Hover": "hover",
+        "Open": "open",
+        "Filled": "filled",
+        "Filled-chips": "filled-chips",
+        "Invalid": "invalid",
+        "Disabled": "disabled"
+      }
+    },
+    "Field State": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Open",
+        "Disabled",
+        "Invalid"
+      ],
+      "default": "Default",
+      "reactProp": "fieldState",
+      "reactValues": {
+        "Default": "default",
+        "Open": "open",
+        "Disabled": "disabled",
+        "Invalid": "invalid"
+      }
+    }
+  },
+  "availability": {
+    "Basic": [
+      "Default",
+      "Hover",
+      "Open",
+      "Filled",
+      "Filled-chips",
+      "Invalid",
+      "Disabled"
+    ],
+    "Search": [
+      "Default",
+      "Hover",
+      "Open",
+      "Filled",
+      "Invalid",
+      "Disabled"
+    ],
+    "Tag Input": [
+      "Default",
+      "Hover",
+      "Open",
+      "Filled-chips",
+      "Invalid",
+      "Disabled"
+    ],
+    "Time-picker": [
+      "Default",
+      "Hover",
+      "Open",
+      "Filled",
+      "Invalid",
+      "Disabled"
+    ]
+  },
+  "tokens": {
+    "triggerContainer": {
+      "Default": {
+        "fill": "color/input/bg",
+        "stroke": "color/input/border"
+      },
+      "Hover": {
+        "fill": "color/input/bg",
+        "stroke": "color/border/hover"
+      },
+      "Open": {
+        "fill": "color/input/bg",
+        "stroke": "color/border/focus",
+        "effect": "focus/ring"
+      },
+      "Filled": {
+        "fill": "color/input/bg",
+        "stroke": "color/input/border"
+      },
+      "Filled-chips": {
+        "fill": "color/input/bg",
+        "stroke": "color/input/border"
+      },
+      "Invalid": {
+        "fill": "color/input/bg",
+        "stroke": "color/border/error"
+      },
+      "Disabled": {
+        "fill": "color/surface/muted",
+        "stroke": "color/border/disabled"
+      },
+      "radius": "radius/lg"
+    },
+    "internalLayers": {
+      "placeholder": "color/input/placeholder",
+      "value": "color/background/default/foreground",
+      "disabledText": "color/text/disabled",
+      "icons": "color/icon/default",
+      "iconsDisabled": "color/icon/disabled",
+      "chipFill": "color/background/muted",
+      "chipFg": "color/background/muted/foreground",
+      "chipCloseIcon": "color/background/muted/foreground"
+    },
+    "spacing": {
+      "basicPaddingX": "spacing/component/md",
+      "searchPaddingX": "spacing/component/sm",
+      "filledChipsPadding": "spacing/component/xs-plus",
+      "gap": "spacing/component/sm"
+    },
+    "field": {
+      "descriptionDefault": "color/text/secondary",
+      "descriptionOpen": "hidden",
+      "descriptionDisabled": "color/text/disabled",
+      "descriptionInvalid": "color/text/invalid",
+      "gap": "spacing/component/xs"
+    },
+    "states": {
+      "invalid": {
+        "borderToken": "color/border/error",
+        "ringToken": "color/border/error",
+        "ringGlow": "color-mix(in_srgb,var(--color-border-error)_20%,transparent)",
+        "notes": "Uses [&[aria-invalid]] compound selector to beat data-[state=open]/focus-visible specificity. Blue ring must NOT appear when invalid."
+      }
+    }
+  },
+  "composition": {
+    "basicTrigger": [
+      "placeholder",
+      "icon-chevron"
+    ],
+    "filledChipsTrigger": [
+      "chips-area.chip",
+      "chips-area.placeholder"
+    ],
+    "searchTrigger": [
+      "icon-search",
+      "placeholder",
+      "icon-chevron"
+    ],
+    "comboboxField": [
+      "label",
+      "combobox-trigger",
+      "description or menu-dropdown"
+    ]
+  },
+  "accessibility": {
+    "role": "combobox on trigger input",
+    "expanded": "aria-expanded=true when open",
+    "optionsList": "role=listbox",
+    "option": "role=option with aria-selected",
+    "autocomplete": "aria-autocomplete=list for Type=Search",
+    "required": "aria-required=true",
+    "invalid": "aria-invalid=true",
+    "label": "Associated via aria-labelledby",
+    "keyboard": [
+      "Arrow keys open/move",
+      "Enter selects highlighted item",
+      "Escape closes",
+      "Typing filters Type=Search"
+    ]
+  },
+  "constraints": [
+    "Use combobox-field, not combobox-trigger, for standard form use.",
+    "Use combobox over select for long lists, search, filtering, or multi-select.",
+    "Use State=Filled-chips only with multiple=true or type=tag-input.",
+    "Use select-field for short stable lists with no search needed.",
+    "Use type=tag-input for free-form values not from a predefined list.",
+    "Use type=basic or type=search only for predefined options lists.",
+    "Match Search trigger with Search dropdown.",
+    "Tag Input: Enter or comma confirms a chip. Backspace removes the last chip when input is empty. Duplicates are silently ignored."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Assigning team members to a task — large org, user types a name to filter hundreds of people",
+      "Tag or label picker in a note-taking or project tool — multi-select with chips, large tag vocabulary",
+      "Language or locale selector in account settings — 100+ languages, search is the only sensible UX",
+      "'CC' or recipient field in an email composer — add multiple addresses as chips",
+      "Framework or technology filter in a job board — long list of options, user types to narrow"
+    ],
+    "variantExamples": {
+      "Type=Basic": {
+        "whenToUse": "Moderate-length list where the user browses to pick — click to open, scan the list",
+        "examples": [
+          "Status picker (10 options)",
+          "Priority selector",
+          "Sprint assignment"
+        ]
+      },
+      "Type=Basic, State=Filled-chips": {
+        "whenToUse": "Multi-select where each chosen value must be visually represented and individually removable",
+        "examples": [
+          "Tag picker",
+          "Permission assignment",
+          "Recipient field ('To:', 'CC:')"
+        ]
+      },
+      "Type=Search": {
+        "whenToUse": "Long list (15+ items) where typing to filter is the primary interaction",
+        "examples": [
+          "Country search",
+          "User/member search",
+          "Framework filter",
+          "Language selector"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Long list or user types to filter (>15 items)",
+        "use": "combobox",
+        "notInstead": "select"
+      },
+      {
+        "situation": "User must pick multiple values",
+        "use": "combobox (Type=Basic, State=Filled-chips)",
+        "notInstead": "select or checkbox"
+      },
+      {
+        "situation": "Short fixed list (≤ ~10 items), no typing, pick one",
+        "use": "select",
+        "notInstead": "combobox"
+      },
+      {
+        "situation": "User enters a completely free-form value not from a list",
+        "use": "input",
+        "notInstead": "combobox"
+      },
+      {
+        "situation": "2–5 mutually exclusive options that benefit from being fully visible",
+        "use": "radio",
+        "notInstead": "combobox"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/combobox",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/popover"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Combobox.md",
+    "storyFile": "src/stories/Combobox.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Examples assume a ComboboxField wrapper API over the chosen Base UI implementation; source markdown itself does not mark this component not ready.",
+      "Type=Tag Input is code-only (not in Figma). Type=Time-picker is Figma-built; opens menu-dropdown Type=os-time-menu."
+    ],
+    "knownIssues": [
+      {
+        "issue": "Dropdown width hardcoded to 280px — CSS var --anchor-width from Base UI Positioner doesn't resolve reliably on Popup element.",
+        "workaround": "w-[280px] hardcoded on Combobox.Popup. If container width changes, update both the story wrapper and popupClass.",
+        "date": "2026-06-03"
+      }
+    ],
+    "changelog": [
+      {
+        "date": "2026-06-17",
+        "change": "Dropdown width fix: was hardcoded w-[280px]. Root cause of misalignment — Base UI anchors the Positioner to the Input (~50px narrower than the bordered Trigger box due to padding + chevron), so --anchor-width measured 230px not 280px. Fix: ref the Combobox.Trigger and pass anchor={triggerRef} to the Positioner; Positioner uses w-[var(--anchor-width)] min-w-[200px], Popup w-full. Now the dropdown matches the full trigger width. Single-select + multi-select. Tag-input uses absolute left-0/right-0 and was unaffected. Verified in-browser (trigger 280 = dropdown 280).",
+        "breaking": false
+      },
+      {
+        "date": "2026-06-03",
+        "change": "Added Type=Tag Input variant (free-form chip creation). Dropdown: radius/lg, p-0.5, gap-0.5, h-8 items, px-2. Invalid state: red ring via [&[data-popup-open]] compound selector.",
+        "breaking": false
+      },
+      {
+        "date": "2026-06-04",
+        "change": "Type=Time-picker added to combobox-trigger in Figma (node 401:2567, 6 state variants). Opens menu-dropdown Type=os-time-menu. Total: 19 Figma + 6 code-only = 25.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/combobox.tsx",
+    "packageDeps": [
+      "@base-ui/react"
+    ],
+    "exports": [
+      "Combobox"
+    ],
+    "notes": [
+      "Type=Basic/Search: @base-ui/react Combobox. Type=Tag Input: custom controlled state, no Base UI.",
+      "Dropdown width hardcoded w-[280px] — CSS var --anchor-width unreliable in Base UI Positioner.",
+      "Filtering: manual label.toLowerCase().includes() — not using useComboboxFilter hook."
+    ]
+  },
+  "storybook": {
+    "file": "src/stories/Combobox.stories.tsx",
+    "title": "Forms/Combobox",
+    "stories": [
+      "Basic",
+      "Filled",
+      "Invalid",
+      "Disabled",
+      "Search",
+      "SearchDisabled",
+      "MultiSelect",
+      "TagInput",
+      "TagInputWithSuggestions",
+      "TagInputInvalid",
+      "AllStates"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": "Time-picker trigger is Figma-only. Time picker behavior shown in Calendar/DateTimePicker story."
+  }
+}

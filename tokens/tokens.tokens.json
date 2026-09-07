@@ -1,0 +1,1311 @@
+{
+  "$metadata": {
+    "collections": [
+      "Primitives",
+      "Semantics",
+      "Components"
+    ],
+    "exportedAt": "2026-06-02T07:29:17.640Z"
+  },
+  "color": {
+    "background": {
+      "default": {
+        "$value": "{color.white}",
+        "$type": "color",
+        "$description": "Intent:      The main page canvas — the base surface everything sits on\nUse when:    Page background, main content area, any full-page layout surface\nDo not use:  Cards, panels, modals, or elevated containers — use color/surface/* instead\nUse instead: color/surface/default for cards and flat content containers\nForeground:  color/background/default/foreground\nStatus:      active",
+        "foreground": {
+          "$value": "{color.zinc.900}",
+          "$type": "color",
+          "$description": "Intent:      Primary text and icon color on the default page background\nUse when:    Headings, body text, labels, any text sitting directly on the page canvas\nDo not use:  Text inside cards, modals, or colored containers — use that container's /foreground\nUse instead: color/text/secondary for subdued text, color/text/disabled for inactive text\nStatus:      active"
+        }
+      },
+      "subtle": {
+        "$value": "{color.zinc.50}",
+        "$type": "color",
+        "$description": "Intent:      A near-white tint for low-emphasis background sections\nUse when:    Alternating section backgrounds, sidebar backgrounds, hover states on rows\nDo not use:  Cards or elevated UI — subtle is a flat tint, not a raised surface\nUse instead: color/surface/raised for slightly elevated containers\nNote:        No /foreground pair — text on subtle uses color/background/default/foreground\nStatus:      active"
+      },
+      "muted": {
+        "$value": "{color.zinc.100}",
+        "$type": "color",
+        "$description": "Intent:      A visible muted surface for de-emphasized sections or inactive areas\nUse when:    Disabled input backgrounds, skeleton loaders, code blocks, tag backgrounds\nDo not use:  Primary content areas or interactive surfaces\nUse instead: color/background/default for the main page, color/background/subtle for softer tints\nForeground:  color/background/muted/foreground\nStatus:      active",
+        "foreground": {
+          "$value": "{color.zinc.500}",
+          "$type": "color",
+          "$description": "Intent:      Text and icon color on muted background surfaces\nUse when:    Placeholder text, captions inside muted containers, secondary labels on muted bg\nDo not use:  Primary body text on the page canvas — contrast is intentionally reduced\nUse instead: color/background/default/foreground for full-strength text\nStatus:      active"
+        }
+      },
+      "inverted": {
+        "$value": "{color.zinc.900}",
+        "$type": "color",
+        "$description": "Intent:      A dark surface for high-contrast inverted sections\nUse when:    Dark hero sections, inverted banners, dark tooltips, dark notification bars\nDo not use:  Full dark-mode — this is a single inverted section within a light-mode layout\nUse instead: color/surface/overlay for floating dark elements like dropdowns\nForeground:  color/background/inverted/foreground\nDark mode:   Inverts to zinc/50 — becomes a light surface on a dark page, preserving contrast\nStatus:      active",
+        "foreground": {
+          "$value": "{color.white}",
+          "$type": "color",
+          "$description": "Intent:      Text and icon color on the inverted dark background\nUse when:    All text and icons placed on color/background/inverted\nDo not use:  On any light surface — white on white is invisible\nUse instead: color/background/default/foreground on light surfaces\nDark mode:   Inverts to black — dark text on the zinc/50 inverted surface\nStatus:      active"
+        }
+      },
+      "accent": {
+        "$value": "{color.zinc.100}",
+        "$type": "color",
+        "$description": "Intent: Subtle background for hover states on ghost and text-style interactive elements.\nUse when: Ghost button hover, sidebar item hover, command menu row hover, dropdown item hover. Maps to shadcn --accent.\nDo not use: As a primary action fill — this is a hover tint, not a CTA color.\nUse instead: color/brand/primary for primary action fills.\nForeground: color/brand/accent/foreground\nStatus: Stable",
+        "foreground": {
+          "$value": "{color.zinc.900}",
+          "$type": "color",
+          "$description": "Intent: Text and icon color on top of color/brand/accent fill.\nUse when: Labels and icons inside ghost button hover states, hovered sidebar items, hovered menu rows. Maps to shadcn --accent-foreground.\nDo not use: On any surface other than color/brand/accent.\nUse instead: color/background/default/foreground for text on default backgrounds.\nStatus: Stable"
+        }
+      }
+    },
+    "text": {
+      "secondary": {
+        "$value": "{color.zinc.600}",
+        "$type": "color",
+        "$description": "Intent:      Subdued text for supporting information\nUse when:    Captions, metadata, timestamps, helper text, secondary labels beneath a heading\nDo not use:  Body text or headings — contrast is intentionally reduced for supporting roles\nUse instead: color/background/default/foreground for primary body text and headings\nStatus:      active"
+      },
+      "disabled": {
+        "$value": "{color.zinc.400}",
+        "$type": "color",
+        "$description": "Intent:      Text color for inactive or unavailable elements\nUse when:    Disabled input labels, disabled button text, unavailable menu items\nDo not use:  Any text that is interactive or readable — fails WCAG contrast at small sizes\nUse instead: color/text/secondary for readable but de-emphasized text\nStatus:      active"
+      },
+      "inverse": {
+        "$value": "{color.white}",
+        "$type": "color",
+        "$description": "Intent:      Text on dark surfaces where the default dark text would be invisible\nUse when:    Text on color/background/inverted, dark banners, dark tooltips\nDo not use:  Text on any light or white surface\nUse instead: color/background/default/foreground on light surfaces\nStatus:      active"
+      },
+      "link": {
+        "$value": "{color.blue.500}",
+        "$type": "color",
+        "$description": "Intent:      Inline text link color on light surfaces\nUse when:    Hyperlinks in body copy, navigation links, breadcrumbs\nDo not use:  Buttons — links are inline text, buttons are interactive containers\nUse instead: color/brand/primary for button fills, color/text/link-hover for the hovered state\nStatus:      active"
+      },
+      "link-hover": {
+        "$value": "{color.blue.600}",
+        "$type": "color",
+        "$description": "Intent:      Inline text link color on hover\nUse when:    The :hover state of color/text/link — always used as a pair, never standalone\nDo not use:  Default/resting link state — contrast is slightly higher than needed at rest\nUse instead: color/text/link for the resting state\nStatus:      active"
+      },
+      "link-active": {
+        "$value": "{color.blue.700}",
+        "$type": "color",
+        "$description": "Intent:      Inline text link color on hover\nUse when:    The :hover state of color/text/link — always used as a pair, never standalone\nDo not use:  Default/resting link state — contrast is slightly higher than needed at rest\nUse instead: color/text/link for the resting state\nStatus:      active"
+      },
+      "invalid": {
+        "$value": "{color.red.500}",
+        "$type": "color",
+        "$description": "Error/invalid text on default backgrounds. Use for form field labels, descriptions, and alert text in invalid or destructive states. NOT the same as status/danger-subtle/foreground (which requires a danger-subtle background)."
+      },
+      "success": {
+        "$value": "{color.green.700}",
+        "$type": "color"
+      }
+    },
+    "border": {
+      "default": {
+        "$value": "{color.zinc.200}",
+        "$type": "color",
+        "$description": "Intent:      Standard border for input fields, radio buttons, and component frames\nUse when:    Input borders at rest, checkbox outlines, card borders, component frame dividers\nDo not use:  Focus states, hover states, or error states — use the dedicated state tokens\nUse instead: color/border/hover on hover, color/border/focus on focus, color/border/error on error\nStatus:      active"
+      },
+      "subtle": {
+        "$value": "{color.zinc.100}",
+        "$type": "color",
+        "$description": "Intent:      Low-contrast border for structural, non-interactive elements\nUse when:    Internal card dividers, hairline row separators, layout structure on white bg\nDo not use:  Input fields, interactive components, or any element requiring clear boundary definition\nUse instead: color/border/default for input and component borders\nStatus:      active"
+      },
+      "strong": {
+        "$value": "{color.zinc.400}",
+        "$type": "color",
+        "$description": "Intent:      High-emphasis border for selected or active states\nUse when:    Selected option chips, active tabs, emphasized separators, drag handles\nDo not use:  Default resting borders or focus rings\nUse instead: color/border/default for standard borders, color/border/focus for focus\nStatus:      active"
+      },
+      "focus": {
+        "$value": "{color.ring}",
+        "$type": "color",
+        "$description": "Intent:      High-contrast focus ring for keyboard navigation and accessibility\nUse when:    :focus-visible on buttons, inputs, links, and any interactive element\nDo not use:  Decorative borders, hover states, or error indication\nUse instead: color/border/error for validation errors, color/border/strong for emphasis\nStatus:      active"
+      },
+      "hover": {
+        "$value": "{color.zinc.300}",
+        "$type": "color",
+        "$description": "Intent:      Slightly more prominent border when a user hovers an interactive element\nUse when:    Input border on :hover, selectable card on :hover, interactive list item on :hover\nDo not use:  Resting state or focus state\nUse instead: color/border/default for resting state, color/border/focus for keyboard focus\nStatus:      active"
+      },
+      "disabled": {
+        "$value": "{color.zinc.100}",
+        "$type": "color",
+        "$description": "Intent:      Low-contrast border indicating an interaction is unavailable\nUse when:    Disabled input fields, disabled checkboxes, disabled select elements\nDo not use:  Any interactive or enabled element\nUse instead: color/border/default for the enabled equivalent\nDark mode:   zinc/700 — one step up from the disabled fill so the border stays distinguishable\nStatus:      active"
+      },
+      "error": {
+        "$value": "{color.red.500}",
+        "$type": "color",
+        "$description": "Intent:      Strong border to highlight form validation errors\nUse when:    Input border in invalid/error state, failed form fields, required field alerts\nDo not use:  Warning states — error signals failure, warning signals caution\nUse instead: color/border/warning for cautionary non-failure states\nStatus:      active"
+      },
+      "success": {
+        "$value": "{color.green.700}",
+        "$type": "color",
+        "$description": "Intent:      Border indicating a successful or valid state\nUse when:    Input border after successful validation, confirmed selection borders\nDo not use:  Neutral or warning states\nUse instead: color/border/error for failed validation, color/border/warning for caution\nStatus:      active"
+      },
+      "warning": {
+        "$value": "{color.yellow.700}",
+        "$type": "color",
+        "$description": "Intent:      Border indicating a cautionary or attention-required state\nUse when:    Input border with a non-critical warning, fields approaching a limit\nDo not use:  Actual errors or failed validation — warning is not failure\nUse instead: color/border/error for validation failures\nStatus:      active"
+      }
+    },
+    "brand": {
+      "primary": {
+        "$value": "{color.blue.500}",
+        "$type": "color",
+        "$description": "Intent:      The main brand fill color for primary interactive elements\nUse when:    Primary button fill, active toggle fill, selected chip fill, key CTAs\nDo not use:  Text color on light backgrounds — use color/text/link for inline brand-colored text\nUse instead: color/text/link for inline links, color/brand/secondary for lower-emphasis brand surfaces\nForeground:  color/brand/primary/foreground\nStatus:      active",
+        "foreground": {
+          "$value": "{color.white}",
+          "$type": "color",
+          "$description": "Intent:      Text and icon color placed directly on a color/brand/primary fill\nUse when:    Label inside a primary button, icon inside a filled brand badge\nDo not use:  On any surface other than color/brand/primary — white on white is invisible\nUse instead: color/background/default/foreground for text on neutral surfaces\nStatus:      active"
+        }
+      },
+      "primary-hover": {
+        "$value": "{color.blue.600}",
+        "$type": "color",
+        "$description": "Intent:      Darker brand fill for the hover state of a primary element\nUse when:    Primary button :hover fill — always paired with color/brand/primary, never used standalone\nDo not use:  Resting state or active/pressed state\nUse instead: color/brand/primary for resting, color/brand/primary-active for pressed\nStatus:      active"
+      },
+      "primary-active": {
+        "$value": "{color.blue.700}",
+        "$type": "color",
+        "$description": "Intent:      Darkest brand fill for the pressed/active state of a primary element\nUse when:    Primary button :active fill — the moment of click or tap\nDo not use:  Hover or resting states\nUse instead: color/brand/primary-hover for hover, color/brand/primary for resting\nStatus:      active"
+      },
+      "secondary": {
+        "$value": "{color.blue.100}",
+        "$type": "color",
+        "$description": "Intent:      Light brand-tinted surface for lower-emphasis brand presence\nUse when:    Secondary button fill, selected row highlight, brand-tinted badge background, active nav item background\nDo not use:  High-emphasis CTAs — too light to read as a primary action\nUse instead: color/brand/primary for high-emphasis filled actions\nForeground:  color/brand/secondary/foreground\nStatus:      active",
+        "foreground": {
+          "$value": "{color.blue.700}",
+          "$type": "color",
+          "$description": "Intent:      Text and icon color on a color/brand/secondary fill\nUse when:    Label inside a secondary brand button, text inside a brand-tinted badge\nDo not use:  On white or neutral surfaces — too dark-blue for general body text\nUse instead: color/text/link for inline brand-colored text on neutral backgrounds\nStatus:      active"
+        }
+      },
+      "destructive": {
+        "$value": "{color.red.500}",
+        "$type": "color",
+        "$description": "Intent: Fill color for destructive CTA elements — buttons that delete, remove, or permanently alter data.\nUse when: Delete buttons, Remove confirmations, destructive dialog primary actions. Maps to shadcn --destructive.\nDo not use: For status indicators, error messages, or form validation — use color/status/danger for those.\nUse instead: color/status/danger for inline error states and validation feedback.\nForeground: color/brand/destructive/foreground\nStatus: Stable",
+        "foreground": {
+          "$value": "{color.white}",
+          "$type": "color",
+          "$description": "Intent: Text and icon color on top of color/brand/destructive fill.\nUse when: Labels and icons inside destructive buttons and confirmation CTAs. Maps to shadcn --destructive-foreground.\nDo not use: On any surface other than color/brand/destructive.\nUse instead: color/status/danger/foreground for text on danger status backgrounds.\nStatus: Stable"
+        }
+      },
+      "secondary-hover": {
+        "$value": "{color.blue.200}",
+        "$type": "color",
+        "$description": "Intent:      Light brand-tinted surface for lower-emphasis brand presence\nUse when:    Secondary button fill, selected row highlight, brand-tinted badge background, active nav item background\nDo not use:  High-emphasis CTAs — too light to read as a primary action\nUse instead: color/brand/primary for high-emphasis filled actions\nForeground:  color/brand/secondary/foreground\nStatus:      active"
+      },
+      "secondary-active": {
+        "$value": "{color.blue.300}",
+        "$type": "color",
+        "$description": "Intent:      Light brand-tinted surface for lower-emphasis brand presence\nUse when:    Secondary button fill, selected row highlight, brand-tinted badge background, active nav item background\nDo not use:  High-emphasis CTAs — too light to read as a primary action\nUse instead: color/brand/primary for high-emphasis filled actions\nForeground:  color/brand/secondary/foreground\nStatus:      active"
+      },
+      "destructive-hover": {
+        "$value": "{color.red.600}",
+        "$type": "color",
+        "$description": "Destructive button background on hover. Aliases color/red/600."
+      },
+      "destructive-active": {
+        "$value": "{color.red.700}",
+        "$type": "color",
+        "$description": "Destructive button background on active/pressed. Aliases color/red/700."
+      }
+    },
+    "surface": {
+      "default": {
+        "$value": "{color.white}",
+        "$type": "color",
+        "$description": "Intent:      Background for cards and flat inline content containers\nUse when:    Card backgrounds, list item backgrounds, form section backgrounds, any container sitting on top of the page canvas\nDo not use:  The page canvas itself — use color/background/default for the page\n             Floating or elevated UI — use color/surface/overlay for dropdowns and modals\nUse instead: color/background/default for the page, color/surface/overlay for floating UI\nForeground:  color/surface/default/foreground\nStatus:      active",
+        "foreground": {
+          "$value": "{color.zinc.900}",
+          "$type": "color",
+          "$description": "Intent:      Text and icon color inside a color/surface/default container\nUse when:    Text and icons inside cards, list items, and flat content containers\nDo not use:  Text directly on the page canvas — use color/background/default/foreground\nUse instead: color/text/secondary for subdued text inside surface containers\nStatus:      active"
+        }
+      },
+      "raised": {
+        "$value": "{color.zinc.50}",
+        "$type": "color",
+        "$description": "Intent:      Slightly elevated surface for elements that sit above the page but below overlays\nUse when:    Navigation bars, sticky headers, section headers, sidebar backgrounds, inline panels that feel lifted without floating\nDo not use:  Cards on a white page — the tint provides no contrast against white canvas\n             Modals, dropdowns, or tooltips — use color/surface/overlay for floating UI\nUse instead: color/surface/default for cards, color/surface/overlay for floating elements\nForeground:  color/surface/raised/foreground\nStatus:      active",
+        "foreground": {
+          "$value": "{color.zinc.900}",
+          "$type": "color",
+          "$description": "Intent:      Text and icon color on a color/surface/raised background\nUse when:    Nav labels, sidebar text, sticky header text on the raised surface\nDo not use:  Text on the page canvas or inside floating overlays\nUse instead: color/surface/overlay/foreground for text inside dropdowns and modals\nStatus:      active"
+        }
+      },
+      "overlay": {
+        "$value": "{color.white}",
+        "$type": "color",
+        "$description": "Intent:      Background for floating UI elements that layer above page content\nUse when:    Dropdowns, tooltips, popovers, modals, command palettes, context menus\nDo not use:  Cards or flat inline content — use color/surface/default for non-floating containers\nUse instead: color/surface/default for flat containers, color/surface/raised for sticky bars\nForeground:  color/surface/overlay/foreground\nNote:        Resolves to the same primitive as color/surface/default in light mode. The distinction matters for dark mode — overlays get a lighter surface than the page.\nStatus:      active",
+        "foreground": {
+          "$value": "{color.zinc.900}",
+          "$type": "color",
+          "$description": "Intent:      Text and icon color inside floating overlay surfaces\nUse when:    Dropdown options, tooltip text, modal body text, popover content\nDo not use:  Text on flat cards or the page canvas\nUse instead: color/surface/default/foreground for text inside flat cards\nStatus:      active"
+        }
+      },
+      "accent": {
+        "$value": "{color.zinc.100}",
+        "$type": "color",
+        "foreground": {
+          "$value": "{color.zinc.900}",
+          "$type": "color"
+        }
+      },
+      "muted": {
+        "$value": "{color.zinc.100}",
+        "$type": "color",
+        "$description": "Muted component surface — avatar fallback, chips, subtle UI elements",
+        "foreground": {
+          "$value": "{color.zinc.500}",
+          "$type": "color",
+          "$description": "Foreground on muted surface — text and icons on color/surface/muted"
+        }
+      }
+    },
+    "status": {
+      "success": {
+        "$value": "{color.green.500}",
+        "$type": "color",
+        "$description": "Intent:      Filled success surface for high-emphasis positive feedback\nUse when:    Success badge fill, success toast fill, confirmed state indicator\nDo not use:  Success messages on a white page — use color/status/success-subtle for inline alerts\nUse instead: color/status/success-subtle for low-emphasis success backgrounds\nForeground:  color/status/success/foreground\nStatus:      active",
+        "foreground": {
+          "$value": "{color.zinc.900}",
+          "$type": "color",
+          "$description": "Intent:      Text and icon on a filled success surface\nUse when:    Label inside a filled success badge or toast\nDo not use:  Text on color/status/success-subtle — contrast fails on the light tint\nUse instead: color/status/success-subtle/foreground for text on the subtle tint\nStatus:      active"
+        }
+      },
+      "success-subtle": {
+        "$value": "{color.green.50}",
+        "$type": "color",
+        "$description": "Intent:      Light success tint for low-emphasis inline alerts and banners\nUse when:    Success alert banner background, valid input highlight, confirmation section bg\nDo not use:  Filled badges or toasts that need strong visual weight\nUse instead: color/status/success for high-emphasis filled surfaces\nForeground:  color/status/success-subtle/foreground\nStatus:      active",
+        "foreground": {
+          "$value": "{color.green.700}",
+          "$type": "color",
+          "$description": "Intent:      Text and icon on the success subtle tint\nUse when:    Message text and icons inside a success alert banner\nDo not use:  Text on the filled green surface — use color/status/success/foreground instead\nUse instead: color/status/success/foreground for text on filled success surfaces\nStatus:      active"
+        }
+      },
+      "warning": {
+        "$value": "{color.yellow.500}",
+        "$type": "color",
+        "$description": "Intent:      Filled warning surface for high-emphasis cautionary feedback\nUse when:    Warning badge fill, caution toast fill, approaching-limit indicator\nDo not use:  Error or failure states — warning signals caution, not failure\nUse instead: color/status/danger for errors, color/status/warning-subtle for inline alerts\nForeground:  color/status/warning/foreground\nStatus:      active",
+        "foreground": {
+          "$value": "{color.zinc.900}",
+          "$type": "color",
+          "$description": "Intent:      Text and icon on a filled warning surface\nUse when:    Label inside a filled warning badge or toast\nDo not use:  On any surface other than color/status/warning — dark text on light bg loses meaning\nNote:        Uses zinc/900 not white — yellow/500 does not pass WCAG contrast with white text\nUse instead: color/status/warning-subtle/foreground for text on the subtle tint\nStatus:      active"
+        }
+      },
+      "warning-subtle": {
+        "$value": "{color.yellow.50}",
+        "$type": "color",
+        "$description": "Intent:      Light warning tint for low-emphasis cautionary alerts and banners\nUse when:    Warning alert banner background, non-critical notice section bg\nDo not use:  Error states — cautionary tint is not strong enough to signal failure\nUse instead: color/status/danger-subtle for error banners, color/status/warning for filled badges\nForeground:  color/status/warning-subtle/foreground\nStatus:      active",
+        "foreground": {
+          "$value": "{color.yellow.700}",
+          "$type": "color",
+          "$description": "Intent:      Text and icon on the warning subtle tint\nUse when:    Message text and icons inside a warning alert banner\nDo not use:  Text on the filled yellow surface — use color/status/warning/foreground instead\nUse instead: color/status/warning/foreground for text on filled warning surfaces\nStatus:      active"
+        }
+      },
+      "danger": {
+        "$value": "{color.red.500}",
+        "$type": "color",
+        "$description": "Intent:      Filled danger surface for high-emphasis error or destructive feedback\nUse when:    Error badge fill, destructive action toast, delete confirmation indicator\nDo not use:  Cautionary or non-failure states — danger signals failure, not caution\nUse instead: color/status/warning for cautionary states, color/status/danger-subtle for inline alerts\nForeground:  color/status/danger/foreground\nStatus:      active",
+        "foreground": {
+          "$value": "{color.white}",
+          "$type": "color",
+          "$description": "Intent:      Text and icon on a filled danger surface\nUse when:    Label inside a filled error badge, icon inside a destructive toast\nDo not use:  Text on color/status/danger-subtle — contrast fails on the light tint\nUse instead: color/status/danger-subtle/foreground for text on the subtle tint\nStatus:      active"
+        }
+      },
+      "danger-subtle": {
+        "$value": "{color.red.50}",
+        "$type": "color",
+        "$description": "Intent:      Light danger tint for low-emphasis error alerts and invalid field highlights\nUse when:    Error alert banner background, invalid input field background, form error section\nDo not use:  Filled badges or toasts that need strong visual weight\nUse instead: color/status/danger for high-emphasis filled surfaces\nForeground:  color/status/danger-subtle/foreground\nStatus:      active",
+        "foreground": {
+          "$value": "{color.red.700}",
+          "$type": "color",
+          "$description": "Intent:      Text and icon on the danger subtle tint\nUse when:    Error message text and icons inside an alert banner or invalid input\nDo not use:  Text on the filled red surface — use color/status/danger/foreground instead\nUse instead: color/status/danger/foreground for text on filled danger surfaces\nStatus:      active"
+        }
+      },
+      "info": {
+        "$value": "{color.blue.500}",
+        "$type": "color",
+        "$description": "Intent:      Filled info surface for high-emphasis informational feedback\nUse when:    Info badge fill, informational toast fill, neutral announcement indicator\nDo not use:  Brand interactive elements — info is for communication, not action\nUse instead: color/brand/primary for interactive CTAs, color/status/info-subtle for inline notices\nForeground:  color/status/info/foreground\nStatus:      active",
+        "foreground": {
+          "$value": "{color.white}",
+          "$type": "color",
+          "$description": "Intent:      Text and icon on a filled info surface\nUse when:    Label inside a filled info badge or toast\nDo not use:  Text on color/status/info-subtle — contrast fails on the light tint\nUse instead: color/status/info-subtle/foreground for text on the subtle tint\nStatus:      active"
+        }
+      },
+      "info-subtle": {
+        "$value": "{color.blue.50}",
+        "$type": "color",
+        "$description": "Intent:      Light info tint for low-emphasis informational alerts and banners\nUse when:    Info alert banner background, announcement section bg, tip highlight\nDo not use:  Brand interactive elements or filled badges needing strong weight\nUse instead: color/status/info for high-emphasis filled surfaces\nForeground:  color/status/info-subtle/foreground\nStatus:      active",
+        "foreground": {
+          "$value": "{color.blue.700}",
+          "$type": "color",
+          "$description": "Intent:      Text and icon on the info subtle tint\nUse when:    Message text and icons inside an informational alert banner\nDo not use:  Text on the filled blue info surface — use color/status/info/foreground instead\nUse instead: color/status/info/foreground for text on filled info surfaces\nStatus:      active"
+        }
+      },
+      "offline": {
+        "$value": "{color.zinc.200}",
+        "$type": "color",
+        "foreground": {
+          "$value": "{color.zinc.900}",
+          "$type": "color"
+        }
+      }
+    },
+    "input": {
+      "border": {
+        "$value": "{color.zinc.300}",
+        "$type": "color",
+        "$description": "Intent:      Resting border color for input fields, select field, combobox field and form controls\nUse when:    Text input border, textarea border, select border, checkbox outline at rest\nDo not use:  Card or container borders — inputs use zinc/300, one step darker than card borders (zinc/200), to clearly define the field boundary\nUse instead: color/border/focus on :focus-visible, color/border/error on invalid, color/border/disabled on disabled\nStatus:      active"
+      },
+      "placeholder": {
+        "$value": "{color.zinc.500}",
+        "$type": "color",
+        "$description": "Intent: Text color for placeholder content inside input fields, select, combobox\nUse when: The placeholder attribute text in text inputs, textareas, and select fields before a value is entered.\nDo not use: For actual input value text — use color/background/default/foreground for typed content.\nUse instead: color/text/disabled if the entire input is disabled, not just empty.\nDark mode:   zinc/400 — lighter step needed since input/bg is zinc/700 in dark mode\nStatus:      active"
+      },
+      "bg": {
+        "$value": "{color.white}",
+        "$type": "color",
+        "$description": "Intent:      Background fill for all input-type controls (text input, textarea, combobox trigger, select trigger, date-picker trigger, OTP slot, chat input)\nUse when:    Any editable field container that the user types into or selects from\nDo not use:  Non-editable containers, cards, panels — use color/surface/* for those\nUse instead: color/surface/muted for the disabled state of the same input\nDark mode:   zinc/700 — one step lighter than color/surface/overlay (zinc/800) so inputs stand out from the panel they sit in\nStatus:      active"
+      }
+    },
+    "ring": {
+      "$value": "{color.blue.500}",
+      "$type": "color",
+      "$description": "Intent:      Outer focus ring halo applied to interactive elements on keyboard focus\nUse when:    box-shadow focus ring on buttons, inputs, links — the visible glow outside the element border\nDo not use:  As a border replacement — ring is additive, always layered on top of the element border\nNote:        shadcn core token (maps to --ring). Used alongside color/border/focus on inputs, and standalone on buttons and links that have no explicit border\nStatus:      active"
+    },
+    "icon": {
+      "default": {
+        "$value": "{color.background.default.foreground}",
+        "$type": "color",
+        "$description": "Intent:      Default color for standalone icons on light/white surfaces\nUse when:    Icons beside body text, nav icons, toolbar icons, any icon on a neutral background\nDo not use:  Icons inside filled buttons, badges, or colored containers\nUse instead: The container's /foreground token — e.g. color/brand/primary/foreground for an icon inside a filled blue button\nStatus:      active"
+      },
+      "muted": {
+        "$value": "{color.text.secondary}",
+        "$type": "color",
+        "$description": "Intent:      Subdued icon for secondary or decorative use\nUse when:    Supporting icons, placeholder hints, inactive nav items, decorative flourishes\nDo not use:  Icons that carry meaning or need high visibility\nUse instead: color/icon/default for primary icons\nStatus:      active"
+      },
+      "disabled": {
+        "$value": "{color.text.disabled}",
+        "$type": "color",
+        "$description": "Intent:      Icon color in disabled or unavailable states\nUse when:    Icons inside disabled buttons, inactive tabs, unavailable menu items\nDo not use:  Any interactive or active icon state\nUse instead: color/icon/default for the active equivalent\nStatus:      active"
+      },
+      "inverse": {
+        "$value": "{color.text.inverse}",
+        "$type": "color",
+        "$description": "Intent:      Icon color on dark or inverted surfaces\nUse when:    Icons on color/background/inverted, dark hero sections, dark nav bars\nDo not use:  Icons on any light surface — will be invisible against white\nUse instead: color/icon/default on light surfaces\nStatus:      active"
+      },
+      "brand": {
+        "$value": "{color.brand.primary}",
+        "$type": "color",
+        "$description": "Intent:      Brand-colored icon sitting on a neutral or white surface\nUse when:    Feature highlight icons, logo marks, icons that signal brand identity on light bg\nDo not use:  Icons inside a filled primary button or any filled brand container — blue icon on blue fill is invisible\nUse instead: color/brand/primary/foreground for icons inside filled brand containers\nStatus:      active"
+      },
+      "danger": {
+        "$value": "{color.status.danger}",
+        "$type": "color",
+        "$description": "Intent:      Danger or error icon on a light surface\nUse when:    Error icon beside a validation message, destructive action icon on white bg\nDo not use:  Icons inside a filled danger badge or filled danger button\nUse instead: color/status/danger/foreground for icons inside filled danger containers\nStatus:      active"
+      },
+      "success": {
+        "$value": "{color.green.700}",
+        "$type": "color",
+        "$description": "Intent:      Success or confirmation icon on a light surface\nUse when:    Checkmark beside a success message, completion icon on white bg\nDo not use:  Icons inside a filled success badge or toast\nUse instead: color/status/success/foreground for icons inside filled success containers\nStatus:      active"
+      },
+      "warning": {
+        "$value": "{color.yellow.700}",
+        "$type": "color",
+        "$description": "Intent:      Warning or caution icon on a light surface\nUse when:    Warning icon beside a non-critical alert message on white bg\nDo not use:  Icons inside a filled warning container\nUse instead: color/status/warning/foreground for icons inside filled warning containers\nStatus:      active"
+      }
+    },
+    "chart": {
+      "1": {
+        "$value": "#e76e50",
+        "$type": "color",
+        "$description": "Intent: First data series color in charts and data visualizations.\nUse when: The primary or first dataset in any chart (bar, line, pie). Maps to shadcn --chart-1.\nDo not use: For UI status or brand — chart colors are for data only.\nStatus: Stable"
+      },
+      "2": {
+        "$value": "#2a9d90",
+        "$type": "color",
+        "$description": "Intent: Second data series color in charts and data visualizations.\nUse when: The second dataset in a multi-series chart. Maps to shadcn --chart-2.\nDo not use: For UI status or brand — chart colors are for data only.\nStatus: Stable"
+      },
+      "3": {
+        "$value": "#274754",
+        "$type": "color",
+        "$description": "Intent: Third data series color in charts and data visualizations.\nUse when: The third dataset in a multi-series chart. Maps to shadcn --chart-3.\nDo not use: For UI status or brand — chart colors are for data only.\nStatus: Stable"
+      },
+      "4": {
+        "$value": "#e8c468",
+        "$type": "color",
+        "$description": "Intent: Fourth data series color in charts and data visualizations.\nUse when: The fourth dataset in a multi-series chart. Maps to shadcn --chart-4.\nDo not use: For UI status or brand — chart colors are for data only.\nStatus: Stable"
+      },
+      "5": {
+        "$value": "#f4a362",
+        "$type": "color",
+        "$description": "Intent: Fifth data series color in charts and data visualizations.\nUse when: The fifth dataset in a multi-series chart. Maps to shadcn --chart-5.\nDo not use: For UI status or brand — chart colors are for data only.\nStatus: Stable"
+      }
+    },
+    "sidebar": {
+      "background": {
+        "$value": "{color.zinc.50}",
+        "$type": "color",
+        "$description": "Intent: Background fill for the sidebar panel.\nUse when: Sidebar container background. Maps to shadcn --sidebar-background.\nDo not use: For page backgrounds — use color/background/default instead.\nStatus: Stable"
+      },
+      "foreground": {
+        "$value": "{color.zinc.700}",
+        "$type": "color",
+        "$description": "Intent: Default text and icon color inside the sidebar.\nUse when: Sidebar nav labels, section headings, icon color. Maps to shadcn --sidebar-foreground.\nDo not use: On non-sidebar surfaces.\nStatus: Stable"
+      },
+      "primary": {
+        "$value": "{color.zinc.900}",
+        "$type": "color",
+        "$description": "Intent: Fill for the active or primary nav item in the sidebar.\nUse when: Active sidebar nav item background. Maps to shadcn --sidebar-primary.\nDo not use: For brand CTAs — use color/brand/primary instead.\nStatus: Stable",
+        "foreground": {
+          "$value": "{color.white}",
+          "$type": "color",
+          "$description": "Intent: Text and icon color on top of color/sidebar/primary fill.\nUse when: Labels inside the active sidebar nav item. Maps to shadcn --sidebar-primary-foreground.\nDo not use: On any surface other than color/sidebar/primary.\nStatus: Stable"
+        }
+      },
+      "accent": {
+        "$value": "{color.zinc.100}",
+        "$type": "color",
+        "$description": "Intent: Hover background for inactive sidebar nav items.\nUse when: Hover state on sidebar nav rows. Maps to shadcn --sidebar-accent.\nDo not use: As a fill for active items — use color/sidebar/primary instead.\nStatus: Stable",
+        "foreground": {
+          "$value": "{color.zinc.900}",
+          "$type": "color",
+          "$description": "Intent: Text and icon color on top of color/sidebar/accent fill.\nUse when: Labels inside hovered sidebar nav items. Maps to shadcn --sidebar-accent-foreground.\nDo not use: On any surface other than color/sidebar/accent.\nStatus: Stable"
+        }
+      },
+      "border": {
+        "$value": "{color.zinc.200}",
+        "$type": "color",
+        "$description": "Intent: Divider and border color within the sidebar.\nUse when: Sidebar edge border, section dividers inside the sidebar. Maps to shadcn --sidebar-border.\nDo not use: For page-level borders — use color/border/default instead.\nStatus: Stable"
+      },
+      "ring": {
+        "$value": "{color.blue.500}",
+        "$type": "color",
+        "$description": "Intent: Focus ring color for keyboard-focused sidebar items.\nUse when: Focus outline on sidebar nav links and buttons. Maps to shadcn --sidebar-ring.\nDo not use: Outside the sidebar — use color/input/ring for global focus rings.\nStatus: Stable"
+      },
+      "active": {
+        "$value": "{color.sidebar.accent}",
+        "$type": "color",
+        "$description": "Intent: Hover background for inactive sidebar nav items.\nUse when: Hover state on sidebar nav rows. Maps to shadcn --sidebar-accent.\nDo not use: As a fill for active items — use color/sidebar/primary instead.\nStatus: Stable",
+        "foreground": {
+          "$value": "{color.sidebar.accent.foreground}",
+          "$type": "color",
+          "$description": "Intent: Text and icon color on top of color/sidebar/accent fill.\nUse when: Labels inside hovered sidebar nav items. Maps to shadcn --sidebar-accent-foreground.\nDo not use: On any surface other than color/sidebar/accent.\nStatus: Stable"
+        }
+      }
+    }
+  },
+  "spacing": {
+    "component": {
+      "xxs": {
+        "$value": "{spacing.0-5}",
+        "$type": "number",
+        "$description": "Intent:      Tightest internal spacing for compact component elements\nUse when:    Icon-to-label gap inside a badge or chip, gap between a checkbox and its label, padding inside a tag or small pill\nDo not use:  Padding inside buttons or cards — too tight for comfortable interaction targets\nUse instead: spacing/component/sm for button padding, spacing/component/md for card padding\nStatus:      active"
+      },
+      "sm": {
+        "$value": "{spacing.2}",
+        "$type": "number",
+        "$description": "Intent:      Standard tight spacing for small component internals\nUse when:    Button vertical padding, input field vertical padding, icon button padding, gap between stacked labels inside a list item\nDo not use:  Layout gaps between components or sections\nUse instead: spacing/layout/xs for gaps between components\nStatus:      active"
+      },
+      "lg": {
+        "$value": "{spacing.4}",
+        "$type": "number",
+        "$description": "Intent:      Default internal padding for most components\nUse when:    Card padding, modal padding, input horizontal padding, dropdown item padding, the go-to internal spacing when unsure\nDo not use:  Gaps between layout sections — use spacing/layout/* for structural spacing\nUse instead: spacing/component/sm for tight components, spacing/component/lg for spacious ones\nStatus:      active"
+      },
+      "xl": {
+        "$value": "{spacing.6}",
+        "$type": "number",
+        "$description": "Intent:      Generous internal padding for large or prominent components\nUse when:    Large card padding, hero section inner padding, empty state padding, dialog/modal body padding\nDo not use:  Small components like buttons or chips — too much breathing room\nUse instead: spacing/component/md for standard components\nStatus:      active"
+      },
+      "2xl": {
+        "$value": "{spacing.8}",
+        "$type": "number",
+        "$description": "Intent:      Maximum internal spacing for very large containers\nUse when:    Full-page panel padding, wide modal padding, feature card inner padding\nDo not use:  Regular components — reserve for large-format containers only\nUse instead: spacing/component/lg for standard large components\nStatus:      active"
+      },
+      "md": {
+        "$value": "{spacing.3}",
+        "$type": "number"
+      },
+      "xs": {
+        "$value": "{spacing.1}",
+        "$type": "number",
+        "$description": "Intent:      Tightest internal spacing for compact component elements\nUse when:    Icon-to-label gap inside a badge or chip, gap between a checkbox and its label, padding inside a tag or small pill\nDo not use:  Padding inside buttons or cards — too tight for comfortable interaction targets\nUse instead: spacing/component/sm for button padding, spacing/component/md for card padding\nStatus:      active"
+      },
+      "xs-plus": {
+        "$value": "{spacing.1-5}",
+        "$type": "number"
+      }
+    },
+    "layout": {
+      "xs": {
+        "$value": "{spacing.4}",
+        "$type": "number",
+        "$description": "Intent:      Minimum gap between adjacent components in a layout\nUse when:    Gap between a label and an input, gap between inline buttons, tight grid gutters in a dense UI\nDo not use:  Internal component padding — use spacing/component/* for inside components\nUse instead: spacing/layout/sm for standard component gaps\nStatus:      active"
+      },
+      "sm": {
+        "$value": "{spacing.6}",
+        "$type": "number",
+        "$description": "Intent:      Standard gap between components and groups\nUse when:    Gap between form fields, gap between cards in a grid, gap between nav items, space between a heading and its content block\nDo not use:  Internal component padding or full section spacing\nUse instead: spacing/layout/xs for tighter groups, spacing/layout/md for looser groups\nStatus:      active"
+      },
+      "md": {
+        "$value": "{spacing.8}",
+        "$type": "number",
+        "$description": "Intent:      Default spacing between distinct content groups\nUse when:    Gap between form sections, space between a page title and its content, vertical rhythm between content blocks on a page\nDo not use:  Internal component padding or micro-spacing within a component\nUse instead: spacing/layout/sm for tighter groups, spacing/layout/lg for major sections\nStatus:      active"
+      },
+      "lg": {
+        "$value": "{spacing.12}",
+        "$type": "number",
+        "$description": "Intent:      Major section spacing for clear visual breaks between page areas\nUse when:    Vertical gap between page sections, top padding of a content section, space between a hero and the next content block\nDo not use:  Component-level spacing — this scale is for page structure only\nUse instead: spacing/layout/md for content group gaps, spacing/layout/xl for hero-level spacing\nStatus:      active"
+      },
+      "xl": {
+        "$value": "{spacing.16}",
+        "$type": "number",
+        "$description": "Intent:      Maximum section spacing for the largest structural breaks\nUse when:    Hero section vertical padding, top-of-page breathing room, space between major landmark sections (hero → features → pricing)\nDo not use:  Anything inside or between regular components\nUse instead: spacing/layout/lg for standard section gaps\nStatus:      active"
+      }
+    }
+  },
+  "radius": {
+    "none": {
+      "$value": 0,
+      "$type": "number"
+    },
+    "sm": {
+      "$value": 4,
+      "$type": "number"
+    },
+    "md": {
+      "$value": 6,
+      "$type": "number"
+    },
+    "base": {
+      "$value": 8,
+      "$type": "number"
+    },
+    "lg": {
+      "$value": 8,
+      "$type": "number"
+    },
+    "xl": {
+      "$value": 12,
+      "$type": "number"
+    },
+    "2xl": {
+      "$value": 14,
+      "$type": "number"
+    },
+    "3xl": {
+      "$value": 18,
+      "$type": "number"
+    },
+    "4xl": {
+      "$value": 21,
+      "$type": "number"
+    },
+    "full": {
+      "$value": 9999,
+      "$type": "number"
+    }
+  },
+  "font-size": {
+    "xs": {
+      "$value": 12,
+      "$type": "number",
+      "$description": "Intent: Smallest readable text size; used for supplementary information.\nUse when: Captions, timestamps, helper text below inputs, legal footnotes, badge labels.\nDo not use: For body copy or any text that requires sustained reading — too small for comfort.\nUse instead: font-size/sm for secondary body text.\nStatus: Stable"
+    },
+    "sm": {
+      "$value": 14,
+      "$type": "number",
+      "$description": "Intent: Secondary text size; slightly smaller than body.\nUse when: Supporting copy, table cell content, sidebar labels, secondary descriptions, input helper text.\nDo not use: For primary headings or hero content.\nStatus: Stable"
+    },
+    "base": {
+      "$value": 16,
+      "$type": "number",
+      "$description": "Intent: Default body text size — the readable baseline for the system.\nUse when: Main body copy, paragraph text, form labels, default UI text.\nDo not use: For headings — use font-size/lg and above.\nStatus: Stable"
+    },
+    "lg": {
+      "$value": 18,
+      "$type": "number",
+      "$description": "Intent: Slightly emphasised text; between body and heading.\nUse when: Subheadings, lead paragraphs, card titles on smaller cards, section intros.\nDo not use: For primary page headings — use font-size/xl or above.\nStatus: Stable"
+    },
+    "xl": {
+      "$value": 20,
+      "$type": "number",
+      "$description": "Intent: Small heading size.\nUse when: Panel headers, dialog titles, section headings in sidebars or compact layouts.\nDo not use: For body text — will feel too large and reduce density.\nStatus: Stable"
+    },
+    "2xl": {
+      "$value": 24,
+      "$type": "number",
+      "$description": "Intent: Medium heading size.\nUse when: Card group headings, page section titles, modal headers.\nDo not use: For body or supporting text.\nStatus: Stable"
+    },
+    "3xl": {
+      "$value": 30,
+      "$type": "number",
+      "$description": "Intent: Large heading; primary content section titles.\nUse when: Page-level h2 headings, feature section titles, prominent labels.\nDo not use: Below 600px viewport — scale down to font-size/2xl on mobile.\nStatus: Stable"
+    },
+    "4xl": {
+      "$value": 36,
+      "$type": "number",
+      "$description": "Intent: Major display heading.\nUse when: Page h1 titles, onboarding screen headings, large dashboard figures.\nDo not use: For anything other than the primary heading on a view.\nStatus: Stable"
+    },
+    "5xl": {
+      "$value": 48,
+      "$type": "number",
+      "$description": "Intent: Hero display text; the largest regular text size.\nUse when: Marketing hero headings, splash screens, empty state primary messages.\nDo not use: In dense product UI or data-heavy screens — too dominant for functional layouts.\nUse instead: font-size/4xl for product UI headings.\nStatus: Stable"
+    },
+    "6xl": {
+      "$value": 60,
+      "$type": "number"
+    },
+    "7xl": {
+      "$value": 72,
+      "$type": "number"
+    },
+    "8xl": {
+      "$value": 96,
+      "$type": "number",
+      "$description": "Intent: Oversized display text for maximum visual impact.\nUse when: Large hero numbers (pricing, statistics), splash screen numerals, bold marketing headlines where 7xl is not dominant enough.\nDo not use: In product UI or anywhere text needs to coexist with other content — this size dominates everything around it.\nUse instead: font-size/7xl or font-size/6xl for standard hero headings.\nStatus: Stable"
+    },
+    "9xl": {
+      "$value": 128,
+      "$type": "number",
+      "$description": "Intent: Maximum display size; purely decorative or typographic statement.\nUse when: Full-screen typographic art direction, giant background numerals, editorial splash layouts where the number or letter itself is the visual.\nDo not use: Anywhere legibility of surrounding content matters — at 128px a single word fills a viewport.\nUse instead: font-size/8xl for large but still functional display text.\nStatus: Stable"
+    }
+  },
+  "font-weight": {
+    "thin": {
+      "$value": 100,
+      "$type": "number",
+      "$description": "Intent: Hairline weight; purely decorative at large display sizes.\nUse when: Giant typographic backdrops, display numerals where the lightness itself is the aesthetic.\nDo not use: In product UI at any functional size — illegible below 32px on most screens.\nUse instead: font-weight/light for the lightest usable UI weight.\nStatus: Stable"
+    },
+    "extralight": {
+      "$value": 200,
+      "$type": "number",
+      "$description": "Intent: Very light weight; editorial and display use only.\nUse when: Large marketing headlines where an airy, refined feel is intentional.\nDo not use: In product UI — too light for legible labels or body text.\nUse instead: font-weight/light at minimum for UI contexts.\nStatus: Stable"
+    },
+    "light": {
+      "$value": 300,
+      "$type": "number",
+      "$description": "Intent: Below-normal weight for large display text in marketing contexts.\nUse when: Hero headings at font-size/4xl or above where the regular weight feels visually heavy — common in Apple-style or editorial layouts.\nDo not use: In product UI at any size below 24px — 300 at small sizes is hard to read, especially on non-retina screens. Neither shadcn nor Ant Design uses light weight in product components.\nUse instead: font-weight/normal for all product UI text.\nStatus: Stable"
+    },
+    "normal": {
+      "$value": 400,
+      "$type": "number",
+      "$description": "Intent: Default reading weight for all body and descriptive text.\nUse when: Paragraphs, descriptions, helper text, secondary labels, captions, table cell content. Ant Design uses 400 for all body/description text; shadcn uses it for CardDescription, DialogDescription, p elements.\nDo not use: For interactive controls (buttons, tabs, nav links) or headings — those need 500 or 600 to register hierarchy.\nUse instead: font-weight/medium for labels and controls.\nStatus: Stable"
+    },
+    "medium": {
+      "$value": 500,
+      "$type": "number",
+      "$description": "Intent: Slightly emphasised weight for interactive controls and UI labels.\nUse when: Navigation links, form labels, tab labels, table column headers, secondary buttons, badge text. Ant Design uses 500 for emphasized interactive text; shadcn uses it for Label, nav items, TableHead.\nDo not use: For headings — too close to body weight to signal a clear hierarchy jump.\nUse instead: font-weight/semibold for titles and headings.\nStatus: Stable"
+    },
+    "semibold": {
+      "$value": 600,
+      "$type": "number",
+      "$description": "Intent: Primary heading weight and strong emphasis for UI titles.\nUse when: All component headings — card titles, dialog titles, section titles, sidebar headers, alert titles. Ant Design's fontWeightStrong token is 600; shadcn uses 600 for CardTitle, DialogTitle, AlertTitle, h1–h4.\nDo not use: For body copy — creates visual noise when overused at paragraph level.\nStatus: Stable"
+    },
+    "bold": {
+      "$value": 700,
+      "$type": "number",
+      "$description": "Intent: Maximum typographic emphasis; use sparingly.\nUse when: Critical callouts, marketing hero text where extra impact is needed beyond semibold, numerical figures in dashboards that need immediate attention (revenue totals, error counts).\nDo not use: Routinely in product UI — Ant Design almost never recommends 700; shadcn rarely uses it. Bold loses hierarchy value when overused.\nUse instead: font-weight/semibold for all standard headings and emphasis.\nStatus: Stable"
+    },
+    "extrabold": {
+      "$value": 800,
+      "$type": "number",
+      "$description": "Intent: Very heavy weight for extreme emphasis; rarely needed in UI.\nUse when: Display numerals on marketing pages, typographic art direction where maximum weight contrast is the design intent.\nDo not use: In product UI — heavier than bold without meaningful visual benefit at normal sizes.\nUse instead: font-weight/bold for the heaviest practical UI weight.\nStatus: Stable"
+    },
+    "black": {
+      "$value": 900,
+      "$type": "number",
+      "$description": "Intent: Maximum weight; typographic statement only.\nUse when: Giant numerals, poster-style marketing layouts, logotype treatments where the weight itself is the visual element.\nDo not use: In any functional UI context — illegibly heavy at body sizes, and unnecessarily dominant at heading sizes.\nUse instead: font-weight/bold or font-weight/extrabold for strong emphasis.\nStatus: Stable"
+    }
+  },
+  "line-height": {
+    "none": {
+      "$value": 100,
+      "$type": "number",
+      "$description": "CSS reference value: 1 (unitless) = leading-none in Tailwind.\nFor Figma use: do not bind to text styles — use direct px values on each text style instead (single ratio cannot resolve to a correct px value across multiple font sizes).\nUse when (CSS/export only): Single-line UI elements — buttons, badges, nav labels.\nDo not use: Multi-line text — lines will collide.\nStatus: Stable"
+    },
+    "tight": {
+      "$value": 125,
+      "$type": "number",
+      "$description": "CSS reference value: 1.25 (unitless) = leading-tight in Tailwind.\nFor Figma use: do not bind to text styles — use direct px values on each text style instead.\nUse when (CSS/export only): Display headings, hero titles, large typographic elements.\nDo not use: Body copy at small sizes — strains readability.\nStatus: Stable"
+    },
+    "snug": {
+      "$value": 137.5,
+      "$type": "number",
+      "$description": "CSS reference value: 1.375 (unitless) = leading-snug in Tailwind.\nFor Figma use: do not bind to text styles — use direct px values on each text style instead.\nUse when (CSS/export only): h2–h4 subheadings, card titles, compact multi-line headings.\nDo not use: Long-form paragraph text.\nStatus: Stable"
+    },
+    "normal": {
+      "$value": 150,
+      "$type": "number",
+      "$description": "CSS reference value: 1.5 (unitless) = leading-normal in Tailwind.\nFor Figma use: do not bind to text styles — use direct px values on each text style instead.\nUse when (CSS/export only): Paragraphs, descriptions, form helper text, any sustained reading.\nDo not use: Headings — will feel too loose.\nStatus: Stable"
+    },
+    "relaxed": {
+      "$value": 162.5,
+      "$type": "number",
+      "$description": "CSS reference value: 1.625 (unitless) = leading-relaxed in Tailwind.\nFor Figma use: do not bind to text styles — use direct px values on each text style instead.\nUse when (CSS/export only): Long-form articles, documentation, editorial content.\nDo not use: Dense product UI — wastes vertical space.\nStatus: Stable"
+    },
+    "loose": {
+      "$value": 200,
+      "$type": "number",
+      "$description": "CSS reference value: 2 (unitless) = leading-loose in Tailwind.\nFor Figma use: do not bind to text styles — use direct px values on each text style instead.\nUse when (CSS/export only): Poetry, pull quotes, highly stylised marketing layouts.\nDo not use: Product UI or data-heavy screens.\nStatus: Stable"
+    }
+  },
+  "letter-spacing": {
+    "tighter": {
+      "$value": -2.5,
+      "$type": "number",
+      "$description": "Intent: Tightened tracking for large display text.\nUse when: Hero headings and large display type (font-size/4xl and above) where default tracking looks too loose.\nDo not use: At small font sizes — negative tracking causes letters to collide.\nUse instead: letter-spacing/normal for body and UI text.\nStatus: Stable"
+    },
+    "tight": {
+      "$value": -1.5,
+      "$type": "number",
+      "$description": "Intent: Slightly reduced tracking for headings.\nUse when: font-size/2xl to font-size/3xl headings where a more refined, condensed look is needed.\nDo not use: At font-size/base or smaller.\nStatus: Stable"
+    },
+    "normal": {
+      "$value": 0,
+      "$type": "number",
+      "$description": "Intent: Default tracking; the browser and Figma default.\nUse when: All body copy, UI labels, buttons, form elements — the safe default for everything.\nDo not use: For very large display text — may feel too loose at large sizes.\nUse instead: letter-spacing/tight or letter-spacing/tighter for large headings.\nStatus: Stable"
+    },
+    "wide": {
+      "$value": 2.5,
+      "$type": "number",
+      "$description": "Intent: Increased tracking for emphasis or legibility in specific contexts.\nUse when: Uppercase labels, small caps, overline text, metadata tags, ALL CAPS UI elements.\nDo not use: For normal mixed-case body text — wide tracking on lowercase copy looks spaced-out and hard to read.\nStatus: Stable"
+    },
+    "wider": {
+      "$value": 5,
+      "$type": "number"
+    },
+    "widest": {
+      "$value": 10,
+      "$type": "number"
+    }
+  },
+  "font-family": {
+    "sans": {
+      "$value": "Inter",
+      "$type": "string",
+      "$description": "Intent: Primary UI typeface for all interface text.\nUse when: Body copy, labels, buttons, inputs, headings — everything that is not code or editorial serif.\nDo not use: For code blocks or monospace content.\nUse instead: font-family/mono for code; font-family/serif for editorial contexts.\nStatus: Stable"
+    },
+    "mono": {
+      "$value": "Roboto Mono",
+      "$type": "string",
+      "$description": "Intent: Monospace typeface for code and technical content.\nUse when: Code blocks, inline code snippets, terminal output, token or variable names displayed in UI.\nDo not use: For general UI text — monospace has wider character width and will feel visually heavy.\nUse instead: font-family/sans for all non-code text.\nStatus: Stable"
+    },
+    "serif": {
+      "$value": "Georgia",
+      "$type": "string",
+      "$description": "Intent: Serif typeface for editorial or long-form reading contexts.\nUse when: Marketing pages, blog posts, article bodies, pull quotes where a traditional editorial tone is intentional.\nDo not use: In product UI — serif reads as editorial, not functional.\nUse instead: font-family/sans for all product UI text.\nStatus: Stable"
+    }
+  },
+  "shadow": {
+    "none": {
+      "$value": "none",
+      "$type": "string",
+      "$description": "Intent: Explicitly removes any shadow from an element.\nUse when: Resetting shadow on a component that inherits one, flat UI surfaces that must have zero elevation.\nDo not use: As the default — omitting a shadow and explicitly setting none are different in CSS cascade terms.\nStatus: Stable"
+    },
+    "sm": {
+      "$value": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+      "$type": "string",
+      "$description": "Intent: Hairline shadow for subtle lift on small elements.\nUse when: Buttons, input fields, small cards, tags — elements that need the slightest separation from the background without looking elevated.\nDo not use: For floating UI like dropdowns or modals — too subtle to communicate elevation.\nUse instead: shadow/default or shadow/md for floating elements.\nStatus: Stable"
+    },
+    "default": {
+      "$value": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+      "$type": "string",
+      "$description": "Intent: Standard shadow for cards and low-elevation surfaces.\nUse when: Content cards, list containers, standard panels — elements that sit above the page background but are not floating.\nDo not use: For interactive popups or modals — use shadow/md or above for floating UI.\nStatus: Stable"
+    },
+    "md": {
+      "$value": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+      "$type": "string",
+      "$description": "Intent: Medium elevation for floating UI elements.\nUse when: Dropdown menus, select popups, date pickers, context menus — elements that float above page content.\nDo not use: For inline cards or non-floating surfaces — shadow/default is sufficient there.\nStatus: Stable"
+    },
+    "lg": {
+      "$value": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+      "$type": "string",
+      "$description": "Intent: High elevation for prominent floating containers.\nUse when: Popovers, tooltips, command palettes, floating action panels.\nDo not use: For modals — use shadow/xl or shadow/2xl for full-screen overlays.\nStatus: Stable"
+    },
+    "xl": {
+      "$value": "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+      "$type": "string",
+      "$description": "Intent: Strong elevation for modal-level overlays.\nUse when: Dialog modals, sheet panels, drawer overlays — elements that take focus away from the page.\nDo not use: For inline elements or cards — disproportionate shadow for non-floating surfaces.\nStatus: Stable"
+    },
+    "2xl": {
+      "$value": "0 25px 50px -12px rgb(0 0 0 / 0.25)",
+      "$type": "string",
+      "$description": "Intent: Maximum elevation; deepest shadow in the scale.\nUse when: Full-screen modals, onboarding overlays, lightboxes — the topmost layer in a stacking context.\nDo not use: For anything below modal level — the opacity and spread are too heavy.\nUse instead: shadow/xl for standard dialogs.\nStatus: Stable"
+    },
+    "inner": {
+      "$value": "inset 0 2px 4px 0 rgb(0 0 0 / 0.05)",
+      "$type": "string",
+      "$description": "Intent: Inset shadow to signal a recessed or pressed surface.\nUse when: Input field backgrounds, pressed button states, search bars — surfaces that should feel sunken rather than raised.\nDo not use: On elevated or floating elements — inset shadow conflicts with the elevation metaphor.\nStatus: Stable"
+    }
+  },
+  "motion": {
+    "duration": {
+      "instant": {
+        "$value": 0,
+        "$type": "number",
+        "$description": "Intent: Zero-duration transition for changes that must feel immediate.\nUse when: Checkbox checks, toggle switches, radio selection — binary state changes where animation would feel laggy.\nDo not use: For any element that enters or exits the viewport — even instant feels jarring without a tiny transition.\nUse instead: motion/duration/fast for the smallest visible transition.\nStatus: Stable"
+      },
+      "fast": {
+        "$value": 100,
+        "$type": "number",
+        "$description": "Intent: Shortest visible transition for small, contained UI feedback.\nUse when: Button press feedback, hover state color changes, tooltip appearance on hover, badge updates.\nDo not use: For elements larger than ~100px or elements that move across the screen — too fast to track.\nUse instead: motion/duration/normal for dropdowns and popovers.\nStatus: Stable"
+      },
+      "normal": {
+        "$value": 200,
+        "$type": "number",
+        "$description": "Intent: Default transition duration for standard UI interactions.\nUse when: Dropdown menus appearing, tooltips, select popovers, accordion expand/collapse, tab switching.\nDo not use: For large elements that enter from off-screen — feels too abrupt for heavy motion.\nUse instead: motion/duration/slow for modals and drawers.\nStatus: Stable"
+      },
+      "slow": {
+        "$value": 300,
+        "$type": "number",
+        "$description": "Intent: Deliberate transition for larger elements entering or leaving the screen.\nUse when: Modal dialogs opening, side drawers sliding in, sheet panels, notification toasts entering.\nDo not use: For small inline feedback — 300ms on a button hover feels sluggish.\nUse instead: motion/duration/normal for small component transitions.\nStatus: Stable"
+      },
+      "slower": {
+        "$value": 500,
+        "$type": "number",
+        "$description": "Intent: Extended transition for page-level changes and intentional emphasis.\nUse when: Page-level route transitions, onboarding step animations, hero element reveals, progress completion celebrations.\nDo not use: For any repeated or frequent interaction — 500ms becomes frustrating on actions users trigger many times.\nUse instead: motion/duration/slow for standard modal and drawer transitions.\nStatus: Stable"
+      }
+    },
+    "easing": {
+      "standard": {
+        "$value": "cubic-bezier(0.2, 0, 0, 1)",
+        "$type": "string",
+        "$description": "Intent: Default easing for UI state changes that do not involve entering or exiting.\nUse when: Color transitions, size changes, opacity shifts on elements already present in the layout — anything that transforms in place.\nDo not use: For elements entering from off-screen — use motion/easing/enter. Do not use for elements being dismissed — use motion/easing/exit.\nStatus: Stable"
+      },
+      "enter": {
+        "$value": "cubic-bezier(0, 0, 0.2, 1)",
+        "$type": "string",
+        "$description": "Intent: Ease-out curve for elements entering the screen. Starts fast, decelerates to rest.\nUse when: Modals appearing, dropdowns opening, toasts sliding in, drawers entering — any element that arrives from outside the viewport or appears from nothing.\nDo not use: For elements being dismissed or leaving — use motion/easing/exit instead.\nUse instead: motion/easing/exit for the reverse (dismissal) animation.\nStatus: Stable"
+      },
+      "exit": {
+        "$value": "cubic-bezier(0.4, 0, 1, 1)",
+        "$type": "string",
+        "$description": "Intent: Ease-in curve for elements leaving the screen. Starts slow, accelerates out.\nUse when: Modals dismissing, dropdowns closing, toasts sliding out, drawers leaving — any element that exits the viewport or disappears.\nDo not use: For elements entering — use motion/easing/enter instead.\nUse instead: motion/easing/enter for the arrival animation of the same element.\nStatus: Stable"
+      },
+      "linear": {
+        "$value": "linear",
+        "$type": "string",
+        "$description": "Intent: Constant-speed animation with no acceleration or deceleration.\nUse when: Progress bars filling, loading indicators spinning, continuous loops, data-driven animations where the position must map exactly to a value.\nDo not use: For UI element transitions — linear motion feels mechanical and unnatural on interactive elements.\nUse instead: motion/easing/standard for UI state changes.\nStatus: Stable"
+      }
+    }
+  },
+  "opacity": {
+    "disabled": {
+      "$value": "{opacity.60}",
+      "$type": "number",
+      "$description": "Intent: Reduces visual prominence of disabled UI elements to signal non-interactivity.\nUse when: Any element in a disabled state — buttons, inputs, selects, checkboxes, form controls.\nDo not use: For loading states — use opacity/loading instead. Do not use for placeholder content.\nUse instead: opacity/loading for in-progress states, opacity/ghost for subtle but interactive elements.\nStatus: Stable"
+    },
+    "loading": {
+      "$value": "{opacity.50}",
+      "$type": "number",
+      "$description": "Intent: Signals that an element is in a loading or processing state.\nUse when: Skeleton loaders, buttons with loading spinners, content areas awaiting data.\nDo not use: For disabled elements — use opacity/disabled instead. Loading implies the element will become active; disabled implies it cannot be used.\nUse instead: opacity/disabled for permanently non-interactive elements.\nStatus: Stable"
+    },
+    "overlay": {
+      "$value": "{opacity.50}",
+      "$type": "number",
+      "$description": "Intent: Semi-transparent scrim behind modal dialogs, drawers, and full-screen overlays.\nUse when: The backdrop blanket behind a modal, dialog, or drawer — darkens the page to focus attention on the foreground layer.\nDo not use: On the modal content itself — only on the backdrop element behind it.\nStatus: Stable"
+    },
+    "ghost": {
+      "$value": "{opacity.80}",
+      "$type": "number",
+      "$description": "Intent: Slightly reduced opacity for ghost or subtle interactive elements that are still active.\nUse when: Ghost buttons in their default state, secondary actions that should recede visually, watermark-style decorative elements.\nDo not use: For disabled elements — ghost elements are still interactive. Use opacity/disabled for non-interactive states.\nStatus: Stable"
+    },
+    "active": {
+      "$value": "{opacity.80}",
+      "$type": "number",
+      "$description": "Intent: Slightly reduced opacity for ghost or subtle interactive elements that are still active.\nUse when: Ghost buttons in their default state, secondary actions that should recede visually, watermark-style decorative elements.\nDo not use: For disabled elements — ghost elements are still interactive. Use opacity/disabled for non-interactive states.\nStatus: Stable"
+    }
+  },
+  "z-index": {
+    "base": {
+      "$value": 0,
+      "$type": "number",
+      "$description": "Normal document flow"
+    },
+    "raised": {
+      "$value": 10,
+      "$type": "number",
+      "$description": "Sticky headers, floating action buttons"
+    },
+    "dropdown": {
+      "$value": 20,
+      "$type": "number",
+      "$description": "Dropdowns, select menus, popovers"
+    },
+    "sticky": {
+      "$value": 30,
+      "$type": "number",
+      "$description": "Sticky sidebars, persistent toolbars"
+    },
+    "overlay": {
+      "$value": 40,
+      "$type": "number",
+      "$description": "Modal backdrops, drawer scrims"
+    },
+    "modal": {
+      "$value": 50,
+      "$type": "number",
+      "$description": "Modals, dialogs, sheets"
+    },
+    "toast": {
+      "$value": 60,
+      "$type": "number",
+      "$description": "Sonner toasts — always above everything"
+    }
+  },
+  "breakpoint": {
+    "sm": {
+      "$value": 640,
+      "$type": "number",
+      "$description": "sm: — phones landscape, small tablets. Tailwind prefix: sm:"
+    },
+    "md": {
+      "$value": 768,
+      "$type": "number",
+      "$description": "md: — tablets. Tailwind prefix: md:"
+    },
+    "lg": {
+      "$value": 1024,
+      "$type": "number",
+      "$description": "lg: — laptops. Primary layout switch point (sidebar, nav). Tailwind prefix: lg:"
+    },
+    "xl": {
+      "$value": 1280,
+      "$type": "number",
+      "$description": "xl: — desktops. Tailwind prefix: xl:"
+    },
+    "2xl": {
+      "$value": 1536,
+      "$type": "number",
+      "$description": "2xl: — large screens. Tailwind prefix: 2xl:"
+    },
+    "frame": {
+      "mobile": {
+        "$value": 390,
+        "$type": "number",
+        "$description": "Figma artboard width for mobile designs (below sm:)"
+      },
+      "tablet": {
+        "$value": 768,
+        "$type": "number",
+        "$description": "Figma artboard width for tablet designs (md:)"
+      },
+      "laptop": {
+        "$value": 1024,
+        "$type": "number",
+        "$description": "Figma artboard width for laptop designs (lg:)"
+      },
+      "desktop": {
+        "$value": 1280,
+        "$type": "number",
+        "$description": "Figma artboard width for desktop designs (xl:)"
+      },
+      "large": {
+        "$value": 1440,
+        "$type": "number",
+        "$description": "Figma artboard design target — maps to xl: in code, max-width constraint handles the rest"
+      }
+    }
+  },
+  "layout": {
+    "container": {
+      "max-width": {
+        "$value": 1400,
+        "$type": "number",
+        "$description": "Maximum content width. Use with mx-auto. Tailwind: max-w-[1400px]"
+      },
+      "padding": {
+        "mobile": {
+          "$value": 16,
+          "$type": "number",
+          "$description": "Horizontal container padding on mobile (below md:). Tailwind: px-4"
+        },
+        "desktop": {
+          "$value": 32,
+          "$type": "number",
+          "$description": "Horizontal container padding on tablet and above (md:+). Tailwind: md:px-8"
+        }
+      }
+    },
+    "grid": {
+      "columns": {
+        "mobile": {
+          "$value": 4,
+          "$type": "number",
+          "$description": "Grid columns on mobile. Tailwind: grid-cols-4"
+        },
+        "tablet": {
+          "$value": 8,
+          "$type": "number",
+          "$description": "Grid columns on tablet (md:). Tailwind: md:grid-cols-8"
+        },
+        "desktop": {
+          "$value": 12,
+          "$type": "number",
+          "$description": "Grid columns on desktop (lg:+). Tailwind: lg:grid-cols-12"
+        }
+      },
+      "gutter": {
+        "mobile": {
+          "$value": 16,
+          "$type": "number",
+          "$description": "Gap between grid columns on mobile. Tailwind: gap-4"
+        },
+        "desktop": {
+          "$value": 24,
+          "$type": "number",
+          "$description": "Gap between grid columns on tablet and above. Tailwind: md:gap-6"
+        }
+      },
+      "margin": {
+        "mobile": {
+          "$value": 16,
+          "$type": "number",
+          "$description": "Grid margin on mobile — matches container padding"
+        },
+        "tablet": {
+          "$value": 32,
+          "$type": "number",
+          "$description": "Grid margin on tablet"
+        },
+        "desktop": {
+          "$value": 80,
+          "$type": "number",
+          "$description": "Grid margin on desktop — the 80px Figma layout guide"
+        }
+      }
+    }
+  },
+  "button": {
+    "primary": {
+      "bg": {
+        "bg": {
+          "$value": "{color.brand.primary}",
+          "$type": "color"
+        },
+        "hover": {
+          "$value": "{color.brand.primary-hover}",
+          "$type": "color"
+        },
+        "active": {
+          "$value": "{color.brand.primary-active}",
+          "$type": "color"
+        }
+      },
+      "fg": {
+        "fg": {
+          "$value": "{color.brand.primary.foreground}",
+          "$type": "color"
+        }
+      }
+    },
+    "secondary": {
+      "bg": {
+        "bg": {
+          "$value": "{color.brand.secondary}",
+          "$type": "color"
+        },
+        "hover": {
+          "$value": "{color.brand.secondary-hover}",
+          "$type": "color"
+        },
+        "active": {
+          "$value": "{color.brand.secondary-active}",
+          "$type": "color"
+        }
+      },
+      "fg": {
+        "fg": {
+          "$value": "{color.brand.secondary.foreground}",
+          "$type": "color"
+        }
+      }
+    },
+    "destructive": {
+      "bg": {
+        "bg": {
+          "$value": "{color.brand.destructive}",
+          "$type": "color"
+        },
+        "hover": {
+          "$value": "{color.brand.destructive-hover}",
+          "$type": "color"
+        },
+        "active": {
+          "$value": "{color.brand.destructive-active}",
+          "$type": "color"
+        }
+      },
+      "fg": {
+        "fg": {
+          "$value": "{color.brand.destructive.foreground}",
+          "$type": "color"
+        }
+      }
+    },
+    "outline": {
+      "bg": {
+        "bg": {
+          "$value": "{color.background.default}",
+          "$type": "color"
+        },
+        "hover": {
+          "$value": "{color.background.accent}",
+          "$type": "color"
+        },
+        "active": {
+          "$value": "{color.background.accent}",
+          "$type": "color"
+        }
+      },
+      "fg": {
+        "fg": {
+          "$value": "{color.background.default.foreground}",
+          "$type": "color"
+        }
+      },
+      "border": {
+        "default": {
+          "$value": "{color.border.default}",
+          "$type": "color"
+        },
+        "hover": {
+          "$value": "{color.border.hover}",
+          "$type": "color"
+        },
+        "focus": {
+          "$value": "{color.ring}",
+          "$type": "color"
+        },
+        "active": {
+          "$value": "{color.border.strong}",
+          "$type": "color"
+        },
+        "disabled": {
+          "$value": "{color.border.disabled}",
+          "$type": "color"
+        }
+      }
+    },
+    "ghost": {
+      "bg": {
+        "hover": {
+          "$value": "{color.background.accent}",
+          "$type": "color"
+        },
+        "bg": {
+          "$value": "{color.background.default}",
+          "$type": "color"
+        },
+        "active": {
+          "$value": "{color.background.accent}",
+          "$type": "color"
+        }
+      },
+      "fg": {
+        "fg": {
+          "$value": "{color.background.default.foreground}",
+          "$type": "color"
+        }
+      }
+    },
+    "link": {
+      "fg": {
+        "default": {
+          "$value": "{color.text.link}",
+          "$type": "color"
+        },
+        "hover": {
+          "$value": "{color.text.link-hover}",
+          "$type": "color"
+        },
+        "disabled": {
+          "$value": "{color.text.disabled}",
+          "$type": "color"
+        },
+        "active": {
+          "$value": "{color.text.link-active}",
+          "$type": "color"
+        }
+      }
+    },
+    "size": {
+      "Button radius 1": {
+        "$value": "{radius.xl}",
+        "$type": "number",
+        "$description": "Corner radius for Large and Icon Large (11px = radius/xl)"
+      },
+      "Button radius 2": {
+        "$value": "{radius.base}",
+        "$type": "number",
+        "$description": "Corner radius for Small, Default, Icon Small, Icon Default (8px = radius/base)"
+      },
+      "Button-height default": {
+        "$value": "{spacing.10}",
+        "$type": "number",
+        "$description": "Height for Default button (40px) — shadcn default"
+      },
+      "Button-height-small": {
+        "$value": "{spacing.9}",
+        "$type": "number",
+        "$description": "Height for Small button (36px) — shadcn sm"
+      },
+      "Button-height-large": {
+        "$value": "{spacing.11}",
+        "$type": "number",
+        "$description": "Height for Large button (44px) — shadcn lg, meets 44px touch target"
+      },
+      "Button spacing": {
+        "$value": "{spacing.component.xs}",
+        "$type": "number",
+        "$description": "Gap between icon and label — all sizes (4px)"
+      },
+      "Button-padding-default": {
+        "$value": "{spacing.4}",
+        "$type": "number",
+        "$description": "Horizontal padding for Default and Large (16px)"
+      },
+      "Button-padding-small": {
+        "$value": "{spacing.3}",
+        "$type": "number",
+        "$description": "Horizontal padding for Small (12px)"
+      }
+    }
+  },
+  "badge": {
+    "Badge-height-small": {
+      "$value": "{spacing.4}",
+      "$type": "number",
+      "$description": "Badge-height-small for small badge variant"
+    },
+    "Badge-height-medium": {
+      "$value": "{spacing.5}",
+      "$type": "number",
+      "$description": "Badge-height-small for medium badge variant"
+    },
+    "Badge-height-large": {
+      "$value": "{spacing.6}",
+      "$type": "number",
+      "$description": "Badge-height-small for large badge variant"
+    }
+  },
+  "table": {
+    "table-cell-compact": {
+      "$value": "{spacing.10}",
+      "$type": "number",
+      "$description": "table-cell height for compact variant"
+    },
+    "table-cell-default": {
+      "$value": "{spacing.12}",
+      "$type": "number",
+      "$description": "table-cell height for default variant"
+    }
+  },
+  "tooltip": {
+    "bg": {
+      "$value": "{color.background.inverted}",
+      "$type": "color",
+      "$description": "Tooltip background — aliases color/background/inverted so it auto-inverts in dark mode: zinc/900 (dark) in light, zinc/50 (light) in dark."
+    },
+    "fg": {
+      "$value": "{color.background.inverted.foreground}",
+      "$type": "color",
+      "$description": "Tooltip text — aliases color/background/inverted/foreground so it auto-inverts: white in light, black in dark."
+    }
+  }
+}

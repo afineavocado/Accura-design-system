@@ -1,0 +1,310 @@
+{
+  "name": "select",
+  "figmaNodeId": "74:757",
+  "description": "A dropdown control for choosing one option from a predefined fixed list.",
+  "category": "forms",
+  "shadcnBase": "select",
+  "componentSets": {
+    "select-trigger": {
+      "figmaNodeId": "74:757",
+      "purpose": "Clickable trigger that opens the dropdown."
+    },
+    "select-field": {
+      "figmaNodeId": "146:3751",
+      "purpose": "Complete form field with label, trigger, and description."
+    }
+  },
+  "variants": {
+    "State": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Hover",
+        "Open",
+        "Filled",
+        "Disabled",
+        "Invalid"
+      ],
+      "default": "Default",
+      "reactProp": "state",
+      "reactValues": {
+        "Default": "default",
+        "Hover": "hover",
+        "Open": "open",
+        "Filled": "filled",
+        "Disabled": "disabled",
+        "Invalid": "invalid"
+      }
+    },
+    "Field state": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Open",
+        "Disabled",
+        "Invalid"
+      ],
+      "default": "Default",
+      "reactProp": "fieldState",
+      "reactValues": {
+        "Default": "default",
+        "Open": "open",
+        "Disabled": "disabled",
+        "Invalid": "invalid"
+      }
+    }
+  },
+  "tokens": {
+    "triggerContainer": {
+      "Default": {
+        "fill": "color/input/bg",
+        "stroke": "color/input/border"
+      },
+      "Hover": {
+        "fill": "color/input/bg",
+        "stroke": "color/border/hover"
+      },
+      "Open": {
+        "fill": "color/input/bg",
+        "stroke": "color/border/focus",
+        "effect": "focus/ring"
+      },
+      "Filled": {
+        "fill": "color/input/bg",
+        "stroke": "color/input/border"
+      },
+      "Disabled": {
+        "fill": "color/surface/muted",
+        "stroke": "color/border/disabled"
+      },
+      "Invalid": {
+        "fill": "color/input/bg",
+        "stroke": "color/border/error"
+      },
+      "radius": "radius/md"
+    },
+    "triggerInternal": {
+      "placeholder": "color/input/placeholder",
+      "value": "color/background/default/foreground",
+      "disabledText": "color/text/disabled",
+      "icon": "color/icon/default",
+      "iconDisabled": "color/icon/disabled",
+      "paddingY": "spacing/component/sm",
+      "paddingX": "spacing/component/md"
+    },
+    "field": {
+      "descriptionDefault": "color/text/secondary",
+      "descriptionOpen": "hidden",
+      "descriptionDisabled": "color/text/disabled",
+      "descriptionInvalid": "color/text/invalid",
+      "gap": "spacing/component/xs"
+    },
+    "dropdown": {
+      "container": {
+        "fill": "color/surface/overlay",
+        "stroke": "color/border/default",
+        "radius": "radius/lg",
+        "shadow": "shadow/sm",
+        "padding": "spacing/component/xxs (2px all sides)",
+        "gap": "spacing/component/xxs (2px between items)"
+      },
+      "item": {
+        "height": "h-8 (32px)",
+        "paddingX": "spacing/component/sm (8px) — px-2",
+        "radius": "radius/md",
+        "Default": {
+          "fill": "transparent",
+          "text": "color/background/default/foreground"
+        },
+        "Hover": {
+          "fill": "color/background/accent",
+          "text": "color/background/accent/foreground"
+        },
+        "Selected": {
+          "fill": "transparent",
+          "text": "color/brand/primary",
+          "notes": "No checkmark — selected state uses brand/primary text color only"
+        },
+        "Disabled": {
+          "fill": "transparent",
+          "text": "color/text/disabled"
+        }
+      }
+    },
+    "states": {
+      "invalid": {
+        "borderToken": "color/border/error",
+        "ringToken": "color/border/error",
+        "ringGlow": "color-mix(in_srgb,var(--color-border-error)_20%,transparent)",
+        "notes": "Uses [&[aria-invalid]] compound selector to beat data-[state=open]/focus-visible specificity. Blue ring must NOT appear when invalid."
+      }
+    }
+  },
+  "composition": {
+    "selectTrigger": [
+      "value.placeholder",
+      "icon"
+    ],
+    "selectField": [
+      "label",
+      "select-trigger",
+      "description or menu-dropdown"
+    ]
+  },
+  "accessibility": {
+    "role": "combobox on trigger",
+    "expanded": "aria-expanded=true when open",
+    "optionsList": "role=listbox",
+    "option": "role=option with aria-selected",
+    "required": "aria-required=true on trigger",
+    "invalid": "aria-invalid=true on trigger",
+    "label": "Use aria-labelledby pointing to label element.",
+    "keyboard": [
+      "Space or Enter opens/selects",
+      "Arrow keys move options",
+      "Escape closes and returns focus"
+    ]
+  },
+  "constraints": [
+    "Use select-field, not select-trigger, for standard form use.",
+    "Use select only for short, fixed, predetermined lists.",
+    "Use combobox for long, searchable, or multi-select lists.",
+    "Do not use select for boolean choices.",
+    "Open state must show the dropdown panel.",
+    "Invalid description must state the specific error."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Country or region field in a checkout or address form — fixed list, user needs to scroll and pick one",
+      "Timezone selector in account settings — short curated list, no typing required",
+      "Status or priority picker in a project tool: To Do, In Progress, Done, Blocked",
+      "Theme preference: Light, Dark, System — 3 options, no search needed",
+      "Role assignment in a user management form: Admin, Editor, Viewer"
+    ],
+    "variantExamples": {
+      "State=Default": {
+        "whenToUse": "Field rendered, no value chosen yet — placeholder shown",
+        "examples": [
+          "Empty 'Select a country' on page load"
+        ]
+      },
+      "State=Open": {
+        "whenToUse": "Actively showing the dropdown — use in mockups to preview the list",
+        "examples": [
+          "Design spec showing dropdown with fruit options"
+        ]
+      },
+      "State=Filled": {
+        "whenToUse": "A value has been selected and is displayed in the trigger",
+        "examples": [
+          "'United States' after user picks a country"
+        ]
+      },
+      "State=Invalid": {
+        "whenToUse": "Form submitted without a required selection, or value fails validation",
+        "examples": [
+          "'Please select a timezone' error state"
+        ]
+      },
+      "State=Disabled": {
+        "whenToUse": "Field is locked — context determines the value or user lacks permission to change it",
+        "examples": [
+          "Read-only role display on a locked team member record"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Fixed short list (≤ ~10 items), pick one, no typing needed",
+        "use": "select",
+        "notInstead": "combobox"
+      },
+      {
+        "situation": "Long list (10+ items) or user needs to search/filter",
+        "use": "combobox",
+        "notInstead": "select"
+      },
+      {
+        "situation": "User must pick multiple values",
+        "use": "combobox (State=Filled-chips)",
+        "notInstead": "select"
+      },
+      {
+        "situation": "2–5 options where seeing all at once aids the decision",
+        "use": "radio",
+        "notInstead": "select"
+      },
+      {
+        "situation": "Binary yes/no or on/off choice",
+        "use": "checkbox or switch",
+        "notInstead": "select"
+      },
+      {
+        "situation": "User may need to type a value not in the list",
+        "use": "input",
+        "notInstead": "select"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/select",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/select"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Select.md",
+    "storyFile": "src/stories/Select.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Examples assume a SelectField wrapper API over shadcn Select primitives; source markdown itself does not mark this component not ready."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-03",
+        "change": "SelectItem: removed checkmark indicator. Selected state now uses color/brand/primary text (transparent bg) per spec. Container radius changed to radius/lg. Viewport padding p-0.5, gap-0.5 between items, item height h-8, px-2.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/select.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Select", "SelectGroup", "SelectValue", "SelectTrigger",
+      "SelectContent", "SelectLabel", "SelectItem", "SelectSeparator",
+      "SelectScrollUpButton", "SelectScrollDownButton"
+    ],
+    "notes": [
+      "SelectItem: no checkmark indicator — selected state uses data-[state=checked]:text-[color/brand/primary] only.",
+      "Dropdown container uses radius/lg (not radius/md like trigger). Viewport uses p-0.5 + gap-0.5 flex-col layout."
+    ]
+  },
+  "storybook": {
+    "file": "src/stories/Select.stories.tsx",
+    "title": "Forms/Select",
+    "stories": [
+      "Default",
+      "Filled",
+      "Disabled",
+      "Invalid",
+      "WithField",
+      "WithFieldInvalid",
+      "WithFieldDisabled",
+      "WithGroups",
+      "WithSeparator",
+      "AllStates"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": "SelectItem: removed checkmark indicator. Selected state now uses color/brand/primary text (transparent bg) per spec. Container radius changed to radius/lg. Viewport padding p-0.5, gap-0.5 between items, item height h-8, px-2."
+  }
+}

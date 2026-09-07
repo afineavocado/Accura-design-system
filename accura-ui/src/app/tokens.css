@@ -709,14 +709,14 @@
    * Do not use: As a fill for active items — use color/sidebar/primary instead.
    * Status: Stable
    */
-  --color-sidebar-accent: #f4f4f5;
+  --color-sidebar-accent: #175e41;
   /**
    * Intent: Text and icon color on top of color/sidebar/accent fill.
    * Use when: Labels inside hovered sidebar nav items. Maps to shadcn --sidebar-accent-foreground.
    * Do not use: On any surface other than color/sidebar/accent.
    * Status: Stable
    */
-  --color-sidebar-accent-foreground: #18181b;
+  --color-sidebar-accent-foreground: #ffffff;
   /**
    * Intent: Divider and border color within the sidebar.
    * Use when: Sidebar edge border, section dividers inside the sidebar. Maps to shadcn --sidebar-border.
@@ -730,21 +730,21 @@
    * Do not use: Outside the sidebar — use color/input/ring for global focus rings.
    * Status: Stable
    */
-  --color-sidebar-ring: #2b7fff;
+  --color-sidebar-ring: #17bb77;
   /**
    * Intent: Hover background for inactive sidebar nav items.
    * Use when: Hover state on sidebar nav rows. Maps to shadcn --sidebar-accent.
    * Do not use: As a fill for active items — use color/sidebar/primary instead.
    * Status: Stable
    */
-  --color-sidebar-active: #f4f4f5;
+  --color-sidebar-active: #175e41;
   /**
    * Intent: Text and icon color on top of color/sidebar/accent fill.
    * Use when: Labels inside hovered sidebar nav items. Maps to shadcn --sidebar-accent-foreground.
    * Do not use: On any surface other than color/sidebar/accent.
    * Status: Stable
    */
-  --color-sidebar-active-foreground: #18181b;
+  --color-sidebar-active-foreground: #ffffff;
   --spacing-0: 0px;
   --spacing-1: 4px;
   --spacing-2: 8px;
@@ -1515,13 +1515,13 @@
   --color-sidebar-foreground: #f4f4f5;
   --color-sidebar-primary: #fafafa;
   --color-sidebar-primary-foreground: #18181b;
-  --color-sidebar-accent: #3f3f46;
-  --color-sidebar-active: #3f3f46;
-  --color-sidebar-accent-foreground: #fafafa;
+  --color-sidebar-accent: #175e41;
+  --color-sidebar-active: #175e41;
+  --color-sidebar-accent-foreground: #ffffff;
   --color-sidebar-border: #3f3f46;
-  --color-sidebar-ring: #51a2ff;
+  --color-sidebar-ring: #17bb77;
   --color-brand-destructive-active: #991b1b;
-  --color-sidebar-active-foreground: #fafafa;
+  --color-sidebar-active-foreground: #ffffff;
   --color-text-invalid: #f87171;
   --color-text-success: #4ade80;
   --color-input-bg: #3f3f46;

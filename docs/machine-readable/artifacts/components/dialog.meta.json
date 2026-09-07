@@ -1,0 +1,238 @@
+{
+  "name": "dialog",
+  "figmaNodeId": "266:131",
+  "description": "A modal overlay that interrupts the user to present focused content or collect input. Built on Radix UI Dialog. Renders a full-screen backdrop with a centered popup; focus is trapped inside until dismissed.",
+  "category": "overlay",
+  "shadcnBase": "dialog",
+  "primitiveBase": "Radix UI Dialog (@radix-ui/react-dialog)",
+  "variants": {
+    "Type": {
+      "type": "enum",
+      "values": [
+        "Form",
+        "No close button",
+        "Sticky footer",
+        "Scrollable"
+      ],
+      "default": "Form",
+      "intent": {
+        "Form": "Short data-collection task with inline cancel + action buttons. Use for editing a name, entering a URL, confirming with a text field.",
+        "No close button": "Informational prompt or programmatic multi-step flow — dismiss only via Escape or backdrop click.",
+        "Sticky footer": "Taller dialog with sticky heading + scrollable body + sticky footer. Use for longer forms where submit must stay visible.",
+        "Scrollable": "Sticky heading + scrollable body only, no footer. Use for read-only long content: changelogs, policies, previews."
+      }
+    }
+  },
+  "componentProperties": {
+    "Type": {
+      "type": "VARIANT",
+      "default": "Form"
+    }
+  },
+  "tokens": {
+    "backdrop": {
+      "fill": "color/background/inverted"
+    },
+    "popup": {
+      "fill": "color/surface/default",
+      "stroke": "color/border/default",
+      "strokeWeight": 1,
+      "strokeAlign": "inside",
+      "radius": "radius/lg"
+    },
+    "popupPadding": {
+      "Form": "spacing/component/lg all sides",
+      "No close button": "spacing/component/lg all sides",
+      "Sticky footer": "none — applied per section",
+      "Scrollable": "none — applied per section"
+    },
+    "heading": {
+      "paddingTopBottom": "spacing/component/xl",
+      "paddingLeftRight": "spacing/component/lg",
+      "gap": "spacing/component/xs",
+      "titleFill": "color/surface/default/foreground",
+      "descriptionFill": "color/text/secondary"
+    },
+    "body": {
+      "paddingLeftRight": "spacing/component/lg",
+      "gap": "spacing/component/xs"
+    },
+    "footer": {
+      "StickyFooter": {
+        "fill": "color/background/subtle",
+        "stroke": "color/border/subtle",
+        "strokePosition": "top",
+        "padding": "spacing/component/lg",
+        "gap": "spacing/component/xs"
+      },
+      "Form": {
+        "gap": "spacing/component/sm"
+      }
+    }
+  },
+  "composition": {
+    "Form": "backdrop + popup (V AUTO-LAYOUT): content (title + description) → input-field × 2 → Slot 1 → Slot 2 → footer (cancel + action buttons)",
+    "No close button": "backdrop + popup: content (title + description) only",
+    "Sticky footer": "backdrop + popup (no root padding): heading (title + description + close ×) → body (scrollable) → footer (sticky, bg/subtle)",
+    "Scrollable": "backdrop + popup (no root padding): heading (title + description + close ×) → body (scrollable)"
+  },
+  "behavior": {
+    "openClose": {
+      "open": "Controlled: open + onOpenChange props. Uncontrolled: defaultOpen. Typically via <DialogTrigger>.",
+      "close": [
+        "Clicking backdrop (DialogOverlay) — default",
+        "Pressing Escape — always",
+        "Clicking <DialogClose> button"
+      ]
+    },
+    "preventBackdropClose": "onInteractOutside={(e) => e.preventDefault()} on DialogContent — only for destructive confirmation flows.",
+    "focusTrap": "Focus trapped inside DialogContent when open (Radix UI default). Tab cycles through focusable elements.",
+    "initialFocus": "First focusable element by default. Override with autoFocus on a specific element.",
+    "focusReturn": "Returns to trigger element on close.",
+    "scrollBehavior": {
+      "Form": "No internal scroll — popup grows with content.",
+      "Scrollable": "body section scrolls independently — apply overflow-y:auto + max-height to body.",
+      "Sticky footer": "body scrolls, heading and footer stay fixed — apply overflow-y:auto + max-height to body; footer position:sticky."
+    },
+    "animation": "Radix uses data-state='open'/'closed' on DialogContent and DialogOverlay. Shadcn wires CSS keyframe animations: fade-in + slight scale-up on open."
+  },
+  "accessibility": {
+    "role": "role='dialog' with aria-modal='true' (Radix UI default)",
+    "ariaLabelledBy": "aria-labelledby auto-points to <DialogTitle>",
+    "ariaDescribedBy": "aria-describedby auto-points to <DialogDescription>",
+    "dialogTitleRequired": "Always include <DialogTitle> — use <VisuallyHidden> if not visually shown. Screen readers announce it on open.",
+    "focusTrap": "Active while open — Tab stays inside",
+    "focusReturn": "Returns to trigger on close",
+    "keyboard": [
+      "Tab / Shift+Tab to move focus inside dialog",
+      "Escape to close",
+      "Enter / Space to activate focused button"
+    ]
+  },
+  "constraints": [
+    "Use dialogs for tasks that require the user's full attention before returning — editing, confirming, collecting input.",
+    "Use Type=Form for short forms (2–4 fields); Type=Sticky footer for longer forms.",
+    "Always include <DialogTitle> — even hidden with <VisuallyHidden>.",
+    "Keep dialog content focused on one task — if multiple sections are needed, use a sheet or separate page.",
+    "The cancel button in footer must be wrapped in <DialogClose> — it must dismiss the dialog.",
+    "Do not nest dialogs — open only one at a time; use Alert Dialog for secondary confirmation.",
+    "Do not use dialog for simple confirmations ('Are you sure?') — use Alert Dialog with role='alertdialog'.",
+    "If backdrop close is blocked, the close button in heading must be present."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "User clicks 'Edit profile' and must save or cancel before returning to the page",
+      "User triggers a destructive action (delete record, revoke access) that requires a short confirmation form before proceeding",
+      "An onboarding flow needs to collect a name and email before the user can continue",
+      "A 'Create workspace' action requires 2–3 fields that should not navigate the user away",
+      "Terms of service must be reviewed and accepted before an action completes",
+      "A file upload triggers a rename dialog that must be resolved before the upload proceeds"
+    ],
+    "variantExamples": {
+      "Form": {
+        "whenToUse": "Short, focused data-collection tasks with 2–4 fields and inline footer buttons",
+        "examples": [
+          "Edit display name",
+          "Set a due date",
+          "Rename a file"
+        ]
+      },
+      "No close button": {
+        "whenToUse": "Linear flows with no cancel path, or informational prompts where no action is required",
+        "examples": [
+          "Session expired notice",
+          "Programmatically-advanced wizard step",
+          "Mandatory notice acknowledgement"
+        ]
+      },
+      "Sticky footer": {
+        "whenToUse": "Longer forms or content reviews where the action buttons must always stay reachable",
+        "examples": [
+          "Multi-field create form",
+          "Terms and conditions acceptance",
+          "Settings review before publish"
+        ]
+      },
+      "Scrollable": {
+        "whenToUse": "Read-only long content where the only exit is dismiss",
+        "examples": [
+          "Changelog",
+          "Privacy policy",
+          "Preview of generated content"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "User must make a decision or complete a task before returning to the page",
+        "use": "dialog",
+        "notInstead": "sheet"
+      },
+      {
+        "situation": "Simple 'Are you sure?' with no form fields",
+        "use": "alert-dialog",
+        "notInstead": "dialog"
+      },
+      {
+        "situation": "Secondary task that benefits from staying spatially connected to page content",
+        "use": "sheet",
+        "notInstead": "dialog"
+      },
+      {
+        "situation": "Non-blocking status update that auto-dismisses",
+        "use": "toast",
+        "notInstead": "dialog"
+      },
+      {
+        "situation": "Bottom-anchored quick action on mobile",
+        "use": "drawer",
+        "notInstead": "dialog"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/dialog",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/dialog"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Dialog.md",
+    "storyFile": "src/stories/Dialog.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Type=Form has Slot 1 and Slot 2 between input fields for checkboxes, selects, helper text rows, or custom form elements."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "Popup fill uses color/surface/default (Dark: zinc/900) — matches shadcn --card. Previously surface/overlay (zinc/800); changed to align with shadcn card/popover hierarchy.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/dialog.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Dialog"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Dialog.stories.tsx",
+    "title": "Overlay/Dialog",
+    "stories": [
+      "Form",
+      "NoCloseButton",
+      "StickyFooter",
+      "Scrollable",
+      "Destructive"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

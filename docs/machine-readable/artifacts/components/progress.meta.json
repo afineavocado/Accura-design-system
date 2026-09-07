@@ -1,0 +1,237 @@
+{
+  "name": "progress",
+  "figmaNodeId": "110:8283",
+  "description": "A horizontal progress bar for communicating operation completion percentage or indeterminate loading state. Built on Radix UI Progress. Tracks with a fill indicator driven by value 0–100 or null for indeterminate.",
+  "category": "feedback",
+  "shadcnBase": "progress",
+  "primitiveBase": "Radix UI Progress (@radix-ui/react-progress)",
+  "variants": {
+    "State": {
+      "type": "enum",
+      "values": [
+        "Loading",
+        "Complete",
+        "Indeterminate"
+      ],
+      "default": "Loading",
+      "intent": {
+        "Loading": "Determinate progress — value is 0–99. Fill bar represents percentage complete.",
+        "Complete": "value=100. Fill bar spans full track width.",
+        "Indeterminate": "value=null or undefined. No measurable percentage — use CSS animation on indicator."
+      },
+      "reactMapping": {
+        "Loading": "value={50} (any 0–99)",
+        "Complete": "value={100}",
+        "Indeterminate": "value={null} or omit value prop"
+      }
+    },
+    "Size": {
+      "type": "enum",
+      "values": [
+        "SM",
+        "MD",
+        "LG"
+      ],
+      "default": "MD",
+      "dimensions": {
+        "SM": {
+          "height": 4,
+          "when": "Compact contexts — inline with text, table cells, tight layouts."
+        },
+        "MD": {
+          "height": 8,
+          "when": "Default — general use, cards, panels."
+        },
+        "LG": {
+          "height": 12,
+          "when": "Prominent status — onboarding steps, upload progress, large feature areas."
+        }
+      }
+    }
+  },
+  "componentProperties": {
+    "State": {
+      "type": "VARIANT",
+      "default": "Loading"
+    },
+    "Size": {
+      "type": "VARIANT",
+      "default": "MD"
+    }
+  },
+  "tokens": {
+    "container": {
+      "fill": "color/background/muted",
+      "radius": "radius/full",
+      "width": "fill (stretches to layout context)"
+    },
+    "fill": {
+      "fill": "color/brand/primary",
+      "radius": "radius/full",
+      "note": "Fill radius must match container radius to avoid clipping artefacts."
+    }
+  },
+  "behavior": {
+    "props": {
+      "value": {
+        "type": "number | null",
+        "default": null,
+        "range": "0 to max for determinate; null for indeterminate"
+      },
+      "max": {
+        "type": "number",
+        "default": 100
+      },
+      "getValueLabel": {
+        "type": "(value, max) => string",
+        "default": "${value}%"
+      }
+    },
+    "stateTransitions": "Loading→Complete: set value to 100. Loading→Indeterminate: set value to null. Figma State dimension is for design documentation only — code is entirely value-driven.",
+    "widthMechanism": "Radix sets --radix-progress-indicator-transform CSS property. Shadcn uses transform:translateX() on the indicator — fill spans 100% of track, position-shifted to simulate partial width.",
+    "indeterminateAnimation": "Radix does not include an indeterminate animation by default. Target [data-state='indeterminate'] on root or [data-radix-progress-indicator] with a CSS keyframe.",
+    "indeterminateCss": "@keyframes progress-indeterminate { 0% { transform: translateX(-100%); } 50% { transform: translateX(0%); } 100% { transform: translateX(100%); } }",
+    "accessibility": {
+      "role": "progressbar (set by Radix on root element)",
+      "ariaValuemin": 0,
+      "ariaValuemax": "max prop value",
+      "ariaValuenow": "value — omitted when null (indeterminate)",
+      "ariaValuetext": "output of getValueLabel(value, max)",
+      "keyboard": "Progress bars are not interactive — no keyboard interaction.",
+      "indeterminateLabel": "aria-valuetext omitted; provide surrounding context text for screen readers."
+    }
+  },
+  "accessibility": {
+    "role": "progressbar",
+    "keyboard": "Not interactive — no keyboard interaction.",
+    "contextText": "Always pair with a visible label naming what is progressing — 'Uploading…', 'Processing files', 'Step 2 of 5'."
+  },
+  "constraints": [
+    "Always pair with a visible label naming what is progressing.",
+    "Use State=Indeterminate (value=null) for operations with no measurable percentage — never fake progress with slow-advancing determinate.",
+    "Show State=Complete as a final state before unmounting — give users a moment to register success.",
+    "Do not use progress for page load spinners — use a spinner or skeleton instead.",
+    "Leave State=Complete visible briefly before unmounting — 500–1000ms delay is appropriate.",
+    "Do not override the fill color from a parent — change className on <Progress> or extend the token."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Showing file upload completion percentage as a user uploads a document or image",
+      "Tracking multi-step onboarding — 'Step 2 of 5' with the bar showing 40% complete",
+      "Displaying a profile completeness score ('Your profile is 70% complete')",
+      "Showing a storage quota usage bar in account settings ('2.1 GB of 5 GB used')",
+      "Indicating that a background server-side job is running when no percentage is available (Indeterminate)",
+      "Confirming an import or export has finished by transitioning to State=Complete before unmounting"
+    ],
+    "variantExamples": {
+      "State=Loading": {
+        "whenToUse": "Determinate progress — a known percentage that updates as the operation advances",
+        "examples": [
+          "File upload bar",
+          "Onboarding step tracker",
+          "Storage quota fill"
+        ]
+      },
+      "State=Complete": {
+        "whenToUse": "Operation has finished — show briefly before unmounting to confirm success",
+        "examples": [
+          "Upload complete",
+          "Import finished",
+          "All steps done"
+        ]
+      },
+      "State=Indeterminate": {
+        "whenToUse": "Operation is running but no percentage can be computed",
+        "examples": [
+          "Server-side processing",
+          "Background sync",
+          "Unknown-duration task"
+        ]
+      },
+      "Size=SM": {
+        "whenToUse": "Compact contexts where the bar is a supporting detail",
+        "examples": [
+          "Inside a table cell",
+          "Inline with a label in a dense layout"
+        ]
+      },
+      "Size=MD": {
+        "whenToUse": "General use — cards, panels, settings pages",
+        "examples": [
+          "Default for most progress bars"
+        ]
+      },
+      "Size=LG": {
+        "whenToUse": "Prominent status — onboarding, large feature areas, hero progress",
+        "examples": [
+          "Onboarding wizard header",
+          "Upload progress in a full-panel uploader"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Loading duration is unknown and no percentage can be shown",
+        "use": "skeleton (content placeholder) or a spinner",
+        "notInstead": "progress State=Indeterminate (use indeterminate only when an active operation is clearly running)"
+      },
+      {
+        "situation": "A single binary action (save, submit) needs a loading indicator",
+        "use": "a loading button or spinner",
+        "notInstead": "progress (progress implies measurable advancement, not a momentary action)"
+      },
+      {
+        "situation": "Content is loading on initial page load and the structure should be visible",
+        "use": "skeleton",
+        "notInstead": "progress (skeleton preserves layout; progress does not)"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/progress",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/progress"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Progress.md",
+    "storyFile": "src/stories/Progress.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Figma State/Size variants are for design documentation only — in code everything is driven by value prop and className for height."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/progress.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Progress"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Progress.stories.tsx",
+    "title": "Feedback/Progress",
+    "stories": [
+      "Default",
+      "Loading",
+      "Complete",
+      "Indeterminate",
+      "Sizes",
+      "StepTracker",
+      "Animated"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

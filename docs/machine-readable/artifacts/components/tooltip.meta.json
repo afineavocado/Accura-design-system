@@ -1,0 +1,215 @@
+{
+  "name": "tooltip",
+  "figmaNodeId": "74:1699",
+  "description": "A floating label that appears on hover or focus to provide supplementary context.",
+  "category": "overlay",
+  "shadcnBase": "tooltip",
+  "componentSets": {
+    "bubble": {
+      "figmaNodeId": "74:1682",
+      "purpose": "Rounded pill with text label."
+    },
+    "tooltip": {
+      "figmaNodeId": "74:1699",
+      "purpose": "Positioned composite with bubble and directional arrow."
+    }
+  },
+  "variants": {
+    "Side": {
+      "type": "enum",
+      "values": [
+        "Top",
+        "Bottom",
+        "Left",
+        "Right"
+      ],
+      "default": "Top",
+      "reactProp": "side",
+      "reactValues": {
+        "Top": "top",
+        "Bottom": "bottom",
+        "Left": "left",
+        "Right": "right"
+      }
+    }
+  },
+  "tokens": {
+    "componentTokens": {
+      "tooltip/bg": "color/background/inverted",
+      "tooltip/fg": "color/background/inverted/foreground"
+    },
+    "bubble": {
+      "fill": "tooltip/bg",
+      "fg": "tooltip/fg",
+      "paddingX": "spacing/component/md",
+      "paddingY": "spacing/component/xs-plus",
+      "radius": "radius/md",
+      "textStyle": "label/sm"
+    },
+    "arrow": {
+      "fill": "tooltip/bg"
+    }
+  },
+  "behavior": {
+    "interactionModel": "stateless",
+    "openState": {
+      "trigger": "hover or keyboard focus on trigger element",
+      "closeTriggers": ["mouse leaves trigger and content", "Escape key", "trigger loses focus"],
+      "delay": "300ms show delay (system default — overrides Radix's 700ms). Set delayDuration={300} on TooltipProvider at app root.",
+      "skipDelay": "300ms — if user moves to a second trigger within 300ms, it opens immediately (skipDelayDuration=300).",
+      "hoverableContent": "true — tooltip stays open when mouse moves from trigger into content (disableHoverableContent=false default)"
+    },
+    "focusManagement": {
+      "trapFocus": false,
+      "initialFocus": "none — tooltip is not focusable",
+      "returnFocus": "none"
+    },
+    "animation": {
+      "dataAttributes": ["data-state=open", "data-state=closed", "data-side=top/bottom/left/right"],
+      "description": "Fades in with zoom-in-95. Slides in from opposite direction of Side variant."
+    },
+    "scrollBehavior": "none — tooltip closes on scroll by default"
+  },
+  "composition": {
+    "bubble": [
+      "label"
+    ],
+    "tooltip": [
+      "bubble",
+      "arrow.arrow-shape"
+    ],
+    "outerFrame": "transparent, positioned per Side variant"
+  },
+  "accessibility": {
+    "role": "tooltip",
+    "trigger": "aria-describedby points from trigger to tooltip id.",
+    "showOn": "focus and hover",
+    "dismiss": "Escape or focus/mouse leave",
+    "delay": "300ms system default — set delayDuration={300} on TooltipProvider at app root. Radix ships 700ms but this system overrides it. skipDelayDuration stays at 300ms.",
+    "never": "No interactive content inside tooltip."
+  },
+  "constraints": [
+    "Use Side=Top by default.",
+    "Text should be one line preferred, two lines maximum.",
+    "Do not use tooltips on mobile as the only way to reveal information.",
+    "Trigger must be focusable.",
+    "Use Popover when content is interactive."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Labelling an icon-only button so keyboard and mouse users know what it does ('Archive', 'Share', 'Delete')",
+      "Revealing the full text of a truncated cell or label when the container is too narrow to show it",
+      "Surfacing a keyboard shortcut hint alongside a toolbar action ('Bold — ⌘B')",
+      "Explaining an unfamiliar setting or field label with a one-line definition on hover",
+      "Describing what a disabled button requires before it can be activated (wrap in a <span> since disabled elements don't fire hover events)",
+      "Adding supplementary context to a data point or metric label without cluttering the UI permanently"
+    ],
+    "variantExamples": {
+      "Top": {
+        "whenToUse": "Default — use unless there is insufficient space above the trigger",
+        "examples": [
+          "Icon button labels",
+          "Truncated text",
+          "Keyboard shortcut hints"
+        ]
+      },
+      "Bottom": {
+        "whenToUse": "Trigger is near the top of the viewport or inside a fixed top bar",
+        "examples": [
+          "Top navigation icon buttons",
+          "App header actions"
+        ]
+      },
+      "Left": {
+        "whenToUse": "Trigger is near the right edge and top/bottom are also constrained",
+        "examples": [
+          "Right-docked toolbar icons",
+          "Table action column"
+        ]
+      },
+      "Right": {
+        "whenToUse": "Trigger is near the left edge",
+        "examples": [
+          "Left sidebar icons",
+          "Collapsed navigation items"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "The hint contains interactive content (links, buttons, form fields)",
+        "use": "popover",
+        "notInstead": "tooltip (tooltip is read-only; interactive content inside it is inaccessible)"
+      },
+      {
+        "situation": "The explanation is long (more than two lines) or needs formatting",
+        "use": "popover",
+        "notInstead": "tooltip (tooltip should be one or two lines max)"
+      },
+      {
+        "situation": "The user must act on the information before continuing",
+        "use": "dialog (alert-dialog)",
+        "notInstead": "tooltip (tooltips are purely supplementary and dismissible)"
+      },
+      {
+        "situation": "The label is for a mobile touch interface",
+        "use": "visible label text",
+        "notInstead": "tooltip (hover is unavailable on touch; tooltips are desktop-only)"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/tooltip",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/tooltip"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Tooltip.md",
+    "storyFile": "src/stories/Tooltip.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Tooltip aliases semantic tokens through component tokens — tooltip/bg → color/background/inverted, tooltip/fg → color/background/inverted/foreground. Auto-inverts per mode: dark bubble in light, light bubble in dark."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-03",
+        "change": "delayDuration changed from Radix default 700ms to system default 300ms. Set delayDuration={300} on TooltipProvider. Documented in Tooltip.md and tooltip.meta.json accessibility.delay.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "Tooltip auto-inverts: Light = zinc/900 bg / white text, Dark = zinc/50 bg / black text. Achieved via color/background/inverted semantic alias — no component-level dark override needed.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/tooltip.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Tooltip"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Tooltip.stories.tsx",
+    "title": "Overlay/Tooltip",
+    "stories": [
+      "Top",
+      "Bottom",
+      "Left",
+      "Right",
+      "IconButtons",
+      "ShortcutHint",
+      "DisabledButton",
+      "AllSides"
+    ],
+    "decorators": [
+      "TooltipProvider wrapping all stories"
+    ],
+    "notes": ""
+  }
+}

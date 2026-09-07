@@ -1,0 +1,108 @@
+# Accura Design System
+
+> Self-contained design system for Accura. A **re-theme** of the Agentic Design System: the rules are inherited unchanged, the values are Accura's. Everything an agent needs is in this repository — no external vault or absolute paths.
+
+**Read order for any UI/token work:**
+1. `accura-theme.md` — Accura's values and the 11 open questions
+2. `docs/design-system-rules.md` — the inherited ruleset (**read its override header first**)
+3. the relevant `docs/component-specs/[Name].md` and `docs/machine-readable/artifacts/components/[name].meta.json`
+
+---
+
+## Precedence — this matters
+
+`docs/design-system-rules.md` is vendored from Agentic and contains **both rules and Agentic's values**.
+
+- **Rules** (naming, semantic layer, paired-surface rule, spacing scale, layout, dark mode) → follow exactly.
+- **Values** (brand hue, anchor step, ring, sidebar, button radius, status borders, font, the contrast table) → **`accura-theme.md` wins**.
+
+The override table at the top of `docs/design-system-rules.md` lists every known conflict. If you find a new one, add it there rather than editing the rule text.
+
+---
+
+## Rules and process
+
+- `docs/design-system-rules.md`: Token architecture, every semantic token name and rule, spacing system, layout grid, Figma ↔ Tailwind mapping, dark mode. **Inherited — do not edit the rules.**
+- `accura-theme.md`: Accura's theme — brand ramp, neutral, radius, spacing, type, plus the semantic/component deviations and 11 open questions. **The authority on values.**
+- `docs/content-guidelines.md`: Voice-neutral UX writing — capitalisation, button labels, error messages, empty states.
+- `docs/hypertokens-system-bundles.md`: How semantic decisions group into bundles that travel together.
+
+## Skills — read before the matching task
+
+| Task | Read |
+|---|---|
+| Audit a component | `docs/skills/Component Audit Skill.md` + `docs/tracking/Audit Status.md` |
+| Build a Figma component | `docs/skills/Build component skill.md` |
+| Bind or fix tokens | `docs/skills/Token Binding Skill.md` |
+| Write component docs | `docs/skills/Component Documentation Skill.md` |
+| Any Storybook work | `docs/skills/Storybook Build Process.md` |
+| Re-theme / re-skin | `docs/skills/Theme Generator Skill.md` |
+| Implement a component in code | `docs/skills/Component implementation process.md` |
+
+## Component documentation
+
+- `docs/component-specs/[Name].md` — **38 files**: 36 component specs, plus `docs/component-specs/_template.md` and `docs/component-specs/Form-shared.md` (shared `label`, `menu-dropdown`, `menu-dropdown-item`).
+- `docs/machine-readable/artifacts/components/[name].meta.json` — **36 files**, v3 schema: variants, tokens per state, storybook reference, known issues, dark-mode risks.
+- `docs/machine-readable/component-quick-reference.md` — scan before building any screen.
+- `docs/machine-readable/component-directory.md` — Figma node ID ↔ Storybook title ↔ tsx file.
+- `docs/machine-readable/meta-artifact-template.md` — required fields for any new meta.json.
+- `docs/machine-readable/generation-rules.md` — when to regenerate a meta.json.
+- `docs/machine-readable/figma-ids.md` — Figma node, effect-style and text-style IDs. ⚠️ IDs are Agentic's; Accura's Figma file is different — verify before use.
+- `docs/machine-readable/validate-artifacts.mjs` · `drift-check.mjs` — validation scripts.
+
+## Code — `accura-ui/`
+
+Next.js + Tailwind v4 + shadcn/ui. Forked from `agentic-ui`; identical components, Accura tokens.
+
+```bash
+cd accura-ui && npm install --legacy-peer-deps && npm run storybook   # → :6007
+```
+
+- `accura-ui/src/app/tokens.css` — **470 CSS custom properties**, generated from Figma. `:root` light, `.dark` dark. Do not hand-edit; change the Figma variable and regenerate.
+- `accura-ui/src/components/ui/*.tsx` — 38 component files.
+- `accura-ui/src/stories/*.stories.tsx` — 35 story files.
+- `accura-ui/.storybook/preview.tsx` — light/dark via `withThemeByClassName`.
+- `accura-ui/CLAUDE.md` — agent rules for the code side. Read before writing any component.
+
+⚠️ `chat-bubble.tsx` exists with no story — ChatBubble was removed from Storybook. The Screens/Northwind templates were also removed.
+
+## Tokens — `tokens/`
+
+DTCG source + Style Dictionary build.
+
+- `tokens/primitives.tokens.json` · `semantics.tokens.json` · `components.tokens.json` · `tokens.tokens.json`
+- `tokens/sd.build.mjs` — run `node sd.build.mjs` after re-exporting from Figma
+- `tokens/validate-contrast.mjs` — contrast gate
+
+⚠️ These JSONs are **Agentic's exported values**, not Accura's. `accura-ui/src/app/tokens.css` is the Accura source of truth and was generated directly from Accura's Figma variables. Treat the JSONs as the pipeline template until they are re-exported from Accura's file.
+
+## Tracking
+
+- `docs/tracking/Storybook Status.md` — per-component pipeline status. ⚠️ Reflects Agentic's status, not Accura's.
+- `docs/tracking/Audit Status.md` — Figma component audit log. ⚠️ Agentic's audits.
+
+---
+
+## Figma
+
+**Accura DS file:** `32llw6anFsjPISJrrp1and` — `[Accura] Agentic Design System`
+Collections: Primitives `1:2` (Value) · Semantics `1:129` (Light/Dark) · Components `17:4484` (Light)
+228 primitives local / 190 published · 114 semantics local / 113 published · 45 component tokens · 17 text styles
+
+**Known drift:** two Accura libraries exist. `[Accura One] WebApp` consumes `[Accura] Agentic Design System`; `[Accura One] Website Design` consumes `[Accura] Agentic Design System (beta) (Copy)`. They hold **different values for the same token names** (sidebar background, button radius). This repo documents the **non-Copy** library. See open question Q8 in `accura-theme.md`.
+
+Tooling: `figma-cli` — `cd ~/figma-cli && node src/index.js eval "..."`. Requires the FigCli plugin running in the target Figma file.
+
+---
+
+## Known divergences between this repo and Figma
+
+Code has been changed ahead of Figma in three places. Do not "fix" these by reverting to Figma:
+
+| Token | Figma | This repo | Why |
+|---|---|---|---|
+| `color/sidebar/ring` | `#2b7fff` blue | `#17bb77` green | brand-correct; Figma not yet updated |
+| `color/sidebar/accent` | `#f4f4f5` / `#3f3f46` | `#175e41` brand/900 | requested |
+| `color/sidebar/accent/foreground` | `#18181b` / `#fafafa` | `#ffffff` | requested |
+
+`sidebar/active` and `active/foreground` alias `accent` and `accent/foreground` in Figma, so they follow.

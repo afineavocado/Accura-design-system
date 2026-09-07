@@ -1,0 +1,300 @@
+{
+  "name": "alert-dialog",
+  "figmaNodeId": "152:3240",
+  "description": "A modal overlay that requires an explicit user decision before the page can continue. Use when both confirm and cancel are real choices, not when cancel is simply 'close the modal'.",
+  "category": "overlay",
+  "shadcnBase": "alert-dialog",
+  "primitiveBase": "Radix UI AlertDialog (@radix-ui/react-alert-dialog)",
+
+  "meta": {
+    "sourceMarkdown": "Component Markdown/AlertDialog.md",
+    "storyFile": "src/stories/AlertDialog.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Footer button fills are set by the parent alert-dialog on button instance roots — this is intentional Figma composition, not an R8 violation.",
+      "Destructive type icon-container uses color/status/danger-subtle fill — icon inside may use color/status/danger-subtle/foreground (valid paired-surface)."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-17",
+        "change": "Destructive stories (Destructive, DestructiveCentered): confirm button switched from asChild + <Button variant='destructive'> to AlertDialogAction className={buttonVariants({ variant: 'destructive' })} (shadcn-canonical). The asChild approach made Radix Slot concatenate AlertDialogAction's default buttonVariants() (primary) with the child's destructive classes without tailwind-merge, so primary won and the confirm rendered blue. Story-only; component tsx unchanged.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "icon-container Destructive uses color/status/danger-subtle — icon must use danger-subtle/foreground, not color/icon/danger."
+    }
+  },
+
+  "implementation": {
+    "tsxFile": "src/components/ui/alert-dialog.tsx",
+    "packageDeps": ["@radix-ui/react-alert-dialog"],
+    "exports": [
+      "AlertDialog", "AlertDialogPortal", "AlertDialogOverlay", "AlertDialogTrigger",
+      "AlertDialogContent", "AlertDialogHeader", "AlertDialogFooter",
+      "AlertDialogTitle", "AlertDialogDescription", "AlertDialogAction", "AlertDialogCancel"
+    ],
+    "notes": [
+      "No × close button on destructive modals — closing ≠ cancelling. If × is needed, use Dialog instead.",
+      "Focus is trapped by Radix on open. Initial focus goes to first focusable element (cancel button).",
+      "Backdrop click does NOT close — by design. Forces explicit decision.",
+      "AlertDialogAction already applies buttonVariants() (default primary). For a destructive confirm, pass className={buttonVariants({ variant: 'destructive' })} on AlertDialogAction. Do NOT wrap a nested <Button variant='destructive'> via asChild — Radix Slot concatenates both classNames without tailwind-merge, so primary wins and the button renders blue."
+    ]
+  },
+
+  "links": {
+    "figma": "https://www.figma.com/design/YWfTOUTpFZ0BNxHobfUqme?node-id=152:3240",
+    "shadcn": "https://ui.shadcn.com/docs/components/alert-dialog",
+    "radix": "https://www.radix-ui.com/primitives/docs/components/alert-dialog",
+    "storybook": "http://localhost:6006/?path=/docs/overlay-alertdialog--docs"
+  },
+
+  "relationships": {
+    "subComponents": [],
+    "usedBy": [],
+    "relatedComponents": [
+      { "name": "alert", "reason": "Alert is inline non-blocking; AlertDialog is modal and blocks until decided" },
+      { "name": "dialog", "reason": "Dialog has neutral close (×/backdrop); AlertDialog forces an explicit decision" },
+      { "name": "button", "reason": "Footer buttons are Button instances — Primary or Destructive for confirm, Outline for cancel" }
+    ],
+    "mustBeChildOf": [],
+    "mustNotBeChildOf": [],
+    "composedWith": ["Button"],
+    "requires": [],
+    "triggers": ["onConfirm action", "onCancel action"],
+    "blocksWhen": ["open === true — blocks all page interaction"],
+    "exposesState": ["open"]
+  },
+
+  "componentSets": {
+    "alert-dialog": {
+      "id": "152:3240",
+      "variants": 8,
+      "purpose": "Overlay modal requiring explicit user decision — Align × Footer × Type"
+    }
+  },
+
+  "variants": {
+    "Align": {
+      "type": "enum",
+      "values": ["Left", "Center"],
+      "default": "Left",
+      "reactProp": "align",
+      "reactValues": { "Left": "left", "Center": "center" },
+      "intent": {
+        "Left": "Default layout — title and description left-aligned. Use for longer explanatory text.",
+        "Center": "Centered layout — use for brief, unambiguous confirmations with short title."
+      }
+    },
+    "Footer": {
+      "type": "enum",
+      "values": ["Inline", "Full-width"],
+      "default": "Inline",
+      "reactProp": "footerLayout",
+      "reactValues": { "Inline": "inline", "Full-width": "full-width" },
+      "intent": {
+        "Inline": "Buttons side by side, right-aligned. Use on desktop with short button labels.",
+        "Full-width": "Buttons stacked, each full width. Use on mobile or when labels are long."
+      }
+    },
+    "Type": {
+      "type": "enum",
+      "values": ["Default", "Destructive"],
+      "default": "Default",
+      "reactProp": "type",
+      "reactValues": { "Default": "default", "Destructive": "destructive" },
+      "intent": {
+        "Default": "Non-destructive decision — acknowledgement, confirmation, terms. Cancel may be equivalent to ×.",
+        "Destructive": "Irreversible or high-stakes action. No × allowed. Both buttons are real decisions."
+      }
+    }
+  },
+
+  "tokens": {
+    "container": {
+      "All": {
+        "fill": "color/surface/overlay",
+        "stroke": "color/border/default",
+        "strokeWeight": 1,
+        "strokeAlign": "inside",
+        "radius": "radius/lg",
+        "shadow": "none",
+        "padding": "spacing/component/xl"
+      }
+    },
+    "typography": {
+      "title": {
+        "All": { "fill": "color/surface/overlay/foreground" }
+      },
+      "description": {
+        "All": { "fill": "color/text/secondary" }
+      }
+    },
+    "iconContainer": {
+      "Default": { "fill": "color/background/muted" },
+      "Destructive": { "fill": "color/status/danger-subtle" }
+    },
+    "spacing": {
+      "paddingTop": "spacing/component/xl",
+      "paddingBottom": "spacing/component/xl",
+      "paddingLeft": "spacing/component/xl",
+      "paddingRight": "spacing/component/xl",
+      "gap": "spacing/component/lg",
+      "footerGap": "spacing/component/sm"
+    },
+    "states": {
+      "focus": {
+        "indicator": "ring",
+        "token": "color/ring",
+        "weight": 2,
+        "align": "outside"
+      }
+    }
+  },
+
+  "composition": {
+    "structure": "root > [icon-container?] + content > [title, description, footer > [btn-cancel, btn-confirm]]",
+    "slots": [],
+    "subComponents": [],
+    "layoutMode": "VERTICAL",
+    "alignment": "LEFT or CENTER per Align variant",
+    "rules": [
+      "Footer buttons are Button instances — set via Variant prop, never repaint internally",
+      "Backdrop click does not close — Radix default for AlertDialog",
+      "No × button on destructive type — both buttons must be real decisions"
+    ]
+  },
+
+  "behavior": {
+    "interactionModel": "controlled",
+    "openState": {
+      "trigger": "AlertDialogTrigger click",
+      "closeTriggers": ["AlertDialogAction click", "AlertDialogCancel click", "Escape key"],
+      "delay": "none"
+    },
+    "focusManagement": {
+      "trapFocus": true,
+      "initialFocus": "first focusable element (cancel button)",
+      "returnFocus": "trigger element on close"
+    },
+    "animation": {
+      "dataAttributes": ["data-state=open", "data-state=closed"],
+      "description": "Overlay fades in. Panel zooms in from center (zoom-in-95). Reverses on close."
+    },
+    "scrollBehavior": "body scroll locked while open"
+  },
+
+  "accessibility": {
+    "role": "alertdialog",
+    "ariaAttributes": {
+      "aria-labelledby": "auto — points to AlertDialogTitle",
+      "aria-describedby": "auto — points to AlertDialogDescription",
+      "aria-modal": "true"
+    },
+    "liveRegion": {
+      "used": true,
+      "politeness": "assertive",
+      "announces": "dialog title and content on open — role=alertdialog triggers assertion"
+    },
+    "keyboard": {
+      "Tab / Shift+Tab": "Cycle focus between footer buttons",
+      "Enter / Space": "Activate focused button",
+      "Escape": "Close dialog, return focus to trigger"
+    },
+    "screenReaderName": "Derived from AlertDialogTitle via aria-labelledby",
+    "focusIndicator": "color/ring 2px outside on focused buttons",
+    "touchTarget": "Buttons meet 44px minimum via Button component",
+    "requiredMarkup": ["AlertDialogTitle (required for aria-labelledby)", "AlertDialogDescription (required for aria-describedby)"]
+  },
+
+  "storybook": {
+    "file": "src/stories/AlertDialog.stories.tsx",
+    "title": "Overlay/AlertDialog",
+    "stories": ["Default", "Destructive", "CenterAlign", "FullWidthFooter", "DestructiveCentered"],
+    "decorators": ["none"],
+    "notes": "Footer gap fixed 2026-06-03: flex-col gap changed from xs (4px) to sm (8px) per spec. Destructive confirm uses buttonVariants({ variant: 'destructive' }) on AlertDialogAction (not asChild + nested Button) — verified red in light + dark 2026-06-17."
+  },
+
+  "constraints": {
+    "usage": [
+      "Use only when the user must make a decision before continuing.",
+      "Both confirm and cancel must be real choices — not just 'close the modal'.",
+      "Type=Destructive: always include a cancel path with clear labeling ('Cancel', 'Keep my account')."
+    ],
+    "doNot": [
+      "Do not add a × close button to Type=Destructive — closing ≠ cancelling.",
+      "Do not use for non-blocking feedback — use inline alert instead.",
+      "Do not use for forms or complex content — use Dialog instead.",
+      "Do not override button fills inside footer button instances — change Variant prop instead.",
+      "Do not use generic 'Are you sure?' — describe the specific consequence."
+    ],
+    "combinations": {
+      "required": [],
+      "forbidden": [
+        "Type=Destructive + × close button",
+        "AlertDialog with form fields (use Dialog instead)"
+      ]
+    }
+  },
+
+  "bestPractice": {
+    "useCases": [
+      "Confirming workspace or project deletion — irreversible, user must explicitly choose",
+      "Revoking admin access for a team member — high-stakes, affirmative choice required",
+      "Discarding unsaved changes — 'Save' or 'Discard' are both real decisions",
+      "Accepting terms of service before accessing a restricted area",
+      "Confirming a subscription charge or payment before it processes",
+      "Overwriting an existing file — both 'Overwrite' and 'Cancel' are meaningful"
+    ],
+    "variantExamples": {
+      "Type=Default": {
+        "whenToUse": "Decision required but not destructive — acknowledgement, confirmation, opt-in",
+        "examples": ["Accept invitation?", "Mark all as read?", "Publish this draft?"]
+      },
+      "Type=Destructive": {
+        "whenToUse": "Irreversible or high-stakes action where confirm is dangerous",
+        "examples": ["Delete workspace?", "Revoke API key?", "Discard unsaved changes?"]
+      },
+      "Footer=Full-width": {
+        "whenToUse": "Long button labels or mobile layout",
+        "examples": ["'Yes, delete my account' / 'No, keep my account' stacked"]
+      },
+      "Align=Center": {
+        "whenToUse": "Brief, unambiguous confirmation with short title and description",
+        "examples": ["Centered 'Archive project?' with icon"]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Feedback that doesn't block the user",
+        "use": "alert (inline)",
+        "notInstead": "alert-dialog"
+      },
+      {
+        "situation": "User can close without deciding (× is a valid exit)",
+        "use": "dialog",
+        "notInstead": "alert-dialog"
+      },
+      {
+        "situation": "Complex form or multi-step flow in a modal",
+        "use": "dialog",
+        "notInstead": "alert-dialog"
+      },
+      {
+        "situation": "Auto-dismissing status after an action",
+        "use": "toast",
+        "notInstead": "alert-dialog"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/alert-dialog",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/alert-dialog"
+    }
+  }
+}

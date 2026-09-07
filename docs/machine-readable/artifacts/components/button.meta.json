@@ -1,0 +1,399 @@
+{
+  "name": "button",
+  "figmaNodeId": "12:2893",
+  "description": "A clickable action element. Supports 6 visual types, 5 states, and 6 sizes including icon-only variants.",
+  "category": "actions",
+  "shadcnBase": "button",
+  "variants": {
+    "Type": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Outline",
+        "Secondary",
+        "Ghost",
+        "Link",
+        "Destructive"
+      ],
+      "default": "Default",
+      "reactProp": "variant",
+      "reactValues": {
+        "Default": "default",
+        "Outline": "outline",
+        "Secondary": "secondary",
+        "Ghost": "ghost",
+        "Link": "link",
+        "Destructive": "destructive"
+      },
+      "intent": {
+        "Default": "Principal call to action. Use once per page or section.",
+        "Outline": "Neutral cancel/back/dismiss, or uncolored parallel action. Use Outline for Cancel — not Secondary.",
+        "Secondary": "Lighter-weight branded parallel action paired with Default. NOT for cancel/back/dismiss.",
+        "Ghost": "Lowest-emphasis supplementary or toolbar action.",
+        "Link": "Navigation only. Do not use for data mutation.",
+        "Destructive": "Permanent delete, remove, stop, or revoke action."
+      }
+    },
+    "State": {
+      "type": "enum",
+      "values": [
+        "Enabled",
+        "Hover",
+        "Focus",
+        "Disabled",
+        "Active"
+      ],
+      "default": "Enabled",
+      "reactProp": "disabled",
+      "reactValues": {
+        "Disabled": true
+      }
+    },
+    "Size": {
+      "type": "enum",
+      "values": [
+        "Small",
+        "Default",
+        "Large",
+        "Icon Small",
+        "Icon Default",
+        "Icon Large"
+      ],
+      "default": "Default",
+      "reactProp": "size",
+      "reactValues": {
+        "Small": "sm",
+        "Default": "default",
+        "Large": "lg",
+        "Icon Small": "icon-sm",
+        "Icon Default": "icon",
+        "Icon Large": "icon-lg"
+      },
+      "dimensions": {
+        "Small": {
+          "height": 36,
+          "paddingH": 12,
+          "radius": 8,
+          "textStyle": "label/sm"
+        },
+        "Default": {
+          "height": 40,
+          "paddingH": 16,
+          "radius": 8,
+          "textStyle": "label/md"
+        },
+        "Large": {
+          "height": 44,
+          "paddingH": 16,
+          "radius": 12,
+          "textStyle": "label/md"
+        },
+        "Icon Small": {
+          "height": 36,
+          "width": 36,
+          "radius": 8
+        },
+        "Icon Default": {
+          "height": 40,
+          "width": 40,
+          "radius": 8
+        },
+        "Icon Large": {
+          "height": 44,
+          "width": 44,
+          "radius": 12
+        }
+      }
+    }
+  },
+  "componentProperties": {
+    "Label": {
+      "type": "TEXT",
+      "default": "Label",
+      "reactProp": "children"
+    },
+    "Leading Icon": {
+      "type": "BOOLEAN",
+      "default": false
+    },
+    "Trailing Icon": {
+      "type": "BOOLEAN",
+      "default": false
+    },
+    "Icon leading swap": {
+      "type": "INSTANCE_SWAP",
+      "default": "placeholder"
+    },
+    "Icon trailing swap": {
+      "type": "INSTANCE_SWAP",
+      "default": "placeholder"
+    },
+    "Icon swap": {
+      "type": "INSTANCE_SWAP",
+      "default": "placeholder"
+    }
+  },
+  "tokens": {
+    "type": {
+      "Default": {
+        "fill": "button/primary/bg/bg",
+        "fg": "button/primary/fg/fg"
+      },
+      "Secondary": {
+        "fill": "button/secondary/bg/bg",
+        "fg": "button/secondary/fg/fg"
+      },
+      "Outline": {
+        "fill": "button/outline/bg/bg",
+        "border": "button/outline/border/default",
+        "fg": "button/outline/fg/fg"
+      },
+      "Ghost": {
+        "fill": "transparent",
+        "fg": "button/ghost/fg/fg"
+      },
+      "Link": {
+        "fill": "transparent",
+        "fg": "button/link/fg/default"
+      },
+      "Destructive": {
+        "fill": "button/destructive/bg/bg",
+        "fg": "button/destructive/fg/fg"
+      }
+    },
+    "state": {
+      "Outline": {
+        "Enabled": {
+          "border": "button/outline/border/default"
+        },
+        "Hover": {
+          "border": "button/outline/border/hover"
+        },
+        "Focus": {
+          "border": "color/ring",
+          "strokeWeight": 2,
+          "strokeAlign": "outside"
+        },
+        "Active": {
+          "border": "button/outline/border/active"
+        },
+        "Disabled": {
+          "border": "button/outline/border/disabled"
+        }
+      },
+      "Link": {
+        "Enabled": {
+          "fg": "button/link/fg/default"
+        },
+        "Hover": {
+          "fg": "button/link/fg/hover"
+        },
+        "Active": {
+          "fg": "button/link/fg/active"
+        },
+        "Disabled": {
+          "fg": "button/link/fg/disabled"
+        }
+      }
+    },
+    "size": {
+      "height": {
+        "Small": "button/size/Button-height-small",
+        "Default": "button/size/Button-height medium",
+        "Large": "button/size/Button-height-large"
+      },
+      "paddingH": {
+        "Small": "button/size/Button-padding-small",
+        "Default": "button/size/Button-padding-default",
+        "Large": "button/size/Button-padding-default"
+      },
+      "gap": "button/size/Button spacing",
+      "radius": {
+        "Small": "button/size/Button radius 2",
+        "Default": "button/size/Button radius 2",
+        "Large": "button/size/Button radius 1",
+        "Icon Small": "button/size/Button radius 2",
+        "Icon Default": "button/size/Button radius 2",
+        "Icon Large": "button/size/Button radius 1"
+      }
+    }
+  },
+  "composition": {
+    "textButtonSlots": [
+      "leading-icon",
+      "label",
+      "trailing-icon"
+    ],
+    "iconOnlySlot": "icon",
+    "cannotContain": [
+      "Button",
+      "Input",
+      "Form"
+    ]
+  },
+  "accessibility": {
+    "role": "button",
+    "linkRoleWhenTypeLink": "link",
+    "keyboard": {
+      "button": [
+        "Tab to focus",
+        "Enter to activate",
+        "Space to activate"
+      ],
+      "link": [
+        "Tab to focus",
+        "Enter to activate"
+      ]
+    },
+    "screenReaderName": "Visible label text. Icon-only buttons require tooltip text as aria-label.",
+    "touchTarget": {
+      "native44px": [
+        "Large",
+        "Icon Large"
+      ],
+      "needsPadding": [
+        "Small",
+        "Default",
+        "Icon Small",
+        "Icon Default"
+      ]
+    }
+  },
+  "constraints": [
+    "Use maximum one Default button per page section.",
+    "Secondary only appears alongside a Default button.",
+    "Link type is navigation only.",
+    "Destructive actions that are irreversible require a confirmation dialog.",
+    "Icon-only sizes always require a tooltip.",
+    "Do not override fills manually on button instances."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Submitting a form (creating a project, saving settings, sending a message)",
+      "Triggering a destructive action that opens a confirmation dialog (deleting a record, revoking access)",
+      "Providing the primary call-to-action in a hero section or onboarding step",
+      "Opening an overlay — a dialog, sheet, or drawer — via a clearly labelled button",
+      "Performing a toolbar or in-context action (formatting text, adding a row, running a filter)",
+      "Navigating to a new route when the destination is the primary next step in a flow (Type=Link only)"
+    ],
+    "variantExamples": {
+      "Default": {
+        "whenToUse": "The single most important action on the current view",
+        "examples": [
+          "Create Project in an empty state",
+          "Save Changes in settings",
+          "Confirm in a dialog footer"
+        ]
+      },
+      "Outline": {
+        "whenToUse": "Neutral cancel/back/dismiss, or parallel uncolored actions alongside Default",
+        "examples": [
+          "Cancel next to Save Changes",
+          "Back in a multi-step wizard",
+          "Import next to Create"
+        ]
+      },
+      "Secondary": {
+        "whenToUse": "Lighter-weight branded parallel action alongside Default — NOT cancel/back/dismiss",
+        "examples": [
+          "Preview next to Publish",
+          "Export next to Generate"
+        ]
+      },
+      "Ghost": {
+        "whenToUse": "Low-priority supplementary action in a dense or contextual space",
+        "examples": [
+          "Edit inside a card",
+          "Clear in a filter bar",
+          "toolbar icon actions"
+        ]
+      },
+      "Link": {
+        "whenToUse": "Pure navigation — takes the user to a new route",
+        "examples": [
+          "View documentation",
+          "See all results",
+          "Go to billing"
+        ]
+      },
+      "Destructive": {
+        "whenToUse": "Permanently removes or irreversibly modifies data",
+        "examples": [
+          "Delete Project",
+          "Revoke API key",
+          "Remove member"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "User needs to navigate to a different page or route",
+        "use": "button Type=Link",
+        "notInstead": "navigation-menu (use nav-menu for multi-item top nav; Link button for single inline link)"
+      },
+      {
+        "situation": "Two or more related actions that belong together visually (Bold / Italic, Grid / List)",
+        "use": "button-group",
+        "notInstead": "button placed side by side without grouping"
+      },
+      {
+        "situation": "Inline anchor text within a paragraph",
+        "use": "button Type=Link or a plain <a>",
+        "notInstead": "button Type=Default (fills draw too much weight in running text)"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/button",
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Button.md",
+    "storyFile": "src/stories/Button.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Ready as Batch 1 schema reference.",
+      "Figma R1–R8 audit passed 2026-05-28 — 0 issues across 165 variants. Uses Components-collection button/* tokens correctly."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/button.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Button"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Button.stories.tsx",
+    "title": "Actions/Button",
+    "stories": [
+      "Default",
+      "Outline",
+      "Secondary",
+      "Ghost",
+      "Link",
+      "Destructive",
+      "Small",
+      "Large",
+      "Disabled",
+      "WithLeadingIcon",
+      "IconOnly",
+      "DestructiveWithConfirmation"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

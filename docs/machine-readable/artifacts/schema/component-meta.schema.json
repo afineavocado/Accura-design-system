@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentic-design-system.local/component-meta.schema.json",
+  "title": "Agentic Component Metadata v3",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "name",
+    "description",
+    "category",
+    "shadcnBase",
+    "variants",
+    "tokens",
+    "accessibility",
+    "meta",
+    "implementation",
+    "storybook"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "figmaNodeId": { "type": "string" },
+    "description": { "type": "string" },
+    "category": { "type": "string" },
+    "shadcnBase": { "type": "string" },
+    "meta": {
+      "type": "object",
+      "required": ["sourceMarkdown", "artifactStatus", "version"],
+      "additionalProperties": true,
+      "properties": {
+        "sourceMarkdown": { "type": "string" },
+        "storyFile": { "type": "string" },
+        "artifactStatus": {
+          "type": "string",
+          "enum": ["ready", "needs review", "needs audit", "stale", "blocked"]
+        },
+        "lastAuditDate": { "type": "string" },
+        "auditRules": { "type": "string" },
+        "version": { "type": "string" },
+        "openQuestions": { "type": "array" },
+        "notes": { "type": "array" },
+        "knownIssues": { "type": "array" },
+        "changelog": { "type": "array" },
+        "darkMode": { "type": "object" }
+      }
+    },
+    "implementation": {
+      "type": "object",
+      "required": ["tsxFile"],
+      "additionalProperties": true,
+      "properties": {
+        "tsxFile": { "type": "string" },
+        "packageDeps": { "type": "array" },
+        "exports": { "type": "array" },
+        "notes": { "type": "array" }
+      }
+    },
+    "storybook": {
+      "type": "object",
+      "required": ["file", "title"],
+      "additionalProperties": true,
+      "properties": {
+        "file": { "type": "string" },
+        "title": { "type": "string" },
+        "stories": { "type": "array" },
+        "decorators": { "type": "array" },
+        "notes": { "type": "string" }
+      }
+    },
+    "variants": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["type", "values", "default"],
+        "additionalProperties": true,
+        "properties": {
+          "type": { "type": "string", "enum": ["enum", "boolean", "string", "number"] },
+          "values": { "type": "array", "items": { "type": ["string", "number", "boolean"] }, "minItems": 1 },
+          "default": { "type": ["string", "number", "boolean"] },
+          "reactProp": { "type": "string" },
+          "reactValues": { "type": "object" }
+        }
+      }
+    },
+    "tokens": { "type": "object" },
+    "composition": { "type": "object" },
+    "behavior": { "type": "object" },
+    "accessibility": { "type": "object" },
+    "constraints": { "type": ["array", "object"] },
+    "bestPractice": { "type": "object" },
+    "relationships": { "type": "object" }
+  }
+}

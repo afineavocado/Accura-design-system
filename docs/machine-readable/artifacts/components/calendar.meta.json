@@ -1,0 +1,390 @@
+{
+  "name": "calendar",
+  "figmaNodeId": "28:4073",
+  "description": "A date and range selection control built from composable calendar-day, calendar-month, preset, and calendar component sets.",
+  "category": "forms",
+  "shadcnBase": "calendar",
+  "componentSets": {
+    "calendar-day": {
+      "figmaNodeId": "27:3095",
+      "purpose": "Individual day cell."
+    },
+    "calendar-month": {
+      "figmaNodeId": "159:15346",
+      "purpose": "Month pill."
+    },
+    "_calendar-preset": {
+      "figmaNodeId": "159:15381",
+      "purpose": "Preset shortcut row."
+    },
+    "calendar": {
+      "figmaNodeId": "28:4073",
+      "purpose": "Top-level container."
+    }
+  },
+  "variants": {
+    "Day State": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Outside",
+        "Today",
+        "Selected",
+        "Range-Start",
+        "Range-Middle",
+        "Range-End",
+        "Disabled",
+        "Booked"
+      ],
+      "default": "Default",
+      "reactProp": "dayState",
+      "reactValues": {
+        "Default": "default",
+        "Outside": "outside",
+        "Today": "today",
+        "Selected": "selected",
+        "Range-Start": "range-start",
+        "Range-Middle": "range-middle",
+        "Range-End": "range-end",
+        "Disabled": "disabled",
+        "Booked": "booked"
+      }
+    },
+    "Type": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Range",
+        "Month-Year Selector",
+        "Presets",
+        "Date-Time Picker",
+        "Booked Dates"
+      ],
+      "default": "Default",
+      "reactProp": "type",
+      "reactValues": {
+        "Default": "default",
+        "Range": "range",
+        "Month-Year Selector": "month-year-selector",
+        "Presets": "presets",
+        "Date-Time Picker": "date-time-picker",
+        "Booked Dates": "booked-dates"
+      }
+    }
+  },
+  "tokens": {
+    "day": {
+      "Default": {
+        "fill": "transparent",
+        "text": "color/background/default/foreground"
+      },
+      "Outside": {
+        "fill": "transparent",
+        "text": "color/text/secondary"
+      },
+      "Today": {
+        "fill": "color/background/accent",
+        "text": "color/background/accent/foreground"
+      },
+      "Selected": {
+        "fill": "color/brand/primary",
+        "text": "color/brand/primary/foreground"
+      },
+      "Range-Middle": {
+        "fill": "color/background/accent",
+        "text": "color/background/accent/foreground"
+      },
+      "Disabled": {
+        "fill": "transparent",
+        "text": "color/text/disabled"
+      },
+      "radius": "radius/md",
+      "size": "32x32"
+    },
+    "container": {
+      "fill": "color/surface/default",
+      "stroke": "color/border/default",
+      "radius": "radius/lg",
+      "padding": "spacing/component/md"
+    },
+    "timePicker": {
+      "trigger": {
+        "fill": "color/background/default",
+        "stroke": "color/input/border",
+        "strokeOpen": "color/border/focus",
+        "glowOpen": "color-mix(in_srgb,var(--color-ring)_20%,transparent)",
+        "strokeFocusWithin": "color/border/focus",
+        "glowFocusWithin": "color-mix(in_srgb,var(--color-ring)_20%,transparent)",
+        "radius": "radius/md",
+        "height": "h-9 (36px)",
+        "paddingX": "spacing/component/md (12px)",
+        "gap": "spacing/component/sm (8px)",
+        "clockIcon": "color/icon/default — h-4 w-4, trailing position, tabIndex=-1",
+        "inputText": "color/background/default/foreground",
+        "inputPlaceholder": "color/input/placeholder — text 'HH:MM'",
+        "openStateTrigger": "JS conditional (open && '...') — not CSS data-attribute. Popover.Trigger wraps only the Clock button, not the whole container."
+      },
+      "sectionLabel": {
+        "text": "color/background/default/foreground",
+        "textStyle": "text-sm font-medium",
+        "marginBottom": "mb-2 (8px)",
+        "content": "fixed string 'Time'"
+      },
+      "popover": {
+        "fill": "color/surface/overlay",
+        "stroke": "color/border/default",
+        "radius": "radius/lg",
+        "shadow": "shadow-[var(--shadow-sm)]",
+        "padding": "p-0.5 (2px — spacing/component/xxs)",
+        "sideOffset": "4px below trigger",
+        "align": "start",
+        "animation": "data-[state=open]: fade-in-0 + zoom-in-95 | data-[state=closed]: fade-out-0 + zoom-out-95",
+        "focusBehavior": "onOpenAutoFocus preventDefault — focus stays on text input, not first column item"
+      },
+      "columnContainer": {
+        "height": "h-48 (192px fixed, overflow-y-auto)",
+        "scrollbar": "hidden — scrollbar-none class + scrollbarWidth:none inline style",
+        "autoScroll": "on mount and on selected change: querySelector [data-selected=true] → scrollIntoView block:center behavior:instant",
+        "gap": "gap-0.5 (2px — spacing/component/xxs between items within each column)"
+      },
+      "columnLabel": {
+        "text": "color/text/secondary",
+        "textStyle": "text-xs font-medium",
+        "marginBottom": "pb-1 (4px)",
+        "values": "HH (left column) | MM (right column)"
+      },
+      "columnSeparator": {
+        "text": ":",
+        "textStyle": "text-sm font-medium color/text/secondary",
+        "alignment": "flex items-center h-48 pt-7 — vertically offset to align with items, not label",
+        "gap": "gap-0.5 (2px — spacing/component/xxs) between columns"
+      },
+      "columnItem": {
+        "height": "h-8 (32px)",
+        "width": "w-12 (48px — fills column width)",
+        "radius": "radius/md",
+        "textStyle": "text-sm font-medium",
+        "focusRing": "focus-visible:ring-2 focus-visible:ring-[color/ring]",
+        "dataAttribute": "data-selected=true on selected item",
+        "Default": {
+          "fill": "transparent",
+          "text": "color/background/default/foreground"
+        },
+        "Hover": {
+          "fill": "color/background/accent",
+          "text": "color/background/accent/foreground"
+        },
+        "Selected": {
+          "fill": "color/brand/primary",
+          "text": "color/brand/primary/foreground"
+        }
+      },
+      "initialState": {
+        "hours": "12",
+        "minutes": "00",
+        "inputVal": "12:00",
+        "popoverOpen": false
+      },
+      "structure": "CalendarWithTime > [Calendar] + [border-t section > Time label + [Popover > trigger + Popover.Content(p-0.5, radius/lg) > flex row gap-0.5 > [HH col] + [:] + [MM col]]]",
+      "behavior": {
+        "typingSync": "Input change → regex /^(\\d{1,2}):(\\d{2})$/ match → hours clamped to 0-23 padded 2 digits, minutes snapped to nearest 5-minute value in MINUTES array",
+        "columnHourSelect": "sets hours + rebuilds inputVal as HH:minutes — popover stays open",
+        "columnMinuteSelect": "sets minutes + rebuilds inputVal as hours:MM — popover stays open",
+        "popoverToggle": "Clock button (Popover.Trigger) toggles open. Text input does NOT open popover on focus — only Clock button does",
+        "closeOnOutsideClick": "Radix Popover default — clicking outside the popover closes it",
+        "persistsOnClose": "selected hours/minutes preserved between open/close — reopening shows previous selection scrolled to center",
+        "dateTimeIndependence": "date selection (calendar) and time selection are independent — neither resets the other"
+      }
+    }
+  },
+  "composition": {
+    "calendar": [
+      "header",
+      "weekdays",
+      "week rows or month rows"
+    ],
+    "range": [
+      "calendar instance",
+      "divider",
+      "calendar instance"
+    ],
+    "presets": [
+      "presets",
+      "separator",
+      "calendar instance"
+    ],
+    "dateTime": [
+      "calendar instance (mode=single)",
+      "separator",
+      "footer: Time label + combobox-trigger (Type=Time-picker, State=Default) which opens menu-dropdown Type=os-time-menu"
+    ],
+    "monthYearSelector": "view state swap — days | months | years. Month button and year button always visible in header. Months view: 4×3 pill grid. Years view: 4×3 pill grid (12-year range). Prev/next arrows navigate month/year/12-years depending on active view.",
+    "timePicker": "custom popover — not native OS time input. Two modes: type HH:MM directly, or click Clock icon to open HH/MM scrollable columns. Bidirectional sync: typing updates columns, selecting from columns updates input. Minutes in 5-min increments."
+  },
+  "accessibility": {
+    "role": "application with grid semantics",
+    "grid": "role=grid on weeks area, row per week, gridcell per day.",
+    "selected": "aria-selected=true on selected gridcell.",
+    "disabled": "aria-disabled=true.",
+    "keyboard": [
+      "Arrow keys move focus",
+      "Enter or Space selects",
+      "Page Up/Down changes month",
+      "Home/End move within month"
+    ],
+    "monthLabel": "aria-live=polite announces month changes."
+  },
+  "constraints": [
+    "Use Default for single date selection.",
+    "Use Range for start/end date pairs.",
+    "Use Month-Year Selector only as a drill-down view.",
+    "Do not override calendar-day fills from parent calendar."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Booking or reservation flow where the full month must be visible and unavailable dates are marked",
+      "Dashboard analytics filter where the user picks a date range inline on the page",
+      "Leave or absence request form with a start and end date",
+      "Event scheduler that needs quick preset options ('Next 7 days', 'This month') alongside a custom picker",
+      "Appointment booking widget that combines a date and time in one step",
+      "Report or audit log page where the always-visible calendar is the primary navigation control"
+    ],
+    "variantExamples": {
+      "Default": {
+        "whenToUse": "Single-date selection embedded in a page or panel",
+        "examples": [
+          "Appointment date",
+          "Task due date in a sidebar"
+        ]
+      },
+      "Range": {
+        "whenToUse": "Start + end date pair across two visible months",
+        "examples": [
+          "Hotel check-in / check-out",
+          "Leave request",
+          "Reporting period"
+        ]
+      },
+      "Month-Year Selector": {
+        "whenToUse": "Drill-down navigation — triggered by tapping the month label in any calendar header",
+        "examples": [
+          "Jump to a distant month in a booking flow"
+        ]
+      },
+      "Presets": {
+        "whenToUse": "Power users need fast shortcuts alongside the ability to pick a custom range",
+        "examples": [
+          "Analytics date filter ('Last 7 days', 'Last 30 days', 'Custom')"
+        ]
+      },
+      "Date-Time Picker": {
+        "whenToUse": "Both a date and a time are required in one combined control",
+        "examples": [
+          "Meeting scheduler",
+          "Reminder time",
+          "Scheduled publish"
+        ]
+      },
+      "Booked Dates": {
+        "whenToUse": "Specific days must be marked unavailable; week rows need programmatic control",
+        "examples": [
+          "Rental availability calendar",
+          "Appointment slot widget"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Always-visible date panel embedded in a page layout",
+        "use": "calendar",
+        "notInstead": "date-picker"
+      },
+      {
+        "situation": "Date input that pops a calendar on demand (form field + trigger button)",
+        "use": "date-picker",
+        "notInstead": "calendar"
+      },
+      {
+        "situation": "Multi-date or range selection displayed inline",
+        "use": "calendar (Type=Range)",
+        "notInstead": "date-picker"
+      },
+      {
+        "situation": "User needs quick preset shortcuts alongside a custom range",
+        "use": "calendar (Type=Presets)",
+        "notInstead": "select or input"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/calendar",
+      "radix": "https://react-day-picker.js.org"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Calendar.md",
+    "storyFile": "src/stories/Calendar.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Status is based on Calendar.md only. Calendar.md does not mark this component stale or not ready."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-03",
+        "change": "Month/year selector: 3 views (days|months|years), separate June/2026 buttons. Time picker: custom HH:MM popover with scrollable columns, trailing Clock icon, bidirectional text+picker sync. Row spacing: [&_tbody_tr+tr]:mt-0.5. Outside day selected foreground: aria-selected:opacity-100 + brand/primary/foreground.",
+        "breaking": false
+      },
+      {
+        "date": "2026-06-04",
+        "change": "Date-Time Picker footer updated: input-field instance replaced with combobox-trigger Type=Time-picker instance. Time picker now uses menu-dropdown Type=os-time-menu (HH/MM scrollable columns) instead of a standalone input.",
+        "breaking": false
+      },
+      {
+        "date": "2026-06-04",
+        "change": "Time picker popover corrected to match Figma + system standard: radius radius/md→radius/lg, padding p-2→p-0.5 (2px), column gap gap-2→gap-0.5 (2px). Figma os-time-menu is the source of truth. Also fixed: column item width 40px→48px (w-12), gap between items 0→gap-0.5 (2px).",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/calendar.tsx",
+    "packageDeps": [
+      "react-day-picker@8",
+      "date-fns"
+    ],
+    "exports": [
+      "Calendar"
+    ],
+    "notes": [
+      "Month/year selector: custom CaptionWithToggle replaces DayPicker default nav. View state: days|months|years.",
+      "Multi-month (Range): uses DayPicker built-in caption, no custom wrapper.",
+      "Time picker: custom Radix Popover with two TimeColumn scrollable lists.",
+      "Row spacing: [&_tbody_tr+tr]:mt-0.5 on table — mt-* doesn't work on <tr> without display:flex."
+    ]
+  },
+  "storybook": {
+    "file": "src/stories/Calendar.stories.tsx",
+    "title": "Display/Calendar",
+    "stories": [
+      "Default",
+      "Range",
+      "NoSelection",
+      "WithDisabledDates",
+      "OutsideDaysHidden",
+      "Presets",
+      "DateTimePicker"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": "Month/year selector: 3 views (days|months|years), separate June/2026 buttons. Time picker: custom HH:MM popover with scrollable columns, trailing Clock icon, bidirectional text+picker sync. Row spacing: [&_tbody_tr+tr]:mt-0.5. Outside day selected foreground: aria-selected:opacity-100 + brand/primary/foreground. [title fixed: was Forms/Calendar]"
+  }
+}

@@ -4,8 +4,8 @@
 
 Accura is a **re-theme of the Agentic Design System**, not a fork of its rules.
 
-- **Rules** — naming conventions, semantic layer, paired-surface rule, spacing scale, layout, dark mode — are inherited **unchanged** from `agentic-design-system.md`. Do not duplicate or restate them here.
-- **Values** — the tokens below — are what makes Accura look like Accura. This file is the Accura equivalent of `agentic-theme.md`.
+- **Rules** — naming conventions, semantic layer, paired-surface rule, spacing scale, layout, dark mode — are inherited **unchanged** from [`docs/design-system-rules.md`](docs/design-system-rules.md) (vendored). Do not duplicate or restate them here.
+- **Values** — the tokens below — are what makes Accura look like Accura. This file is the Accura equivalent of Agentic's `agentic-theme.md` (upstream, not vendored — its values do not apply here).
 
 > A theme = **{ brand ramp · neutral ramp · radius base · spacing base · type ratio }**
 
@@ -56,7 +56,7 @@ Two of the five primitive levers moved. But the primitive layer is not the whole
 
 ### Why the anchor moved to /800
 
-`agentic-theme.md` defines the acceptance test for a brand anchor — measure against white, then:
+Agentic's theme doc defines the acceptance test for a brand anchor — restated here in full, since that file is not vendored. Measure against white, then:
 
 - **≥ 4.5:1** → ✅ perfect — fill *and* small text
 - **3:1 – 4.5:1** → ⚠️ fill only, bump to a darker step for text/icons
@@ -268,7 +268,7 @@ Forked from `agentic-ui`; identical components, Accura tokens.
 |---|---|
 | Storybook | `npm run storybook` → **6007** |
 | Dev server | `npm run dev` → **3001** |
-| Tokens | `src/app/tokens.css` — generated from the Figma variables, not hand-edited |
+| Tokens | `accura-ui/src/app/tokens.css` — generated from the Figma variables, not hand-edited |
 | Theme switching | `.dark` class via `@storybook/addon-themes` |
 
 `tokens.css` carries **29 light overrides, 10 dark overrides, 5 dark overrides Agentic did not need** (`brand/primary`, `primary-hover`, `primary-active`, `icon/brand`, `opacity/overlay`), and 3 Accura-only tokens.
@@ -336,7 +336,7 @@ Same token name, different values, feeding two different product files. **This f
 
 ## How to re-theme
 
-Same 5-lever workflow as `agentic-theme.md`:
+Same 5-lever workflow Agentic uses:
 
 1. **Brand** → pick a hue, regenerate the full ramp, **validate the anchor against white** (≥3:1 floor, ≥4.5:1 ideal). Move the anchor step if the hue can't clear the floor at `/500` — as Accura does at `/800`.
 2. **Neutral** → swap zinc for slate/stone/gray. Highest mood-impact per effort.
@@ -348,6 +348,6 @@ Then regenerate `accura-ui/src/app/tokens.css` from Figma — minding the two tr
 
 ---
 
-*Rules & semantic mappings: `Agentic-design-system/agentic-design-system.md` (inherited unchanged).*
-*Theme pattern this file follows: `Agentic-design-system/agentic-theme.md`.*
+*Rules & semantic mappings: [`docs/design-system-rules.md`](docs/design-system-rules.md) — vendored, inherited unchanged. Its **values** are Agentic's; this file overrides them.*
+*Theme pattern this file follows: `agentic-theme.md` upstream (github.com/afineavocado/agentic-design-system-main).*
 *Values source of truth: Figma `[Accura] Agentic Design System` → Primitives / Semantics / Components.*

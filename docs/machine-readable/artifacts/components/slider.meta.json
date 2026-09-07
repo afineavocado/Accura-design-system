@@ -1,0 +1,203 @@
+{
+  "name": "slider",
+  "figmaNodeId": "67:9199",
+  "description": "A range input control that lets users select a value by dragging a thumb along a track.",
+  "category": "forms",
+  "shadcnBase": "slider",
+  "variants": {
+    "Orientation": {
+      "type": "enum",
+      "values": [
+        "Horizontal",
+        "Vertical"
+      ],
+      "default": "Horizontal",
+      "reactProp": "orientation",
+      "reactValues": {
+        "Horizontal": "horizontal",
+        "Vertical": "vertical"
+      }
+    },
+    "State": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Disabled",
+        "Focus"
+      ],
+      "default": "Default",
+      "reactProp": "disabled",
+      "reactValues": {
+        "Disabled": true
+      }
+    }
+  },
+  "tokens": {
+    "fills": {
+      "track": "color/surface/muted",
+      "range": "color/brand/primary",
+      "thumb": "color/background/default"
+    },
+    "strokes": {
+      "Default": {
+        "thumb": "color/brand/primary",
+        "weight": 2,
+        "align": "inside"
+      },
+      "Disabled": {
+        "thumb": "color/brand/primary",
+        "weight": 2,
+        "align": "inside"
+      },
+      "Focus": {
+        "thumb": "color/ring",
+        "weight": 2,
+        "align": "outside"
+      }
+    },
+    "radius": {
+      "track": "radius/full",
+      "range": "radius/full"
+    },
+    "opacity": {
+      "Disabled": "opacity/disabled"
+    }
+  },
+  "composition": {
+    "layers": [
+      "track",
+      "range",
+      "thumb"
+    ],
+    "horizontalFrame": {
+      "width": 280,
+      "height": 20,
+      "trackHeight": 8,
+      "thumb": 20
+    },
+    "verticalFrame": {
+      "width": 20,
+      "height": 160,
+      "trackWidth": 8,
+      "thumb": 20
+    }
+  },
+  "accessibility": {
+    "role": "slider",
+    "keyboard": [
+      "Tab to focus",
+      "Arrow keys increment or decrement",
+      "Home and End move to min and max"
+    ],
+    "screenReader": "Use aria-valuenow, aria-valuemin, and aria-valuemax.",
+    "focusIndicator": "color/ring stroke on thumb only.",
+    "touchTarget": "Thumb is visually 20x20px; implementation requires 44x44px hit area."
+  },
+  "constraints": [
+    "Use for editable range values only.",
+    "Do not use for binary on/off selection.",
+    "Do not use as read-only progress.",
+    "Always pair with a visible label and value readout in implementation."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Volume or playback speed control — user drags to an approximate level, exact value matters less than feel",
+      "Brightness or display contrast setting in system preferences",
+      "Price range filter on an e-commerce search results page: Min $0 — Max $500",
+      "AI model temperature or creativity parameter — 0.0 to 1.0, continuous approximate value",
+      "Image editing: opacity, blur radius, or saturation — visual feedback updates in real time as the user drags"
+    ],
+    "variantExamples": {
+      "Orientation=Horizontal": {
+        "whenToUse": "Standard left-to-right value selection — the default for almost all cases",
+        "examples": [
+          "Volume control",
+          "Price range",
+          "Opacity slider",
+          "AI temperature"
+        ]
+      },
+      "Orientation=Vertical": {
+        "whenToUse": "Height-constrained layouts or vertical equivalents like equaliser bands",
+        "examples": [
+          "Audio equaliser",
+          "Column height selector in a chart builder"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Approximate value in a continuous range, precision not required",
+        "use": "slider",
+        "notInstead": "input (number)"
+      },
+      {
+        "situation": "Exact numeric value required (quantity, port number, amount)",
+        "use": "input (type=\"number\")",
+        "notInstead": "slider"
+      },
+      {
+        "situation": "Binary on/off control",
+        "use": "switch",
+        "notInstead": "slider"
+      },
+      {
+        "situation": "Read-only progress display (upload %, task completion)",
+        "use": "progress",
+        "notInstead": "slider"
+      },
+      {
+        "situation": "User picks from a small discrete set of named levels",
+        "use": "radio",
+        "notInstead": "slider"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/slider",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/slider"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Slider.md",
+    "storyFile": "src/stories/Slider.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "No hover variant exists in Figma; hover treatment remains CSS implementation detail.",
+      "Figma R1–R8 audit passed 2026-05-28 — 0 issues across 6 variants."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/slider.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Slider"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Slider.stories.tsx",
+    "title": "Forms/Slider",
+    "stories": [
+      "Default",
+      "Horizontal",
+      "Disabled",
+      "Vertical",
+      "Range",
+      "WithSteps"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

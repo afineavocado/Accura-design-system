@@ -1,0 +1,337 @@
+{
+  "name": "textarea",
+  "figmaNodeId": "49:10806",
+  "description": "A multi-line text input for free-form prose. Built on the native HTML textarea element. Use for notes, comments, descriptions, and any content where the user needs more than one line.",
+  "category": "forms",
+  "shadcnBase": "textarea",
+  "primitiveBase": "none",
+
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Textarea.md",
+    "storyFile": "src/stories/Textarea.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Textarea shares the input Figma component set (Type=Textarea). Separate tsx file: textarea.tsx.",
+      "footer > action is a primary Button instance — do not override internally.",
+      "Resize handle is native browser UI — not tokenised, cannot be styled.",
+      "Composed header/footer pattern: the wrapper owns the surface fill (color/input/bg); header, footer, and the textarea itself are transparent so the card reads as one continuous surface in both themes. Do not set color/background/default on header/footer — it matches in light mode but diverges in dark (zinc/950 vs zinc/700)."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-17",
+        "change": "Composed header/footer stories (WithHeader, WithFooter, WithHeaderAndFooter): unified surface — wrapper now carries color/input/bg, header/footer and textarea are bg-transparent. Fixes dark-mode gray band (header/footer were color/background/default = zinc/950 vs body color/input/bg = zinc/700). Story-only; component tsx unchanged.",
+        "breaking": false
+      },
+      {
+        "date": "2026-06-03",
+        "change": "Invalid state: blue focus ring replaced with red ring using [&[aria-invalid]] compound selector. Prevents blue ring appearing on focused invalid field.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "Container fill uses color/input/bg (Dark: zinc/700) — one step lighter than surface/overlay so the textarea stands out from the panel. Disabled fill uses color/surface/muted (Dark: zinc/800).",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+
+  "implementation": {
+    "tsxFile": "src/components/ui/textarea.tsx",
+    "packageDeps": [],
+    "exports": ["Textarea"],
+    "notes": [
+      "Invalid+focused: [&[aria-invalid]] compound selector ensures red ring beats focus-visible specificity.",
+      "Native resize handle kept by default — only use resize-none when fixed height is strictly required.",
+      "Height: uncontrolled in code (user resizes). Figma shows 120px fixed for design reference only."
+    ]
+  },
+
+  "links": {
+    "figma": "https://www.figma.com/design/YWfTOUTpFZ0BNxHobfUqme?node-id=49:10806",
+    "shadcn": "https://ui.shadcn.com/docs/components/textarea",
+    "radix": null,
+    "storybook": "http://localhost:6006/?path=/docs/forms-textarea--docs"
+  },
+
+  "relationships": {
+    "subComponents": [],
+    "usedBy": [],
+    "relatedComponents": [
+      { "name": "input", "reason": "Input is single-line; Textarea is multi-line. Same token set, different structure and height behavior." },
+      { "name": "combobox", "reason": "Use combobox (Filled-chips) instead of Textarea for structured multi-value entry (tags, emails)." },
+      { "name": "label", "reason": "Label component wraps with input-field — required for accessibility." }
+    ],
+    "mustBeChildOf": [],
+    "mustNotBeChildOf": [],
+    "composedWith": ["Label", "description p"],
+    "requires": ["input-field wrapper for standard form use"],
+    "triggers": ["onChange", "onBlur", "form submit via separate button"],
+    "blocksWhen": ["disabled === true"],
+    "exposesState": ["value", "disabled", "aria-invalid"]
+  },
+
+  "componentSets": {
+    "input (Type=Textarea)": {
+      "id": "49:10806",
+      "variants": 6,
+      "purpose": "Raw textarea control — State × 6"
+    },
+    "input-field": {
+      "id": "49:10848",
+      "variants": 4,
+      "purpose": "Complete form field — label + textarea + description"
+    }
+  },
+
+  "variants": {
+    "State": {
+      "type": "enum",
+      "values": ["Default", "Hover", "Focused", "Filled", "Disabled", "Invalid"],
+      "default": "Default",
+      "reactProp": "state",
+      "reactValues": {
+        "Default": "default",
+        "Hover": "hover",
+        "Focused": "focused",
+        "Filled": "filled",
+        "Disabled": "disabled",
+        "Invalid": "invalid"
+      }
+    },
+    "Field State": {
+      "type": "enum",
+      "values": ["Default", "Filled", "Disabled", "Invalid"],
+      "default": "Default",
+      "reactProp": "fieldState",
+      "reactValues": {
+        "Default": "default",
+        "Filled": "filled",
+        "Disabled": "disabled",
+        "Invalid": "invalid"
+      }
+    }
+  },
+
+  "componentProperties": {
+    "Leading Icon": { "type": "BOOLEAN", "default": false, "reactProp": null },
+    "Header": { "type": "BOOLEAN", "default": false, "reactProp": null },
+    "Trailing Text": { "type": "BOOLEAN", "default": false, "reactProp": null, "group": "footer" },
+    "Trailing Button": { "type": "BOOLEAN", "default": false, "reactProp": null, "group": "footer" },
+    "Trailing Icon": { "type": "BOOLEAN", "default": false, "reactProp": null }
+  },
+
+  "tokens": {
+    "container": {
+      "Default": { "fill": "color/input/bg", "stroke": "color/input/border" },
+      "Hover": { "fill": "color/input/bg", "stroke": "color/border/hover" },
+      "Focused": { "fill": "color/input/bg", "stroke": "color/border/focus" },
+      "Filled": { "fill": "color/input/bg", "stroke": "color/input/border" },
+      "Disabled": { "fill": "color/surface/muted", "stroke": "color/border/disabled" },
+      "Invalid": { "fill": "color/input/bg", "stroke": "color/border/error" },
+      "radius": "radius/md"
+    },
+    "typography": {
+      "placeholder": {
+        "Default/Hover/Focused/Invalid": { "fill": "color/input/placeholder" },
+        "Filled": { "fill": "color/background/default/foreground" },
+        "Disabled": { "fill": "color/text/disabled" }
+      },
+      "header-label": { "All": { "fill": "color/background/default/foreground" } },
+      "counter": { "All": { "fill": "color/text/secondary" } }
+    },
+    "icons": {
+      "leading-icon": {
+        "Active": { "stroke": "color/icon/default" },
+        "Disabled": { "stroke": "color/icon/disabled" }
+      },
+      "trailing-icon": {
+        "Active": { "stroke": "color/icon/default" },
+        "Disabled": { "stroke": "color/icon/disabled" }
+      },
+      "header-icon": { "All": { "stroke": "color/icon/default" } },
+      "header-trailing-icon": { "All": { "stroke": "color/icon/default" } }
+    },
+    "spacing": {
+      "paddingTop": "spacing/component/sm",
+      "paddingBottom": "spacing/component/sm",
+      "paddingLeft": "spacing/component/md",
+      "paddingRight": "spacing/component/md",
+      "gap": "spacing/component/sm"
+    },
+    "states": {
+      "focus": {
+        "indicator": "border + glow",
+        "token": "color/border/focus",
+        "weight": 1,
+        "align": "inside",
+        "glowToken": "color/border/focus",
+        "glowOpacity": "20%",
+        "notes": "color/border/focus stroke + ring glow at 20% opacity via color-mix"
+      },
+      "invalid": {
+        "borderToken": "color/border/error",
+        "ringToken": "color/border/error",
+        "ringGlow": "color-mix(in_srgb,var(--color-border-error)_20%,transparent)",
+        "notes": "Uses [&[aria-invalid]] compound selector to beat focus-visible specificity. Blue ring must NOT appear when invalid."
+      },
+      "disabled": {
+        "opacity": null,
+        "fillOverride": "color/surface/muted",
+        "borderOverride": "color/border/disabled",
+        "textOverride": "color/text/disabled"
+      }
+    }
+  },
+
+  "composition": {
+    "structure": "root > [leading-icon?] + [header?] + placeholder + footer > [counter?, action?] + [trailing-icon?]",
+    "slots": [
+      { "name": "header", "accepts": "open-ended", "required": false, "multiple": false, "defaultContent": "header-icon + header-label + header-trailing-icon" },
+      { "name": "footer.counter", "accepts": "typed: text", "required": false, "multiple": false, "defaultContent": "character count string" },
+      { "name": "footer.action", "accepts": "typed: Button (Primary)", "required": false, "multiple": false, "defaultContent": "primary Button instance" }
+    ],
+    "subComponents": [],
+    "layoutMode": "VERTICAL",
+    "alignment": "MIN",
+    "rules": [
+      "Use input-field wrapper for all standard form use — never textarea standalone.",
+      "One trailing slot visible at a time — counter OR action OR trailing-icon.",
+      "footer.action is always a primary Button — do not override its fills.",
+      "Resize handle is native — do not suppress unless fixed height is required."
+    ]
+  },
+
+  "behavior": {
+    "interactionModel": "uncontrolled",
+    "typeGuide": {
+      "Default": "Empty field awaiting input. Shows placeholder text.",
+      "Focused": "User has clicked in. Blue border + ring glow. Enter inserts newline.",
+      "Filled": "User has typed content. Value text replaces placeholder.",
+      "Invalid": "Validation failed. Red border + red ring. Description shows specific error message.",
+      "Disabled": "Non-interactive. Muted fill. No focus possible."
+    },
+    "animation": {
+      "dataAttributes": [],
+      "description": "No animation — native textarea renders immediately on focus."
+    },
+    "scrollBehavior": "internal scroll when content exceeds height (native browser behavior)",
+    "keyboardPattern": {
+      "Tab": "Move focus into / out of textarea",
+      "Shift+Tab": "Move focus backwards",
+      "Enter": "Insert newline (not form submit)"
+    }
+  },
+
+  "accessibility": {
+    "role": "textbox",
+    "ariaAttributes": {
+      "aria-multiline": "true",
+      "aria-labelledby": "manual — via htmlFor/id pairing with label",
+      "aria-describedby": "manual — via aria-describedby pointing to description element",
+      "aria-invalid": "when applicable — marks field as invalid for screen readers",
+      "aria-required": "when applicable",
+      "aria-disabled": "not-used — use disabled attribute instead"
+    },
+    "liveRegion": { "used": false, "politeness": "polite", "announces": "none" },
+    "keyboard": { "Tab": "Focus in/out", "Shift+Tab": "Focus backwards", "Enter": "Insert newline" },
+    "screenReaderName": "Derived from associated label via htmlFor/id pairing",
+    "focusIndicator": "color/border/focus 1px border + glow (valid) | color/border/error 1px border + red glow (invalid)",
+    "touchTarget": "No minimum — textarea fills its container width",
+    "requiredMarkup": ["label with htmlFor matching textarea id", "aria-describedby when description is present"]
+  },
+
+  "storybook": {
+    "file": "src/stories/Textarea.stories.tsx",
+    "title": "Forms/Textarea",
+    "stories": [
+      "Default", "Filled", "Disabled", "Invalid",
+      "WithField", "WithFieldInvalid", "WithFieldDisabled",
+      "WithLeadingIcon", "WithTrailingIcon",
+      "WithHeader", "WithFooter", "WithHeaderAndFooter",
+      "WithCharacterCount", "AllStates"
+    ],
+    "decorators": ["none"],
+    "notes": "Invalid+focus: red ring via [&[aria-invalid]] compound selector — verified 2026-06-03. Composed header/footer stories share one continuous color/input/bg surface (wrapper-filled; header/footer/textarea transparent) — verified light + dark 2026-06-17."
+  },
+
+  "constraints": {
+    "usage": [
+      "Use input-field, not textarea standalone, for all standard form fields.",
+      "Use Textarea for free-form multi-line prose only.",
+      "Keep resize handle enabled unless fixed height is strictly required by layout."
+    ],
+    "doNot": [
+      "Do not use Textarea for structured multi-value entry — use combobox (Filled-chips).",
+      "Do not use Textarea for single-line input — use Input.",
+      "Do not add resize-none by default — users need to expand notes and description fields.",
+      "Do not show multiple trailing slots simultaneously.",
+      "Do not use generic 'Invalid' description — write the specific error.",
+      "Do not override footer.action fills — change the Button Variant prop instead."
+    ],
+    "combinations": {
+      "required": ["input-field when used in any form"],
+      "forbidden": [
+        "Textarea + multiple trailing slots simultaneously",
+        "Textarea for tag/multi-value entry (use combobox)"
+      ]
+    }
+  },
+
+  "bestPractice": {
+    "useCases": [
+      "Support ticket message field — long-form free text requiring multiple lines",
+      "Product description in a CMS — prose content with variable length",
+      "User bio on a profile settings page — typically 2–4 lines",
+      "Notes field on a record (contact, project, invoice) — open-ended annotation",
+      "Commit message input — header line with optional extended body",
+      "Address field when the full address is a single unstructured block"
+    ],
+    "variantExamples": {
+      "State=Default": {
+        "whenToUse": "Empty field, ready for input",
+        "examples": ["Empty 'Notes' field on a new record"]
+      },
+      "State=Filled": {
+        "whenToUse": "Content entered, not yet submitted",
+        "examples": ["Typed commit message in a PR form"]
+      },
+      "State=Invalid": {
+        "whenToUse": "Form submitted with validation failure",
+        "examples": ["'Message is required' after empty submit"]
+      },
+      "WithHeader": {
+        "whenToUse": "Formatting controls or section label needed above the text area",
+        "examples": ["Markdown editor with bold/italic toolbar"]
+      },
+      "WithCharacterCount": {
+        "whenToUse": "Hard character limit the user needs to track",
+        "examples": ["Bio field with 160-char Twitter-style limit"]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Single-line text: name, email, search, number",
+        "use": "input",
+        "notInstead": "textarea"
+      },
+      {
+        "situation": "Multiple tag-like values: emails, labels, recipients",
+        "use": "combobox (State=Filled-chips)",
+        "notInstead": "textarea"
+      },
+      {
+        "situation": "Rich text with formatting (bold, lists, links)",
+        "use": "custom rich text editor",
+        "notInstead": "textarea"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/textarea",
+      "radix": null
+    }
+  }
+}

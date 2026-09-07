@@ -1,0 +1,136 @@
+{
+  "name": "separator",
+  "figmaNodeId": "75:11717",
+  "description": "A visual divider between sections of content. One token, two orientations, no states, no children.",
+  "category": "layout",
+  "shadcnBase": "separator",
+  "variants": {
+    "Orientation": {
+      "type": "enum",
+      "values": [
+        "Horizontal",
+        "Vertical"
+      ],
+      "default": "Horizontal",
+      "reactProp": "orientation",
+      "reactValues": {
+        "Horizontal": "horizontal",
+        "Vertical": "vertical"
+      }
+    }
+  },
+  "tokens": {
+    "fill": "color/border/default"
+  },
+  "composition": {
+    "children": false,
+    "structure": "Single flat frame with fill as the separator line."
+  },
+  "accessibility": {
+    "role": "separator",
+    "keyboard": "Not interactive.",
+    "screenReader": "Use aria-orientation=vertical for vertical orientation.",
+    "touchTarget": "Not required for decorative or structural separator."
+  },
+  "constraints": [
+    "Use only to communicate logical separation.",
+    "Do not stack separators.",
+    "Spanning dimension should fill the parent."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Between a page header and its primary content body to signal a transition from navigation context to content",
+      "Between groups of form fields that belong to different logical sections (Personal info / Contact details / Preferences)",
+      "Between items in a dropdown menu or command palette where grouping aids scanning",
+      "Between nav items in a toolbar or horizontal nav strip to divide conceptually separate clusters",
+      "Inside a card or panel to divide the header region from the body, or body from the footer",
+      "In metadata rows (e.g. 'Author · Date · Read time') to separate inline key-value pairs visually"
+    ],
+    "variantExamples": {
+      "Horizontal": {
+        "whenToUse": "Dividing stacked content — one section above, another below",
+        "examples": [
+          "Between form groups",
+          "Below a page title",
+          "Between dropdown menu sections",
+          "Card header / body boundary"
+        ]
+      },
+      "Vertical": {
+        "whenToUse": "Dividing side-by-side elements within a single row",
+        "examples": [
+          "Between nav items in a toolbar",
+          "Between metadata pills",
+          "Between two columns in a stat row"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "An explicit visual line between two content regions on the same surface",
+        "use": "separator",
+        "notInstead": "a card border or a raw 1px rectangle"
+      },
+      {
+        "situation": "A boundary that defines a card's surface (its own edge)",
+        "use": "card border",
+        "notInstead": "separator"
+      },
+      {
+        "situation": "Grouping related items with implied proximity rather than a hard line",
+        "use": "spacing / gap",
+        "notInstead": "separator"
+      },
+      {
+        "situation": "Dividing nav sections in an app-level sidebar",
+        "use": "separator (horizontal, between groups)",
+        "notInstead": "_sidebar-group-label alone"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/separator",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/separator"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Separator.md",
+    "storyFile": "src/stories/Separator.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Static component; no state metadata required."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/separator.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Separator"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Separator.stories.tsx",
+    "title": "Layout/Separator",
+    "stories": [
+      "Horizontal",
+      "Vertical",
+      "InFormSections",
+      "InMetadataRow",
+      "InCard"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

@@ -1,0 +1,187 @@
+{
+  "name": "chat-bubble",
+  "figmaNodeId": null,
+  "description": "A conversational chat UI kit — message bubbles (bot/user), a typing indicator, clickable suggestion chips, and a combined text-input + send control. Built for AI/agent chat surfaces.",
+  "category": "chat",
+  "shadcnBase": "custom",
+  "codeOnly": true,
+  "figmaReference": {
+    "note": "No published Figma component set located for this component. Token intent is captured in a comment block at the top of chat-bubble.tsx. Figma parity NOT verified — see meta.knownIssues."
+  },
+  "variants": {
+    "role": {
+      "type": "enum",
+      "values": ["bot", "user"],
+      "default": "bot",
+      "reactProp": "role",
+      "reactValues": {
+        "bot": "bot",
+        "user": "user"
+      },
+      "intent": {
+        "bot": "Assistant/agent message — left-aligned, surface/default fill with border, avatar shown, pointed top-left corner.",
+        "user": "Person's message — right-aligned, brand/primary fill, no avatar, pointed top-right corner."
+      }
+    }
+  },
+  "tokens": {
+    "botBubble": {
+      "fill": "color/surface/default",
+      "stroke": "color/border/default",
+      "text": "color/background/default/foreground",
+      "radius": "radius/2xl (14px), pointed corner radius/sm (4px) top-left"
+    },
+    "userBubble": {
+      "fill": "color/brand/primary",
+      "text": "color/brand/primary/foreground",
+      "stroke": "none",
+      "radius": "radius/2xl (14px), pointed corner radius/sm (4px) top-right"
+    },
+    "timestamp": {
+      "text": "color/text/secondary"
+    },
+    "typingIndicator": {
+      "fill": "color/surface/default",
+      "stroke": "color/border/default",
+      "dots": "color/icon/muted"
+    },
+    "suggestionChip": {
+      "fill": "color/background/default",
+      "stroke": "color/border/default",
+      "text": "color/background/default/foreground",
+      "hoverFill": "color/surface/accent",
+      "focusRing": "color/border/focus"
+    },
+    "chatInput": {
+      "fill": "color/background/default",
+      "stroke": "color/border/default",
+      "placeholder": "color/input/placeholder",
+      "focusRing": "color/border/focus",
+      "sendButtonActive": "color/brand/primary + color/brand/primary/foreground",
+      "sendButtonIdle": "color/surface/default + color/icon/muted"
+    },
+    "spacing": {
+      "avatarToBubbleGap": "spacing/component/sm (8px)",
+      "bubbleInnerGap": "spacing/component/xs (4px)",
+      "bubblePadding": "px spacing/component/md (12px), py spacing/component/sm (8px)",
+      "note": "Spacing uses Tailwind utilities (gap-2, gap-1, px-3, py-2) per the Storybook Build Process spacing rule (fixed 2026-07-02)."
+    }
+  },
+  "accessibility": {
+    "role": "none on bubbles (plain text); interactive controls are native button/input elements",
+    "screenReader": "ChatInput field has aria-label='Chat input'; send button has aria-label='Send message'. ChatLog wraps the message list with role='log' aria-live='polite' so new messages are announced to screen readers automatically.",
+    "keyboard": "ChatInput: Enter sends (Shift+Enter reserved for newline). Send button disabled when input is empty.",
+    "reducedMotion": "TypingIndicator uses animate-bounce — NOT gated behind prefers-reduced-motion. Flag for reduced-motion review."
+  },
+  "constraints": [
+    "Custom component — no shadcn base and (currently) no Figma component set.",
+    "Bot messages show an Avatar (size=sm); user messages must not.",
+    "Use for conversational/agent surfaces only — not for static comment threads (use a list + Item instead).",
+    "Message list should be wrapped in an aria-live region by the consumer for screen-reader announcements."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "An AI assistant panel where bot and user messages alternate",
+      "An in-app support/agent chat surface",
+      "A prompt playground showing conversation history with a send input",
+      "Showing a 'thinking' state via TypingIndicator while a response streams",
+      "Offering quick follow-up questions under a bot reply via SuggestionChip"
+    ],
+    "variantExamples": {
+      "bot": {
+        "whenToUse": "Any message authored by the assistant/agent.",
+        "examples": ["Assistant answer", "System explanation", "Streamed response with TypingIndicator first"]
+      },
+      "user": {
+        "whenToUse": "Any message authored by the person.",
+        "examples": ["User question", "Follow-up request"]
+      }
+    },
+    "compositionPatterns": null,
+    "comparedTo": [
+      {
+        "situation": "Rendering a non-conversational list of records with metadata",
+        "use": "item",
+        "notInstead": "chat-bubble (chat-bubble implies a two-party conversation with directional alignment)"
+      }
+    ],
+    "references": {
+      "shadcn": null,
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown (reference)/ChatBubble.md",
+    "storyFile": "src/stories/ChatBubble.stories.tsx",
+    "artifactStatus": "needs review",
+    "lastAuditDate": null,
+    "auditRules": "R1–R8 (not yet run)",
+    "version": "1.0",
+    "openQuestions": [
+      "Is there an intended Figma component set for Chat, or is this deliberately code-only?"
+    ],
+    "notes": [
+      "2026-07-02: Documented retroactively — component existed in Storybook (Chat/ChatBubble, 7 stories) with no meta.json, no tracker row, and no llms.txt entry. Added during a Storybook check.",
+      "Built outside the documented build pipeline; not yet spec-audited or Figma-parity checked."
+    ],
+    "knownIssues": [
+      {
+        "issue": "Figma parity unverified — no located Figma component set.",
+        "workaround": "Confirm whether a Figma source exists; if code-only, mark codeOnly and drop the parity gate.",
+        "date": "2026-07-02"
+      }
+    ],
+    "changelog": [
+      {
+        "date": "2026-07-02",
+        "change": "Initial meta.json created (retroactive documentation of an undocumented component).",
+        "breaking": false
+      },
+      {
+        "date": "2026-07-02",
+        "change": "Code spec-fixed: lucide-react CornerDownLeft → @untitledui/icons; CSS-var spacing → Tailwind utilities (gap-2/gap-1/px-3/py-2); TypingIndicator dots now motion-reduce:animate-none. Verified in Storybook (fresh restart, iframe 200, no compile errors).",
+        "breaking": false
+      },
+      {
+        "date": "2026-07-02",
+        "change": "Markdown spec written (Component Markdown (reference)/ChatBubble.md) — full anatomy, token bindings, accessibility, behavior, usage, and open questions.",
+        "breaking": false
+      },
+      {
+        "date": "2026-07-02",
+        "change": "Added ChatLog export — accessible message container (role='log' aria-live='polite'), resolving the live-region open question. FullConversation story now wraps messages in ChatLog. 'Chat' confirmed as an official category and added to the Storybook Build Process category→title map.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "All fills use semantic mode-aware tokens, so light/dark should follow automatically. Not verified in dark mode.",
+      "pairedSurfaceRisk": "botBubble text color/background/default/foreground sits on color/surface/default fill — verify this pairing resolves correctly in dark mode."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/chat-bubble.tsx",
+    "packageDeps": ["@untitledui/icons"],
+    "exports": ["ChatBubble", "ChatLog", "TypingIndicator", "SuggestionChip", "ChatInput"],
+    "notes": [
+      "Five exports in one file: ChatBubble (message), ChatLog (accessible message container), TypingIndicator (thinking dots), SuggestionChip (follow-up button), ChatInput (input + send).",
+      "ChatLog sets role='log' aria-live='polite' aria-relevant='additions' — announces new messages to screen readers automatically.",
+      "ChatInput is controlled+uncontrolled (uses value/onChange when provided, internal state otherwise).",
+      "Depends on the Avatar component (size=sm) for bot messages."
+    ]
+  },
+  "storybook": {
+    "file": "src/stories/ChatBubble.stories.tsx",
+    "title": "Chat/ChatBubble",
+    "stories": [
+      "BotMessage",
+      "UserMessage",
+      "LongBotMessage",
+      "Typing",
+      "WithSuggestions",
+      "Input",
+      "FullConversation"
+    ],
+    "decorators": ["none"],
+    "notes": "Documented retroactively 2026-07-02. Stories exist and render; not yet run through the Phase 3 verification checklist."
+  }
+}

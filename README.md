@@ -14,8 +14,18 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 
 | Path | What it is |
 |---|---|
-| **`accura-theme.md`** | The theme reference — every token value, every deviation from Agentic, the reasoning, and 9 open questions. **Read this first.** |
+| **`llms.txt`** | **Agent entry point** — indexes every file and states the read order. |
+| **`CLAUDE.md`** | Agent instructions and the rules-vs-values precedence. |
+| **`accura-theme.md`** | The theme reference — every token value, every deviation from Agentic, the reasoning, and 11 open questions. |
+| **`docs/design-system-rules.md`** | The inherited ruleset, vendored from Agentic. **Contains Agentic's values — see its override header.** |
+| `docs/skills/` | 7 process skills — audit, build, token binding, documentation, Storybook, theming. |
+| `docs/component-specs/` | 38 component spec files (36 components + template + shared form parts). |
+| `docs/machine-readable/` | 36 `meta.json` artifacts, component directory, quick reference, validation scripts. |
+| `docs/tracking/` | Storybook and audit status. ⚠️ Reflects Agentic's status, not Accura's. |
+| `tokens/` | DTCG token JSONs + Style Dictionary build. ⚠️ Agentic's exported values — see `llms.txt`. |
 | **`accura-ui/`** | Component library + Storybook. Same components as `agentic-ui`, Accura tokens. |
+
+The repository is **self-contained** — no external vault, no absolute paths. A fresh agent can clone it and work.
 
 ---
 
@@ -47,7 +57,7 @@ Beyond the primitive levers, Accura also diverges at the semantic tier — a **d
 
 Agentic's rule is that brand primary anchors at `/500`. Accura anchors at `/800-base`. That looks like a violation and isn't.
 
-`agentic-theme.md` requires a brand anchor to clear **3:1 against white** (WCAG 1.4.11), ideally 4.5:1:
+The inherited theme rule requires a brand anchor to clear **3:1 against white** (WCAG 1.4.11), ideally 4.5:1:
 
 | Candidate | Hex | vs white | Verdict |
 |---|---|---|---|
@@ -68,7 +78,7 @@ Green is intrinsically lighter than blue at the same ramp step, so `/500` can't 
 
 ## Open questions
 
-`accura-theme.md` logs 9 unresolved questions rather than silently resolving them. The load-bearing ones:
+`accura-theme.md` logs 11 unresolved questions rather than silently resolving them. The load-bearing ones:
 
 - **Q8 — two Accura libraries have measurably drifted.** `[Accura One] WebApp` and `[Accura One] Website Design` consume *different* libraries whose shared token names now hold different values (sidebar background, button radius). One should be retired.
 - **Q11 — the focus ring may fail WCAG.** `color/ring` is `brand/500` at 2.50:1 against white, below the 3:1 floor for non-text indicators.
@@ -76,6 +86,6 @@ Green is intrinsically lighter than blue at the same ramp step, so `/500` can't 
 
 ---
 
-*Design system rules: `Agentic-design-system/agentic-design-system.md`
-Theme pattern: `Agentic-design-system/agentic-theme.md`
+*Design system rules: [`docs/design-system-rules.md`](docs/design-system-rules.md) — vendored from Agentic, values overridden by `accura-theme.md`
+Agent entry point: [`llms.txt`](llms.txt) · [`CLAUDE.md`](CLAUDE.md)
 Values source of truth: Figma `[Accura] Agentic Design System`*

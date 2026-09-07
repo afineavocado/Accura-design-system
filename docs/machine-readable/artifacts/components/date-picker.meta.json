@@ -1,0 +1,225 @@
+{
+  "name": "date-picker",
+  "figmaNodeId": "58:15976",
+  "description": "An input trigger that opens a calendar popup for selecting a single date, date range, or typed date input.",
+  "category": "forms",
+  "shadcnBase": "calendar",
+  "variants": {
+    "Type": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Range",
+        "Input"
+      ],
+      "default": "Default",
+      "reactProp": "type",
+      "reactValues": {
+        "Default": "default",
+        "Range": "range",
+        "Input": "input"
+      }
+    },
+    "State": {
+      "type": "enum",
+      "values": [
+        "Closed",
+        "Hover",
+        "Focus",
+        "Open"
+      ],
+      "default": "Closed",
+      "reactProp": "state",
+      "reactValues": {
+        "Closed": "closed",
+        "Hover": "hover",
+        "Focus": "focus",
+        "Open": "open"
+      }
+    }
+  },
+  "tokens": {
+    "trigger": {
+      "Closed": {
+        "fill": "color/input/bg",
+        "stroke": "color/input/border"
+      },
+      "Hover": {
+        "fill": "color/input/bg",
+        "stroke": "color/input/border"
+      },
+      "Focus": {
+        "fill": "color/input/bg",
+        "stroke": "color/border/focus"
+      },
+      "Open": {
+        "fill": "color/input/bg",
+        "stroke": "color/border/default"
+      },
+      "radius": "radius/md",
+      "gap": "spacing/component/sm",
+      "height": 36
+    },
+    "placeholder": "color/input/placeholder",
+    "dateFormat": {
+      "pattern": "MMM d, yyyy",
+      "example": "Jun 18, 2026",
+      "rangePattern": "MMM d, yyyy – MMM d, yyyy",
+      "rangeExample": "Jun 17, 2026 – Jul 14, 2026",
+      "library": "date-fns format()",
+      "rationale": "Unambiguous across locales — avoids day/month order confusion (e.g. 06/07 reads differently in US vs UK). Always use this pattern for any date display in the system — never a numeric-only format."
+    },
+    "calendarOpenFill": "color/background/default",
+    "states": {
+      "invalid": {
+        "borderToken": "color/border/error",
+        "ringToken": "color/border/error",
+        "ringGlow": "color-mix(in_srgb,var(--color-border-error)_20%,transparent)",
+        "notes": "Uses [&[aria-invalid]] compound selector to beat data-[state=open]/focus-visible specificity. Blue ring must NOT appear when invalid."
+      }
+    }
+  },
+  "composition": {
+    "closed": [
+      "trigger.icon",
+      "trigger.placeholder"
+    ],
+    "open": [
+      "trigger",
+      "calendar instance"
+    ],
+    "rangeOpen": "Shows a two-month calendar popup, 520px wide."
+  },
+  "accessibility": {
+    "role": "combobox on trigger; dialog or grid on popup",
+    "keyboard": [
+      "Enter or Space opens",
+      "Escape closes",
+      "Arrow keys navigate days"
+    ],
+    "screenReader": "Announce selected date on close; announce Pick a date when empty.",
+    "focus": "Focus returns to trigger after date selection.",
+    "touchTarget": "Trigger is 36px tall; implementation needs 4px hit-area padding."
+  },
+  "constraints": [
+    "Use Default for single-date fields.",
+    "Use Range for start/end periods.",
+    "Use Input inside form rows.",
+    "Always pair with a visible label.",
+    "Do not use Open as starting state.",
+    "Do not embed calendar directly without date-picker trigger."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "A booking form needs a 'Check-in date' field that opens a calendar on click",
+      "A task management form requires a 'Due date' input alongside text fields",
+      "A report filter asks for a 'From / To' date range to scope the query",
+      "An HR form collects a date of birth in a standard form row",
+      "A scheduling tool needs a 'Publish at' field combining date and time",
+      "A content management form includes an 'Expires on' date field beside other metadata inputs"
+    ],
+    "variantExamples": {
+      "Default": {
+        "whenToUse": "Single date fields in any form context — button-style trigger",
+        "examples": [
+          "Due date on a task",
+          "Start date on a project",
+          "Appointment booking date"
+        ]
+      },
+      "Range": {
+        "whenToUse": "Selecting a start and end date that define a period",
+        "examples": [
+          "Report date range",
+          "Hotel check-in/check-out",
+          "Subscription billing window"
+        ]
+      },
+      "Input": {
+        "whenToUse": "Form rows where the field must look like a text input alongside other inputs",
+        "examples": [
+          "Date of birth in a profile form",
+          "Expiry date in a settings panel",
+          "Filter row in a dense table toolbar"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Date field inside a form that opens a picker on demand",
+        "use": "date-picker",
+        "notInstead": "calendar"
+      },
+      {
+        "situation": "Always-visible date display or selection embedded on a page",
+        "use": "calendar",
+        "notInstead": "date-picker"
+      },
+      {
+        "situation": "Selecting a single time (no date)",
+        "use": "a standalone time input",
+        "notInstead": "date-picker"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/date-picker",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/popover"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Date-picker.md",
+    "storyFile": "src/stories/DatePicker.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Source markdown contains complete token, behavior, accessibility, and usage sections."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-08",
+        "change": "Documented date display format rule (tokens.dateFormat) — \"MMM d, yyyy\" pattern via date-fns, e.g. \"Jun 18, 2026\". Codifies existing implementation, not a behavior change.",
+        "breaking": false
+      },
+      {
+        "date": "2026-06-03",
+        "change": "Trigger icon moved from leading to trailing position.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/date-picker.tsx",
+    "packageDeps": [
+      "react-day-picker@8",
+      "date-fns",
+      "@radix-ui/react-popover"
+    ],
+    "exports": [
+      "DatePicker"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/DatePicker.stories.tsx",
+    "title": "Forms/DatePicker",
+    "stories": [
+      "Default",
+      "RangeType",
+      "NoLabel",
+      "Disabled",
+      "AllTypes"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": "Trigger icon moved from leading to trailing position."
+  }
+}

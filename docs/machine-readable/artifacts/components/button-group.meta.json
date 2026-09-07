@@ -1,0 +1,189 @@
+{
+  "name": "button-group",
+  "figmaNodeId": "52:11151",
+  "description": "A bordered container that visually groups related ghost buttons into a connected control.",
+  "category": "actions",
+  "shadcnBase": "toggle-group",
+  "variants": {
+    "Orientation": {
+      "type": "enum",
+      "values": [
+        "Horizontal",
+        "Vertical"
+      ],
+      "default": "Horizontal",
+      "reactProp": "orientation",
+      "reactValues": {
+        "Horizontal": "horizontal",
+        "Vertical": "vertical"
+      }
+    },
+    "Number": {
+      "type": "enum",
+      "values": [
+        "2",
+        "3"
+      ],
+      "default": "2",
+      "reactProp": "count",
+      "reactValues": {
+        "2": 2,
+        "3": 3
+      }
+    }
+  },
+  "tokens": {
+    "container": {
+      "fill": "color/surface/default",
+      "stroke": "color/border/default",
+      "radius": "radius/md",
+      "padding": 0,
+      "gap": 0
+    },
+    "separator": "color/border/default",
+    "buttons": {
+      "Horizontal": "Button Type=Ghost Size=Default",
+      "Vertical": "Button Type=Ghost Size=Icon Large"
+    }
+  },
+  "composition": {
+    "Horizontal": [
+      "button",
+      "separator",
+      "button",
+      "optional separator",
+      "optional button"
+    ],
+    "Vertical": [
+      "icon button",
+      "separator",
+      "icon button",
+      "optional separator",
+      "optional icon button"
+    ],
+    "separatorRule": "Separators sit between buttons only."
+  },
+  "accessibility": {
+    "role": "group with aria-label",
+    "individualButtons": "Each button needs its own accessible label.",
+    "separator": "aria-hidden=true.",
+    "keyboard": "Standard tab order through each button."
+  },
+  "constraints": [
+    "Use only for related actions.",
+    "Do not mix text and icon buttons in one group.",
+    "Ghost buttons only.",
+    "No group-level disabled state; disable individual buttons.",
+    "No more than 3 buttons.",
+    "Not a segmented control."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Formatting controls where options are complementary but independent (Bold / Italic / Underline in a rich text editor)",
+      "View-mode toggles where the user picks one display mode at a time (List view / Grid view / Table view)",
+      "Zoom and transform controls in a canvas or map toolbar (Zoom in / Zoom out)",
+      "Alignment controls in a design or layout tool (Align left / Align center / Align right)",
+      "Export or share actions that are closely related but individually invokable (Export / Preview / Share)"
+    ],
+    "variantExamples": {
+      "2": {
+        "whenToUse": "Two clearly paired complementary actions",
+        "examples": [
+          "List view / Grid view",
+          "Expand / Collapse"
+        ]
+      },
+      "3": {
+        "whenToUse": "Three equally weighted actions in the same cluster",
+        "examples": [
+          "Left / Center / Right alignment",
+          "Previous / Current / Next period"
+        ]
+      },
+      "Horizontal": {
+        "whenToUse": "Text-label actions where the labels communicate the distinction",
+        "examples": [
+          "Bold / Italic / Underline",
+          "Export / Preview / Share",
+          "Month / Week / Day in a calendar"
+        ]
+      },
+      "Vertical": {
+        "whenToUse": "Icon-only stacked controls where vertical real estate is better than horizontal",
+        "examples": [
+          "Zoom in / Zoom out on a map",
+          "Align top / center / bottom in a layout panel"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "A single isolated action",
+        "use": "button",
+        "notInstead": "button-group (grouping a lone button adds visual noise with no meaning)"
+      },
+      {
+        "situation": "Mutually exclusive selection where one option must always be active (like tabs)",
+        "use": "tabs or a segmented control",
+        "notInstead": "button-group (button-group doesn't manage selected state)"
+      },
+      {
+        "situation": "More than 3 related actions",
+        "use": "a dropdown menu",
+        "notInstead": "button-group with 4+ items (too wide and visually cluttered)"
+      },
+      {
+        "situation": "Navigation between routes",
+        "use": "navigation-menu",
+        "notInstead": "button-group (button-group is for actions, not route navigation)"
+      }
+    ],
+    "references": {
+      "shadcn": null,
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Button-group.md",
+    "storyFile": "src/stories/ButtonGroup.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "shadcnBase is approximate; this is a custom grouped-button pattern, not shadcn ToggleGroup behavior."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/button-group.tsx",
+    "packageDeps": [],
+    "exports": [
+      "ButtonGroup"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/ButtonGroup.stories.tsx",
+    "title": "Actions/ButtonGroup",
+    "stories": [
+      "HorizontalTwo",
+      "HorizontalThree",
+      "HorizontalIcons",
+      "TextFormatting",
+      "VerticalTwo",
+      "VerticalThree",
+      "AllVariants"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

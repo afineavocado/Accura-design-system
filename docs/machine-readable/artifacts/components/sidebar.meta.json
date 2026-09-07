@@ -1,0 +1,367 @@
+{
+  "name": "sidebar",
+  "figmaNodeId": "95:18202",
+  "description": "A composable, themeable application sidebar for primary navigation with collapsible state, mobile overlay, and keyboard shortcut.",
+  "category": "navigation",
+  "shadcnBase": "sidebar",
+  "componentSets": {
+    "sidebar": {
+      "figmaNodeId": "95:18202",
+      "variants": 6,
+      "purpose": "Main panel container — Type × State"
+    },
+    "sidebar-menu-1": {
+      "figmaNodeId": "95:15354",
+      "variants": 6,
+      "purpose": "Primary nav item with icon — State × Type"
+    },
+    "_sidebar-menu-2": {
+      "figmaNodeId": "95:15549",
+      "variants": 3,
+      "purpose": "Sub-item, indented, text-only — State"
+    },
+    "_sidebar-group-label": {
+      "figmaNodeId": "95:14510",
+      "variants": 1,
+      "purpose": "Group section label — no variants"
+    },
+    "_sidebar-badge": {
+      "figmaNodeId": "95:14511",
+      "variants": 1,
+      "purpose": "Notification count badge for nav items"
+    }
+  },
+  "variants": {
+    "Type": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Floating",
+        "Inset"
+      ],
+      "default": "Default",
+      "appliesTo": "sidebar",
+      "reactProp": "variant",
+      "reactValues": {
+        "Default": "sidebar",
+        "Floating": "floating",
+        "Inset": "inset"
+      }
+    },
+    "State": {
+      "type": "enum",
+      "values": [
+        "Expanded",
+        "Collapsed"
+      ],
+      "default": "Expanded",
+      "appliesTo": "sidebar",
+      "reactProp": "open (via SidebarProvider)",
+      "reactValues": {
+        "Expanded": "open={true}",
+        "Collapsed": "open={false}"
+      }
+    },
+    "menuState": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Hover",
+        "Active"
+      ],
+      "default": "Default",
+      "appliesTo": "sidebar-menu-1, _sidebar-menu-2",
+      "reactProp": "data-active / CSS :hover",
+      "reactValues": {
+        "Active": "isActive={true}"
+      }
+    },
+    "menuType": {
+      "type": "enum",
+      "values": [
+        "Expand",
+        "Collapse"
+      ],
+      "default": "Expand",
+      "appliesTo": "sidebar-menu-1",
+      "note": "Expand = full row (icon + label + badge + trailing). Collapse = icon-only, for collapsed sidebar mode."
+    }
+  },
+  "tokens": {
+    "sidebar": {
+      "Default": {
+        "fill": "color/sidebar/background",
+        "stroke": "color/sidebar/border",
+        "strokeAlign": "INSIDE",
+        "strokeWeight": "mixed (right edge only)",
+        "cornerRadius": "none"
+      },
+      "Floating": {
+        "fill": "color/sidebar/background",
+        "stroke": "none",
+        "cornerRadius": "radius/lg"
+      },
+      "Inset": {
+        "fill": "color/sidebar/background",
+        "stroke": "color/sidebar/border",
+        "strokeAlign": "INSIDE",
+        "cornerRadius": "none"
+      }
+    },
+    "header": {
+      "fill": "color/sidebar/background",
+      "paddingTop": "spacing/component/sm",
+      "paddingBottom": "spacing/component/sm",
+      "paddingLeft": "spacing/component/md",
+      "paddingRight": "spacing/component/md",
+      "gap": "spacing/component/lg"
+    },
+    "logo": {
+      "fill": "NOT TOKEN-BOUND — branding asset",
+      "size": "28 × 28px FIXED",
+      "note": "Branding slot — exempt from all token binding rules. Only size constraint applies. See agentic-design-system.md Branding Slots."
+    },
+    "textBlock": {
+      "gap": "spacing/component/xxs",
+      "title": "color/sidebar/foreground",
+      "caption": "color/sidebar/foreground"
+    },
+    "content": {
+      "paddingTop": "spacing/0",
+      "paddingBottom": "spacing/0",
+      "paddingLeft": "spacing/0",
+      "paddingRight": "spacing/0",
+      "gap": "spacing/component/md"
+    },
+    "groups": {
+      "paddingTop": "spacing/component/md",
+      "paddingBottom": "spacing/component/md",
+      "paddingLeft": "spacing/component/md",
+      "paddingRight": "spacing/component/md",
+      "gap": "spacing/component/sm"
+    },
+    "menuItem": {
+      "radius": "radius/md",
+      "paddingLeft": "spacing/component/sm",
+      "paddingRight": "spacing/component/sm",
+      "gap": "spacing/component/sm",
+      "states": {
+        "Default": {
+          "fill": "transparent",
+          "iconStroke": "color/sidebar/foreground",
+          "labelFill": "color/sidebar/foreground"
+        },
+        "Hover": {
+          "fill": "color/sidebar/accent",
+          "iconStroke": "color/sidebar/accent/foreground",
+          "labelFill": "color/sidebar/accent/foreground"
+        },
+        "Active": {
+          "fill": "color/sidebar/accent",
+          "iconStroke": "color/sidebar/accent/foreground",
+          "labelFill": "color/sidebar/accent/foreground"
+        }
+      }
+    },
+    "subMenuItem": {
+      "radius": "radius/md",
+      "paddingLeft": "spacing/component/2xl",
+      "paddingRight": "spacing/component/sm",
+      "gap": "spacing/component/sm",
+      "note": "Large left padding creates the visual indent communicating sub-item hierarchy.",
+      "states": {
+        "Default": {
+          "fill": "transparent",
+          "labelFill": "color/sidebar/foreground"
+        },
+        "Hover": {
+          "fill": "color/sidebar/accent",
+          "labelFill": "color/sidebar/accent/foreground"
+        },
+        "Active": {
+          "fill": "color/sidebar/accent",
+          "labelFill": "color/sidebar/accent/foreground"
+        }
+      }
+    },
+    "groupLabel": {
+      "fill": "transparent",
+      "paddingLeft": "spacing/component/sm",
+      "paddingRight": "spacing/component/sm",
+      "labelFill": "color/sidebar/foreground"
+    },
+    "badge": {
+      "fill": "color/brand/primary",
+      "radius": "radius/full",
+      "paddingLeft": "spacing/component/xxs",
+      "paddingRight": "spacing/component/xxs",
+      "countFill": "color/brand/primary/foreground"
+    },
+    "iconRule": "Icon Placeholder instances are stroke-based. Bind color on VECTOR node strokes — never on instance fill."
+  },
+  "behavior": {
+    "collapsible": {
+      "offcanvas": "Sidebar slides off-screen; full width when open",
+      "icon": "Collapses to icon-only strip — switch nav items to Type=Collapse",
+      "none": "Always visible, not collapsible"
+    },
+    "keyboard": "Cmd+B (Mac) / Ctrl+B (Windows) — toggles sidebar open/collapsed",
+    "useSidebarHook": {
+      "state": "\"expanded\" | \"collapsed\"",
+      "open": "boolean",
+      "toggleSidebar": "function",
+      "isMobile": "boolean",
+      "openMobile": "boolean — mobile overlay state"
+    },
+    "mobile": "Renders as a full-screen overlay sheet on mobile with focus trap"
+  },
+  "composition": {
+    "wrapper": "SidebarProvider — required, owns state and keyboard shortcut",
+    "slots": [
+      "header (Logo + text-block)",
+      "content (groups → group-label + nav items + sub-items)"
+    ],
+    "logoSlot": "28×28px branding slot — replace with brand logomark. No token constraint on fill.",
+    "navItemHierarchy": "sidebar-menu-1 for primary items, _sidebar-menu-2 for sub-items. Never nest menu-1 inside menu-1.",
+    "badgeUsage": "_sidebar-badge for notification counts only — short numbers, not status labels"
+  },
+  "accessibility": {
+    "role": "navigation on sidebar panel",
+    "keyboard": [
+      "Cmd+B / Ctrl+B — toggle",
+      "Tab / Shift+Tab — navigate items"
+    ],
+    "focusIndicator": "color/sidebar/ring — scoped alias of color/ring",
+    "aria": "aria-expanded on SidebarTrigger",
+    "mobile": "Overlay sheet uses full focus trap on mobile"
+  },
+  "constraints": [
+    "Always wrap in SidebarProvider — it owns collapse state and keyboard shortcut.",
+    "Logo fill is NOT token-bound — branding asset exempt from token rules. Size: 28×28px FIXED only.",
+    "Use color/sidebar/* tokens inside the sidebar only — they are scoped to this component.",
+    "Do not use color/sidebar/primary on badge — that token is for the logo block only. Use color/brand/primary.",
+    "Hover and Active states share the same token (color/sidebar/accent). Active persists on mouse-out.",
+    "Use sidebar-menu-1 Type=Collapse only when sidebar is in icon/collapsed mode.",
+    "Sub-items (_sidebar-menu-2) must always follow a parent sidebar-menu-1 — the indent implies hierarchy.",
+    "Do not use color/background/default/foreground for icon strokes inside sidebar — use color/sidebar/foreground.",
+    "color/sidebar/active is an undocumented token — use color/sidebar/accent instead."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Full application shells where primary navigation needs to be always accessible (dashboards, admin panels, SaaS apps)",
+      "Multi-section apps where users switch between major areas (Analytics, Settings, Users, Billing)",
+      "Workspaces with hierarchical navigation — top-level sections with nested sub-items below each",
+      "Apps that need icon-only collapsed mode on smaller screens to recover horizontal space",
+      "Mobile apps that render the sidebar as a slide-in overlay sheet",
+      "Applications requiring a persistent branding slot (logo + product name) anchored to the top of the nav"
+    ],
+    "variantExamples": {
+      "Type=Default": {
+        "whenToUse": "Standard app layout — sidebar is flush with the page edge, right border separates it from content",
+        "examples": [
+          "CRM",
+          "Project management tool",
+          "Admin dashboard"
+        ]
+      },
+      "Type=Floating": {
+        "whenToUse": "Cards-based or elevated layout where the sidebar should feel like a panel rather than an edge element",
+        "examples": [
+          "Analytics tool",
+          "Design tool",
+          "Dashboard with card-heavy content area"
+        ]
+      },
+      "Type=Inset": {
+        "whenToUse": "Sidebar is inset within the page layout — content wraps around it, creating a nested shell",
+        "examples": [
+          "Settings page with sectioned layout",
+          "Documentation browser",
+          "Multi-panel workspace"
+        ]
+      },
+      "State=Expanded": {
+        "whenToUse": "Default — full label and icon visible, all nav items readable",
+        "examples": [
+          "Any app in its standard working state"
+        ]
+      },
+      "State=Collapsed": {
+        "whenToUse": "Space is at a premium — show icons only",
+        "examples": [
+          "Collapsed mode via collapsible=icon",
+          "Narrow viewport",
+          "User preference to minimise nav"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Persistent full-app navigation with grouped sections, always visible or collapsible",
+        "use": "sidebar",
+        "notInstead": "navigation-menu"
+      },
+      {
+        "situation": "Site-level top navigation with horizontal links and dropdown panels",
+        "use": "navigation-menu",
+        "notInstead": "sidebar"
+      },
+      {
+        "situation": "A secondary page-level nav for sections within a single page",
+        "use": "tabs",
+        "notInstead": "sidebar"
+      },
+      {
+        "situation": "Collapsible content groups within a page (not navigation)",
+        "use": "accordion",
+        "notInstead": "sidebar"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/sidebar",
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Sidebar.md",
+    "storyFile": "src/stories/Sidebar.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "color/sidebar/active was found in Figma and removed — renamed to color/sidebar/accent per docs.",
+      "Logo fill override removed — branding slot, not token-bound.",
+      "Hover and Active share color/sidebar/accent — distinction is behavioral (Active persists), not visual."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/sidebar.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Sidebar"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Sidebar.stories.tsx",
+    "title": "Navigation/Sidebar",
+    "stories": [
+      "Default",
+      "WithSubItems",
+      "Collapsible",
+      "Floating"
+    ],
+    "decorators": [
+      "SidebarProvider context required"
+    ],
+    "notes": ""
+  }
+}

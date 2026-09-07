@@ -1,0 +1,155 @@
+{
+  "name": "skeleton",
+  "figmaNodeId": null,
+  "description": "A loading placeholder that pulses while content is fetching. Code-only — no published Figma component. Compose multiple instances to mirror the real content layout.",
+  "category": "feedback",
+  "shadcnBase": "skeleton",
+  "codeOnly": true,
+  "figmaReference": {
+    "pageId": "309:147",
+    "note": "Figma page contains reference layout frames (Card + Image, Image + Text, Text, List, Simple text, Widget) for design documentation only. Not a published component set."
+  },
+  "variants": {},
+  "tokens": {
+    "background": "color/background/muted",
+    "note": "Token is applied via Tailwind class bg-muted — not bound directly in Figma. Uses background (not surface) because skeleton sits on the page canvas."
+  },
+  "composition": {
+    "element": "div",
+    "classes": [
+      "animate-pulse",
+      "rounded-md",
+      "bg-muted"
+    ],
+    "sizing": "controlled entirely by className — pass h-*, w-*, rounded-* as needed"
+  },
+  "accessibility": {
+    "role": "none — decorative placeholder",
+    "screenReader": "Mark the loading container with aria-busy=\"true\" while skeleton is shown. Do not add aria-label to individual Skeleton elements.",
+    "reducedMotion": "animate-pulse respects prefers-reduced-motion: reduce via Tailwind — animation stops automatically"
+  },
+  "constraints": [
+    "Code-only — do not publish as a Figma component set.",
+    "Background must use bg-muted (color/background/muted) — not color/surface/muted.",
+    "Match skeleton dimensions to the real content layout to avoid layout shift on load.",
+    "Wrap loading region in aria-busy='true' on the parent container.",
+    "Do not use skeleton for infinite scroll bottoms — use an indeterminate spinner instead.",
+    "Remove skeleton immediately when data is available — do not leave it animating."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Replacing a card grid while the list of items loads from an API",
+      "Showing placeholder rows in a table before row data has been fetched",
+      "Holding the layout of a user profile (avatar + name + bio) while the profile data resolves",
+      "Mimicking a form layout while the form's default values load from the server",
+      "Preserving the visual structure of a dashboard widget while its metrics are fetching",
+      "Replacing a full-page content area during initial navigation to prevent layout shift"
+    ],
+    "variantExamples": null,
+    "compositionPatterns": {
+      "Circle + text lines": {
+        "whenToUse": "User or entity placeholder",
+        "examples": [
+          "Avatar + name + email row",
+          "Comment author block"
+        ]
+      },
+      "Full-width rectangle": {
+        "whenToUse": "Image or media placeholder",
+        "examples": [
+          "Card cover image",
+          "Hero banner",
+          "Thumbnail"
+        ]
+      },
+      "Multiple text lines (varying widths)": {
+        "whenToUse": "Text content placeholder",
+        "examples": [
+          "Article body",
+          "Description block",
+          "Multi-line card text"
+        ]
+      },
+      "Row with circle + line": {
+        "whenToUse": "List item placeholder",
+        "examples": [
+          "Notification list",
+          "Contact list",
+          "Search results"
+        ]
+      },
+      "Grid of rectangles": {
+        "whenToUse": "Card grid placeholder",
+        "examples": [
+          "Project grid",
+          "Product listing",
+          "Dashboard panels"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Data has loaded and there is simply nothing to show (zero items)",
+        "use": "empty",
+        "notInstead": "skeleton (skeleton signals content is coming; empty signals there is nothing to come)"
+      },
+      {
+        "situation": "A specific operation has a known percentage of completion",
+        "use": "progress",
+        "notInstead": "skeleton (progress communicates deterministic advancement; skeleton is for unknown-duration loads)"
+      },
+      {
+        "situation": "A single button or form action is in a loading state",
+        "use": "loading button with spinner",
+        "notInstead": "skeleton (skeleton replaces content layout, not interactive controls)"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/skeleton",
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Skeleton.md",
+    "storyFile": "src/stories/Skeleton.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "2026-05-28: Documented as code-only. shadcn skeleton is a single div with animate-pulse + bg-muted — no component tokens to manage. Figma page left as reference layout documentation."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/skeleton.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Skeleton"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Skeleton.stories.tsx",
+    "title": "Feedback/Skeleton",
+    "stories": [
+      "TextLines",
+      "AvatarRow",
+      "CardWithImage",
+      "ListRows",
+      "CardGrid",
+      "Widget",
+      "FormLayout"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

@@ -1,0 +1,334 @@
+{
+  "name": "switch",
+  "figmaNodeId": "67:88",
+  "description": "A toggle control for binary on/off choices, with a visual switch and a labeled switch-item row.",
+  "category": "forms",
+  "shadcnBase": "switch",
+  "componentSets": {
+    "switch": {
+      "figmaNodeId": "67:88",
+      "purpose": "The toggle indicator: track and thumb."
+    },
+    "switch-item": {
+      "figmaNodeId": "270:110",
+      "purpose": "Full row with switch, label, optional description, and optional card surface."
+    }
+  },
+  "variants": {
+    "Size": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Sm"
+      ],
+      "default": "Default",
+      "reactProp": "size",
+      "reactValues": {
+        "Default": "default",
+        "Sm": "sm"
+      },
+      "dimensions": {
+        "Default": {
+          "trackWidth": 44,
+          "trackHeight": 24,
+          "thumb": 20
+        },
+        "Sm": {
+          "trackWidth": 28,
+          "trackHeight": 16,
+          "thumb": 12
+        }
+      }
+    },
+    "Checked": {
+      "type": "enum",
+      "values": [
+        "True",
+        "False"
+      ],
+      "default": "False",
+      "reactProp": "checked",
+      "reactValues": {
+        "True": true,
+        "False": false
+      }
+    },
+    "State": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Disabled",
+        "Focus"
+      ],
+      "default": "Default",
+      "reactProp": "disabled",
+      "reactValues": {
+        "Disabled": true
+      }
+    },
+    "ItemType": {
+      "type": "enum",
+      "values": [
+        "Basic",
+        "Description",
+        "Choice Card"
+      ],
+      "default": "Basic",
+      "reactProp": "type",
+      "reactValues": {
+        "Basic": "basic",
+        "Description": "description",
+        "Choice Card": "choice-card"
+      }
+    },
+    "ItemState": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Disabled",
+        "Invalid",
+        "Focus"
+      ],
+      "default": "Default",
+      "reactProp": "state",
+      "reactValues": {
+        "Default": "default",
+        "Disabled": "disabled",
+        "Invalid": "invalid",
+        "Focus": "focus"
+      }
+    }
+  },
+  "tokens": {
+    "switch": {
+      "False Default": {
+        "trackFill": "color/border/default",
+        "thumbFill": "color/background/default"
+      },
+      "True Default": {
+        "trackFill": "color/brand/primary",
+        "thumbFill": "color/background/default"
+      },
+      "False Disabled": {
+        "trackFill": "color/border/default",
+        "thumbFill": "color/background/default",
+        "opacity": "opacity/disabled"
+      },
+      "True Disabled": {
+        "trackFill": "color/brand/primary",
+        "thumbFill": "color/background/default",
+        "opacity": "opacity/disabled"
+      },
+      "False Focus": {
+        "trackFill": "color/border/default",
+        "thumbFill": "color/background/default",
+        "stroke": "color/ring",
+        "strokeWeight": 2,
+        "strokeAlign": "outside"
+      },
+      "True Focus": {
+        "trackFill": "color/brand/primary",
+        "thumbFill": "color/background/default",
+        "stroke": "color/ring",
+        "strokeWeight": 2,
+        "strokeAlign": "outside"
+      },
+      "radius": "radius/full"
+    },
+    "switchItemText": {
+      "Default": {
+        "label": "color/background/default/foreground",
+        "description": "color/background/muted/foreground"
+      },
+      "Focus": {
+        "label": "color/background/default/foreground",
+        "description": "color/background/muted/foreground"
+      },
+      "Disabled": {
+        "label": "color/text/disabled",
+        "description": "color/text/disabled"
+      },
+      "Invalid": {
+        "label": "color/text/invalid",
+        "description": "color/text/secondary"
+      }
+    },
+    "choiceCard": {
+      "Default": {
+        "stroke": "color/border/default",
+        "fill": "transparent",
+        "radius": "radius/lg",
+        "padding": "spacing/component/lg"
+      },
+      "Disabled": {
+        "stroke": "color/border/disabled",
+        "fill": "transparent",
+        "radius": "radius/lg",
+        "padding": "spacing/component/lg"
+      },
+      "Invalid": {
+        "stroke": "color/border/error",
+        "fill": "transparent",
+        "radius": "radius/lg",
+        "padding": "spacing/component/lg"
+      },
+      "Focus": {
+        "stroke": "color/border/focus",
+        "fill": "transparent",
+        "radius": "radius/lg",
+        "padding": "spacing/component/lg"
+      }
+    }
+  },
+  "composition": {
+    "switch": [
+      "track",
+      "thumb"
+    ],
+    "switchItemBasic": [
+      "switch",
+      "label"
+    ],
+    "switchItemDescription": [
+      "switch",
+      "content.label",
+      "content.description"
+    ],
+    "switchItemChoiceCard": [
+      "card frame",
+      "switch",
+      "content.label",
+      "content.description"
+    ]
+  },
+  "accessibility": {
+    "role": "switch",
+    "keyboard": [
+      "Tab to focus",
+      "Space to toggle"
+    ],
+    "screenReaderName": "Visible label text is the accessible name.",
+    "stateAnnouncement": "Use aria-checked true or false.",
+    "touchTarget": "Wrap item row in min-height 44px."
+  },
+  "constraints": [
+    "Use switch-item in forms and settings.",
+    "Do not use switch as a substitute for checkbox.",
+    "Switch has no indeterminate state.",
+    "Invalid state affects switch-item text, not the switch indicator.",
+    "Choice Card Focus changes border color instead of adding an outer ring."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Notification settings: 'Enable push notifications' — toggling applies immediately, no Save button",
+      "Account security preferences: 'Two-factor authentication' — on/off, effect is instant",
+      "App-level feature flags in a settings panel: 'Show beta features', 'Enable dark mode'",
+      "Focus mode features: 'Share across devices' — toggling syncs state across the user's devices right away",
+      "Privacy controls: 'Allow analytics data collection' — the change takes effect on toggle"
+    ],
+    "variantExamples": {
+      "Type=Basic": {
+        "whenToUse": "Short, self-explanatory setting — label alone communicates the full meaning",
+        "examples": [
+          "Dark mode",
+          "Email notifications",
+          "Auto-save"
+        ]
+      },
+      "Type=Description": {
+        "whenToUse": "Setting needs a clarifying sentence to explain scope, impact, or current behavior",
+        "examples": [
+          "Share across devices — Sync your focus session to all signed-in devices"
+        ]
+      },
+      "Type=Choice Card": {
+        "whenToUse": "High-stakes or visually prominent preference that warrants a card surface — used sparingly",
+        "examples": [
+          "Plan feature toggle (Unlimited members)",
+          "Onboarding preference with description"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Instant effect on toggle, no form submit",
+        "use": "switch",
+        "notInstead": "checkbox"
+      },
+      {
+        "situation": "Form field submitted with a Save button (preferences page with explicit save)",
+        "use": "checkbox",
+        "notInstead": "switch"
+      },
+      {
+        "situation": "Single required consent (I agree to terms)",
+        "use": "checkbox",
+        "notInstead": "switch"
+      },
+      {
+        "situation": "Multi-select list of items",
+        "use": "checkbox",
+        "notInstead": "switch"
+      },
+      {
+        "situation": "Mutually exclusive options (pick exactly one)",
+        "use": "radio",
+        "notInstead": "switch"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/switch",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/switch"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Switch.md",
+    "storyFile": "src/stories/Switch.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Source markdown contains complete token, behavior, accessibility, and usage sections.",
+      "R8 reviewed 2026-05-28: fills on the switch instance root inside switch-item are intentional — this is standard Figma composition. color/border/default on the switch root is required."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/switch.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Switch"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Switch.stories.tsx",
+    "title": "Forms/Switch",
+    "stories": [
+      "Default",
+      "Checked",
+      "Small",
+      "SmallChecked",
+      "Disabled",
+      "DisabledChecked",
+      "ItemBasic",
+      "ItemDescription",
+      "ItemChoiceCard",
+      "ItemDisabled",
+      "ItemInvalid",
+      "ItemChoiceCardInvalid",
+      "AllSizes"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

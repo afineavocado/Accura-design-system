@@ -1,0 +1,226 @@
+{
+  "name": "sheet",
+  "figmaNodeId": "98:57748",
+  "description": "A slide-in panel from the viewport edge for secondary tasks — filters, navigation, detail panels, settings. Built on Radix UI Dialog with a side prop. Shares the same primitive as Dialog but is positional rather than centered.",
+  "category": "overlay",
+  "shadcnBase": "sheet",
+  "primitiveBase": "Radix UI Dialog (@radix-ui/react-dialog)",
+  "variants": {
+    "Side": {
+      "type": "enum",
+      "values": [
+        "Horizontal",
+        "Vertical"
+      ],
+      "default": "Horizontal",
+      "intent": {
+        "Horizontal": "380px wide, full viewport height. Maps to side='right' (default) or side='left'. Use for side panels: filters, detail views, navigation drawers, settings.",
+        "Vertical": "Full viewport width, 423px tall. Maps to side='bottom' or side='top'. Use for bottom sheets on mobile-first layouts, command palettes, full-width menus."
+      },
+      "codeProp": "side",
+      "codeValues": {
+        "Horizontal": "side='right' (default) or side='left'",
+        "Vertical": "side='bottom' or side='top'"
+      }
+    }
+  },
+  "componentProperties": {
+    "Side": {
+      "type": "VARIANT",
+      "default": "Horizontal"
+    }
+  },
+  "tokens": {
+    "shell": {
+      "fill": "color/surface/overlay",
+      "stroke": "color/border/default",
+      "strokeWeight": 1,
+      "radius": "radius/lg"
+    },
+    "sheetHeader": {
+      "padding": "spacing/component/lg",
+      "gap": "spacing/component/md",
+      "textBlockGap": "spacing/component/sm",
+      "titleFill": "color/surface/overlay/foreground",
+      "descriptionFill": "color/text/secondary",
+      "closeButton": "button, Ghost Icon, 32×32"
+    },
+    "sheetBody": {
+      "padding": "spacing/component/lg",
+      "radius": "radius/md",
+      "type": "SLOT — replace with any content appropriate to the sheet's purpose"
+    },
+    "sheetFooter": {
+      "stroke": "color/border/default",
+      "strokePosition": "top",
+      "padding": "spacing/component/lg",
+      "gap": "spacing/component/sm",
+      "btnPrimary": {
+        "fill": "button/primary/bg/bg",
+        "width": "fill container"
+      },
+      "btnSecondary": {
+        "fill": "button/outline/bg/bg",
+        "stroke": "button/outline/border/default",
+        "width": "fill container"
+      }
+    }
+  },
+  "composition": {
+    "structure": "V AUTO-LAYOUT (no root padding, no gap): sheet-header → sheet-body (SLOT) → sheet-footer",
+    "dimensions": {
+      "Horizontal": {
+        "width": "380px",
+        "height": "720px (full viewport height)"
+      },
+      "Vertical": {
+        "width": "1200px (full viewport width)",
+        "height": "423px"
+      }
+    },
+    "bodySlot": "sheet-body is a SLOT — replace with any content: form fields, data, nav links, settings rows, command input + results.",
+    "footerButtons": "Both footer buttons are full-width (fill container) — stacked vertically. Do not place them in a horizontal row."
+  },
+  "behavior": {
+    "openClose": {
+      "open": "Via SheetTrigger, or controlled with open + onOpenChange.",
+      "close": [
+        "Clicking backdrop (SheetOverlay) — default",
+        "Pressing Escape",
+        "Clicking SheetClose"
+      ]
+    },
+    "preventBackdropClose": "onInteractOutside={(e) => e.preventDefault()} on SheetContent.",
+    "focusTrap": "Focus trapped inside SheetContent while open. Tab cycles through focusable elements. Returns to trigger on close.",
+    "animation": "Radix uses data-state='open'/'closed'. Shadcn applies CSS translate animations matched to the side direction.",
+    "scrollBehavior": "sheet-body does not scroll by default in code — add overflow-y:auto when content may exceed available height. Header and footer remain fixed.",
+    "sheetVsDialog": {
+      "Sheet": "Edge of viewport, slides in — secondary tasks, filters, nav, detail panels.",
+      "Dialog": "Centered, fades in — focused interruptions, confirmations, short forms."
+    }
+  },
+  "accessibility": {
+    "role": "role='dialog' with aria-modal='true' (Radix UI Dialog default)",
+    "ariaLabelledBy": "aria-labelledby auto-points to <SheetTitle>",
+    "ariaDescribedBy": "aria-describedby auto-points to <SheetDescription>",
+    "sheetTitleRequired": "Always include <SheetTitle> — use <VisuallyHidden> if not visually shown.",
+    "focusTrap": "Active while open",
+    "focusReturn": "Returns to trigger on close",
+    "keyboard": [
+      "Tab / Shift+Tab to move focus within sheet",
+      "Escape to close",
+      "Enter / Space to activate focused button"
+    ]
+  },
+  "constraints": [
+    "Use Sheet for secondary tasks that don't require the user to lose page context — filters, quick edits, detail previews, navigation.",
+    "Use Dialog for focused interruptions requiring full attention — confirmations, destructive actions, multi-step flows.",
+    "Do not use Sheet for destructive confirmations — use Alert Dialog.",
+    "Always include <SheetTitle> — even hidden.",
+    "Footer buttons are full-width by design — do not place them in a horizontal row inside Side=Horizontal.",
+    "Add overflow-y:auto to sheet-body in code when content may be taller than the panel.",
+    "Side=Vertical is wide and short — not suited for tall forms; use Side=Horizontal instead."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "User clicks 'Filters' in a data table and a right panel slides in with filter controls, keeping the table visible behind it",
+      "Selecting a row in a list opens a detail panel on the right showing the record's full information without navigating away",
+      "A settings sidebar slides in from the right when the user clicks the gear icon in the top nav",
+      "A mobile-style page uses a bottom sheet (Side=Vertical) as a global command palette that spans the full width",
+      "An 'Edit contact' action opens a side panel so the user can see the contact record while editing it",
+      "A left-side navigation drawer slides in on a responsive layout when the hamburger menu is tapped"
+    ],
+    "variantExamples": {
+      "Horizontal": {
+        "whenToUse": "Panels that are spatially related to left/right content — 380px wide, full height",
+        "examples": [
+          "Filter drawer",
+          "Record detail panel",
+          "Settings sidebar",
+          "Edit form"
+        ]
+      },
+      "Vertical": {
+        "whenToUse": "Panels that span the full viewport width — bottom or top edge, typically mobile-first",
+        "examples": [
+          "Bottom action sheet",
+          "Full-width command palette",
+          "Contextual action menu on mobile"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Secondary contextual task without losing page context",
+        "use": "sheet",
+        "notInstead": "dialog"
+      },
+      {
+        "situation": "Blocking decision required before the user can proceed",
+        "use": "dialog",
+        "notInstead": "sheet"
+      },
+      {
+        "situation": "Bottom-anchored panel on mobile with swipe-to-dismiss gesture",
+        "use": "drawer",
+        "notInstead": "sheet"
+      },
+      {
+        "situation": "Destructive confirmation ('Delete account?')",
+        "use": "alert-dialog",
+        "notInstead": "sheet"
+      },
+      {
+        "situation": "Persistent vertical nav along the left edge",
+        "use": "sidebar",
+        "notInstead": "sheet"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/sheet",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/dialog"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Sheet.md",
+    "storyFile": "src/stories/Sheet.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Sheet and Dialog share the same Radix UI Dialog primitive — the distinction is purely positional.",
+      "Footer button fills are intentional — the parent sets the root fill on each button instance (primary/outline). These fills are required and should not be cleared."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/sheet.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Sheet"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Sheet.stories.tsx",
+    "title": "Overlay/Sheet",
+    "stories": [
+      "Right",
+      "Left",
+      "Bottom",
+      "Top",
+      "ScrollableBody"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

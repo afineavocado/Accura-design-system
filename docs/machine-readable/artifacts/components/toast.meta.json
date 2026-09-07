@@ -1,0 +1,257 @@
+{
+  "name": "toast",
+  "figmaNodeId": "105:666",
+  "description": "A temporary floating notification for system feedback — confirmations, errors, warnings, and async status. Built on Sonner (imperative API); dismissed automatically after a timeout or by the user.",
+  "category": "feedback",
+  "shadcnBase": "sonner",
+  "primitiveBase": "Sonner by Emil Kowalski",
+  "variants": {
+    "Type": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Success",
+        "Error",
+        "Warning",
+        "Loading"
+      ],
+      "default": "Default",
+      "intent": {
+        "Default": "Neutral informational message — no status implied.",
+        "Success": "Completed operation with affirmative feedback.",
+        "Error": "Failed operation — pair with description naming what failed and what to do.",
+        "Warning": "Completed with caveats or attention needed soon.",
+        "Loading": "Async operation in progress — persists indefinitely, must be dismissed programmatically."
+      }
+    }
+  },
+  "componentProperties": {
+    "Type": {
+      "type": "VARIANT",
+      "default": "Default"
+    }
+  },
+  "tokens": {
+    "container": {
+      "fill": "color/surface/overlay",
+      "stroke": "color/border/default",
+      "strokeWeight": 1,
+      "radius": "radius/lg",
+      "paddingTopBottom": "spacing/component/md",
+      "paddingLeftRight": "spacing/component/lg",
+      "gap": "spacing/component/md"
+    },
+    "internalFrames": {
+      "content": {
+        "gap": "spacing/component/xxs"
+      },
+      "actions": {
+        "gap": "spacing/component/sm"
+      }
+    },
+    "text": {
+      "title": "color/surface/overlay/foreground",
+      "description": "color/text/secondary"
+    },
+    "iconSlot": {
+      "Default": "empty FRAME — no icon",
+      "Success": "color/icon/success",
+      "Error": "color/icon/danger",
+      "Warning": "color/icon/warning",
+      "Loading": "color/surface/overlay/foreground"
+    },
+    "subComponents": {
+      "action-btn": {
+        "source": "button, Type=Outline, Size=Small",
+        "doNotOverride": true
+      },
+      "close-btn": {
+        "source": "button, Type=Ghost, Size=Icon Small",
+        "doNotOverride": true
+      }
+    }
+  },
+  "composition": {
+    "structure": "H AUTO-LAYOUT — icon-slot (16×16) → content (title + description, V AUTO-LAYOUT) → actions (action-btn + close-btn, H AUTO-LAYOUT)",
+    "loadingVariant": "action-btn is absent in Type=Loading — only close-btn is shown.",
+    "width": "356px fixed",
+    "iconNotes": "Default has an empty FRAME (no icon); Success/Error/Warning use a 16×16 icon placeholder instance; Loading uses a spinner."
+  },
+  "behavior": {
+    "api": "imperative",
+    "imperativeCalls": {
+      "Default": "toast(message)",
+      "Success": "toast.success(message)",
+      "Error": "toast.error(message)",
+      "Warning": "toast.warning(message)",
+      "Loading": "const id = toast.loading(message) — dismiss with toast.dismiss(id)"
+    },
+    "autoDismiss": {
+      "Default": "4000ms",
+      "Success": "4000ms",
+      "Error": "4000ms",
+      "Warning": "4000ms",
+      "Loading": "never — persists indefinitely until dismissed"
+    },
+    "promisePattern": "toast.promise(asyncFn, { loading, success, error }) — transitions Loading → Success/Error automatically.",
+    "toasterPlacement": "Place <Toaster /> once in root layout — never inside a page or route component.",
+    "dismissMethods": [
+      "auto-dismiss after duration",
+      "swipe gesture",
+      "close-btn click",
+      "toast.dismiss(id)",
+      "toast.dismiss() clears all"
+    ]
+  },
+  "accessibility": {
+    "role": "region (via <Toaster>)",
+    "ariaLabel": "Notifications",
+    "liveRegion": "aria-live=polite — messages announced without interrupting focus",
+    "keyboard": [
+      "Alt + T to focus toaster region",
+      "Tab between action-btn and close-btn",
+      "Enter / Space to activate",
+      "Escape to dismiss focused toast"
+    ],
+    "notes": "Consider aria-live=assertive for critical errors."
+  },
+  "constraints": [
+    "Type=Loading must always have a dismiss path — pair with toast.promise() or call toast.dismiss(id) explicitly.",
+    "Use toasts for system events, not user decisions or form field errors.",
+    "Show at most one toast per user action — deduplicate at the call site.",
+    "action-btn is for a single immediately reversible action (Undo, Retry, View) — never for destructive confirmation.",
+    "duration: Infinity requires a close button or programmatic dismiss path.",
+    "Do not override action-btn or close-btn fills from the toast parent.",
+    "Place <Toaster> once in root layout only."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Confirming a settings save ('Settings saved.') immediately after the user clicks Save",
+      "Reporting the result of an async file upload — transitioning from Loading to Success or Error via toast.promise()",
+      "Notifying the user that a background sync completed or failed while they were working elsewhere on the page",
+      "Providing an Undo action after a soft-delete ('Contact removed' + Undo button)",
+      "Alerting the user to a session or quota warning that appeared while they were mid-task ('Storage 90% full.')",
+      "Confirming a copy-to-clipboard or share-link action that has no visible side effect ('Link copied.')"
+    ],
+    "variantExamples": {
+      "Default": {
+        "whenToUse": "Neutral confirmation with no status implication",
+        "examples": [
+          "Link copied.",
+          "Comment posted.",
+          "Preference saved."
+        ]
+      },
+      "Success": {
+        "whenToUse": "Operation completed successfully and the user should know",
+        "examples": [
+          "File uploaded successfully.",
+          "Payment processed.",
+          "Invite sent."
+        ]
+      },
+      "Error": {
+        "whenToUse": "Operation failed — user may need to act",
+        "examples": [
+          "Upload failed — check your connection.",
+          "Could not send message.",
+          "Session expired."
+        ]
+      },
+      "Warning": {
+        "whenToUse": "Completed with caveats, or attention needed soon",
+        "examples": [
+          "Saved with warnings.",
+          "Storage 90% full.",
+          "Some recipients were skipped."
+        ]
+      },
+      "Loading": {
+        "whenToUse": "Async operation in progress; duration unknown — always paired with toast.promise()",
+        "examples": [
+          "Uploading…",
+          "Generating report…",
+          "Sending…"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "A persistent message that stays on screen until the user acts (form error, expiry warning)",
+        "use": "alert",
+        "notInstead": "toast (toast auto-dismisses and may be missed)"
+      },
+      {
+        "situation": "The user must make a decision before continuing (confirm a destructive action)",
+        "use": "dialog (alert-dialog)",
+        "notInstead": "toast (toast is non-blocking and cannot capture a decision)"
+      },
+      {
+        "situation": "A form field validation error that the user needs to fix before submitting",
+        "use": "inline field error text",
+        "notInstead": "toast (toasts are for system-level feedback, not per-field input errors)"
+      },
+      {
+        "situation": "Feedback that must persist indefinitely (legal notice, critical outage banner)",
+        "use": "alert",
+        "notInstead": "toast (even duration: Infinity toasts lack the persistent, in-context placement of an alert)"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/sonner",
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Toast.md",
+    "storyFile": "src/stories/Toast.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Sonner imperative API — no JSX props at call site; <Toaster /> in root layout provides the portal."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-04",
+        "change": "Renamed sonner.tsx → toast.tsx for naming consistency with the design system component name.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/toast.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Toast"
+    ],
+    "notes": [
+      "File renamed from sonner.tsx to toast.tsx 2026-06-04. Internally uses the sonner npm package — that import stays unchanged."
+    ]
+  },
+  "storybook": {
+    "file": "src/stories/Toast.stories.tsx",
+    "title": "Feedback/Toast",
+    "stories": [
+      "Default",
+      "Success",
+      "Error",
+      "Warning",
+      "Loading",
+      "Promise",
+      "WithAction",
+      "AllTypes"
+    ],
+    "decorators": [
+      "Toaster component in decorators"
+    ],
+    "notes": ""
+  }
+}

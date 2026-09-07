@@ -1,0 +1,270 @@
+{
+  "name": "input-otp",
+  "figmaNodeId": "58:17437",
+  "description": "A one-time password input built from individual slot cells grouped into a single control.",
+  "category": "forms",
+  "shadcnBase": "input-otp",
+  "componentSets": {
+    "_input-otp-slot": {
+      "figmaNodeId": "58:17340",
+      "purpose": "Individual digit display cell."
+    },
+    "input-otp": {
+      "figmaNodeId": "58:17437",
+      "purpose": "Full OTP control."
+    }
+  },
+  "variants": {
+    "Slot State": {
+      "type": "enum",
+      "values": [
+        "Empty",
+        "Active",
+        "Filled",
+        "Disabled",
+        "Invalid"
+      ],
+      "default": "Empty",
+      "reactProp": "slotState",
+      "reactValues": {
+        "Empty": "empty",
+        "Active": "active",
+        "Filled": "filled",
+        "Disabled": "disabled",
+        "Invalid": "invalid"
+      }
+    },
+    "Type": {
+      "type": "enum",
+      "values": [
+        "6-Slot",
+        "3+3",
+        "4-Slot"
+      ],
+      "default": "6-Slot",
+      "reactProp": "type",
+      "reactValues": {
+        "6-Slot": "6-slot",
+        "3+3": "3+3",
+        "4-Slot": "4-slot"
+      }
+    },
+    "State": {
+      "type": "enum",
+      "values": [
+        "Empty",
+        "Filled",
+        "Disabled",
+        "Invalid"
+      ],
+      "default": "Empty",
+      "reactProp": "state",
+      "reactValues": {
+        "Empty": "empty",
+        "Filled": "filled",
+        "Disabled": "disabled",
+        "Invalid": "invalid"
+      }
+    }
+  },
+  "tokens": {
+    "slot": {
+      "Empty": {
+        "fill": "color/input/bg",
+        "stroke": "color/border/default"
+      },
+      "Active": {
+        "fill": "color/input/bg",
+        "stroke": "color/border/focus",
+        "cursorFill": "color/background/default/foreground"
+      },
+      "Filled": {
+        "fill": "color/input/bg",
+        "stroke": "color/border/default",
+        "placeholderFill": "color/background/default/foreground"
+      },
+      "Disabled": {
+        "fill": "color/surface/muted",
+        "stroke": "color/border/disabled",
+        "placeholderFill": "color/text/disabled"
+      },
+      "Invalid": {
+        "fill": "color/input/bg",
+        "stroke": "color/border/error",
+        "placeholderFill": "color/background/default/foreground"
+      },
+      "radius": "none"
+    },
+    "otpGroup": {
+      "Empty": "color/border/default",
+      "Filled": "color/border/default",
+      "Disabled": "color/border/disabled",
+      "Invalid": "color/border/error",
+      "radius": "radius/md"
+    },
+    "separator": {
+      "fill": "color/background/muted/foreground"
+    },
+    "spacing": {
+      "groupGap": "spacing/component/sm"
+    },
+    "states": {
+      "invalid": {
+        "borderToken": "color/border/error",
+        "ringToken": "color/border/error",
+        "ringGlow": "color-mix(in_srgb,var(--color-border-error)_20%,transparent)",
+        "notes": "Uses [&[aria-invalid]] compound selector to beat data-[state=open]/focus-visible specificity. Blue ring must NOT appear when invalid."
+      }
+    }
+  },
+  "composition": {
+    "slot": [
+      "cursor",
+      "placeholder"
+    ],
+    "6-Slot": [
+      "otp-group with 6 slots"
+    ],
+    "3+3": [
+      "otp-group with 3 slots",
+      "_input-otp-separator",
+      "otp-group with 3 slots"
+    ],
+    "4-Slot": [
+      "otp-group with 4 slots"
+    ]
+  },
+  "accessibility": {
+    "role": "single textbox input",
+    "label": "Always provide a visible label associated with the input.",
+    "length": "maxLength defines total character count.",
+    "invalid": "aria-invalid=true when validation fails.",
+    "disabled": "disabled attribute removes from tab order.",
+    "autocomplete": "Use autocomplete=one-time-code.",
+    "touchTarget": "Slots are visually 40x40px; implementation should ensure 44x44px hit area.",
+    "keyboard": [
+      "Typing fills and advances",
+      "Backspace clears and moves back",
+      "Arrow keys move between slots",
+      "Home and End move to first and last slot",
+      "Tab exits field"
+    ]
+  },
+  "constraints": [
+    "Always use input-otp, never _input-otp-slot standalone.",
+    "Choose Type by code format, not visual preference.",
+    "Show Invalid only after submission of an incorrect code.",
+    "Provide one error message below the field, not one per slot.",
+    "Always provide a label and description explaining code source.",
+    "Use autocomplete=one-time-code in implementation."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Email verification during signup — 'Enter the 6-digit code we sent to your email'",
+      "Two-factor authentication (2FA) — one-time code from an authenticator app",
+      "SMS-based login or phone number verification",
+      "PIN entry for a locked account or secure action confirmation",
+      "Password reset flows where a code is sent before the user can set a new password"
+    ],
+    "variantExamples": {
+      "6-Slot": {
+        "whenToUse": "Standard 6-digit code with no visual grouping",
+        "examples": [
+          "Email verification code",
+          "Authenticator app TOTP",
+          "SMS OTP"
+        ]
+      },
+      "3+3": {
+        "whenToUse": "6-character code that is formatted with a visible separator in the message",
+        "examples": [
+          "Invite codes displayed as ABC–DEF",
+          "Recovery codes printed in pairs"
+        ]
+      },
+      "4-Slot": {
+        "whenToUse": "Short 4-digit codes or numeric PINs",
+        "examples": [
+          "ATM-style PIN entry",
+          "App lock PIN",
+          "Short SMS verification"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "User enters a structured verification or PIN code in individual slots",
+        "use": "input-otp",
+        "notInstead": "input"
+      },
+      {
+        "situation": "User enters any general text, password, or free-form value",
+        "use": "input",
+        "notInstead": "input-otp"
+      },
+      {
+        "situation": "User needs to enter a numeric quantity or free number (not a code)",
+        "use": "input (type=\"number\")",
+        "notInstead": "input-otp"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/input-otp",
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Input-OTP.md",
+    "storyFile": "src/stories/InputOTP.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Examples assume an Agentic InputOTP wrapper over shadcn/input-otp primitives; source markdown itself does not mark this component not ready."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-03",
+        "change": "Active slot: switched from inset shadow to ring-2 ring-offset-0 z-10 (shadcn pattern). No overflow-hidden on group. Per-slot borders instead. First/last slots get radius/md - 1px corner radius.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/input-otp.tsx",
+    "packageDeps": [
+      "input-otp"
+    ],
+    "exports": [
+      "InputOtp"
+    ],
+    "notes": [
+      "Active slot uses ring-2 ring-offset-0 z-10 (shadcn pattern) — NOT inset shadow. No overflow-hidden on group.",
+      "Slot corner radius = calc(radius/md - 1px) so inset follows group border inner edge.",
+      "Invalid ring: group-data-[invalid]:ring-[color/border/error] on active slot."
+    ]
+  },
+  "storybook": {
+    "file": "src/stories/InputOTP.stories.tsx",
+    "title": "Forms/InputOTP",
+    "stories": [
+      "SixSlot",
+      "ThreePlusThree",
+      "FourSlot",
+      "Disabled",
+      "Invalid",
+      "AllTypes"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": "Active slot: switched from inset shadow to ring-2 ring-offset-0 z-10 (shadcn pattern). No overflow-hidden on group. Per-slot borders instead. First/last slots get radius/md - 1px corner radius."
+  }
+}

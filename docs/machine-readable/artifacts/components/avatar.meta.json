@@ -1,0 +1,276 @@
+{
+  "name": "avatar",
+  "figmaNodeId": "60:18486",
+  "description": "A circular user representation with image, initials fallback, 3 sizes, and optional online/offline status indicator.",
+  "category": "display",
+  "shadcnBase": "avatar",
+  "componentSets": {
+    "avatar": {
+      "figmaNodeId": "60:18486",
+      "variants": 12,
+      "purpose": "Type × Size × Badge"
+    },
+    "avatar-indicator": {
+      "figmaNodeId": "60:18573",
+      "variants": 4,
+      "purpose": "Online/offline presence dot — type=online/offline × size=Default/large"
+    }
+  },
+  "variants": {
+    "Type": {
+      "type": "enum",
+      "values": [
+        "Image",
+        "Fallback"
+      ],
+      "default": "Image",
+      "reactProp": "type",
+      "reactValues": {
+        "Image": "image",
+        "Fallback": "fallback"
+      }
+    },
+    "Size": {
+      "type": "enum",
+      "values": [
+        "SM",
+        "Default",
+        "LG"
+      ],
+      "default": "SM",
+      "reactProp": "size",
+      "reactValues": {
+        "SM": "sm",
+        "Default": "default",
+        "LG": "lg"
+      },
+      "dimensions": {
+        "SM": {
+          "width": 32,
+          "height": 32,
+          "textStyle": "label/sm"
+        },
+        "Default": {
+          "width": 40,
+          "height": 40,
+          "textStyle": "label/md"
+        },
+        "LG": {
+          "width": 56,
+          "height": 56,
+          "textStyle": "label/md"
+        }
+      }
+    },
+    "Badge": {
+      "type": "enum",
+      "values": [
+        "False",
+        "True"
+      ],
+      "default": "False",
+      "reactProp": "badge",
+      "reactValues": {
+        "False": false,
+        "True": true
+      }
+    }
+  },
+  "tokens": {
+    "type": {
+      "Image": {
+        "fill": "image",
+        "radius": "radius/full"
+      },
+      "Fallback": {
+        "fill": "color/surface/muted",
+        "fg": "color/surface/muted/foreground",
+        "radius": "radius/full"
+      }
+    },
+    "avatarIndicator": {
+      "online": {
+        "fill": "color/status/success",
+        "radius": "radius/full"
+      },
+      "offline": {
+        "fill": "color/status/offline",
+        "radius": "radius/full"
+      },
+      "dimensions": {
+        "Default": {
+          "width": 8,
+          "height": 8
+        },
+        "large": {
+          "width": 12,
+          "height": 12
+        }
+      }
+    }
+  },
+  "composition": {
+    "image": [
+      "image fill"
+    ],
+    "fallback": [
+      "label"
+    ],
+    "badge": "avatar-indicator instance positioned bottom-right"
+  },
+  "accessibility": {
+    "role": "img",
+    "screenReaderName": "Use full name as alt or aria-label. Never expose initials as the only name.",
+    "badge": "Pair avatar-indicator with an accessible status label on the avatar wrapper (e.g. aria-label=\"Online\"). The dot color alone is not screen-reader accessible.",
+    "touchTarget": {
+      "native44px": [
+        "LG"
+      ],
+      "needsPadding": [
+        "SM",
+        "Default"
+      ]
+    }
+  },
+  "constraints": [
+    "Use Image when a photo URL is available.",
+    "Fallback labels must be 1-2 initials.",
+    "Avatar is display-only unless wrapped in a button or anchor.",
+    "Do not use avatar-indicator as a standalone component outside of avatar.",
+    "Do not detach avatar-indicator for customisation — switch type= variant instead.",
+    "Match avatar-indicator size to avatar size: size=Default (8px) for Size=SM, size=large (12px) for Size=Default and Size=LG."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "User profile headers where a photo or initials identifies the account owner at a glance",
+      "Comment threads and activity feeds where each entry is attributed to a specific person",
+      "Team member lists and collaborator panels in project or document views",
+      "Table rows representing people (paired with name and role text)",
+      "Chat interfaces where each message is associated with its sender",
+      "Dropdown or popover triggers that open a user account menu"
+    ],
+    "variantExamples": {
+      "Image": {
+        "whenToUse": "A verified photo URL is available — always prefer this over Fallback",
+        "examples": [
+          "Profile header",
+          "Comment attribution",
+          "Team member card"
+        ]
+      },
+      "Fallback": {
+        "whenToUse": "No photo exists or fails to load — show 1–2 initials",
+        "examples": [
+          "New user who skipped photo upload",
+          "SSO user with no avatar on file",
+          "Deleted account placeholder"
+        ]
+      },
+      "SM": {
+        "whenToUse": "Dense contexts where the avatar supports other content rather than leads it",
+        "examples": [
+          "Table rows",
+          "Notification list items",
+          "Compact activity feeds"
+        ]
+      },
+      "Default": {
+        "whenToUse": "Standard use — comfortable size for lists, cards, and comment threads",
+        "examples": [
+          "Comment threads",
+          "Card headers",
+          "Settings profile row"
+        ]
+      },
+      "LG": {
+        "whenToUse": "The avatar is the primary visual anchor of the view",
+        "examples": [
+          "Profile page header",
+          "Account settings page",
+          "User detail modal"
+        ]
+      },
+      "Badge=True": {
+        "whenToUse": "A presence or availability signal is needed alongside the identity",
+        "examples": [
+          "Chat participant list (online/offline)",
+          "Collaboration toolbar",
+          "'Who's viewing' panel"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Showing a user's identity (photo or initials)",
+        "use": "avatar",
+        "notInstead": "a raw circle frame with image fill"
+      },
+      {
+        "situation": "Showing online/offline presence status overlaid on a user identity",
+        "use": "avatar with Badge=True + avatar-indicator",
+        "notInstead": "badge as a standalone element"
+      },
+      {
+        "situation": "Showing a category label, count, or status chip unrelated to a person",
+        "use": "badge",
+        "notInstead": "avatar"
+      },
+      {
+        "situation": "Showing a small thumbnail for a product, file, or non-person entity",
+        "use": "item (Type=Image)",
+        "notInstead": "avatar"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/avatar",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/avatar"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Avatar.md",
+    "storyFile": "src/stories/Avatar.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Examples assume an Agentic wrapper API over shadcn Avatar primitives.",
+      "R3 fixed 2026-05-28: Fallback label fill changed from color/background/muted/foreground → color/surface/muted/foreground to match the color/surface/muted container (paired-surface rule).",
+      "R8 fixed 2026-05-28: avatar-indicator fill override cleared on all Badge=True variants; avatar-indicator sub-component provides its own fill token (color/status/success / color/status/offline) — no override needed on the avatar instance.",
+      "2026-05-28: avatar-badge renamed to avatar-indicator. Redesigned as pure online/offline presence dot — removed Type=Dot/Icon and ring stroke. New variants: type=online/offline × size=Default/large (4 total)."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/avatar.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Avatar"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Avatar.stories.tsx",
+    "title": "Display/Avatar",
+    "stories": [
+      "WithImage",
+      "Fallback",
+      "Sizes",
+      "SizesWithImage",
+      "Online",
+      "Offline",
+      "IndicatorSizes",
+      "OnlineVsOffline"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

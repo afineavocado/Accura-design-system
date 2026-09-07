@@ -1,0 +1,210 @@
+{
+  "name": "empty",
+  "figmaNodeId": "97:34667",
+  "description": "A placeholder displayed when a list, panel, or section has no content. Icon + title + description + optional action buttons. Three Variants control container surface. Purely presentational — no Radix primitive.",
+  "category": "feedback",
+  "shadcnBase": null,
+  "primitiveBase": null,
+  "variants": {
+    "Variant": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Outline",
+        "Background"
+      ],
+      "default": "Default",
+      "intent": {
+        "Default": "No fill, no stroke, no radius — transparent. Use inside cards, sheets, dialogs that already provide the surface.",
+        "Outline": "No fill, color/border/default stroke, radius/lg. Use for bordered empty areas — list zones, table bodies, dropzone areas.",
+        "Background": "color/background/subtle fill, no stroke, radius/lg. Use for page-level or sidebar empty states with no other framing."
+      }
+    }
+  },
+  "componentProperties": {
+    "Variant": {
+      "type": "VARIANT",
+      "default": "Default"
+    }
+  },
+  "tokens": {
+    "container": {
+      "Default": {
+        "fill": "transparent",
+        "stroke": "none",
+        "radius": "none"
+      },
+      "Outline": {
+        "fill": "transparent",
+        "stroke": "color/border/default",
+        "radius": "radius/lg"
+      },
+      "Background": {
+        "fill": "color/background/subtle",
+        "stroke": "none",
+        "radius": "radius/lg"
+      },
+      "padding": "spacing/component/2xl",
+      "gap": "spacing/component/lg"
+    },
+    "header": {
+      "gap": "spacing/component/sm",
+      "media": {
+        "dimensions": "36×36px",
+        "radius": "radius/lg",
+        "fillDefaultOutline": "color/background/subtle",
+        "fillBackground": "color/surface/default",
+        "fillNote": "In Background variant, media steps up to color/surface/default to stay distinct from the subtle fill behind it."
+      },
+      "iconStroke": "color/background/default/foreground",
+      "titleFill": "color/background/default/foreground",
+      "descriptionFill": "color/text/secondary"
+    },
+    "content": {
+      "gap": "spacing/component/sm"
+    },
+    "buttons": {
+      "btnPrimary": {
+        "fill": "button/primary/bg/bg",
+        "doNotOverride": true
+      },
+      "btnOutline": {
+        "fill": "button/outline/bg/bg",
+        "stroke": "button/outline/border/default",
+        "doNotOverride": true
+      }
+    }
+  },
+  "composition": {
+    "structure": "V AUTO-LAYOUT, CENTER×CENTER: header (media 36×36 + title + description) → content (btn-primary + btn-outline, H AUTO-LAYOUT)",
+    "iconCustomisation": "Replace the default folder icon with a context-specific icon: file, search, inbox, calendar, bell, users, bar-chart.",
+    "buttonVisibility": {
+      "bothActions": "btn-primary (create) + btn-outline (secondary)",
+      "oneAction": "btn-primary only",
+      "readOnly": "no buttons — or a text link to request access",
+      "filteredEmpty": "btn-outline only ('Clear filters')"
+    }
+  },
+  "behavior": {
+    "architecture": "Purely presentational — no Radix primitive, no built-in state. Conditionally rendered by the parent when data is absent.",
+    "renderTiming": "Render only after data load completes with zero results. Show skeleton or spinner during loading.",
+    "conditionalPattern": "{items.length === 0 && <EmptyState />}"
+  },
+  "accessibility": {
+    "role": "No implicit role — renders as <div>. Add role='status' when empty state appears dynamically after search or filter.",
+    "icon": "aria-hidden='true' on icon — title and description carry the message.",
+    "titleRequirement": "title must be descriptive enough to stand alone as the accessible label.",
+    "descriptionRequirement": "description provides context and the next step — not a restatement of the title."
+  },
+  "constraints": [
+    "Variant=Default inside containers that already provide a surface (cards, sheets, dialogs).",
+    "Variant=Outline for bordered empty areas (table bodies, list panels, dropzones).",
+    "Variant=Background for page-level or sidebar empty states with no other framing.",
+    "Do not use Variant=Background inside a card — the card already provides the surface; a subtle fill inside it creates unintended double-layering.",
+    "Do not show the empty state during loading — show skeleton/spinner first.",
+    "Replace the default folder icon with one contextually relevant to the empty state.",
+    "Keep description to one or two short sentences.",
+    "Do not override button fills from within the empty component."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "A project list that has no projects yet — first-use onboarding state with a 'Create Project' CTA",
+      "A search results panel that returns zero matches — with a 'Clear filters' or 'Try different keywords' action",
+      "An inbox or notification feed that has been fully read or cleared ('You're all caught up.')",
+      "A team members table where no members have been invited yet ('Invite your team to get started.')",
+      "A calendar or event list with no upcoming events ('No events scheduled — add one to get started.')",
+      "A filtered data table that returns nothing after applying active filters"
+    ],
+    "variantExamples": {
+      "Default": {
+        "whenToUse": "Empty state lives inside a container that already provides a surface",
+        "examples": [
+          "Inside a card",
+          "Inside a sheet",
+          "Inside a dialog or drawer"
+        ]
+      },
+      "Outline": {
+        "whenToUse": "Empty state needs its own clear boundary in an open layout",
+        "examples": [
+          "Empty table body",
+          "Bordered list zone",
+          "Dashed dropzone area"
+        ]
+      },
+      "Background": {
+        "whenToUse": "Empty state is the primary content of a page section with no other framing",
+        "examples": [
+          "Full-page empty state",
+          "Sidebar with no items",
+          "Stand-alone panel on a canvas"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Data is still loading and content is expected to appear",
+        "use": "skeleton",
+        "notInstead": "empty (showing empty state during a load is a false negative — the data hasn't arrived yet)"
+      },
+      {
+        "situation": "Something went wrong and the page has content but an error occurred",
+        "use": "alert Variant=Destructive",
+        "notInstead": "empty (alert communicates failure; empty communicates absence)"
+      },
+      {
+        "situation": "The list has items but the user needs to be prompted to add more",
+        "use": "an inline CTA or button",
+        "notInstead": "empty (empty state is for zero-item states, not low-count nudges)"
+      }
+    ],
+    "references": {
+      "shadcn": null,
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Empty.md",
+    "storyFile": "src/stories/Empty.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "empty is a custom design system component — implementation is a custom React component, not a shadcn base."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/empty.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Empty"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Empty.stories.tsx",
+    "title": "Feedback/Empty",
+    "stories": [
+      "Default",
+      "Outline",
+      "Background",
+      "PrimaryActionOnly",
+      "ReadOnly",
+      "NoIcon",
+      "AllVariants",
+      "InsideCard"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

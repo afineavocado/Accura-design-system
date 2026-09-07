@@ -95,8 +95,8 @@ export function Sidebar({
       data-collapsed={isCollapsed}
       className={cn(
         "flex flex-col h-full transition-all duration-200",
-        // Width
-        isCollapsed ? "w-14" : "w-60",
+        // Width — Accura spec: 256px expanded / 56px collapsed (Figma 95:15648)
+        isCollapsed ? "w-14" : "w-64",
         // Type tokens
         type === "floating"
           ? [

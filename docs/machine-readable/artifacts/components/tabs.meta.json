@@ -1,0 +1,313 @@
+{
+  "name": "tabs",
+  "description": "A navigation component for switching between content sections.",
+  "category": "navigation",
+  "shadcnBase": "tabs",
+  "componentSets": {
+    "tab-trigger": {
+      "figmaNodeId": "59:17766",
+      "purpose": "Individual clickable tab item."
+    },
+    "tab-list": {
+      "figmaNodeId": "59:17793",
+      "purpose": "Container that holds tab-trigger instances."
+    }
+  },
+  "variants": {
+    "Type": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Line"
+      ],
+      "default": "Default",
+      "reactProp": "variant",
+      "reactValues": {
+        "Default": "default",
+        "Line": "line"
+      }
+    },
+    "State": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Hover",
+        "Active",
+        "Disabled"
+      ],
+      "default": "Default",
+      "reactProp": "state",
+      "reactValues": {
+        "Default": "default",
+        "Hover": "hover",
+        "Active": "active",
+        "Disabled": "disabled"
+      }
+    },
+    "Orientation": {
+      "type": "enum",
+      "values": [
+        "Horizontal",
+        "Vertical"
+      ],
+      "default": "Horizontal",
+      "reactProp": "orientation",
+      "reactValues": {
+        "Horizontal": "horizontal",
+        "Vertical": "vertical"
+      }
+    }
+  },
+  "availability": {
+    "Line": [
+      "Default",
+      "Active",
+      "Disabled"
+    ],
+    "tab-list Line": [
+      "Horizontal"
+    ]
+  },
+  "componentProperties": {
+    "tab-trigger.Type": {
+      "type": "VARIANT",
+      "default": "Default"
+    },
+    "tab-trigger.State": {
+      "type": "VARIANT",
+      "default": "Default"
+    },
+    "tab-list.Variant": {
+      "type": "VARIANT",
+      "default": "Default"
+    },
+    "tab-list.Orientation": {
+      "type": "VARIANT",
+      "default": "Horizontal"
+    },
+    "slot-1": {
+      "type": "SLOT",
+      "accepts": "tab-trigger"
+    },
+    "slot-2": {
+      "type": "SLOT",
+      "accepts": "tab-trigger"
+    },
+    "slot-3": {
+      "type": "SLOT",
+      "accepts": "tab-trigger"
+    }
+  },
+  "tokens": {
+    "trigger": {
+      "Default Default": {
+        "fill": "transparent",
+        "fg": "color/text/secondary"
+      },
+      "Default Hover": {
+        "fill": "color/surface/accent",
+        "fg": "color/text/secondary"
+      },
+      "Default Active": {
+        "fill": "color/surface/default",
+        "fg": "color/surface/default/foreground",
+        "shadow": "shadows/2xs"
+      },
+      "Default Disabled": {
+        "fill": "transparent",
+        "fg": "color/text/disabled"
+      },
+      "Line Default": {
+        "fill": "transparent",
+        "fg": "color/text/secondary",
+        "indicatorOpacity": 0
+      },
+      "Line Active": {
+        "fill": "transparent",
+        "fg": "color/surface/default/foreground",
+        "indicatorOpacity": 1
+      },
+      "Line Disabled": {
+        "fill": "transparent",
+        "fg": "color/text/disabled",
+        "indicatorOpacity": 0
+      }
+    },
+    "_iconRule": "Optional leading icon (14x14, stroke-based) tracks the trigger's fg per state (Paired icon rule) — same token as the label. Never color/icon/*. Gap icon↔label: Default 6px (spacing/component/xs-plus), Line 4px (spacing/component/xs).",
+    "indicator": {
+      "fill": "color/brand/primary",
+      "height": 2
+    },
+    "list": {
+      "Default": {
+        "fill": "color/surface/raised",
+        "padding": "spacing/component/xxs",
+        "gap": "spacing/component/xxs",
+        "radius": "radius/lg"
+      },
+      "Line": {
+        "fill": "transparent",
+        "strokeBottom": "color/border/default"
+      }
+    }
+  },
+  "composition": {
+    "tabTrigger": [
+      "icon (optional leading, 14x14, stroke-based) — tracks label fg per state",
+      "label",
+      "indicator for Type=Line"
+    ],
+    "tabList": [
+      "slot-1",
+      "slot-2",
+      "slot-3"
+    ],
+    "slotRule": "tab-list slots are typed and accept tab-trigger instances only."
+  },
+  "accessibility": {
+    "role": "tablist, tab, and tabpanel",
+    "selected": "aria-selected=true on active tab.",
+    "disabled": "aria-disabled=true on disabled tabs.",
+    "keyboard": [
+      "Tab enters active tab",
+      "Arrow keys move and activate",
+      "Home moves first",
+      "End moves last"
+    ],
+    "orientation": "Use aria-orientation=vertical for vertical tab-list.",
+    "focusIndicator": "No Figma Focus variant; focus ring handled by CSS/browser at tablist or trigger level."
+  },
+  "constraints": [
+    "Match tab-list Variant to tab-trigger Type.",
+    "Do not mix Default and Line triggers in one list.",
+    "Exactly one trigger must be Active.",
+    "Never disable all tabs.",
+    "Use Line for lower-weight embedded tabs."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "A dashboard page has 'Overview', 'Analytics', 'Reports', and 'Settings' sections — one is visible at a time",
+      "A user profile page separates 'Activity', 'Projects', and 'Teams' into distinct tab panels",
+      "A settings page organises 'Account', 'Password', and 'Notifications' so users can jump directly to a section",
+      "A code editor shows 'index.tsx', 'styles.css', and 'types.ts' in a tab bar above the editor panel",
+      "A detail card uses line tabs to switch between 'Summary' and 'Details' without adding visual weight",
+      "An admin panel uses vertical tabs to navigate between configuration categories in the left column"
+    ],
+    "variantExamples": {
+      "Type=Default": {
+        "whenToUse": "Primary page-level navigation where tabs need visual weight — pill/background style",
+        "examples": [
+          "Dashboard sections",
+          "Main content views",
+          "Top-level page tabs"
+        ]
+      },
+      "Type=Line": {
+        "whenToUse": "Secondary navigation inside panels, cards, or dense layouts — flat underline style",
+        "examples": [
+          "Tabs inside a card",
+          "Filter tabs in a sidebar",
+          "Sub-navigation within a settings section"
+        ]
+      },
+      "Horizontal": {
+        "whenToUse": "Standard left-to-right tab row — the default for most UIs",
+        "examples": [
+          "Page header tabs",
+          "Card header tabs",
+          "Editor tab bar"
+        ]
+      },
+      "Vertical": {
+        "whenToUse": "Side-by-side layout where the content panel sits to the right of the tab list",
+        "examples": [
+          "Admin config panel",
+          "Multi-section settings page",
+          "Sidebar-driven content switching"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Switching between mutually exclusive sections on the same page",
+        "use": "tabs",
+        "notInstead": "accordion"
+      },
+      {
+        "situation": "Expandable Q&A or stacked sections where multiple can be open",
+        "use": "accordion",
+        "notInstead": "tabs"
+      },
+      {
+        "situation": "Site-level navigation to different pages or routes",
+        "use": "navigation-menu",
+        "notInstead": "tabs"
+      },
+      {
+        "situation": "Navigating between numbered pages of a dataset",
+        "use": "pagination",
+        "notInstead": "tabs"
+      },
+      {
+        "situation": "Too many sections to fit in a tab row (8+)",
+        "use": "select or navigation-menu",
+        "notInstead": "tabs"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/tabs",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/tabs"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Tabs.md",
+    "storyFile": "src/stories/Tabs.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Ready from source markdown.",
+      "R8 reviewed 2026-05-28: fill on the tab-trigger instance root inside tab-list is intentional. State=Active prop corrected on the embedded tab-trigger in Variant=Default (H + V)."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-17",
+        "change": "Added optional leading icon (14x14, stroke-based) to tab-trigger. Icon stroke follows the Paired icon rule — tracks the label's fg per state (text/secondary, surface/default/foreground, text/disabled), not color/icon/*. Rebound on all 7 variants; icon now brightens with the label in Active. Gap icon↔label: Default 6px, Line 4px (Line gap doc corrected from 2px). Verified in Figma.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/tabs.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Tabs"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Tabs.stories.tsx",
+    "title": "Navigation/Tabs",
+    "stories": [
+      "Default",
+      "Line",
+      "WithIcon",
+      "LineWithIcon",
+      "Vertical",
+      "WithDisabled",
+      "LineWithDisabled",
+      "BothTypes"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

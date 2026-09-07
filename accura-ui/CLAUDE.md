@@ -10,23 +10,23 @@ That split matters:
 
 | Layer | Source of truth | Applies to Accura? |
 |---|---|---|
-| **Rules** — naming, semantic layer, paired-surface rule, spacing scale, layout, dark mode | `agentic-design-system.md` | **Inherited unchanged** |
-| **Values** — brand ramp, sidebar, radius usage, type | `Accura/accura-theme.md` | **Accura-specific** |
+| **Rules** — naming, semantic layer, paired-surface rule, spacing scale, layout, dark mode | `../docs/design-system-rules.md` | **Inherited unchanged** |
+| **Values** — brand ramp, sidebar, radius usage, type | `../accura-theme.md` | **Accura-specific** |
 
-**Read `../accura-theme.md` before touching tokens.** It documents every deviation, the reasoning, and 9 open questions that must not be silently "fixed".
+**Read `../accura-theme.md` before touching tokens.** It documents every deviation, the reasoning, and 11 open questions that must not be silently "fixed".
 
-The Agentic spec lives in a separate Obsidian vault (kept out of this repo due to size):
+Everything lives in this repository — no external vault, no absolute paths.
 
-`/Users/mac/Downloads/Obsidian/Working process - L&D/Agentic-design-system/`
+**Start at `../llms.txt`** — the navigation index for the ruleset, component specs, machine-readable `.meta.json` artifacts, skills and tracking docs.
 
-**Start there with `llms.txt`** — the navigation index for token rules, component markdown specs, machine-readable `.meta.json` artifacts, Storybook status and tracking docs.
+> ⚠️ `../docs/design-system-rules.md` carries Agentic's **values** as well as its rules. Follow the rules; take values from `../accura-theme.md`. Its override header lists every conflict.
 
 ### Before writing or modifying any UI code
 
-1. Read `llms.txt` to find the relevant spec file(s).
-2. Read the component's markdown spec (`Component Markdown (reference)/[Name].md`) and/or `Machine Readable/artifacts/components/[name].meta.json` for variants, tokens and behaviour.
+1. Read `../llms.txt` to find the relevant spec file(s).
+2. Read the component's spec (`../docs/component-specs/[Name].md`) and/or `../docs/machine-readable/artifacts/components/[name].meta.json` for variants, tokens and behaviour.
 3. Use only `var(--...)` tokens already defined in `src/app/tokens.css` — never hardcode hex/px for colours, spacing or radius.
-4. Cross-check `Tracking/Storybook Status.md` for known parity gaps before assuming a story is "verified".
+4. Cross-check `../docs/tracking/Storybook Status.md` for known parity gaps — but note it reflects **Agentic's** status, not Accura's.
 
 ---
 

@@ -1,0 +1,270 @@
+{
+  "name": "alert",
+  "figmaNodeId": "74:1777",
+  "description": "Inline feedback banners for system-level messages. Three variants: Default (neutral), Destructive (error), Warning (caution). Non-blocking — does not steal focus or require a decision.",
+  "category": "feedback",
+  "shadcnBase": "alert",
+  "componentSets": {
+    "alert": {
+      "figmaNodeId": "74:1777",
+      "purpose": "Inline banner."
+    }
+  },
+  "variants": {
+    "Variant": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Destructive",
+        "Warning"
+      ],
+      "default": "Default",
+      "reactProp": "variant",
+      "reactValues": {
+        "Default": "default",
+        "Destructive": "destructive",
+        "Warning": "warning"
+      }
+    },
+    "Has Icon": {
+      "type": "enum",
+      "values": [
+        "True",
+        "False"
+      ],
+      "default": "True",
+      "reactProp": "hasIcon",
+      "reactValues": {
+        "True": true,
+        "False": false
+      }
+    },
+    "Has Action": {
+      "type": "enum",
+      "values": [
+        "True",
+        "False"
+      ],
+      "default": "False",
+      "reactProp": "hasAction",
+      "reactValues": {
+        "True": true,
+        "False": false
+      }
+    }
+  },
+  "tokens": {
+    "alertFrame": {
+      "Default": {
+        "fill": "color/background/default",
+        "stroke": "color/border/default",
+        "radius": "radius/lg",
+        "padding": "spacing/component/lg"
+      },
+      "Destructive": {
+        "fill": "color/background/default",
+        "stroke": "color/border/error",
+        "radius": "radius/lg",
+        "padding": "spacing/component/lg"
+      },
+      "Warning": {
+        "fill": "color/yellow/50",
+        "stroke": "color/yellow/200",
+        "radius": "radius/lg",
+        "padding": "spacing/component/lg"
+      }
+    },
+    "gaps": {
+      "note": "Layout structure differs by variant combination. Two layouts exist.",
+      "flatLayout": {
+        "when": "Has Icon=False AND Has Action=False",
+        "structure": "title and description are direct children of the alert frame",
+        "containerGap": "spacing/component/sm"
+      },
+      "nestedLayout": {
+        "when": "Has Icon=True OR Has Action=True",
+        "structure": "icon + content frame + action-slot are siblings inside the alert frame",
+        "containerGap": "spacing/component/md",
+        "contentFrameGap": "spacing/component/xxs"
+      }
+    },
+    "text": {
+      "Default": {
+        "title": "color/background/default/foreground",
+        "description": "color/background/muted/foreground"
+      },
+      "Destructive": {
+        "title": "color/text/invalid",
+        "description": "color/text/secondary"
+      },
+      "Warning": {
+        "title": "color/yellow/900",
+        "description": "color/yellow/800"
+      }
+    },
+    "icon": {
+      "Default": "color/background/default/foreground",
+      "Destructive": "color/icon/danger",
+      "Warning": "color/icon/warning"
+    }
+  },
+  "composition": {
+    "alert": {
+      "flatLayout": "Has Icon=False AND Has Action=False — title + description are direct children of alert frame, no content wrapper",
+      "nestedLayout": "Has Icon=True OR Has Action=True — icon (optional) + content frame (title + description) + action-slot (optional) are siblings",
+      "actionSlot": "Named FRAME instance, typed to Button only, shown/hidden by Has Action boolean prop"
+    },
+    "alertDialog": [
+      "icon-container",
+      "content.title",
+      "content.description",
+      "footer buttons"
+    ]
+  },
+  "accessibility": {
+    "role": "alert for inline banner; alertdialog for modal dialog",
+    "liveRegion": "Inline alert should use role=alert.",
+    "focusManagement": "Alert dialog traps focus and moves focus to first focusable element on open.",
+    "keyboard": [
+      "Escape dismisses dialog",
+      "Tab and Shift+Tab cycle footer buttons"
+    ],
+    "icons": "Decorative icons use aria-hidden=true."
+  },
+  "constraints": [
+    "Use inline alert for non-blocking feedback.",
+    "Use alert-dialog only when user must acknowledge or decide.",
+    "Warning variant intentionally uses primitive yellow tokens (color/yellow/*) — design decision, not a bug.",
+    "Do not override button fills inside action-slot.",
+    "Alert-dialog Type=Destructive must include a cancel path."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Displaying a form submission error inline below the form header so the user sees it without scrolling",
+      "Warning a user that their free trial expires in 3 days — a persistent banner they should read but don't have to act on immediately",
+      "Confirming a destructive action (deleting a workspace) with a modal alert-dialog before it executes",
+      "Announcing a new feature or policy change at the top of a settings page",
+      "Surfacing an async error after a failed save, inline in the affected section",
+      "Blocking the user from proceeding until they acknowledge a critical configuration problem (alert-dialog)"
+    ],
+    "variantExamples": {
+      "Default": {
+        "whenToUse": "Neutral information, success confirmation, or a general announcement",
+        "examples": [
+          "Your changes have been saved.",
+          "New integration available.",
+          "Invite sent."
+        ]
+      },
+      "Destructive": {
+        "whenToUse": "Validation failure, API error, or confirmation that something irreversible occurred",
+        "examples": [
+          "Payment failed — check your card details.",
+          "Could not delete project — try again."
+        ]
+      },
+      "Warning": {
+        "whenToUse": "Caution state where action is optional but advisable",
+        "examples": [
+          "Your API key expires in 7 days.",
+          "This action affects all team members."
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Feedback that auto-dismisses after a completed action (save, copy, send)",
+        "use": "toast",
+        "notInstead": "alert (alert is persistent; toast is transient)"
+      },
+      {
+        "situation": "The page has loaded but there is simply no data to show",
+        "use": "empty",
+        "notInstead": "alert (alert signals something wrong or noteworthy, not an empty state)"
+      },
+      {
+        "situation": "User must make a choice before continuing — both buttons are real decisions (delete, revoke, overwrite)",
+        "use": "alert-dialog (role=alertdialog)",
+        "notInstead": "dialog — dialog has a neutral close (× button), alertdialog forces a choice"
+      },
+      {
+        "situation": "User needs a modal for a form, review, or complex content — can dismiss neutrally with ×",
+        "use": "dialog (role=dialog)",
+        "notInstead": "alert-dialog — alertdialog should not have a neutral close on destructive actions"
+      },
+      {
+        "situation": "Inline validation error on a single form field",
+        "use": "field-level error text",
+        "notInstead": "alert (alert is for section- or page-level messages, not per-field errors)"
+      }
+    ],
+    "decisionGuide": "See Alert.md — Alert vs AlertDialog vs Dialog Decision Guide section. Key rule: if both buttons are real choices (cancel ≠ close), use alertdialog. If user can exit neutrally (× = valid outcome), use dialog. If no blocking needed, use inline alert.",
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/alert",
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Alert.md",
+    "storyFile": "src/stories/Alert.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Warning variant primitive tokens (color/yellow/*) are intentional — accepted design decision 2026-05-28.",
+      "Alert-dialog footer button fills are intentional — the parent component sets the root fill on each button instance (primary/outline/destructive). This is required because Figma API fills=[] removes the visual color; these fills must be kept.",
+      "action-slot stays as BOOLEAN-controlled FRAME (buttons only) — no native SLOT conversion. Decided 2026-05-28.",
+      "AlertDialog has been separated into its own file: alert-dialog.meta.json"
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/alert.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Alert"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Alert.stories.tsx",
+    "title": "Feedback/Alert",
+    "stories": [
+      "Default",
+      "Destructive",
+      "Warning",
+      "DefaultWithIcon",
+      "DestructiveWithIcon",
+      "WarningWithIcon",
+      "WithAction",
+      "AllVariants"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": "Alert-only stories. AlertDialog has its own separate story file and meta.json."
+  },
+  "relationships": {
+    "relatedComponents": [
+      {
+        "name": "alert-dialog",
+        "reason": "AlertDialog is the modal version requiring an explicit decision. Alert is inline and non-blocking."
+      },
+      {
+        "name": "toast",
+        "reason": "Toast auto-dismisses after an action; Alert is persistent until dismissed."
+      },
+      {
+        "name": "empty",
+        "reason": "Empty is for no-data states; Alert signals something wrong or noteworthy."
+      }
+    ]
+  }
+}

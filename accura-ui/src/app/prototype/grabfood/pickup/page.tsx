@@ -1,10 +1,8 @@
 'use client'
 
 import { Badge } from '@/components/ui/badge'
-import {
-  ChevronLeft, ChevronDown, HeartRounded, Search,
-  Star, Clock, MapPin, Tag01, Package, ShoppingBag01, Award01,
-} from 'lucide-react'
+import { ChevronLeft, ChevronDown, Search, Star, Clock, MapPin, Package } from 'lucide-react';
+import { HeartRounded, Tag01, ShoppingBag01, Award01 } from '@untitledui/icons';
 import { cn } from '@/lib/utils'
 
 // ─── Mock data ────────────────────────────────────────────────────────────────

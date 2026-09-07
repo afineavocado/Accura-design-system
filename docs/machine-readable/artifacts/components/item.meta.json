@@ -1,0 +1,373 @@
+{
+  "name": "item",
+  "figmaNodeId": "65:815",
+  "description": "A compact, repeatable list-row component for a single entry in a list, feed, or menu. Six leading Types, three container Variants, and three Sizes. Always use 'item' — never '_item-image' standalone.",
+  "category": "layout",
+  "shadcnBase": null,
+  "primitiveBase": null,
+  "componentSets": {
+    "item": {
+      "figmaNodeId": "65:815",
+      "variants": 54,
+      "purpose": "Full list row — 6 Types × 3 Variants × 3 Sizes. Always use this."
+    },
+    "_item-image": {
+      "figmaNodeId": "65:572",
+      "variants": 1,
+      "purpose": "Image placeholder sub-component — assembled inside item. Never use standalone."
+    }
+  },
+  "variants": {
+    "Type": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Icon",
+        "Avatar",
+        "Image",
+        "Header",
+        "Link"
+      ],
+      "default": "Default",
+      "intent": {
+        "Default": "Text-only — no leading element. Simplest list row.",
+        "Icon": "16×16 icon precedes content. Use for category/action rows.",
+        "Avatar": "40×40 avatar precedes content. Use for people-centric lists.",
+        "Image": "32×32 image thumbnail precedes content. Use for product/file/brand rows.",
+        "Header": "Full-width cover image above content row. Use for editorial/rich rows. No action-slot.",
+        "Link": "Content + trailing chevron-right. Full row is the interactive target — no button."
+      }
+    },
+    "Variant": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Outline",
+        "Muted"
+      ],
+      "default": "Default",
+      "intent": {
+        "Default": "No fill, no stroke — inherits parent surface. Use inside bordered containers.",
+        "Outline": "color/surface/default fill + color/border/default stroke + radius/lg. Standalone card-like boundary.",
+        "Muted": "color/surface/muted fill + radius/lg, no stroke. Subtle tint for alternating/highlighted rows."
+      }
+    },
+    "Size": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Sm",
+        "Xs"
+      ],
+      "default": "Default",
+      "dimensions": {
+        "Default": {
+          "padding": "spacing/component/md",
+          "gap": "spacing/component/md"
+        },
+        "Sm": {
+          "padding": "spacing/component/sm",
+          "gap": "spacing/component/sm"
+        },
+        "Xs": {
+          "padding": "spacing/component/xs-plus",
+          "gap": "spacing/component/xs-plus"
+        }
+      }
+    }
+  },
+  "componentProperties": {
+    "Type": {
+      "type": "VARIANT",
+      "default": "Default"
+    },
+    "Variant": {
+      "type": "VARIANT",
+      "default": "Default"
+    },
+    "Size": {
+      "type": "VARIANT",
+      "default": "Default"
+    }
+  },
+  "tokens": {
+    "container": {
+      "Default": {
+        "fill": "transparent",
+        "stroke": "none",
+        "radius": "radius/lg"
+      },
+      "Outline": {
+        "fill": "color/surface/default",
+        "stroke": "color/border/default",
+        "radius": "radius/lg"
+      },
+      "Muted": {
+        "fill": "color/surface/muted",
+        "stroke": "none",
+        "radius": "radius/lg"
+      }
+    },
+    "text": {
+      "title": "color/surface/default/foreground",
+      "description": "color/surface/muted/foreground",
+      "textGap": "spacing/component/xxs"
+    },
+    "leadingElements": {
+      "Icon": {
+        "iconStroke": "color/surface/default/foreground"
+      },
+      "Avatar": {
+        "fallbackFill": "color/surface/muted"
+      },
+      "Image": {
+        "fill": "IMAGE fill — replace with actual src in implementation"
+      },
+      "Header": {
+        "fill": "color/surface/muted",
+        "notes": "Replace with real cover image in implementation"
+      },
+      "Link": {
+        "chevronStroke": "color/surface/default/foreground"
+      }
+    },
+    "actionSlot": {
+      "fill": "button/outline/bg/bg",
+      "stroke": "button/outline/border/default",
+      "labelFill": "button/outline/fg/fg",
+      "doNotOverride": true
+    }
+  },
+  "composition": {
+    "structure": {
+      "Default": "H AUTO-LAYOUT: content (title + description) → action-slot (button INSTANCE)",
+      "Icon": "H AUTO-LAYOUT: placeholder icon (16×16) → content → action-slot",
+      "Avatar": "H AUTO-LAYOUT: avatar (40×40) → content → action-slot",
+      "Image": "H AUTO-LAYOUT: media (_item-image, 32×32) → content → action-slot",
+      "Header": "V AUTO-LAYOUT: header FRAME (full-width image, no padding) → content-row → content",
+      "Link": "H AUTO-LAYOUT, TOP alignment: content → action-slot (chevron icon, no button)"
+    },
+    "linkAlignmentNote": "Type=Link uses counterAxisAlignItems=MIN (top) to anchor chevron to title when description wraps.",
+    "actionSlotVisibility": "Show when item has a discrete action. Hide for Type=Link (row is the action). Hide for Type=Header. Hide for read-only rows.",
+    "descriptionVisibility": "Optional — hide when items are atomic (command palettes, simple pickers, dense Xs lists).",
+    "imageFills": "Type=Image media and Type=Header header use muted fill as placeholder in Figma. Replace with actual images in implementation."
+  },
+  "behavior": {
+    "interactionModels": {
+      "discreteAction": "Types Default, Icon, Avatar, Image, Header — row itself is non-interactive; action-slot button is the sole target.",
+      "fullRowAction": "Type=Link — wrap in <a> or <button>; entire row handles click/tap; no separate button."
+    },
+    "keyboard": [
+      "Tab to focus action-slot button (or full row for Type=Link)",
+      "Enter / Space to activate"
+    ],
+    "noBuiltInState": "item has no hover, focus, active, or selected state built in. Hover treatment is parent-level (e.g. row background to color/surface/accent — the Type=Link variant applies this directly via hover:bg-[var(--color-surface-accent)])."
+  },
+  "accessibility": {
+    "TypeLink": "Wrap in <a href='...'> or <button> — gives accessible role and focus target.",
+    "actionSlot": "Button label must be descriptive with context, not just 'Edit' alone.",
+    "TypeImage": "Provide alt text: alt='Product: Blue Widget'.",
+    "TypeHeader": "Provide alt or aria-hidden='true' for decorative cover images.",
+    "TypeAvatar": "Avatar component exposes name via aria-label or visible text."
+  },
+  "constraints": [
+    "Always use 'item' — never '_item-image' standalone.",
+    "Type=Link: wrap entire row in <a> or <button>.",
+    "Type=Header has no action-slot — place actions outside the component if needed.",
+    "Do not override fills inside action-slot — change the button variant prop.",
+    "Variant=Outline inside a container that already has a border creates a double-border — use Variant=Default instead.",
+    "Use Type by what the leading element communicates, not aesthetics.",
+    "Description should add context the title doesn't carry — role, date, status, count."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Navigation menus where each row lists a destination with an icon and label",
+      "Activity feeds showing who performed an action, with a timestamp or status in the description",
+      "Settings lists inside a card — each row is a toggle, disclosure, or option",
+      "File or folder browsers with a thumbnail, filename, and file size on each row",
+      "Team or member group lists showing user avatars, names, and roles",
+      "Command palettes or search result lists where each result is a compact, tappable row"
+    ],
+    "variantExamples": {
+      "Type=Default": {
+        "whenToUse": "No leading media needed — text alone is sufficient to identify the item",
+        "examples": [
+          "Simple settings rows",
+          "Text-only options list",
+          "Command palette entries"
+        ]
+      },
+      "Type=Icon": {
+        "whenToUse": "Items map to a recognisable category, action type, or feature",
+        "examples": [
+          "App navigation menu",
+          "File type list",
+          "Feature settings with category icons"
+        ]
+      },
+      "Type=Avatar": {
+        "whenToUse": "Each item represents a person or user entity",
+        "examples": [
+          "Team member list",
+          "Assignee picker",
+          "Chat conversation list",
+          "Activity feed"
+        ]
+      },
+      "Type=Image": {
+        "whenToUse": "Each item represents a product, file, brand, or visual entity",
+        "examples": [
+          "Product picker",
+          "File browser",
+          "Brand or integration list"
+        ]
+      },
+      "Type=Header": {
+        "whenToUse": "Item needs a large cover image — editorial or feature-rich content",
+        "examples": [
+          "Article preview",
+          "Featured course row",
+          "Rich onboarding card"
+        ]
+      },
+      "Type=Link": {
+        "whenToUse": "The entire row navigates somewhere — no discrete button action needed",
+        "examples": [
+          "Settings disclosure rows",
+          "Navigation list in a sheet",
+          "Mobile-style menu rows"
+        ]
+      },
+      "Variant=Default": {
+        "whenToUse": "Item is inside a bordered list container or card that already defines boundaries",
+        "examples": [
+          "Items inside a card",
+          "Rows inside a panel with its own border"
+        ]
+      },
+      "Variant=Outline": {
+        "whenToUse": "Item stands alone on open canvas or needs its own card-like boundary",
+        "examples": [
+          "Standalone selection cards",
+          "Items placed directly on page background"
+        ]
+      },
+      "Variant=Muted": {
+        "whenToUse": "Subtle row tint for alternating rows, highlighted active state, or sidebar context",
+        "examples": [
+          "Active/selected row highlight",
+          "Zebra-stripe alternative",
+          "Sidebar active item"
+        ]
+      },
+      "Size=Default": {
+        "whenToUse": "Standard density — comfortable reading with full description line",
+        "examples": [
+          "Main navigation lists",
+          "Activity feeds",
+          "Settings panels"
+        ]
+      },
+      "Size=Sm": {
+        "whenToUse": "Compact density — secondary panels, sidebars, nested lists",
+        "examples": [
+          "Sidebar sub-items",
+          "Compact pickers",
+          "Secondary settings"
+        ]
+      },
+      "Size=Xs": {
+        "whenToUse": "Maximum density — very tight spaces or mobile views",
+        "examples": [
+          "Inline pickers",
+          "Dense command palettes",
+          "Mobile list views"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "A single repeatable row in a vertical list",
+        "use": "item",
+        "notInstead": "card"
+      },
+      {
+        "situation": "A self-contained block of independent information (metric, product, profile)",
+        "use": "card",
+        "notInstead": "item"
+      },
+      {
+        "situation": "Many rows of uniform structured data with column headers and sorting",
+        "use": "table",
+        "notInstead": "item"
+      },
+      {
+        "situation": "A navigation row that opens a new view when tapped",
+        "use": "item (Type=Link)",
+        "notInstead": "button as a full-width row"
+      },
+      {
+        "situation": "A full app navigation panel with grouped sections",
+        "use": "sidebar",
+        "notInstead": "a stack of item rows"
+      }
+    ],
+    "references": {
+      "shadcn": null,
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Item.md",
+    "storyFile": "src/stories/Item.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "item is a custom design system component — no direct shadcn equivalent. Implementation is a custom React component.",
+      "Type=Header and Type=Link only have Variant=Default in smaller sizes (Sm/Xs)."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-15",
+        "change": "Fixed token-ladder mismatch: container fill, title/description text, leading/trailing icon strokes, Header placeholder fill, and Link hover state were all bound to color/background/* (page-level ladder). Item is a component-level surface (list row, like Card), so rebound to color/surface/* equivalents: Outline fill → surface/default, Muted fill → surface/muted, title → surface/default/foreground, description → surface/muted/foreground, icon strokes → surface/default/foreground, Header placeholder → surface/muted, Link hover → surface/accent. Fixed in Figma (65:815, 243 bindings across 54 variants), item.meta.json, Item.md, item.tsx, and Item.stories.tsx.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware. The color/surface/* ladder (now used throughout) has correct Dark-mode values as of the 2026-06-15 dark mode pass.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/item.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Item"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Item.stories.tsx",
+    "title": "Layout/Item",
+    "stories": [
+      "TypeDefault",
+      "TypeIcon",
+      "TypeAvatar",
+      "TypeImage",
+      "TypeHeader",
+      "TypeLink",
+      "VariantOutline",
+      "VariantMuted",
+      "AllSizes",
+      "InsideCard"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

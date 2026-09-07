@@ -1,0 +1,329 @@
+{
+  "name": "radio-group",
+  "figmaNodeId": "96:33437",
+  "description": "A single-select control used within a radio group, with Basic row and Choice card layouts.",
+  "category": "forms",
+  "shadcnBase": "radio-group",
+  "componentSets": {
+    "radio-item": {
+      "figmaNodeId": "96:33437",
+      "purpose": "Main labeled radio option."
+    },
+    "radio": {
+      "figmaNodeId": "96:33420",
+      "purpose": "16x16 radio indicator sub-component."
+    }
+  },
+  "variants": {
+    "State": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Checked",
+        "Disabled",
+        "Invalid",
+        "Focus"
+      ],
+      "default": "Default",
+      "reactProp": "state",
+      "reactValues": {
+        "Default": "default",
+        "Checked": "checked",
+        "Disabled": "disabled",
+        "Invalid": "invalid",
+        "Focus": "focus"
+      }
+    },
+    "Type": {
+      "type": "enum",
+      "values": [
+        "Basic",
+        "Choice card"
+      ],
+      "default": "Basic",
+      "reactProp": "type",
+      "reactValues": {
+        "Basic": "basic",
+        "Choice card": "choice-card"
+      }
+    },
+    "Show description": {
+      "type": "enum",
+      "values": [
+        "True",
+        "False"
+      ],
+      "default": "True",
+      "reactProp": "showDescription",
+      "reactValues": {
+        "True": true,
+        "False": false
+      }
+    }
+  },
+  "componentProperties": {
+    "State": {
+      "type": "VARIANT",
+      "default": "Default"
+    },
+    "Type": {
+      "type": "VARIANT",
+      "default": "Basic"
+    },
+    "Show description": {
+      "type": "BOOLEAN",
+      "default": true
+    }
+  },
+  "tokens": {
+    "radio": {
+      "Unchecked": {
+        "fill": "transparent",
+        "stroke": "color/input/border",
+        "strokeWeight": 1,
+        "strokeAlign": "inside"
+      },
+      "Checked": {
+        "fill": "transparent",
+        "stroke": "color/brand/primary",
+        "strokeWeight": 1,
+        "strokeAlign": "inside"
+      },
+      "Disabled": {
+        "fill": "transparent",
+        "stroke": "color/border/disabled",
+        "strokeWeight": 1,
+        "strokeAlign": "inside"
+      },
+      "Focus": {
+        "fill": "transparent",
+        "stroke": "color/ring",
+        "strokeWeight": 2,
+        "strokeAlign": "outside",
+        "effect": "focus/ring"
+      },
+      "Invalid": {
+        "fill": "transparent",
+        "stroke": "color/border/error",
+        "strokeWeight": 1,
+        "strokeAlign": "inside"
+      },
+      "dot": {
+        "fill": "color/brand/primary",
+        "radius": "radius/full",
+        "size": 8
+      },
+      "radius": "radius/full"
+    },
+    "choiceCard": {
+      "Default": {
+        "fill": "transparent",
+        "stroke": "color/border/default",
+        "radius": "radius/lg"
+      },
+      "Checked": {
+        "fill": "transparent",
+        "stroke": "color/brand/primary",
+        "radius": "radius/lg"
+      },
+      "Disabled": {
+        "fill": "transparent",
+        "stroke": "color/border/default",
+        "opacity": "opacity/disabled",
+        "radius": "radius/lg"
+      },
+      "Invalid": {
+        "fill": "transparent",
+        "stroke": "color/border/error",
+        "radius": "radius/lg"
+      },
+      "Focus": {
+        "fill": "transparent",
+        "stroke": "color/border/focus",
+        "radius": "radius/lg"
+      }
+    },
+    "text": {
+      "DefaultCheckedFocus": {
+        "label": "color/surface/default/foreground",
+        "description": "color/text/secondary"
+      },
+      "Invalid": {
+        "label": "color/text/invalid",
+        "description": "color/text/secondary"
+      },
+      "DisabledBasic": {
+        "label": "color/text/disabled",
+        "description": "color/text/disabled"
+      },
+      "DisabledChoiceCard": {
+        "label": "color/surface/default/foreground",
+        "description": "color/text/secondary"
+      }
+    },
+    "spacing": {
+      "itemGap": "spacing/component/md",
+      "choiceCardPadding": "spacing/component/lg",
+      "textGap": "spacing/component/xxs"
+    },
+    "states": {
+      "invalid": {
+        "borderToken": "color/border/error",
+        "ringToken": "color/border/error",
+        "ringGlow": "color-mix(in_srgb,var(--color-border-error)_20%,transparent)",
+        "notes": "Uses [&[aria-invalid]] compound selector to beat data-[state=open]/focus-visible specificity. Blue ring must NOT appear when invalid."
+      }
+    }
+  },
+  "composition": {
+    "basic": [
+      "radio",
+      "text-block.label",
+      "text-block.description"
+    ],
+    "choiceCard": [
+      "card frame",
+      "radio",
+      "text-block.label",
+      "text-block.description"
+    ],
+    "radio": [
+      "dot"
+    ]
+  },
+  "accessibility": {
+    "role": "radio within radiogroup",
+    "keyboard": [
+      "Tab to enter group",
+      "Arrow keys move between options",
+      "Space selects"
+    ],
+    "screenReaderName": "Visible label text is the accessible name. Use fieldset and legend for group label.",
+    "focusIndicator": "Basic uses color/ring on radio circle. Choice card uses color/border/focus on card border.",
+    "focusCheckedOverlap": "Radix RadioGroup couples arrow-key focus movement with selection (native radio interaction model). On Choice card, once a group has a selected value, arrowing to another card sets Checked and Focus simultaneously — the card border shows brand/primary (Checked) and border/focus (Focus) at the same time, making the two states visually indistinguishable in practice. The pure Focus (non-Checked) border is only reachable when the group has no selection yet (first Tab into an empty group). The Basic type's radio circle ring (color/ring, 2px OUTSIDE) remains independently visible regardless of checked state.",
+    "touchTarget": "Choice cards meet 44px target; Basic rows require min-height 44px wrapper."
+  },
+  "constraints": [
+    "Never use a single radio-item in isolation.",
+    "Use checkbox when only one option exists.",
+    "Choice cards are transparent and must not receive a fill.",
+    "Use Type=Choice card only when the option needs more explanation or visual weight."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Pricing plan selection: Free, Plus, Pro — only one tier can be active, seeing all options at once matters",
+      "Subscription billing cadence: Monthly, Yearly, Lifetime — 3 visible options, mutual exclusion is the entire point",
+      "Notification delivery preference: Email, SMS, Push — user picks one channel",
+      "Layout or display mode selector: Grid view, List view, Compact view",
+      "Feedback form rating scale: Poor, Fair, Good, Excellent — visible options help calibrate the choice"
+    ],
+    "variantExamples": {
+      "Type=Basic": {
+        "whenToUse": "Compact preference list in a form or settings panel — low visual weight, options are self-explanatory",
+        "examples": [
+          "Notification channel",
+          "Sort order",
+          "Gender on profile form"
+        ]
+      },
+      "Type=Choice card": {
+        "whenToUse": "Each option warrants a title + description, or the choice carries enough visual weight to justify a card",
+        "examples": [
+          "Pricing tier (Free / Pro / Enterprise)",
+          "Onboarding goal (For personal use / For my team)",
+          "Subscription plan"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "2–5 mutually exclusive options where seeing all at once aids the decision",
+        "use": "radio",
+        "notInstead": "select"
+      },
+      {
+        "situation": "5+ options or space is constrained",
+        "use": "select",
+        "notInstead": "radio"
+      },
+      {
+        "situation": "Only one option exists (standalone binary)",
+        "use": "checkbox",
+        "notInstead": "radio"
+      },
+      {
+        "situation": "User can pick multiple options from the list",
+        "use": "checkbox",
+        "notInstead": "radio"
+      },
+      {
+        "situation": "Each option is a major feature tier with rich description",
+        "use": "radio (Type=Choice card)",
+        "notInstead": "checkbox"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/radio-group",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/radio-group"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Radio.md",
+    "storyFile": "src/stories/RadioGroup.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [
+      "Radio.md Token Bindings says Invalid text uses color/text/invalid, while Behavior says text stays default. Confirm the correct Invalid text behavior."
+    ],
+    "notes": [
+      "Examples assume RadioGroupItem and RadioItem wrapper APIs.",
+      "Figma R1–R8 audit passed 2026-05-28 — 0 issues across radio (5v) and radio-item (10v)."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-03",
+        "change": "Invalid state: focus ring uses color/border/error instead of color/ring.",
+        "breaking": false
+      },
+      {
+        "date": "2026-06-15",
+        "change": "ChoiceCard story: added missing focus-within:border-[var(--color-border-focus)] on the card wrapper to match Radio.md spec. Documented Focus/Checked overlap caveat — on Choice card, arrow-key navigation moves focus and selection together, so the dedicated Focus border is usually masked by the Checked border.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/radio-group.tsx",
+    "packageDeps": [],
+    "exports": [
+      "RadioGroup",
+      "RadioGroupItem"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/RadioGroup.stories.tsx",
+    "title": "Forms/RadioGroup",
+    "stories": [
+      "Basic",
+      "BasicWithDescription",
+      "ChoiceCard",
+      "Disabled",
+      "ChoiceCardDisabled",
+      "Invalid",
+      "ChoiceCardInvalid",
+      "Horizontal"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": "Invalid state: focus ring uses color/border/error instead of color/ring."
+  }
+}

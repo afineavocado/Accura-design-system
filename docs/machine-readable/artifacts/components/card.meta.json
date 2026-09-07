@@ -1,0 +1,270 @@
+{
+  "name": "card",
+  "figmaNodeId": "297:4933",
+  "description": "A structured container for self-contained, independently meaningful blocks of information. Built on shadcn Card — purely presentational, no Radix primitive. A shell that owns surface, border, radius, and padding; content is freely composed inside.",
+  "category": "layout",
+  "shadcnBase": "card",
+  "primitiveBase": null,
+  "variants": {
+    "Property 1": {
+      "type": "enum",
+      "values": [
+        "Form",
+        "Action",
+        "Info",
+        "Social media",
+        "Image-vertical",
+        "Image-down",
+        "Image-horizontal",
+        "Border",
+        "Tab",
+        "Item"
+      ],
+      "default": "Form",
+      "notes": "These are example compositions — demonstrations of content types inside the shell, not a closed set of modes. In practice, card interiors are assembled freely from card-header, card-content, card-footer, and slot frames.",
+      "intent": {
+        "Form": "card-header + input fields + card-footer with buttons. Use for login, sign-up, settings forms.",
+        "Action": "card-header + single footer action button. Use for confirmation prompts, upgrade nudges.",
+        "Info": "card-header + content slots + description + avatar group. Use for metric panels, dashboard summaries.",
+        "Social media": "card-header with avatar + follow button + image + slots. Use for social feed items.",
+        "Image-vertical": "Full-width image at top + slots + content + action buttons. Use for product listings.",
+        "Image-down": "Slots + content + full-width image at bottom. Use when text leads and image provides context below.",
+        "Image-horizontal": "Square image left + slots + title + action. Use for compact product cards, search results.",
+        "Border": "card-header + slots with color/border/strong stroke. Use to emphasise highlighted/selected/featured cards.",
+        "Tab": "tab-list at top + card-header + slots. Use for switchable metric views.",
+        "Item": "card-header + slots + item rows + avatar group. Use for list-style cards (settings, team members)."
+      }
+    }
+  },
+  "componentProperties": {
+    "Property 1": {
+      "type": "VARIANT",
+      "default": "Form"
+    }
+  },
+  "tokens": {
+    "container": {
+      "fill": "color/surface/overlay",
+      "stroke": "color/border/default",
+      "strokeBorder": "color/border/strong",
+      "strokeBorderNote": "Property 1=Border only uses color/border/strong",
+      "radius": "radius/lg",
+      "padding": "spacing/component/lg",
+      "paddingNote": "16px default (data/dashboard density). Pass spacing/component/xl (24px) for prose/feature cards, spacing/component/md (12px) for dense. See Card Layout ground rules.",
+      "gap": "spacing/component/lg"
+    },
+    "cardHeader": {
+      "gap": "spacing/component/xs",
+      "titleFill": "color/surface/overlay/foreground",
+      "descriptionFill": "color/text/secondary"
+    },
+    "cardFooter": {
+      "gap": "spacing/component/sm"
+    },
+    "imagePaddingNote": "Image-vertical, Image-down, Image-horizontal have NO root padding — image bleeds edge-to-edge. padding applies inside card-content only.",
+    "slots": {
+      "Slot 1": "Free-composition FRAME — charts, stat blocks, image frames, badge rows",
+      "Slot 2": "Free-composition FRAME — charts, stat blocks, image frames, badge rows"
+    }
+  },
+  "composition": {
+    "subComponents": {
+      "CardHeader": "V AUTO-LAYOUT — title + description. Maps to <CardHeader> + <CardTitle> + <CardDescription>.",
+      "CardContent": "V AUTO-LAYOUT — interior content: fields, text, item rows, etc. Maps to <CardContent>.",
+      "CardFooter": "H AUTO-LAYOUT — primary action buttons, avatars. Maps to <CardFooter>."
+    },
+    "shellModel": "Card owns surface, border, radius, padding, and vertical rhythm. All interior content is independently composed.",
+    "imageBleeds": "For Image variants, apply overflow:hidden and rounded-lg to the card in code so image respects card radius at the bleed edge."
+  },
+  "behavior": {
+    "architecture": "Purely presentational — no Radix primitive, no state, no interactivity.",
+    "noBuiltInState": "Card has no hover, focus, active, or selected state. For interactive cards, wrap in <button> or <a> and add Tailwind utilities for state.",
+    "flexibleComposition": "CardHeader, CardContent, CardFooter are not all required — mix and match per variant."
+  },
+  "accessibility": {
+    "role": "No implicit role — renders as <div>. Add role='article' for feed items, role='region' + aria-label for landmark sections.",
+    "interactiveCards": "Wrap in <button> or <a> — give accessible name via aria-label or visible heading.",
+    "cardTitle": "<CardTitle> renders as <div> — promote to <h2>/<h3> via asChild when card is a content section.",
+    "imageAlt": "All card images need alt — descriptive for content images, alt='' for decorative."
+  },
+  "constraints": [
+    "Use cards only when content is independently meaningful — a metric, product, profile, or setting category.",
+    "Do not wrap every page section in cards — creates visual noise without hierarchy.",
+    "Always include card-header with at least a title — a card with no heading is not scannable.",
+    "Keep fill as color/surface/overlay — the card's elevated surface relative to the page is intentional.",
+    "Do not put a card inside a card — use item rows inside card-content instead.",
+    "Property 1=Border signals selection or emphasis — reserve it for one highlighted card in a set.",
+    "Image-bleed variants require overflow:hidden in code to clip the image at the card's radius/lg corners."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Dashboard metric panels showing a headline stat, supporting description, and a trend sparkline",
+      "E-commerce product listings with an image, title, price, and add-to-cart action",
+      "Authentication forms (login, sign-up, password reset) contained in a centred card shell",
+      "User profile summaries combining avatar, name, role, and quick-action buttons",
+      "Settings category panels grouping related input fields under a titled section",
+      "Social feed post previews with avatar, username, image, and engagement actions"
+    ],
+    "variantExamples": {
+      "Form": {
+        "whenToUse": "The card collects structured user input",
+        "examples": [
+          "Login form",
+          "Sign-up panel",
+          "Payment details card",
+          "API key settings"
+        ]
+      },
+      "Action": {
+        "whenToUse": "The card presents a single decision or call-to-action",
+        "examples": [
+          "Upgrade nudge",
+          "Confirmation prompt",
+          "'Start free trial' panel"
+        ]
+      },
+      "Info": {
+        "whenToUse": "The card summarises a metric or status with supporting context",
+        "examples": [
+          "Revenue panel",
+          "Active users widget",
+          "Server health card"
+        ]
+      },
+      "Social media": {
+        "whenToUse": "The card is a social content preview with identity and media",
+        "examples": [
+          "Post preview",
+          "User profile card",
+          "Review card"
+        ]
+      },
+      "Image-vertical": {
+        "whenToUse": "The image is the primary hook and leads the card content",
+        "examples": [
+          "Product listing",
+          "Article card",
+          "Course preview"
+        ]
+      },
+      "Image-down": {
+        "whenToUse": "Text leads, image provides supporting context below",
+        "examples": [
+          "Blog summary",
+          "Announcement card with illustration"
+        ]
+      },
+      "Image-horizontal": {
+        "whenToUse": "Image and text share equal weight in a compact format",
+        "examples": [
+          "Search result row",
+          "Compact product card",
+          "Horizontal article tile"
+        ]
+      },
+      "Border": {
+        "whenToUse": "One card in a set needs visual emphasis (selected, featured, highlighted plan)",
+        "examples": [
+          "Active pricing tier",
+          "Selected team member",
+          "Featured integration"
+        ]
+      },
+      "Tab": {
+        "whenToUse": "The card presents multiple switchable views of the same content",
+        "examples": [
+          "Weekly vs monthly metrics",
+          "Details vs activity log",
+          "Code vs preview"
+        ]
+      },
+      "Item": {
+        "whenToUse": "The card groups a list of row entries under a titled section",
+        "examples": [
+          "Team members panel",
+          "Settings category with toggle rows",
+          "Notification list"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "A self-contained block of independent information (metric, product, profile)",
+        "use": "card",
+        "notInstead": "item"
+      },
+      {
+        "situation": "A single repeatable row in a list (one entry among many)",
+        "use": "item",
+        "notInstead": "card"
+      },
+      {
+        "situation": "Structured tabular data with sortable columns and many uniform rows",
+        "use": "table",
+        "notInstead": "card"
+      },
+      {
+        "situation": "A generic section wrapper for every page region",
+        "use": "spacing + layout",
+        "notInstead": "card"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/card",
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Card.md",
+    "storyFile": "src/stories/Card.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Card variants are example compositions, not closed modes — any interior structure is valid as long as the shell tokens are preserved."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-17",
+        "change": "Default padding reduced from spacing/component/xl (24px) to spacing/component/lg (16px) — 24px read as over-padded on data/dashboard cards. 16px is now the data/default density; override to xl (24px) for prose/feature cards. Per Card Layout ground rules in agentic-design-system.md.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/card.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Card"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Card.stories.tsx",
+    "title": "Layout/Card",
+    "stories": [
+      "Default",
+      "Action",
+      "Form",
+      "Info",
+      "Border",
+      "Item",
+      "SocialMedia",
+      "ImageVertical",
+      "ImageDown",
+      "ImageHorizontal",
+      "ShellComparison"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

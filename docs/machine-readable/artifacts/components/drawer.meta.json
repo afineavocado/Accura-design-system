@@ -1,0 +1,195 @@
+{
+  "name": "drawer",
+  "figmaNodeId": "74:691",
+  "description": "A sliding panel that emerges from an edge of the screen or centers responsively as an overlay.",
+  "category": "overlay",
+  "shadcnBase": "drawer",
+  "variants": {
+    "Direction": {
+      "type": "enum",
+      "values": [
+        "Bottom",
+        "Right",
+        "Responsive"
+      ],
+      "default": "Bottom",
+      "reactProp": "direction",
+      "reactValues": {
+        "Bottom": "bottom",
+        "Right": "right",
+        "Responsive": "responsive"
+      }
+    }
+  },
+  "tokens": {
+    "container": {
+      "fill": "color/surface/default",
+      "stroke": "color/border/default",
+      "strokeWeight": 1,
+      "strokeAlign": "inside",
+      "radius": "radius/lg"
+    },
+    "handle": {
+      "barPaddingY": "spacing/component/lg",
+      "fill": "color/background/muted",
+      "radius": "radius/full",
+      "size": "100x8"
+    },
+    "header": {
+      "padding": "spacing/component/lg",
+      "gap": "spacing/component/xxs",
+      "title": "color/background/default/foreground",
+      "description": "color/background/muted/foreground"
+    },
+    "content": {
+      "slot": true,
+      "padding": "spacing/component/lg"
+    },
+    "footer": {
+      "padding": "spacing/component/lg",
+      "gap": "spacing/component/sm"
+    }
+  },
+  "composition": {
+    "Bottom": [
+      "handle-bar",
+      "header.title",
+      "header.description",
+      "content SLOT",
+      "footer buttons"
+    ],
+    "Right": [
+      "header.title",
+      "header.description",
+      "content SLOT",
+      "footer buttons"
+    ],
+    "Responsive": [
+      "header.title",
+      "header.description",
+      "content SLOT",
+      "footer buttons"
+    ],
+    "footerButtons": [
+      "btn-primary Type=Default",
+      "btn-outline Type=Outline"
+    ]
+  },
+  "accessibility": {
+    "role": "dialog with aria-modal=true",
+    "label": "aria-labelledby points to title.",
+    "description": "aria-describedby points to description when present.",
+    "focus": "Trap focus inside while open and return focus to trigger on close.",
+    "close": "Escape and backdrop click close.",
+    "handle": "aria-hidden=true."
+  },
+  "constraints": [
+    "Use Bottom for mobile-first flows.",
+    "Use Right for desktop side panels.",
+    "Use Responsive when one component must work across breakpoints.",
+    "Footer order is primary confirm above/before secondary dismiss.",
+    "Do not put navigation inside a drawer.",
+    "Only one drawer should be open at a time."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "User taps a 'Filter' button on a mobile search page — a bottom sheet slides up with filter controls",
+      "A confirmation sheet asks 'Are you sure you want to delete this?' before a destructive action on mobile",
+      "A quick-settings tray opens from the bottom of a dashboard on a phone",
+      "A right-side inspector panel slides in on a desktop canvas app when an object is selected",
+      "A component that must work on both mobile and desktop uses the Responsive direction to show bottom on phone, floating panel on desktop",
+      "An action menu with 2–4 primary choices slides up from the bottom of a mobile list view"
+    ],
+    "variantExamples": {
+      "Bottom": {
+        "whenToUse": "Mobile-first flows; short forms, filters, or action confirmations anchored to the bottom edge",
+        "examples": [
+          "Mobile filter panel",
+          "Quick share menu",
+          "Delete confirmation on phone"
+        ]
+      },
+      "Right": {
+        "whenToUse": "Desktop side panels where the user continues to reference the main content",
+        "examples": [
+          "Object inspector",
+          "User detail sidebar",
+          "Settings panel on a wide layout"
+        ]
+      },
+      "Responsive": {
+        "whenToUse": "Single component that must serve both mobile and desktop without separate implementations",
+        "examples": [
+          "Shared filter component used across breakpoints",
+          "Responsive settings panel"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Bottom-anchored panel on mobile with swipe-to-dismiss",
+        "use": "drawer",
+        "notInstead": "sheet"
+      },
+      {
+        "situation": "Side panel on desktop that slides in from left or right",
+        "use": "sheet",
+        "notInstead": "drawer"
+      },
+      {
+        "situation": "Centered blocking modal that requires a decision before continuing",
+        "use": "dialog",
+        "notInstead": "drawer"
+      },
+      {
+        "situation": "Non-blocking status message that auto-dismisses",
+        "use": "toast",
+        "notInstead": "drawer"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/drawer",
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Drawer.md",
+    "storyFile": "src/stories/Drawer.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Examples assume shadcn/Vaul Drawer primitives plus an Agentic DrawerPanel wrapper."
+    ],
+    "knownIssues": [],
+    "changelog": [],
+    "darkMode": {
+      "notes": "Container fill uses color/surface/default (Dark: zinc/900) — matches shadcn --card. Previously surface/overlay (zinc/800); changed to align with shadcn card hierarchy.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/drawer.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Drawer"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Drawer.stories.tsx",
+    "title": "Overlay/Drawer",
+    "stories": [
+      "Bottom",
+      "Right",
+      "Responsive",
+      "WithForm"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

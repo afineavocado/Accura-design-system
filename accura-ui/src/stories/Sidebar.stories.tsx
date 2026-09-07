@@ -4,36 +4,28 @@ import {
   Sidebar,
   SidebarHeader,
   SidebarLogo,
-  SidebarBrand,
   SidebarContent,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenuItem,
-  SidebarSubItem,
   SidebarFooter,
   SidebarToggle,
+  useSidebar,
 } from '@/components/ui/sidebar';
-import {
-  LayoutGrid,
-  BarChart01,
-  Users,
-  Settings01,
-  HelpCircle,
-  Bell,
-  File06,
-  Menu01,
-} from 'lucide-react';
+import { PanelsTopLeft, SquareCheck, Settings, LogOut, ChevronLeft, ChevronRight } from 'lucide-react';
 
-// Source: sidebar.meta.json — Figma 95:18202 / 95:15354 / 95:15549 / 95:14510 / 95:14511
+// Source: Figma [Accura] Agentic Design System — sidebar 95:15648
+//   Type=Default, State=Expanded  (256×720)
+//   Type=Default, State=Collapsed (56×720)
+// Floating and Inset variants are intentionally not storied for Accura.
 //
 // Tokens:
-//   Panel: sidebar/background · sidebar/border (right edge)
+//   Panel: sidebar/background (#00393f) · sidebar/border (right edge)
 //   Nav item default: transparent · sidebar/foreground
-//   Nav item hover/active: sidebar/accent · sidebar/accent/foreground
-//   Group label: sidebar/foreground (60% opacity)
-//   Badge: brand/primary · brand/primary/foreground
+//   Nav item hover/active: sidebar/accent (brand/900) · sidebar/accent/foreground (white)
+//   Group label: sidebar/foreground @ 60%
 //   Focus ring: sidebar/ring
-//   Logo: 28×28px, NOT token-bound (branding slot)
+//   Logo: branding slot — NOT token-bound, size only
 
 const meta = {
   title: 'Navigation/Sidebar',
@@ -45,158 +37,94 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const navItems = [
-  { icon: <LayoutGrid className="h-4 w-4" />, label: 'Dashboard', active: true },
-  { icon: <BarChart01 className="h-4 w-4" />, label: 'Analytics', badge: '3' },
-  { icon: <File06 className="h-4 w-4" />, label: 'Projects' },
-  { icon: <Users className="h-4 w-4" />, label: 'Team' },
-];
+// Wordmark is white-on-transparent, so it only reads on the dark sidebar panel.
+// Hidden when collapsed — 56px cannot hold a 104px wordmark.
+function AccuraLogo() {
+  const { collapsed } = useSidebar();
+  if (collapsed) return null;
+  return (
+    <SidebarLogo className="h-9 w-[104px]">
+      <img src="/accura-logo.png" alt="Accura" className="h-full w-full object-contain" />
+    </SidebarLogo>
+  );
+}
 
-const bottomItems = [
-  { icon: <Settings01 className="h-4 w-4" />, label: 'Settings' },
-  { icon: <HelpCircle className="h-4 w-4" />, label: 'Help' },
-];
+// Chevron points the way the panel will move: left to collapse, right to expand.
+function CollapseToggle() {
+  const { collapsed } = useSidebar();
+  const Icon = collapsed ? ChevronRight : ChevronLeft;
+  return (
+    <SidebarToggle aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
+      <Icon className="h-4 w-4" />
+    </SidebarToggle>
+  );
+}
 
-// ─── Default (Type=Default, expanded) ─────────────────────────────────────────
+function SidebarShell() {
+  return (
+    <>
+      <SidebarHeader className="justify-between">
+        <AccuraLogo />
+        <CollapseToggle />
+      </SidebarHeader>
+
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Platform</SidebarGroupLabel>
+          <SidebarMenuItem
+            icon={<PanelsTopLeft className="h-4 w-4" />}
+            label="Dashboard"
+            href="#"
+            active
+          />
+          <SidebarMenuItem
+            icon={<SquareCheck className="h-4 w-4" />}
+            label="CAPA"
+            href="#"
+          />
+        </SidebarGroup>
+      </SidebarContent>
+
+      <SidebarFooter className="flex flex-col gap-[var(--spacing-component-xs)]">
+        <SidebarMenuItem icon={<Settings className="h-4 w-4" />} label="Setting" href="#" />
+        <SidebarMenuItem icon={<LogOut className="h-4 w-4" />} label="Log Out" href="#" />
+      </SidebarFooter>
+    </>
+  );
+}
+
+// ─── Default (Type=Default, State=Expanded — 256px) ───────────────────────────
 
 export const Default: Story = {
   render: () => (
     <SidebarProvider>
-      <div className="flex h-[500px]">
-        <Sidebar type="default" collapsible="none">
-          <SidebarHeader>
-            <SidebarLogo>
-              <div className="h-7 w-7 rounded-md bg-[var(--color-brand-primary)] flex items-center justify-center">
-                <span className="text-xs font-bold text-white">A</span>
-              </div>
-            </SidebarLogo>
-            <SidebarBrand title="Agentic" caption="Design System" />
-          </SidebarHeader>
-
-          <SidebarContent>
-            <SidebarGroup>
-              <SidebarGroupLabel>Main</SidebarGroupLabel>
-              {navItems.map((item) => (
-                <SidebarMenuItem key={item.label} {...item} href="#" />
-              ))}
-            </SidebarGroup>
-
-            <SidebarGroup>
-              <SidebarGroupLabel>Workspace</SidebarGroupLabel>
-              <SidebarMenuItem icon={<Bell className="h-4 w-4" />} label="Notifications" href="#" badge="12" />
-            </SidebarGroup>
-          </SidebarContent>
-
-          <SidebarFooter>
-            {bottomItems.map((item) => (
-              <SidebarMenuItem key={item.label} {...item} href="#" />
-            ))}
-          </SidebarFooter>
-        </Sidebar>
-        <main className="flex-1 p-6 bg-[var(--color-background-default)]">
-          <p className="text-sm text-[var(--color-text-secondary)]">Main content area</p>
-        </main>
-      </div>
-    </SidebarProvider>
-  ),
-};
-
-// ─── With sub-items ────────────────────────────────────────────────────────────
-
-export const WithSubItems: Story = {
-  render: () => (
-    <SidebarProvider>
-      <div className="flex h-[500px]">
-        <Sidebar type="default" collapsible="none">
-          <SidebarHeader>
-            <SidebarLogo>
-              <div className="h-7 w-7 rounded-md bg-[var(--color-brand-primary)] flex items-center justify-center">
-                <span className="text-xs font-bold text-white">A</span>
-              </div>
-            </SidebarLogo>
-            <SidebarBrand title="Agentic" caption="Design System" />
-          </SidebarHeader>
-
-          <SidebarContent>
-            <SidebarGroup>
-              <SidebarMenuItem icon={<LayoutGrid className="h-4 w-4" />} label="Dashboard" href="#" active />
-              <SidebarMenuItem icon={<BarChart01 className="h-4 w-4" />} label="Analytics" href="#" />
-              <SidebarSubItem label="Overview" href="#" />
-              <SidebarSubItem label="Reports" href="#" active />
-              <SidebarSubItem label="Exports" href="#" />
-              <SidebarMenuItem icon={<Users className="h-4 w-4" />} label="Team" href="#" />
-            </SidebarGroup>
-          </SidebarContent>
-        </Sidebar>
-        <main className="flex-1 p-6 bg-[var(--color-background-default)]" />
-      </div>
-    </SidebarProvider>
-  ),
-};
-
-// ─── Collapsible (icon mode) ───────────────────────────────────────────────────
-
-export const Collapsible: Story = {
-  render: () => (
-    <SidebarProvider>
-      <div className="flex h-[500px]">
+      <div className="flex h-[560px]">
         <Sidebar type="default" collapsible="icon">
-          <SidebarHeader>
-            <SidebarLogo>
-              <div className="h-7 w-7 rounded-md bg-[var(--color-brand-primary)] flex items-center justify-center">
-                <span className="text-xs font-bold text-white">A</span>
-              </div>
-            </SidebarLogo>
-            <SidebarBrand title="Agentic" caption="Design System" />
-          </SidebarHeader>
-
-          <SidebarContent>
-            <SidebarGroup>
-              {navItems.map((item) => (
-                <SidebarMenuItem key={item.label} {...item} href="#" />
-              ))}
-            </SidebarGroup>
-          </SidebarContent>
-
-          <SidebarFooter>
-            <SidebarToggle>
-              <Menu01 className="h-4 w-4" />
-            </SidebarToggle>
-          </SidebarFooter>
+          <SidebarShell />
         </Sidebar>
         <main className="flex-1 p-6 bg-[var(--color-background-default)]">
-          <p className="text-sm text-[var(--color-text-secondary)]">Press Cmd+B or click the toggle to collapse</p>
+          <p className="text-sm text-[var(--color-text-secondary)]">
+            Main content area — press Cmd+B or use the toggle to collapse.
+          </p>
         </main>
       </div>
     </SidebarProvider>
   ),
 };
 
-// ─── Floating (Type=Floating) ──────────────────────────────────────────────────
+// ─── Default Collapsed (Type=Default, State=Collapsed — 56px) ─────────────────
 
-export const Floating: Story = {
+export const DefaultCollapsed: Story = {
   render: () => (
-    <SidebarProvider>
-      <div className="flex h-[500px] bg-[var(--color-background-muted)] p-4 gap-4">
-        <Sidebar type="floating" collapsible="none">
-          <SidebarHeader>
-            <SidebarLogo>
-              <div className="h-7 w-7 rounded-md bg-[var(--color-brand-primary)] flex items-center justify-center">
-                <span className="text-xs font-bold text-white">A</span>
-              </div>
-            </SidebarLogo>
-            <SidebarBrand title="Agentic" caption="Design System" />
-          </SidebarHeader>
-          <SidebarContent>
-            <SidebarGroup>
-              {navItems.map((item) => (
-                <SidebarMenuItem key={item.label} {...item} href="#" />
-              ))}
-            </SidebarGroup>
-          </SidebarContent>
+    <SidebarProvider defaultCollapsed>
+      <div className="flex h-[560px]">
+        <Sidebar type="default" collapsible="icon">
+          <SidebarShell />
         </Sidebar>
-        <main className="flex-1 rounded-[var(--radius-lg)] bg-[var(--color-background-default)] p-6">
-          <p className="text-sm text-[var(--color-text-secondary)]">Main content</p>
+        <main className="flex-1 p-6 bg-[var(--color-background-default)]">
+          <p className="text-sm text-[var(--color-text-secondary)]">
+            Collapsed to icons — press Cmd+B or use the toggle to expand.
+          </p>
         </main>
       </div>
     </SidebarProvider>

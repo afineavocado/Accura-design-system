@@ -1,0 +1,301 @@
+{
+  "name": "checkbox",
+  "figmaNodeId": "59:18336",
+  "description": "A binary selection control used to toggle an option on or off, with optional description text.",
+  "category": "forms",
+  "shadcnBase": "checkbox",
+  "componentSets": {
+    "checkbox-item": {
+      "figmaNodeId": "59:18336",
+      "purpose": "Main labeled checkbox row."
+    },
+    "checkbox-box": {
+      "figmaNodeId": "59:18266",
+      "purpose": "16x16 checkbox indicator sub-component."
+    }
+  },
+  "variants": {
+    "State": {
+      "type": "enum",
+      "values": [
+        "Unchecked",
+        "Hover",
+        "Focus",
+        "Checked",
+        "Indeterminate",
+        "Disabled",
+        "Checked Disabled",
+        "Invalid"
+      ],
+      "default": "Unchecked",
+      "reactProp": "state",
+      "reactValues": {
+        "Unchecked": "unchecked",
+        "Hover": "hover",
+        "Focus": "focus",
+        "Checked": "checked",
+        "Indeterminate": "indeterminate",
+        "Disabled": "disabled",
+        "Checked Disabled": "checked-disabled",
+        "Invalid": "invalid"
+      }
+    },
+    "Description": {
+      "type": "enum",
+      "values": [
+        "True",
+        "False"
+      ],
+      "default": "False",
+      "reactProp": "showDescription",
+      "reactValues": {
+        "True": true,
+        "False": false
+      }
+    }
+  },
+  "componentProperties": {
+    "State": {
+      "type": "VARIANT",
+      "default": "Unchecked"
+    },
+    "Description": {
+      "type": "VARIANT",
+      "default": "False"
+    }
+  },
+  "tokens": {
+    "checkboxBox": {
+      "Unchecked": {
+        "fill": "transparent",
+        "stroke": "color/input/border",
+        "strokeWeight": 1,
+        "strokeAlign": "inside"
+      },
+      "Hover": {
+        "fill": "color/background/accent",
+        "stroke": "color/brand/primary",
+        "strokeWeight": 1,
+        "strokeAlign": "inside"
+      },
+      "Focus": {
+        "fill": "transparent",
+        "stroke": "color/ring",
+        "strokeWeight": 2,
+        "strokeAlign": "outside"
+      },
+      "Checked": {
+        "fill": "color/brand/primary"
+      },
+      "Indeterminate": {
+        "fill": "color/brand/primary"
+      },
+      "Disabled": {
+        "fill": "color/background/muted",
+        "stroke": "color/border/disabled",
+        "strokeWeight": 1,
+        "strokeAlign": "inside"
+      },
+      "Checked Disabled": {
+        "fill": "color/background/muted",
+        "stroke": "color/border/disabled",
+        "strokeWeight": 1,
+        "strokeAlign": "inside"
+      },
+      "Invalid": {
+        "fill": "transparent",
+        "stroke": "color/border/error",
+        "strokeWeight": 1,
+        "strokeAlign": "inside"
+      },
+      "radius": "radius/md"
+    },
+    "innerElements": {
+      "check": {
+        "Checked": {
+          "stroke": "color/brand/primary/foreground",
+          "strokeWeight": 1.5,
+          "strokeAlign": "center"
+        },
+        "Checked Disabled": {
+          "stroke": "color/background/muted/foreground",
+          "strokeWeight": 1.5,
+          "strokeAlign": "center"
+        }
+      },
+      "dash": {
+        "fill": "color/brand/primary/foreground",
+        "radius": "radius/md"
+      }
+    },
+    "text": {
+      "DefaultStates": {
+        "label": "color/background/default/foreground",
+        "description": "color/background/muted/foreground"
+      },
+      "Invalid": {
+        "label": "color/text/invalid",
+        "description": "color/text/invalid"
+      },
+      "Disabled": {
+        "label": "color/text/disabled",
+        "description": "color/text/disabled"
+      }
+    },
+    "spacing": {
+      "itemGap": "spacing/component/sm",
+      "textGap": "spacing/component/xxs"
+    },
+    "states": {
+      "invalid": {
+        "borderToken": "color/border/error",
+        "ringToken": "color/border/error",
+        "ringGlow": "color-mix(in_srgb,var(--color-border-error)_20%,transparent)",
+        "notes": "Uses [&[aria-invalid]] compound selector to beat data-[state=open]/focus-visible specificity. Blue ring must NOT appear when invalid."
+      }
+    }
+  },
+  "composition": {
+    "checkboxItem": [
+      "checkbox-box",
+      "text-content.label",
+      "text-content.description"
+    ],
+    "checkboxBox": [
+      "check",
+      "dash"
+    ],
+    "descriptionVisibility": "description visible when Description=True"
+  },
+  "accessibility": {
+    "role": "checkbox",
+    "keyboard": [
+      "Tab to focus",
+      "Space to toggle"
+    ],
+    "screenReaderName": "Visible label text is the accessible name.",
+    "focusIndicator": "color/ring stroke, 2px outside, on checkbox-item and checkbox-box.",
+    "touchTarget": "Visual box is 16x16px; implementation should make the full row at least 44px high."
+  },
+  "constraints": [
+    "Use checkbox-item in forms and settings.",
+    "Use checkbox-box standalone only inside a custom labeled row.",
+    "Indeterminate is programmatic and represents partial child selection.",
+    "Checked Disabled is for pre-selected locked values.",
+    "Do not use checkbox-box State=Focus to represent checked selection."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "Accept terms and conditions — a single required consent field at the bottom of a form",
+      "File manager or media library: selecting multiple items for bulk actions (delete, move, download)",
+      "Notification preferences list: Email updates, SMS alerts, Weekly digest — check any combination",
+      "Filter panels: selecting multiple categories, tags, or attributes to refine a list",
+      "Settings screen: display preferences where each option is independent and submitted with a Save action"
+    ],
+    "variantExamples": {
+      "Description=False": {
+        "whenToUse": "Short, self-explanatory option labels — no clarification needed",
+        "examples": [
+          "Accept terms",
+          "Remember me",
+          "Select all"
+        ]
+      },
+      "Description=True": {
+        "whenToUse": "Option needs a supporting line to clarify scope or consequence",
+        "examples": [
+          "Marketing emails — Receive news and promotions",
+          "Two-factor auth — Adds an extra sign-in step"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "User selects multiple items from a list in a form (submitted on Save)",
+        "use": "checkbox",
+        "notInstead": "switch"
+      },
+      {
+        "situation": "Single mandatory consent in a form (I agree to the terms)",
+        "use": "checkbox",
+        "notInstead": "switch"
+      },
+      {
+        "situation": "Effect should apply immediately on toggle, no submit button",
+        "use": "switch",
+        "notInstead": "checkbox"
+      },
+      {
+        "situation": "User picks exactly one option from a visible short list (2–5)",
+        "use": "radio",
+        "notInstead": "checkbox"
+      },
+      {
+        "situation": "User must pick one or more from a long searchable list",
+        "use": "combobox",
+        "notInstead": "checkbox"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/checkbox",
+      "radix": "https://www.radix-ui.com/primitives/docs/components/checkbox"
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Checkbox.md",
+    "storyFile": "src/stories/Checkbox.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [
+      "Checkbox.md Token Bindings says Invalid text uses color/text/invalid, while Behavior says color/status/danger-subtle/foreground. Confirm the correct token."
+    ],
+    "notes": [
+      "Examples assume a CheckboxItem wrapper around shadcn Checkbox.",
+      "R8 reviewed 2026-05-28: fills on the checkbox-box instance root are intentional — this is standard Figma composition. Sub-component State props corrected (Hover/Checked/Indeterminate/Disabled/Checked Disabled now point to correct variant)."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-03",
+        "change": "Invalid state: focus ring uses color/border/error instead of color/ring.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/checkbox.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Checkbox"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Checkbox.stories.tsx",
+    "title": "Forms/Checkbox",
+    "stories": [
+      "Default",
+      "Checked",
+      "Indeterminate",
+      "Disabled",
+      "CheckedDisabled",
+      "Invalid",
+      "WithLabel",
+      "WithDescription",
+      "DisabledWithDescription",
+      "InvalidWithDescription",
+      "Group",
+      "AllStates"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": "Invalid state: focus ring uses color/border/error instead of color/ring."
+  }
+}

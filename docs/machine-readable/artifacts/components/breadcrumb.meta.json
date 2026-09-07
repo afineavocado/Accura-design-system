@@ -1,0 +1,256 @@
+{
+  "name": "breadcrumb",
+  "description": "Navigation trail showing the user's location within a hierarchy.",
+  "category": "navigation",
+  "shadcnBase": "breadcrumb",
+  "componentSets": {
+    "_breadcrumb-item": {
+      "figmaNodeId": "291:223",
+      "purpose": "Individual link or current-page label."
+    },
+    "_breadcrumb-separator": {
+      "figmaNodeId": "52:13919",
+      "purpose": "Chevron, slash, or dot divider."
+    }
+  },
+  "variants": {
+    "Current": {
+      "type": "enum",
+      "values": [
+        "True",
+        "False"
+      ],
+      "default": "False",
+      "reactProp": "current",
+      "reactValues": {
+        "True": true,
+        "False": false
+      }
+    },
+    "Icon": {
+      "type": "enum",
+      "values": [
+        "True",
+        "False"
+      ],
+      "default": "False",
+      "reactProp": "icon",
+      "reactValues": {
+        "True": true,
+        "False": false
+      }
+    },
+    "State": {
+      "type": "enum",
+      "values": [
+        "Default",
+        "Hover",
+        "Focus",
+        "Disabled"
+      ],
+      "default": "Default",
+      "reactProp": "state",
+      "reactValues": {
+        "Default": "default",
+        "Hover": "hover",
+        "Focus": "focus",
+        "Disabled": "disabled"
+      }
+    },
+    "Separator Type": {
+      "type": "enum",
+      "values": [
+        "Chevron",
+        "Slash",
+        "Dot"
+      ],
+      "default": "Chevron",
+      "reactProp": "separator",
+      "reactValues": {
+        "Chevron": "chevron",
+        "Slash": "slash",
+        "Dot": "dot"
+      }
+    }
+  },
+  "tokens": {
+    "itemLabel": {
+      "NonCurrent Default": "color/text/secondary",
+      "NonCurrent Hover": "color/background/default/foreground",
+      "NonCurrent Focus": "color/background/default/foreground",
+      "Current": "color/background/default/foreground",
+      "Disabled": "color/text/disabled"
+    },
+    "icon": {
+      "_rule": "Paired icon — tracks the label's foreground per state (currentColor), never a fixed color/icon/*.",
+      "NonCurrent Default": "color/text/secondary",
+      "NonCurrent Hover": "color/background/default/foreground",
+      "NonCurrent Focus": "color/background/default/foreground",
+      "Current": "color/background/default/foreground",
+      "Disabled": "color/text/disabled"
+    },
+    "focus": {
+      "stroke": "color/ring",
+      "strokeWeight": 2,
+      "strokeAlign": "outside",
+      "radius": "radius/sm"
+    },
+    "separator": "color/background/default/foreground",
+    "gap": "spacing/component/xs"
+  },
+  "composition": {
+    "item": [
+      "icon",
+      "label"
+    ],
+    "separator": [
+      "chevron-right icon or text slash/dot"
+    ],
+    "assemblyRule": "Items and separators alternate; separator never appears at start or end."
+  },
+  "accessibility": {
+    "role": "nav aria-label=breadcrumb",
+    "currentPage": "aria-current=page on the current item.",
+    "separators": "aria-hidden=true.",
+    "keyboard": "Tab stops on non-current links only.",
+    "touchTarget": "Items are visually below 44px; implementation needs min-height 44px wrapper."
+  },
+  "constraints": [
+    "Use breadcrumb only for 2+ hierarchy levels.",
+    "Last item is always Current=True.",
+    "Current item is non-interactive.",
+    "Icon=True is typically first item only.",
+    "Do not build a fixed composite breadcrumb component."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "A settings page at 'Settings / Notifications / Email' shows the full path so users can step back to any level",
+      "An e-commerce PDP shows 'Home / Women / Shoes / Running' above the product title",
+      "A file manager displays the folder path 'Drive / Projects / 2026 / Q1' above the file list",
+      "A docs site shows 'Docs / Components / Breadcrumb' at the top of each article page",
+      "A support portal shows 'Help Centre / Billing / Refunds' so users know how they arrived at the article",
+      "A long hierarchy trail collapses middle items with an ellipsis to avoid wrapping on narrow viewports"
+    ],
+    "variantExamples": {
+      "Current=False": {
+        "whenToUse": "Navigable ancestor links in the trail",
+        "examples": [
+          "Home",
+          "Products",
+          "Settings — any level the user can click back to"
+        ]
+      },
+      "Current=True": {
+        "whenToUse": "The active page — non-interactive, always the last item",
+        "examples": [
+          "Running Shoes",
+          "Email Notifications",
+          "Q1 Report"
+        ]
+      },
+      "Icon=True": {
+        "whenToUse": "First item only, to provide a home/root visual anchor",
+        "examples": [
+          "Home icon on the first crumb in a root-level trail"
+        ]
+      },
+      "Separator Type=Chevron": {
+        "whenToUse": "Default — clear directional separator for most contexts",
+        "examples": [
+          "Standard product, docs, and settings breadcrumbs"
+        ]
+      },
+      "Separator Type=Slash": {
+        "whenToUse": "Lighter, more typographic feel — file paths and dev tools",
+        "examples": [
+          "File system paths",
+          "Code documentation",
+          "Terminal-style UIs"
+        ]
+      },
+      "Separator Type=Dot": {
+        "whenToUse": "Compact inline trails where space is very tight",
+        "examples": [
+          "Narrow widgets only — avoid in standard navigation contexts"
+        ]
+      }
+    },
+    "comparedTo": [
+      {
+        "situation": "Shows user's current location in a page hierarchy",
+        "use": "breadcrumb",
+        "notInstead": "pagination"
+      },
+      {
+        "situation": "Navigates between numbered pages of a dataset",
+        "use": "pagination",
+        "notInstead": "breadcrumb"
+      },
+      {
+        "situation": "Site-level navigation to different top-level routes",
+        "use": "navigation-menu",
+        "notInstead": "breadcrumb"
+      },
+      {
+        "situation": "Switches between content sections on the same page",
+        "use": "tabs",
+        "notInstead": "breadcrumb"
+      }
+    ],
+    "references": {
+      "shadcn": "https://ui.shadcn.com/docs/components/breadcrumb",
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "Component Markdown/Breadcrumb.md",
+    "storyFile": "src/stories/Breadcrumb.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-05-28",
+    "auditRules": "R1–R8",
+    "version": "3.0",
+    "openQuestions": [],
+    "notes": [
+      "Source markdown has no open questions.",
+      "Figma-only variable `breadcrumb/breadcrum` (Components collection) aliases spacing/component/xs (4px) — INTENTIONAL and NOT exported to JSON/CSS. It exists purely as a designer-facing reference so designers in Figma can see the item↔separator gap (4px) without reading the CSS. Do not flag as token drift; in code the gap is the semantic spacing/component/xs alias."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-06-17",
+        "change": "Leading icon now follows the system Paired icon rule — tracks the label's foreground per state (currentColor) instead of a fixed color/icon/default. Rebound icon strokes on all 8 Icon=True variants to match the label token (text/secondary, background/default/foreground, or text/disabled per Current × State). Disabled already matched. Verified in Figma.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/breadcrumb.tsx",
+    "packageDeps": [],
+    "exports": [
+      "Breadcrumb"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Breadcrumb.stories.tsx",
+    "title": "Navigation/Breadcrumb",
+    "stories": [
+      "Default",
+      "WithIcon",
+      "SlashSeparator",
+      "DotSeparator",
+      "WithEllipsis",
+      "WithDisabled",
+      "LongTrail",
+      "AllSeparators"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

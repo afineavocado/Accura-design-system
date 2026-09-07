@@ -1,18 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ButtonGroup } from '@/components/ui/button-group';
 import { Button } from '@/components/ui/button';
-import {
-  Bold01,
-  Italic01,
-  Underline01,
-  AlignLeft01,
-  AlignCenter,
-  AlignRight01,
-  ZoomIn,
-  ZoomOut,
-  List,
-  LayoutGrid01,
-} from 'lucide-react';
+import { AlignCenter, ZoomIn, ZoomOut, List } from 'lucide-react';
+import { Bold01, Italic01, Underline01, AlignLeft01, AlignRight01, LayoutGrid01 } from '@untitledui/icons';
 
 // Source: button-group.meta.json — Figma verified 52:11151
 // Custom component — no shadcn base.

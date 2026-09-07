@@ -1,12 +1,7 @@
 "use client"
 
-import {
-  CircleAlert,
-  TriangleAlert,
-  CircleCheck,
-  Info,
-  Loading02,
-} from "lucide-react"
+import { CircleAlert, TriangleAlert, CircleCheck, Info } from "lucide-react";
+import { Loading02 } from "@untitledui/icons";
 import { useTheme } from "next-themes"
 import { Toaster as Sonner } from "sonner"
 

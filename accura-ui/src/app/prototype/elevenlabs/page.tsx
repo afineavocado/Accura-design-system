@@ -5,12 +5,8 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Avatar } from '@/components/ui/avatar'
 import { Item } from '@/components/ui/item'
-import {
-  Home01, Grid01, List, Settings01, User01, MusicNote01,
-  MessageChatSquare, Bell, Folder, ChevronRight,
-  Microphone01, BookOpen, Image01, Lightning01, MusicNote02,
-  VideoRecorder, MagicWand01, Users, Archive,
-} from 'lucide-react'
+import { List, Bell, Folder, ChevronRight, BookOpen, Users, Archive } from 'lucide-react';
+import { Home01, Grid01, Settings01, User01, MusicNote01, MessageChatSquare, Microphone01, Image01, Lightning01, MusicNote02, VideoRecorder, MagicWand01 } from '@untitledui/icons';
 import { cn } from '@/lib/utils'
 
 // ─── Mock data ────────────────────────────────────────────────────────────────

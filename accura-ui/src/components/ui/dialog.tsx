@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { XClose } from "lucide-react"
+import { XClose } from "@untitledui/icons";
 
 import { cn } from "@/lib/utils"
 
