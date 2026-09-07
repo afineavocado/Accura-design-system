@@ -25,7 +25,6 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 - `docs/design-system-rules.md`: Token architecture, every semantic token name and rule, spacing system, layout grid, Figma ↔ Tailwind mapping, dark mode. **Inherited — do not edit the rules.**
 - `accura-theme.md`: Accura's theme — brand ramp, neutral, radius, spacing, type, plus the semantic/component deviations and 11 open questions. **The authority on values.**
 - `docs/content-guidelines.md`: Voice-neutral UX writing — capitalisation, button labels, error messages, empty states.
-- `docs/hypertokens-system-bundles.md`: How semantic decisions group into bundles that travel together.
 
 ## Skills — read before the matching task
 

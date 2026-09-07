@@ -1,5 +1,9 @@
 # Meta Artifact Template (v3)
 
+> ⚠️ **File key above is Agentic's (`YWfTOUTpFZ0BNxHobfUqme`). Accura's file is `32llw6anFsjPISJrrp1and`.**
+> Node IDs are per-file and will not resolve across them — see `docs/machine-readable/figma-ids.md`.
+
+
 Changes from v2:
 - **`storybook`** block — story file path + named exports (required now that Storybook is complete)
 - **`implementation`** block — tsx file path, package dependencies, key implementation notes
@@ -16,7 +20,7 @@ Changes from v2:
 ## File Paths
 
 ```
-Machine Readable/artifacts/components/[component].meta.json
+docs/machine-readable/artifacts/components/[component].meta.json
 src/stories/[Component].stories.tsx
 ```
 
@@ -31,7 +35,7 @@ src/stories/[Component].stories.tsx
   "id": "[figma-node-id]",
 
   "meta": {
-    "sourceMarkdown": "Component Markdown/[Component].md",
+    "sourceMarkdown": "docs/component-specs/[Component].md",
     "storyFile": "src/stories/[Component].stories.tsx",
     "artifactStatus": "ready",
     "lastAuditDate": "YYYY-MM-DD",
@@ -474,4 +478,4 @@ Regenerate the meta.json for a component any time **any** of the following chang
 - [ ] `bestPractice.useCases` — 3–6 concrete situations
 - [ ] `bestPractice.variantExamples` — every type with usage distinction
 - [ ] `bestPractice.comparedTo` — covers all relatedComponents
-- [ ] Validation passes: `node "Machine Readable/validate-artifacts.mjs"`
+- [ ] Validation passes: `node "docs/machine-readable/validate-artifacts.mjs"`

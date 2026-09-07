@@ -20,7 +20,7 @@ Skipping the fix step is the single reason most corrections happen. shadcn defau
 ## Step 1 — Read the Spec (2 min)
 
 Open the component's markdown file:
-`Obsidian/Working process - L&D/Agentic-design-system/Component Markdown/[Name].md`
+`Obsidian/Working process - L&D/Agentic-design-system/docs/component-specs/[Name].md`
 
 Extract these values before touching any code:
 

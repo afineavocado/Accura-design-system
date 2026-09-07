@@ -35,9 +35,9 @@ Do NOT write timing values, thresholds, or click-sequence behavior from memory �
 ## Step 1 — Before Writing
 
 1. Read `agentic-design-system.md` token rules if not already loaded this session
-2. Check `Tracking/Audit Status.md` — confirm the component has been audited and all issues resolved
+2. Check `docs/tracking/Audit Status.md` — confirm the component has been audited and all issues resolved
 3. Fetch the relevant library docs for this component (see Rule Zero above)
-4. Check `Component Markdown/` — if a doc already exists, read it first (may be stale, not blank)
+4. Check `docs/component-specs/` — if a doc already exists, read it first (may be stale, not blank)
 
 ---
 

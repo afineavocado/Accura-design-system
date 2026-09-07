@@ -1,5 +1,9 @@
 # Component Directory
 
+> ⚠️ **File key above is Agentic's (`YWfTOUTpFZ0BNxHobfUqme`). Accura's file is `32llw6anFsjPISJrrp1and`.**
+> Node IDs are per-file and will not resolve across them — see `docs/machine-readable/figma-ids.md`.
+
+
 Auto-generated from `artifacts/components/[name].meta.json`. Lists all 35 components with their Figma node, Storybook path, and source files.
 
 **Last updated:** 2026-06-03

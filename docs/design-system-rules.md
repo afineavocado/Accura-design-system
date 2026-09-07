@@ -37,10 +37,10 @@ All spacing uses Tailwind's 4px base unit. Semantic tokens always reference prim
 
 | Layer | Authoritative source | On conflict |
 |---|---|---|
-| Token values (hex/px) | Figma variables (`YWfTOUTpFZ0BNxHobfUqme`) | Change Figma first |
+| Token values (hex/px) | Figma variables — **Accura: `32llw6anFsjPISJrrp1and`**, not the Agentic key `YWfTOUTpFZ0BNxHobfUqme` | Change Figma first |
 | Token naming + semantic rules | This file | Update here, then sync Figma |
 | Component variant structure | Figma ComponentSet | Figma is truth — docs must match |
-| Component usage rules | Component markdown (`Component Markdown/`) | Docs are authoritative |
+| Component usage rules | Component markdown (`docs/component-specs/`) | Docs are authoritative |
 | Current binding state | figma-cli audit output | Audit → fix Figma → update markdown |
 
 Fix the authoritative source first, then propagate. Never update a doc to match a known Figma error.
@@ -1296,7 +1296,7 @@ Use when: UI context · Do not use: similar wrong context
 
 ### Icon Placeholder — Stroke-Based Color Rule
 
-`Icon Placeholder` — all icons are stroke-based (VECTOR/ELLIPSE nodes). Node ID → see `Machine Readable/figma-ids.md`.
+`Icon Placeholder` — all icons are stroke-based (VECTOR/ELLIPSE nodes). Node ID → see `docs/machine-readable/figma-ids.md`.
 
 **Apply color:**
 1. Instance frame fill → **empty** (fill blocks the icon)

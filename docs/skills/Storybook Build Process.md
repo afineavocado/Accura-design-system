@@ -5,15 +5,15 @@
 Figma spec → .tsx tokens fixed → Figma parity confirmed → Story written → Story verified
 ```
 
-Each phase gate must pass before the next starts. A component is not done until all four columns in `Tracking/Storybook Status.md` are ✅.
+Each phase gate must pass before the next starts. A component is not done until all four columns in `docs/tracking/Storybook Status.md` are ✅.
 
 **Paths:**
 | | |
 |---|---|
 | Stories | `agentic-ui/src/stories/*.stories.tsx` |
 | Components | `agentic-ui/src/components/ui/<name>.tsx` |
-| Artifacts | `Agentic-design-system/Machine Readable/artifacts/` |
-| Status tracker | `Tracking/Storybook Status.md` — update every component, same session |
+| Artifacts | `Agentic-design-system/docs/machine-readable/artifacts/` |
+| Status tracker | `docs/tracking/Storybook Status.md` — update every component, same session |
 
 ---
 
@@ -70,7 +70,7 @@ Any match = spec-fix required. These are shadcn's generic token names — they d
 Open both files completely. Do not skim.
 
 ```
-Component Markdown/<Name>.md          → structure, layout, spacing, behavior
+docs/component-specs/<Name>.md          → structure, layout, spacing, behavior
 artifacts/components/<name>.meta.json → token bindings per variant/state
 ```
 

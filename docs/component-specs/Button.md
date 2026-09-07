@@ -16,14 +16,19 @@ A clickable action element. Supports 6 visual types, 5 states, and 6 sizes inclu
 
 ## Sizes
 
-| Size | Height | Radius token | Radius | Padding H token | Padding H | Text style |
+> ⚠️ **Accura override — the Radius column below is Agentic's.**
+> In Accura both `button/size/Button radius 1` and `radius 2` resolve to **`9999` (pill)**, not 12px/8px.
+> **Accura buttons are fully rounded.** The token *names* are unchanged; only the values differ.
+> See `accura-theme.md` §4 and §7. Everything else in this table — heights, padding, text styles — is correct for Accura.
+
+| Size | Height | Radius token | Radius *(Agentic)* | Padding H token | Padding H | Text style |
 |---|---|---|---|---|---|---|
-| `Small` | 36px | `button/size/Button radius 2` | 8px | `button/size/Button-padding-small` | 12px | `label/sm` |
-| `Default` | 40px | `button/size/Button radius 2` | 8px | `button/size/Button-padding-default` | 16px | `label/md` |
-| `Large` | 44px | `button/size/Button radius 1` | 12px | `button/size/Button-padding-default` | 16px | `label/md` |
-| `Icon Small` | 36 × 36px | `button/size/Button radius 2` | 8px | — | — | — |
-| `Icon Default` | 40 × 40px | `button/size/Button radius 2` | 8px | — | — | — |
-| `Icon Large` | 44 × 44px | `button/size/Button radius 1` | 12px | — | — | — |
+| `Small` | 36px | `button/size/Button radius 2` | 8px → **9999** | `button/size/Button-padding-small` | 12px | `label/sm` |
+| `Default` | 40px | `button/size/Button radius 2` | 8px → **9999** | `button/size/Button-padding-default` | 16px | `label/md` |
+| `Large` | 44px | `button/size/Button radius 1` | 12px → **9999** | `button/size/Button-padding-default` | 16px | `label/md` |
+| `Icon Small` | 36 × 36px | `button/size/Button radius 2` | 8px → **9999** | — | — | — |
+| `Icon Default` | 40 × 40px | `button/size/Button radius 2` | 8px → **9999** | — | — | — |
+| `Icon Large` | 44 × 44px | `button/size/Button radius 1` | 12px → **9999** | — | — | — |
 
 `Large` (44px) and `Icon Large` (44 × 44px) meet the WCAG 2.5.5 minimum touch target. Smaller sizes need a compensating invisible hit area in implementation.
 

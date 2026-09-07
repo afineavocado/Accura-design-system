@@ -1,5 +1,27 @@
 # Figma IDs
 
+> # ⚠️ WRONG FILE — these are AGENTIC's IDs, not Accura's
+>
+> | | |
+> |---|---|
+> | File key below | `YWfTOUTpFZ0BNxHobfUqme` — **Agentic**, a different file |
+> | **Accura's file** | **`32llw6anFsjPISJrrp1and`** — `[Accura] Agentic Design System` |
+>
+> Node IDs are **per-file**. Every ID in this document points into Agentic's file and will
+> resolve to the wrong node — or nothing — in Accura's. **Do not use them to build, audit or
+> instantiate anything in Accura.**
+>
+> Re-pull the real IDs from Accura's file before relying on this:
+> ```bash
+> cd ~/figma-cli && node src/index.js eval "return figma.currentPage.findAll(n => n.type === 'COMPONENT_SET').map(s => ({ name: s.name, id: s.id }))"
+> ```
+> (with the FigCli plugin running in `[Accura] Agentic Design System`)
+>
+> Known-good Accura IDs so far — `sidebar` component set `95:15648` (Type=Default, State=Expanded),
+> `264:6014` (Type=Default, State=Collapsed). Collections: Primitives `1:2`, Semantics `1:129`, Components `17:4484`.
+>
+> This file is retained only as the **structural template** for what should be recorded.
+
 Reference file for all stable Figma node IDs and effect style IDs used in this design system.
 Figma file key: `YWfTOUTpFZ0BNxHobfUqme`
 

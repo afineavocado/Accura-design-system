@@ -2,7 +2,7 @@
 
 Scanned from all 35 component artifacts. Read before building any screen — covers what each component is for, the key usage rule, and the most common mistake.
 
-**Source of truth:** all information here is extracted from `Machine Readable/artifacts/components/[name].meta.json`.  
+**Source of truth:** all information here is extracted from `docs/machine-readable/artifacts/components/[name].meta.json`.  
 Each entry links to its artifact file and Storybook story — open those for full token bindings, variant matrices, and accessibility specs.
 
 ---
@@ -18,7 +18,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `button-group (grouping a lone button adds visual noise with no meaning)`:** A single isolated action → use `button`
 
-→ Artifact: `Machine Readable/artifacts/components/button-group.meta.json` · Storybook: `Actions/ButtonGroup`
+→ Artifact: `docs/machine-readable/artifacts/components/button-group.meta.json` · Storybook: `Actions/ButtonGroup`
 
 ---
 
@@ -31,7 +31,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `navigation-menu (use nav-menu for multi-item top nav; Link button for single inline link)`:** User needs to navigate to a different page or route → use `button Type=Link`
 
-→ Artifact: `Machine Readable/artifacts/components/button.meta.json` · Storybook: `Actions/Button`
+→ Artifact: `docs/machine-readable/artifacts/components/button.meta.json` · Storybook: `Actions/Button`
 
 ---
 
@@ -46,7 +46,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `date-picker`:** Always-visible date panel embedded in a page layout → use `calendar`
 
-→ Artifact: `Machine Readable/artifacts/components/calendar.meta.json` · Storybook: `Forms/Calendar`
+→ Artifact: `docs/machine-readable/artifacts/components/calendar.meta.json` · Storybook: `Forms/Calendar`
 
 ---
 
@@ -59,7 +59,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `switch`:** User selects multiple items from a list in a form (submitted on Save) → use `checkbox`
 
-→ Artifact: `Machine Readable/artifacts/components/checkbox.meta.json` · Storybook: `Forms/Checkbox`
+→ Artifact: `docs/machine-readable/artifacts/components/checkbox.meta.json` · Storybook: `Forms/Checkbox`
 
 ---
 
@@ -74,7 +74,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 > ⚠️ **Known issue:** Dropdown width hardcoded to 280px — CSS var --anchor-width from Base UI Positioner doesn't resolve reliably on Popup element. — w-[280px] hardcoded on Combobox.Popup. If container width changes, update both the story wrapper and popupClass.
 
-→ Artifact: `Machine Readable/artifacts/components/combobox.meta.json` · Storybook: `Forms/Combobox`
+→ Artifact: `docs/machine-readable/artifacts/components/combobox.meta.json` · Storybook: `Forms/Combobox`
 
 ---
 
@@ -87,7 +87,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `calendar`:** Date field inside a form that opens a picker on demand → use `date-picker`
 
-→ Artifact: `Machine Readable/artifacts/components/date-picker.meta.json` · Storybook: `Forms/DatePicker`
+→ Artifact: `docs/machine-readable/artifacts/components/date-picker.meta.json` · Storybook: `Forms/DatePicker`
 
 ---
 
@@ -100,7 +100,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `input`:** User enters a structured verification or PIN code in individual slots → use `input-otp`
 
-→ Artifact: `Machine Readable/artifacts/components/input-otp.meta.json` · Storybook: `Forms/InputOtp`
+→ Artifact: `docs/machine-readable/artifacts/components/input-otp.meta.json` · Storybook: `Forms/InputOtp`
 
 ---
 
@@ -113,7 +113,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `select or combobox`:** User must type a free-form value — anything goes → use `input`
 
-→ Artifact: `Machine Readable/artifacts/components/input.meta.json` · Storybook: `Forms/Input`
+→ Artifact: `docs/machine-readable/artifacts/components/input.meta.json` · Storybook: `Forms/Input`
 
 ---
 
@@ -126,7 +126,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `select`:** 2–5 mutually exclusive options where seeing all at once aids the decision → use `radio`
 
-→ Artifact: `Machine Readable/artifacts/components/radio-group.meta.json` · Storybook: `Forms/RadioGroup`
+→ Artifact: `docs/machine-readable/artifacts/components/radio-group.meta.json` · Storybook: `Forms/RadioGroup`
 
 ---
 
@@ -139,7 +139,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `combobox`:** Fixed short list (≤ ~10 items), pick one, no typing needed → use `select`
 
-→ Artifact: `Machine Readable/artifacts/components/select.meta.json` · Storybook: `Forms/Select`
+→ Artifact: `docs/machine-readable/artifacts/components/select.meta.json` · Storybook: `Forms/Select`
 
 ---
 
@@ -152,7 +152,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `input (number)`:** Approximate value in a continuous range, precision not required → use `slider`
 
-→ Artifact: `Machine Readable/artifacts/components/slider.meta.json` · Storybook: `Forms/Slider`
+→ Artifact: `docs/machine-readable/artifacts/components/slider.meta.json` · Storybook: `Forms/Slider`
 
 ---
 
@@ -165,7 +165,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `checkbox`:** Instant effect on toggle, no form submit → use `switch`
 
-→ Artifact: `Machine Readable/artifacts/components/switch.meta.json` · Storybook: `Forms/Switch`
+→ Artifact: `docs/machine-readable/artifacts/components/switch.meta.json` · Storybook: `Forms/Switch`
 
 ---
 
@@ -180,7 +180,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `textarea`:** Single-line text: name, email, search, number → use `input`
 
-→ Artifact: `Machine Readable/artifacts/components/textarea.meta.json` · Storybook: `Forms/Textarea`
+→ Artifact: `docs/machine-readable/artifacts/components/textarea.meta.json` · Storybook: `Forms/Textarea`
 
 ---
 
@@ -195,7 +195,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `tabs`:** Stacked sections where each reveals long-form content, multiple can be open → use `accordion`
 
-→ Artifact: `Machine Readable/artifacts/components/accordion.meta.json` · Storybook: `Display/Accordion`
+→ Artifact: `docs/machine-readable/artifacts/components/accordion.meta.json` · Storybook: `Display/Accordion`
 
 ---
 
@@ -208,7 +208,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `a raw circle frame with image fill`:** Showing a user's identity (photo or initials) → use `avatar`
 
-→ Artifact: `Machine Readable/artifacts/components/avatar.meta.json` · Storybook: `Display/Avatar`
+→ Artifact: `docs/machine-readable/artifacts/components/avatar.meta.json` · Storybook: `Display/Avatar`
 
 ---
 
@@ -221,7 +221,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `badge (badge has no interactive states and cannot be dismissed)`:** The label needs to be dismissible by the user (a selected filter chip, a tag in a combobox) → use `tag`
 
-→ Artifact: `Machine Readable/artifacts/components/badge.meta.json` · Storybook: `Display/Badge`
+→ Artifact: `docs/machine-readable/artifacts/components/badge.meta.json` · Storybook: `Display/Badge`
 
 ---
 
@@ -236,7 +236,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `alert (alert is persistent; toast is transient)`:** Feedback that auto-dismisses after a completed action (save, copy, send) → use `toast`
 
-→ Artifact: `Machine Readable/artifacts/components/alert.meta.json` · Storybook: `Feedback/Alert`
+→ Artifact: `docs/machine-readable/artifacts/components/alert.meta.json` · Storybook: `Feedback/Alert`
 
 ---
 
@@ -249,7 +249,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `empty (showing empty state during a load is a false negative — the data hasn't arrived yet)`:** Data is still loading and content is expected to appear → use `skeleton`
 
-→ Artifact: `Machine Readable/artifacts/components/empty.meta.json` · Storybook: `Feedback/Empty`
+→ Artifact: `docs/machine-readable/artifacts/components/empty.meta.json` · Storybook: `Feedback/Empty`
 
 ---
 
@@ -262,7 +262,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `progress State=Indeterminate (use indeterminate only when an active operation is clearly running)`:** Loading duration is unknown and no percentage can be shown → use `skeleton (content placeholder) or a spinner`
 
-→ Artifact: `Machine Readable/artifacts/components/progress.meta.json` · Storybook: `Feedback/Progress`
+→ Artifact: `docs/machine-readable/artifacts/components/progress.meta.json` · Storybook: `Feedback/Progress`
 
 ---
 
@@ -275,7 +275,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `skeleton (skeleton signals content is coming; empty signals there is nothing to come)`:** Data has loaded and there is simply nothing to show (zero items) → use `empty`
 
-→ Artifact: `Machine Readable/artifacts/components/skeleton.meta.json` · Storybook: `Feedback/Skeleton`
+→ Artifact: `docs/machine-readable/artifacts/components/skeleton.meta.json` · Storybook: `Feedback/Skeleton`
 
 ---
 
@@ -288,7 +288,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `toast (toast auto-dismisses and may be missed)`:** A persistent message that stays on screen until the user acts (form error, expiry warning) → use `alert`
 
-→ Artifact: `Machine Readable/artifacts/components/toast.meta.json` · Storybook: `Feedback/Toast`
+→ Artifact: `docs/machine-readable/artifacts/components/toast.meta.json` · Storybook: `Feedback/Toast`
 
 ---
 
@@ -305,7 +305,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `alert-dialog`:** Feedback that doesn't block the user → use `alert (inline)`
 
-→ Artifact: `Machine Readable/artifacts/components/alert-dialog.meta.json` · Storybook: `Overlay/AlertDialog`
+→ Artifact: `docs/machine-readable/artifacts/components/alert-dialog.meta.json` · Storybook: `Overlay/AlertDialog`
 
 ---
 
@@ -318,7 +318,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `sheet`:** User must make a decision or complete a task before returning to the page → use `dialog`
 
-→ Artifact: `Machine Readable/artifacts/components/dialog.meta.json` · Storybook: `Overlay/Dialog`
+→ Artifact: `docs/machine-readable/artifacts/components/dialog.meta.json` · Storybook: `Overlay/Dialog`
 
 ---
 
@@ -331,7 +331,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `sheet`:** Bottom-anchored panel on mobile with swipe-to-dismiss → use `drawer`
 
-→ Artifact: `Machine Readable/artifacts/components/drawer.meta.json` · Storybook: `Overlay/Drawer`
+→ Artifact: `docs/machine-readable/artifacts/components/drawer.meta.json` · Storybook: `Overlay/Drawer`
 
 ---
 
@@ -344,7 +344,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `dialog`:** Secondary contextual task without losing page context → use `sheet`
 
-→ Artifact: `Machine Readable/artifacts/components/sheet.meta.json` · Storybook: `Overlay/Sheet`
+→ Artifact: `docs/machine-readable/artifacts/components/sheet.meta.json` · Storybook: `Overlay/Sheet`
 
 ---
 
@@ -357,7 +357,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `tooltip (tooltip is read-only; interactive content inside it is inaccessible)`:** The hint contains interactive content (links, buttons, form fields) → use `popover`
 
-→ Artifact: `Machine Readable/artifacts/components/tooltip.meta.json` · Storybook: `Overlay/Tooltip`
+→ Artifact: `docs/machine-readable/artifacts/components/tooltip.meta.json` · Storybook: `Overlay/Tooltip`
 
 ---
 
@@ -372,7 +372,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `pagination`:** Shows user's current location in a page hierarchy → use `breadcrumb`
 
-→ Artifact: `Machine Readable/artifacts/components/breadcrumb.meta.json` · Storybook: `Navigation/Breadcrumb`
+→ Artifact: `docs/machine-readable/artifacts/components/breadcrumb.meta.json` · Storybook: `Navigation/Breadcrumb`
 
 ---
 
@@ -385,7 +385,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `sidebar`:** Horizontal top nav bar with dropdown panels for site-level navigation → use `navigation-menu`
 
-→ Artifact: `Machine Readable/artifacts/components/navigation-menu.meta.json` · Storybook: `Navigation/NavigationMenu`
+→ Artifact: `docs/machine-readable/artifacts/components/navigation-menu.meta.json` · Storybook: `Navigation/NavigationMenu`
 
 ---
 
@@ -398,7 +398,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `tabs`:** Navigating between numbered pages of a dataset → use `pagination`
 
-→ Artifact: `Machine Readable/artifacts/components/pagination.meta.json` · Storybook: `Navigation/Pagination`
+→ Artifact: `docs/machine-readable/artifacts/components/pagination.meta.json` · Storybook: `Navigation/Pagination`
 
 ---
 
@@ -411,7 +411,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `navigation-menu`:** Persistent full-app navigation with grouped sections, always visible or collapsible → use `sidebar`
 
-→ Artifact: `Machine Readable/artifacts/components/sidebar.meta.json` · Storybook: `Navigation/Sidebar`
+→ Artifact: `docs/machine-readable/artifacts/components/sidebar.meta.json` · Storybook: `Navigation/Sidebar`
 
 ---
 
@@ -424,7 +424,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `accordion`:** Switching between mutually exclusive sections on the same page → use `tabs`
 
-→ Artifact: `Machine Readable/artifacts/components/tabs.meta.json` · Storybook: `Navigation/Tabs`
+→ Artifact: `docs/machine-readable/artifacts/components/tabs.meta.json` · Storybook: `Navigation/Tabs`
 
 ---
 
@@ -439,7 +439,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `item`:** A self-contained block of independent information (metric, product, profile) → use `card`
 
-→ Artifact: `Machine Readable/artifacts/components/card.meta.json` · Storybook: `Layout/Card`
+→ Artifact: `docs/machine-readable/artifacts/components/card.meta.json` · Storybook: `Layout/Card`
 
 ---
 
@@ -452,7 +452,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `card`:** A single repeatable row in a vertical list → use `item`
 
-→ Artifact: `Machine Readable/artifacts/components/item.meta.json` · Storybook: `Layout/Item`
+→ Artifact: `docs/machine-readable/artifacts/components/item.meta.json` · Storybook: `Layout/Item`
 
 ---
 
@@ -465,7 +465,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `a card border or a raw 1px rectangle`:** An explicit visual line between two content regions on the same surface → use `separator`
 
-→ Artifact: `Machine Readable/artifacts/components/separator.meta.json` · Storybook: `Layout/Separator`
+→ Artifact: `docs/machine-readable/artifacts/components/separator.meta.json` · Storybook: `Layout/Separator`
 
 ---
 
@@ -480,7 +480,7 @@ Each entry links to its artifact file and Storybook story — open those for ful
 
 **vs `item list`:** Many rows of uniform structured data with column headers and sorting → use `table`
 
-→ Artifact: `Machine Readable/artifacts/components/table.meta.json` · Storybook: `Data/Table`
+→ Artifact: `docs/machine-readable/artifacts/components/table.meta.json` · Storybook: `Data/Table`
 
 ---
 
@@ -490,6 +490,6 @@ Each entry links to its artifact file and Storybook story — open those for ful
 2. **Spot the component** — identify which system component matches your need
 3. **Check the artifact** — open the linked `meta.json` for full token bindings and variant matrices  
 4. **Verify in Storybook** — navigate to the Storybook path to see the component live before using it
-5. **Read full spec if needed** — `Component Markdown/[Name].md` for behavior, accessibility, and do-nots
+5. **Read full spec if needed** — `docs/component-specs/[Name].md` for behavior, accessibility, and do-nots
 
 **Do not duplicate content from this doc** — if something changes in a component, update `meta.json`. This document regenerates from it.
