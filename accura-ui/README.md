@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# accura-ui
 
-## Getting Started
+Component library and Storybook for the **Accura design system** — a re-theme of the Agentic Design System.
 
-First, run the development server:
+Same components as `agentic-ui`, different tokens. The rules (naming, semantic layer, spacing scale, paired-surface) are inherited from Agentic unchanged; only the values differ.
+
+---
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install --legacy-peer-deps
+npm run storybook
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| | Port | Why |
+|---|---|---|
+| Storybook | **6007** | Agentic's uses 6006 — both can run at once for comparison |
+| Next dev | **3001** | Agentic's uses 3000 |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> `--legacy-peer-deps` is required: `@storybook/addon-themes@10.4.6` peer-requires `storybook@^10.4.6`, and the resolved tree doesn't satisfy it. This is inherited from `agentic-ui`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## What's different from `agentic-ui`
 
-To learn more about Next.js, take a look at the following resources:
+Only `src/app/tokens.css`. Every component `.tsx` is identical.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| | Agentic | Accura |
+|---|---|---|
+| Brand primary | `#2b7fff` blue | **`#008852`** green |
+| Brand anchor | `/500` | **`/800-base`** |
+| Sidebar background | `#fafafa` light | **`#00393f`** dark teal |
+| Button radius | `12px` / `8px` | **`9999px`** (pill) |
+| Status borders | 500/700 steps | 300/400 steps (paler) |
+| UI font | Inter | Inter *(Figma says SF Pro — known mismatch)* |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Full detail and rationale: **`../accura-theme.md`**.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Tokens
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`src/app/tokens.css` is **generated from the Figma variables**, not hand-edited. It carries 29 light overrides, 10 dark overrides, 5 dark overrides Agentic didn't need, and 3 Accura-only tokens.
+
+Theme switching is class-based — `:root` for light, `.dark` for dark, toggled by `@storybook/addon-themes`.
+
+### Regenerating — two traps
+
+1. **Component tokens have no Dark mode.** They alias semantics, which do. Resolve *through* the alias chain with the wanted mode. Falling back to the Light value writes light colours into `.dark` — white outline buttons, tooltips that don't invert.
+
+2. **Figma names can contain spaces and mixed case** (`button/size/Button radius 1`). CSS custom properties allow neither. Normalise to lowercase-kebab. Get this wrong and PostCSS throws `Unknown word` and **discards the entire stylesheet** — Storybook loads with no CSS and renders blank.
+
+---
+
+## Working on components
+
+Read `CLAUDE.md` first. Short version:
+
+- Use only `var(--...)` tokens from `src/app/tokens.css` — never hardcode hex or px for colour, spacing or radius.
+- Spacing uses Tailwind utilities (`gap-2`, `p-4`), **not** CSS-variable arbitrary values — those are unreliable inside CVA strings in Tailwind v4 JIT.
+- Icons come from `@untitledui/icons`, never `lucide-react`.
+- `aria-invalid` must be `{condition || undefined}` — passing `false` still renders the attribute and triggers the invalid styling.
+
+---
+
+## ⚠️ This is a fork
+
+`accura-ui` duplicates all 36 components from `agentic-ui`. **Any component fix must be applied in both repos**, or they drift apart. Only the tokens were meant to diverge.
+
+If that becomes painful, the alternative is a shared component library with two token layers.
