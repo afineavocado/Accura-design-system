@@ -1,0 +1,1562 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+:root {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-zinc-50: #fafafa;
+  --color-zinc-100: #f4f4f5;
+  --color-zinc-200: #e4e4e7;
+  --color-zinc-300: #d4d4d8;
+  --color-zinc-400: #a1a1aa;
+  --color-zinc-500: #71717a;
+  --color-zinc-600: #52525b;
+  --color-zinc-700: #3f3f46;
+  --color-zinc-800: #27272a;
+  --color-zinc-900: #18181b;
+  --color-zinc-950: #09090b;
+  --color-blue-50: #eef6ff;
+  --color-blue-100: #dbeafe;
+  --color-blue-200: #bedbff;
+  --color-blue-300: #8ec5ff;
+  --color-blue-400: #51a2ff;
+  --color-blue-500: #2b7fff;
+  --color-blue-600: #155dfc;
+  --color-blue-700: #1447e6;
+  --color-blue-800: #193cb8;
+  --color-blue-900: #1c398e;
+  --color-blue-950: #162455;
+  --color-red-50: #fef2f2;
+  --color-red-100: #fee2e2;
+  --color-red-200: #fecaca;
+  --color-red-300: #fca5a5;
+  --color-red-400: #f87171;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+  --color-red-700: #b91c1c;
+  --color-red-800: #991b1b;
+  --color-red-900: #7f1d1d;
+  --color-red-950: #450a0a;
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+  --color-green-800: #166534;
+  --color-green-900: #14532d;
+  --color-green-950: #052e16;
+  --color-yellow-50: #fefce8;
+  --color-yellow-100: #fef9c3;
+  --color-yellow-200: #fef08a;
+  --color-yellow-300: #fde047;
+  --color-yellow-400: #facc15;
+  --color-yellow-500: #eab308;
+  --color-yellow-600: #ca8a04;
+  --color-yellow-700: #a16207;
+  --color-yellow-800: #854d0e;
+  --color-yellow-900: #713f12;
+  --color-yellow-950: #422006;
+  /**
+   * Intent: First data series color in charts and data visualizations.
+   * Use when: The primary or first dataset in any chart (bar, line, pie). Maps to shadcn --chart-1.
+   * Do not use: For UI status or brand — chart colors are for data only.
+   * Status: Stable
+   */
+  --color-chart-1: #e76e50;
+  /**
+   * Intent: Second data series color in charts and data visualizations.
+   * Use when: The second dataset in a multi-series chart. Maps to shadcn --chart-2.
+   * Do not use: For UI status or brand — chart colors are for data only.
+   * Status: Stable
+   */
+  --color-chart-2: #2a9d90;
+  /**
+   * Intent: Third data series color in charts and data visualizations.
+   * Use when: The third dataset in a multi-series chart. Maps to shadcn --chart-3.
+   * Do not use: For UI status or brand — chart colors are for data only.
+   * Status: Stable
+   */
+  --color-chart-3: #274754;
+  /**
+   * Intent: Fourth data series color in charts and data visualizations.
+   * Use when: The fourth dataset in a multi-series chart. Maps to shadcn --chart-4.
+   * Do not use: For UI status or brand — chart colors are for data only.
+   * Status: Stable
+   */
+  --color-chart-4: #e8c468;
+  /**
+   * Intent: Fifth data series color in charts and data visualizations.
+   * Use when: The fifth dataset in a multi-series chart. Maps to shadcn --chart-5.
+   * Do not use: For UI status or brand — chart colors are for data only.
+   * Status: Stable
+   */
+  --color-chart-5: #f4a362;
+  /**
+   * Intent:      The main page canvas — the base surface everything sits on
+   * Use when:    Page background, main content area, any full-page layout surface
+   * Do not use:  Cards, panels, modals, or elevated containers — use color/surface/* instead
+   * Use instead: color/surface/default for cards and flat content containers
+   * Foreground:  color/background/default/foreground
+   * Status:      active
+   */
+  --color-background-default: #ffffff;
+  /**
+   * Intent:      Primary text and icon color on the default page background
+   * Use when:    Headings, body text, labels, any text sitting directly on the page canvas
+   * Do not use:  Text inside cards, modals, or colored containers — use that container's /foreground
+   * Use instead: color/text/secondary for subdued text, color/text/disabled for inactive text
+   * Status:      active
+   */
+  --color-background-default-foreground: #18181b;
+  /**
+   * Intent:      A near-white tint for low-emphasis background sections
+   * Use when:    Alternating section backgrounds, sidebar backgrounds, hover states on rows
+   * Do not use:  Cards or elevated UI — subtle is a flat tint, not a raised surface
+   * Use instead: color/surface/raised for slightly elevated containers
+   * Note:        No /foreground pair — text on subtle uses color/background/default/foreground
+   * Status:      active
+   */
+  --color-background-subtle: #fafafa;
+  /**
+   * Intent:      A visible muted surface for de-emphasized sections or inactive areas
+   * Use when:    Disabled input backgrounds, skeleton loaders, code blocks, tag backgrounds
+   * Do not use:  Primary content areas or interactive surfaces
+   * Use instead: color/background/default for the main page, color/background/subtle for softer tints
+   * Foreground:  color/background/muted/foreground
+   * Status:      active
+   */
+  --color-background-muted: #f4f4f5;
+  /**
+   * Intent:      Text and icon color on muted background surfaces
+   * Use when:    Placeholder text, captions inside muted containers, secondary labels on muted bg
+   * Do not use:  Primary body text on the page canvas — contrast is intentionally reduced
+   * Use instead: color/background/default/foreground for full-strength text
+   * Status:      active
+   */
+  --color-background-muted-foreground: #71717a;
+  /**
+   * Intent:      A dark surface for high-contrast inverted sections
+   * Use when:    Dark hero sections, inverted banners, dark tooltips, dark notification bars
+   * Do not use:  Full dark-mode — this is a single inverted section within a light-mode layout
+   * Use instead: color/surface/overlay for floating dark elements like dropdowns
+   * Foreground:  color/background/inverted/foreground
+   * Status:      active
+   */
+  --color-background-inverted: #18181b;
+  /**
+   * Intent:      Text and icon color on the inverted dark background
+   * Use when:    All text and icons placed on color/background/inverted
+   * Do not use:  On any light surface — white on white is invisible
+   * Use instead: color/background/default/foreground on light surfaces
+   * Status:      active
+   */
+  --color-background-inverted-foreground: #ffffff;
+  /**
+   * Intent: Subtle background for hover states on ghost and text-style interactive elements.
+   * Use when: Ghost button hover, sidebar item hover, command menu row hover, dropdown item hover. Maps to shadcn --accent.
+   * Do not use: As a primary action fill — this is a hover tint, not a CTA color.
+   * Use instead: color/brand/primary for primary action fills.
+   * Foreground: color/brand/accent/foreground
+   * Status: Stable
+   */
+  --color-background-accent: #f4f4f5;
+  /**
+   * Intent: Text and icon color on top of color/brand/accent fill.
+   * Use when: Labels and icons inside ghost button hover states, hovered sidebar items, hovered menu rows. Maps to shadcn --accent-foreground.
+   * Do not use: On any surface other than color/brand/accent.
+   * Use instead: color/background/default/foreground for text on default backgrounds.
+   * Status: Stable
+   */
+  --color-background-accent-foreground: #18181b;
+  /**
+   * Intent:      Subdued text for supporting information
+   * Use when:    Captions, metadata, timestamps, helper text, secondary labels beneath a heading
+   * Do not use:  Body text or headings — contrast is intentionally reduced for supporting roles
+   * Use instead: color/background/default/foreground for primary body text and headings
+   * Status:      active
+   */
+  --color-text-secondary: #52525b;
+  /**
+   * Intent:      Text color for inactive or unavailable elements
+   * Use when:    Disabled input labels, disabled button text, unavailable menu items
+   * Do not use:  Any text that is interactive or readable — fails WCAG contrast at small sizes
+   * Use instead: color/text/secondary for readable but de-emphasized text
+   * Status:      active
+   */
+  --color-text-disabled: #a1a1aa;
+  /**
+   * Intent:      Text on dark surfaces where the default dark text would be invisible
+   * Use when:    Text on color/background/inverted, dark banners, dark tooltips
+   * Do not use:  Text on any light or white surface
+   * Use instead: color/background/default/foreground on light surfaces
+   * Status:      active
+   */
+  --color-text-inverse: #ffffff;
+  /**
+   * Intent:      Inline text link color on light surfaces
+   * Use when:    Hyperlinks in body copy, navigation links, breadcrumbs
+   * Do not use:  Buttons — links are inline text, buttons are interactive containers
+   * Use instead: color/brand/primary for button fills, color/text/link-hover for the hovered state
+   * Status:      active
+   */
+  --color-text-link: #008852;
+  /**
+   * Intent:      Inline text link color on hover
+   * Use when:    The :hover state of color/text/link — always used as a pair, never standalone
+   * Do not use:  Default/resting link state — contrast is slightly higher than needed at rest
+   * Use instead: color/text/link for the resting state
+   * Status:      active
+   */
+  --color-text-link-hover: #175e41;
+  /**
+   * Intent:      Inline text link color on hover
+   * Use when:    The :hover state of color/text/link — always used as a pair, never standalone
+   * Do not use:  Default/resting link state — contrast is slightly higher than needed at rest
+   * Use instead: color/text/link for the resting state
+   * Status:      active
+   */
+  --color-text-link-active: #00393f;
+  --color-text-invalid: #ef4444; /** Error/invalid text on default backgrounds. Use for form field labels, descriptions, and alert text in invalid or destructive states. NOT the same as status/danger-subtle/foreground (which requires a danger-subtle background). */
+  --color-text-success: #15803d;
+  /**
+   * Intent:      Standard border for input fields, radio buttons, and component frames
+   * Use when:    Input borders at rest, checkbox outlines, card borders, component frame dividers
+   * Do not use:  Focus states, hover states, or error states — use the dedicated state tokens
+   * Use instead: color/border/hover on hover, color/border/focus on focus, color/border/error on error
+   * Status:      active
+   */
+  --color-border-default: #e4e4e7;
+  /**
+   * Intent:      Low-contrast border for structural, non-interactive elements
+   * Use when:    Internal card dividers, hairline row separators, layout structure on white bg
+   * Do not use:  Input fields, interactive components, or any element requiring clear boundary definition
+   * Use instead: color/border/default for input and component borders
+   * Status:      active
+   */
+  --color-border-subtle: #f4f4f5;
+  /**
+   * Intent:      High-emphasis border for selected or active states
+   * Use when:    Selected option chips, active tabs, emphasized separators, drag handles
+   * Do not use:  Default resting borders or focus rings
+   * Use instead: color/border/default for standard borders, color/border/focus for focus
+   * Status:      active
+   */
+  --color-border-strong: #a1a1aa;
+  /**
+   * Intent:      High-contrast focus ring for keyboard navigation and accessibility
+   * Use when:    :focus-visible on buttons, inputs, links, and any interactive element
+   * Do not use:  Decorative borders, hover states, or error indication
+   * Use instead: color/border/error for validation errors, color/border/strong for emphasis
+   * Status:      active
+   */
+  --color-border-focus: #17bb77;
+  /**
+   * Intent:      Slightly more prominent border when a user hovers an interactive element
+   * Use when:    Input border on :hover, selectable card on :hover, interactive list item on :hover
+   * Do not use:  Resting state or focus state
+   * Use instead: color/border/default for resting state, color/border/focus for keyboard focus
+   * Status:      active
+   */
+  --color-border-hover: #d4d4d8;
+  /**
+   * Intent:      Low-contrast border indicating an interaction is unavailable
+   * Use when:    Disabled input fields, disabled checkboxes, disabled select elements
+   * Do not use:  Any interactive or enabled element
+   * Use instead: color/border/default for the enabled equivalent
+   * Status:      active
+   */
+  --color-border-disabled: #f4f4f5;
+  /**
+   * Intent:      Strong border to highlight form validation errors
+   * Use when:    Input border in invalid/error state, failed form fields, required field alerts
+   * Do not use:  Warning states — error signals failure, warning signals caution
+   * Use instead: color/border/warning for cautionary non-failure states
+   * Status:      active
+   */
+  --color-border-error: #fca5a5;
+  /**
+   * Intent:      Border indicating a successful or valid state
+   * Use when:    Input border after successful validation, confirmed selection borders
+   * Do not use:  Neutral or warning states
+   * Use instead: color/border/error for failed validation, color/border/warning for caution
+   * Status:      active
+   */
+  --color-border-success: #4ade80;
+  /**
+   * Intent:      Border indicating a cautionary or attention-required state
+   * Use when:    Input border with a non-critical warning, fields approaching a limit
+   * Do not use:  Actual errors or failed validation — warning is not failure
+   * Use instead: color/border/error for validation failures
+   * Status:      active
+   */
+  --color-border-warning: #fde047;
+  /**
+   * Intent:      The main brand fill color for primary interactive elements
+   * Use when:    Primary button fill, active toggle fill, selected chip fill, key CTAs
+   * Do not use:  Text color on light backgrounds — use color/text/link for inline brand-colored text
+   * Use instead: color/text/link for inline links, color/brand/secondary for lower-emphasis brand surfaces
+   * Foreground:  color/brand/primary/foreground
+   * Status:      active
+   */
+  --color-brand-primary: #008852;
+  /**
+   * Intent:      Text and icon color placed directly on a color/brand/primary fill
+   * Use when:    Label inside a primary button, icon inside a filled brand badge
+   * Do not use:  On any surface other than color/brand/primary — white on white is invisible
+   * Use instead: color/background/default/foreground for text on neutral surfaces
+   * Status:      active
+   */
+  --color-brand-primary-foreground: #ffffff;
+  /**
+   * Intent:      Darker brand fill for the hover state of a primary element
+   * Use when:    Primary button :hover fill — always paired with color/brand/primary, never used standalone
+   * Do not use:  Resting state or active/pressed state
+   * Use instead: color/brand/primary for resting, color/brand/primary-active for pressed
+   * Status:      active
+   */
+  --color-brand-primary-hover: #175e41;
+  /**
+   * Intent:      Darkest brand fill for the pressed/active state of a primary element
+   * Use when:    Primary button :active fill — the moment of click or tap
+   * Do not use:  Hover or resting states
+   * Use instead: color/brand/primary-hover for hover, color/brand/primary for resting
+   * Status:      active
+   */
+  --color-brand-primary-active: #00393f;
+  /**
+   * Intent:      Light brand-tinted surface for lower-emphasis brand presence
+   * Use when:    Secondary button fill, selected row highlight, brand-tinted badge background, active nav item background
+   * Do not use:  High-emphasis CTAs — too light to read as a primary action
+   * Use instead: color/brand/primary for high-emphasis filled actions
+   * Foreground:  color/brand/secondary/foreground
+   * Status:      active
+   */
+  --color-brand-secondary: #b5e5d1;
+  /**
+   * Intent:      Text and icon color on a color/brand/secondary fill
+   * Use when:    Label inside a secondary brand button, text inside a brand-tinted badge
+   * Do not use:  On white or neutral surfaces — too dark-blue for general body text
+   * Use instead: color/text/link for inline brand-colored text on neutral backgrounds
+   * Status:      active
+   */
+  --color-brand-secondary-foreground: #00393f;
+  /**
+   * Intent: Fill color for destructive CTA elements — buttons that delete, remove, or permanently alter data.
+   * Use when: Delete buttons, Remove confirmations, destructive dialog primary actions. Maps to shadcn --destructive.
+   * Do not use: For status indicators, error messages, or form validation — use color/status/danger for those.
+   * Use instead: color/status/danger for inline error states and validation feedback.
+   * Foreground: color/brand/destructive/foreground
+   * Status: Stable
+   */
+  --color-brand-destructive: #ef4444;
+  /**
+   * Intent: Text and icon color on top of color/brand/destructive fill.
+   * Use when: Labels and icons inside destructive buttons and confirmation CTAs. Maps to shadcn --destructive-foreground.
+   * Do not use: On any surface other than color/brand/destructive.
+   * Use instead: color/status/danger/foreground for text on danger status backgrounds.
+   * Status: Stable
+   */
+  --color-brand-destructive-foreground: #ffffff;
+  /**
+   * Intent:      Light brand-tinted surface for lower-emphasis brand presence
+   * Use when:    Secondary button fill, selected row highlight, brand-tinted badge background, active nav item background
+   * Do not use:  High-emphasis CTAs — too light to read as a primary action
+   * Use instead: color/brand/primary for high-emphasis filled actions
+   * Foreground:  color/brand/secondary/foreground
+   * Status:      active
+   */
+  --color-brand-secondary-hover: #9cddbb;
+  /**
+   * Intent:      Light brand-tinted surface for lower-emphasis brand presence
+   * Use when:    Secondary button fill, selected row highlight, brand-tinted badge background, active nav item background
+   * Do not use:  High-emphasis CTAs — too light to read as a primary action
+   * Use instead: color/brand/primary for high-emphasis filled actions
+   * Foreground:  color/brand/secondary/foreground
+   * Status:      active
+   */
+  --color-brand-secondary-active: #70d1a0;
+  --color-brand-destructive-hover: #dc2626; /** Destructive button background on hover. Aliases color/red/600. */
+  --color-brand-destructive-active: #b91c1c; /** Destructive button background on active/pressed. Aliases color/red/700. */
+  /**
+   * Intent:      Background for cards and flat inline content containers
+   * Use when:    Card backgrounds, list item backgrounds, form section backgrounds, any container sitting on top of the page canvas
+   * Do not use:  The page canvas itself — use color/background/default for the page
+   *              Floating or elevated UI — use color/surface/overlay for dropdowns and modals
+   * Use instead: color/background/default for the page, color/surface/overlay for floating UI
+   * Foreground:  color/surface/default/foreground
+   * Status:      active
+   */
+  --color-surface-default: #ffffff;
+  /**
+   * Intent:      Text and icon color inside a color/surface/default container
+   * Use when:    Text and icons inside cards, list items, and flat content containers
+   * Do not use:  Text directly on the page canvas — use color/background/default/foreground
+   * Use instead: color/text/secondary for subdued text inside surface containers
+   * Status:      active
+   */
+  --color-surface-default-foreground: #18181b;
+  /**
+   * Intent:      Slightly elevated surface for elements that sit above the page but below overlays
+   * Use when:    Navigation bars, sticky headers, section headers, sidebar backgrounds, inline panels that feel lifted without floating
+   * Do not use:  Cards on a white page — the tint provides no contrast against white canvas
+   *              Modals, dropdowns, or tooltips — use color/surface/overlay for floating UI
+   * Use instead: color/surface/default for cards, color/surface/overlay for floating elements
+   * Foreground:  color/surface/raised/foreground
+   * Status:      active
+   */
+  --color-surface-raised: #fafafa;
+  /**
+   * Intent:      Text and icon color on a color/surface/raised background
+   * Use when:    Nav labels, sidebar text, sticky header text on the raised surface
+   * Do not use:  Text on the page canvas or inside floating overlays
+   * Use instead: color/surface/overlay/foreground for text inside dropdowns and modals
+   * Status:      active
+   */
+  --color-surface-raised-foreground: #18181b;
+  /**
+   * Intent:      Background for floating UI elements that layer above page content
+   * Use when:    Dropdowns, tooltips, popovers, modals, command palettes, context menus
+   * Do not use:  Cards or flat inline content — use color/surface/default for non-floating containers
+   * Use instead: color/surface/default for flat containers, color/surface/raised for sticky bars
+   * Foreground:  color/surface/overlay/foreground
+   * Note:        Resolves to the same primitive as color/surface/default in light mode. The distinction matters for dark mode — overlays get a lighter surface than the page.
+   * Status:      active
+   */
+  --color-surface-overlay: #ffffff;
+  /**
+   * Intent:      Text and icon color inside floating overlay surfaces
+   * Use when:    Dropdown options, tooltip text, modal body text, popover content
+   * Do not use:  Text on flat cards or the page canvas
+   * Use instead: color/surface/default/foreground for text inside flat cards
+   * Status:      active
+   */
+  --color-surface-overlay-foreground: #18181b;
+  --color-surface-accent: #f4f4f5;
+  --color-surface-accent-foreground: #18181b;
+  --color-surface-muted: #f4f4f5; /** Muted component surface — avatar fallback, chips, subtle UI elements */
+  --color-surface-muted-foreground: #71717a; /** Foreground on muted surface — text and icons on color/surface/muted */
+  /**
+   * Intent:      Filled success surface for high-emphasis positive feedback
+   * Use when:    Success badge fill, success toast fill, confirmed state indicator
+   * Do not use:  Success messages on a white page — use color/status/success-subtle for inline alerts
+   * Use instead: color/status/success-subtle for low-emphasis success backgrounds
+   * Foreground:  color/status/success/foreground
+   * Status:      active
+   */
+  --color-status-success: #22c55e;
+  /**
+   * Intent:      Text and icon on a filled success surface
+   * Use when:    Label inside a filled success badge or toast
+   * Do not use:  Text on color/status/success-subtle — contrast fails on the light tint
+   * Use instead: color/status/success-subtle/foreground for text on the subtle tint
+   * Status:      active
+   */
+  --color-status-success-foreground: #18181b;
+  /**
+   * Intent:      Light success tint for low-emphasis inline alerts and banners
+   * Use when:    Success alert banner background, valid input highlight, confirmation section bg
+   * Do not use:  Filled badges or toasts that need strong visual weight
+   * Use instead: color/status/success for high-emphasis filled surfaces
+   * Foreground:  color/status/success-subtle/foreground
+   * Status:      active
+   */
+  --color-status-success-subtle: #f0fdf4;
+  /**
+   * Intent:      Text and icon on the success subtle tint
+   * Use when:    Message text and icons inside a success alert banner
+   * Do not use:  Text on the filled green surface — use color/status/success/foreground instead
+   * Use instead: color/status/success/foreground for text on filled success surfaces
+   * Status:      active
+   */
+  --color-status-success-subtle-foreground: #15803d;
+  /**
+   * Intent:      Filled warning surface for high-emphasis cautionary feedback
+   * Use when:    Warning badge fill, caution toast fill, approaching-limit indicator
+   * Do not use:  Error or failure states — warning signals caution, not failure
+   * Use instead: color/status/danger for errors, color/status/warning-subtle for inline alerts
+   * Foreground:  color/status/warning/foreground
+   * Status:      active
+   */
+  --color-status-warning: #eab308;
+  /**
+   * Intent:      Text and icon on a filled warning surface
+   * Use when:    Label inside a filled warning badge or toast
+   * Do not use:  On any surface other than color/status/warning — dark text on light bg loses meaning
+   * Note:        Uses zinc/900 not white — yellow/500 does not pass WCAG contrast with white text
+   * Use instead: color/status/warning-subtle/foreground for text on the subtle tint
+   * Status:      active
+   */
+  --color-status-warning-foreground: #18181b;
+  /**
+   * Intent:      Light warning tint for low-emphasis cautionary alerts and banners
+   * Use when:    Warning alert banner background, non-critical notice section bg
+   * Do not use:  Error states — cautionary tint is not strong enough to signal failure
+   * Use instead: color/status/danger-subtle for error banners, color/status/warning for filled badges
+   * Foreground:  color/status/warning-subtle/foreground
+   * Status:      active
+   */
+  --color-status-warning-subtle: #fefce8;
+  /**
+   * Intent:      Text and icon on the warning subtle tint
+   * Use when:    Message text and icons inside a warning alert banner
+   * Do not use:  Text on the filled yellow surface — use color/status/warning/foreground instead
+   * Use instead: color/status/warning/foreground for text on filled warning surfaces
+   * Status:      active
+   */
+  --color-status-warning-subtle-foreground: #a16207;
+  /**
+   * Intent:      Filled danger surface for high-emphasis error or destructive feedback
+   * Use when:    Error badge fill, destructive action toast, delete confirmation indicator
+   * Do not use:  Cautionary or non-failure states — danger signals failure, not caution
+   * Use instead: color/status/warning for cautionary states, color/status/danger-subtle for inline alerts
+   * Foreground:  color/status/danger/foreground
+   * Status:      active
+   */
+  --color-status-danger: #ef4444;
+  /**
+   * Intent:      Text and icon on a filled danger surface
+   * Use when:    Label inside a filled error badge, icon inside a destructive toast
+   * Do not use:  Text on color/status/danger-subtle — contrast fails on the light tint
+   * Use instead: color/status/danger-subtle/foreground for text on the subtle tint
+   * Status:      active
+   */
+  --color-status-danger-foreground: #ffffff;
+  /**
+   * Intent:      Light danger tint for low-emphasis error alerts and invalid field highlights
+   * Use when:    Error alert banner background, invalid input field background, form error section
+   * Do not use:  Filled badges or toasts that need strong visual weight
+   * Use instead: color/status/danger for high-emphasis filled surfaces
+   * Foreground:  color/status/danger-subtle/foreground
+   * Status:      active
+   */
+  --color-status-danger-subtle: #fef2f2;
+  /**
+   * Intent:      Text and icon on the danger subtle tint
+   * Use when:    Error message text and icons inside an alert banner or invalid input
+   * Do not use:  Text on the filled red surface — use color/status/danger/foreground instead
+   * Use instead: color/status/danger/foreground for text on filled danger surfaces
+   * Status:      active
+   */
+  --color-status-danger-subtle-foreground: #b91c1c;
+  /**
+   * Intent:      Filled info surface for high-emphasis informational feedback
+   * Use when:    Info badge fill, informational toast fill, neutral announcement indicator
+   * Do not use:  Brand interactive elements — info is for communication, not action
+   * Use instead: color/brand/primary for interactive CTAs, color/status/info-subtle for inline notices
+   * Foreground:  color/status/info/foreground
+   * Status:      active
+   */
+  --color-status-info: #2b7fff;
+  /**
+   * Intent:      Text and icon on a filled info surface
+   * Use when:    Label inside a filled info badge or toast
+   * Do not use:  Text on color/status/info-subtle — contrast fails on the light tint
+   * Use instead: color/status/info-subtle/foreground for text on the subtle tint
+   * Status:      active
+   */
+  --color-status-info-foreground: #ffffff;
+  /**
+   * Intent:      Light info tint for low-emphasis informational alerts and banners
+   * Use when:    Info alert banner background, announcement section bg, tip highlight
+   * Do not use:  Brand interactive elements or filled badges needing strong weight
+   * Use instead: color/status/info for high-emphasis filled surfaces
+   * Foreground:  color/status/info-subtle/foreground
+   * Status:      active
+   */
+  --color-status-info-subtle: #eef6ff;
+  /**
+   * Intent:      Text and icon on the info subtle tint
+   * Use when:    Message text and icons inside an informational alert banner
+   * Do not use:  Text on the filled blue info surface — use color/status/info/foreground instead
+   * Use instead: color/status/info/foreground for text on filled info surfaces
+   * Status:      active
+   */
+  --color-status-info-subtle-foreground: #1447e6;
+  --color-status-offline: #e4e4e7;
+  --color-status-offline-foreground: #18181b;
+  /**
+   * Intent:      Resting border color for input fields, select field, combobox field and form controls
+   * Use when:    Text input border, textarea border, select border, checkbox outline at rest
+   * Do not use:  Card or container borders — inputs use zinc/300, one step darker than card borders (zinc/200), to clearly define the field boundary
+   * Use instead: color/border/focus on :focus-visible, color/border/error on invalid, color/border/disabled on disabled
+   * Status:      active
+   */
+  --color-input-border: #d4d4d8;
+  /**
+   * Intent: Text color for placeholder content inside color for input fields, select field, combobox field
+   * Use when: The placeholder attribute text in text inputs, textareas, and select fields before a value is entered.
+   * Do not use: For actual input value text — use color/background/default/foreground for typed content.
+   * Use instead: color/text/disabled if the entire input is disabled, not just empty.
+   * Status: Stable
+   */
+  --color-input-placeholder: #71717a;
+  /**
+   * Intent:      Background fill for all input-type controls (text input, textarea, combobox, select, OTP, date-picker, chat input)
+   * Use when:    Any editable field container the user types into or selects from
+   * Do not use:  Non-editable containers, cards, panels — use color/surface/* for those
+   * Use instead: color/surface/muted for the disabled state of the same input
+   * Dark mode:   zinc/700 — one step lighter than color/surface/overlay (zinc/800) so inputs stand out from the panel they sit in
+   * Status:      active
+   */
+  --color-input-bg: #ffffff;
+  /**
+   * Intent:      Outer focus ring halo applied to interactive elements on keyboard focus
+   * Use when:    box-shadow focus ring on buttons, inputs, links — the visible glow outside the element border
+   * Do not use:  As a border replacement — ring is additive, always layered on top of the element border
+   * Note:        shadcn core token (maps to --ring). Used alongside color/border/focus on inputs, and standalone on buttons and links that have no explicit border
+   * Status:      active
+   */
+  --color-ring: #17bb77;
+  /**
+   * Intent:      Default color for standalone icons on light/white surfaces
+   * Use when:    Icons beside body text, nav icons, toolbar icons, any icon on a neutral background
+   * Do not use:  Icons inside filled buttons, badges, or colored containers
+   * Use instead: The container's /foreground token — e.g. color/brand/primary/foreground for an icon inside a filled blue button
+   * Status:      active
+   */
+  --color-icon-default: #18181b;
+  /**
+   * Intent:      Subdued icon for secondary or decorative use
+   * Use when:    Supporting icons, placeholder hints, inactive nav items, decorative flourishes
+   * Do not use:  Icons that carry meaning or need high visibility
+   * Use instead: color/icon/default for primary icons
+   * Status:      active
+   */
+  --color-icon-muted: #52525b;
+  /**
+   * Intent:      Icon color in disabled or unavailable states
+   * Use when:    Icons inside disabled buttons, inactive tabs, unavailable menu items
+   * Do not use:  Any interactive or active icon state
+   * Use instead: color/icon/default for the active equivalent
+   * Status:      active
+   */
+  --color-icon-disabled: #a1a1aa;
+  /**
+   * Intent:      Icon color on dark or inverted surfaces
+   * Use when:    Icons on color/background/inverted, dark hero sections, dark nav bars
+   * Do not use:  Icons on any light surface — will be invisible against white
+   * Use instead: color/icon/default on light surfaces
+   * Status:      active
+   */
+  --color-icon-inverse: #ffffff;
+  /**
+   * Intent:      Brand-colored icon sitting on a neutral or white surface
+   * Use when:    Feature highlight icons, logo marks, icons that signal brand identity on light bg
+   * Do not use:  Icons inside a filled primary button or any filled brand container — blue icon on blue fill is invisible
+   * Use instead: color/brand/primary/foreground for icons inside filled brand containers
+   * Status:      active
+   */
+  --color-icon-brand: #008852;
+  /**
+   * Intent:      Danger or error icon on a light surface
+   * Use when:    Error icon beside a validation message, destructive action icon on white bg
+   * Do not use:  Icons inside a filled danger badge or filled danger button
+   * Use instead: color/status/danger/foreground for icons inside filled danger containers
+   * Status:      active
+   */
+  --color-icon-danger: #ef4444;
+  /**
+   * Intent:      Success or confirmation icon on a light surface
+   * Use when:    Checkmark beside a success message, completion icon on white bg
+   * Do not use:  Icons inside a filled success badge or toast
+   * Use instead: color/status/success/foreground for icons inside filled success containers
+   * Status:      active
+   */
+  --color-icon-success: #15803d;
+  /**
+   * Intent:      Warning or caution icon on a light surface
+   * Use when:    Warning icon beside a non-critical alert message on white bg
+   * Do not use:  Icons inside a filled warning container
+   * Use instead: color/status/warning/foreground for icons inside filled warning containers
+   * Status:      active
+   */
+  --color-icon-warning: #a16207;
+  /**
+   * Intent: Background fill for the sidebar panel.
+   * Use when: Sidebar container background. Maps to shadcn --sidebar-background.
+   * Do not use: For page backgrounds — use color/background/default instead.
+   * Status: Stable
+   */
+  --color-sidebar-background: #00393f;
+  /**
+   * Intent: Default text and icon color inside the sidebar.
+   * Use when: Sidebar nav labels, section headings, icon color. Maps to shadcn --sidebar-foreground.
+   * Do not use: On non-sidebar surfaces.
+   * Status: Stable
+   */
+  --color-sidebar-foreground: #fafafa;
+  /**
+   * Intent: Fill for the active or primary nav item in the sidebar.
+   * Use when: Active sidebar nav item background. Maps to shadcn --sidebar-primary.
+   * Do not use: For brand CTAs — use color/brand/primary instead.
+   * Status: Stable
+   */
+  --color-sidebar-primary: #18181b;
+  /**
+   * Intent: Text and icon color on top of color/sidebar/primary fill.
+   * Use when: Labels inside the active sidebar nav item. Maps to shadcn --sidebar-primary-foreground.
+   * Do not use: On any surface other than color/sidebar/primary.
+   * Status: Stable
+   */
+  --color-sidebar-primary-foreground: #ffffff;
+  /**
+   * Intent: Hover background for inactive sidebar nav items.
+   * Use when: Hover state on sidebar nav rows. Maps to shadcn --sidebar-accent.
+   * Do not use: As a fill for active items — use color/sidebar/primary instead.
+   * Status: Stable
+   */
+  --color-sidebar-accent: #f4f4f5;
+  /**
+   * Intent: Text and icon color on top of color/sidebar/accent fill.
+   * Use when: Labels inside hovered sidebar nav items. Maps to shadcn --sidebar-accent-foreground.
+   * Do not use: On any surface other than color/sidebar/accent.
+   * Status: Stable
+   */
+  --color-sidebar-accent-foreground: #18181b;
+  /**
+   * Intent: Divider and border color within the sidebar.
+   * Use when: Sidebar edge border, section dividers inside the sidebar. Maps to shadcn --sidebar-border.
+   * Do not use: For page-level borders — use color/border/default instead.
+   * Status: Stable
+   */
+  --color-sidebar-border: #e4e4e7;
+  /**
+   * Intent: Focus ring color for keyboard-focused sidebar items.
+   * Use when: Focus outline on sidebar nav links and buttons. Maps to shadcn --sidebar-ring.
+   * Do not use: Outside the sidebar — use color/input/ring for global focus rings.
+   * Status: Stable
+   */
+  --color-sidebar-ring: #2b7fff;
+  /**
+   * Intent: Hover background for inactive sidebar nav items.
+   * Use when: Hover state on sidebar nav rows. Maps to shadcn --sidebar-accent.
+   * Do not use: As a fill for active items — use color/sidebar/primary instead.
+   * Status: Stable
+   */
+  --color-sidebar-active: #f4f4f5;
+  /**
+   * Intent: Text and icon color on top of color/sidebar/accent fill.
+   * Use when: Labels inside hovered sidebar nav items. Maps to shadcn --sidebar-accent-foreground.
+   * Do not use: On any surface other than color/sidebar/accent.
+   * Status: Stable
+   */
+  --color-sidebar-active-foreground: #18181b;
+  --spacing-0: 0px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-7: 28px;
+  --spacing-8: 32px;
+  --spacing-9: 36px;
+  --spacing-10: 40px;
+  --spacing-11: 44px;
+  --spacing-12: 48px;
+  --spacing-14: 56px;
+  --spacing-16: 64px;
+  --spacing-20: 80px;
+  --spacing-24: 96px;
+  --spacing-28: 112px;
+  --spacing-32: 128px;
+  --spacing-px: 1px;
+  --spacing-0-5: 2px;
+  --spacing-1-5: 6px;
+  --spacing-2-5: 10px;
+  --spacing-3-5: 14px;
+  /**
+   * Intent:      Tightest internal spacing for compact component elements
+   * Use when:    Icon-to-label gap inside a badge or chip, gap between a checkbox and its label, padding inside a tag or small pill
+   * Do not use:  Padding inside buttons or cards — too tight for comfortable interaction targets
+   * Use instead: spacing/component/sm for button padding, spacing/component/md for card padding
+   * Status:      active
+   */
+  --spacing-component-xxs: 2px;
+  /**
+   * Intent:      Standard tight spacing for small component internals
+   * Use when:    Button vertical padding, input field vertical padding, icon button padding, gap between stacked labels inside a list item
+   * Do not use:  Layout gaps between components or sections
+   * Use instead: spacing/layout/xs for gaps between components
+   * Status:      active
+   */
+  --spacing-component-sm: 8px;
+  /**
+   * Intent:      Default internal padding for most components
+   * Use when:    Card padding, modal padding, input horizontal padding, dropdown item padding, the go-to internal spacing when unsure
+   * Do not use:  Gaps between layout sections — use spacing/layout/* for structural spacing
+   * Use instead: spacing/component/sm for tight components, spacing/component/lg for spacious ones
+   * Status:      active
+   */
+  --spacing-component-lg: 16px;
+  /**
+   * Intent:      Generous internal padding for large or prominent components
+   * Use when:    Large card padding, hero section inner padding, empty state padding, dialog/modal body padding
+   * Do not use:  Small components like buttons or chips — too much breathing room
+   * Use instead: spacing/component/md for standard components
+   * Status:      active
+   */
+  --spacing-component-xl: 24px;
+  /**
+   * Intent:      Maximum internal spacing for very large containers
+   * Use when:    Full-page panel padding, wide modal padding, feature card inner padding
+   * Do not use:  Regular components — reserve for large-format containers only
+   * Use instead: spacing/component/lg for standard large components
+   * Status:      active
+   */
+  --spacing-component-2xl: 32px;
+  --spacing-component-md: 12px;
+  /**
+   * Intent:      Tightest internal spacing for compact component elements
+   * Use when:    Icon-to-label gap inside a badge or chip, gap between a checkbox and its label, padding inside a tag or small pill
+   * Do not use:  Padding inside buttons or cards — too tight for comfortable interaction targets
+   * Use instead: spacing/component/sm for button padding, spacing/component/md for card padding
+   * Status:      active
+   */
+  --spacing-component-xs: 4px;
+  --spacing-component-xs-plus: 6px;
+  /**
+   * Intent:      Minimum gap between adjacent components in a layout
+   * Use when:    Gap between a label and an input, gap between inline buttons, tight grid gutters in a dense UI
+   * Do not use:  Internal component padding — use spacing/component/* for inside components
+   * Use instead: spacing/layout/sm for standard component gaps
+   * Status:      active
+   */
+  --spacing-layout-xs: 16px;
+  /**
+   * Intent:      Standard gap between components and groups
+   * Use when:    Gap between form fields, gap between cards in a grid, gap between nav items, space between a heading and its content block
+   * Do not use:  Internal component padding or full section spacing
+   * Use instead: spacing/layout/xs for tighter groups, spacing/layout/md for looser groups
+   * Status:      active
+   */
+  --spacing-layout-sm: 24px;
+  /**
+   * Intent:      Default spacing between distinct content groups
+   * Use when:    Gap between form sections, space between a page title and its content, vertical rhythm between content blocks on a page
+   * Do not use:  Internal component padding or micro-spacing within a component
+   * Use instead: spacing/layout/sm for tighter groups, spacing/layout/lg for major sections
+   * Status:      active
+   */
+  --spacing-layout-md: 32px;
+  /**
+   * Intent:      Major section spacing for clear visual breaks between page areas
+   * Use when:    Vertical gap between page sections, top padding of a content section, space between a hero and the next content block
+   * Do not use:  Component-level spacing — this scale is for page structure only
+   * Use instead: spacing/layout/md for content group gaps, spacing/layout/xl for hero-level spacing
+   * Status:      active
+   */
+  --spacing-layout-lg: 48px;
+  /**
+   * Intent:      Maximum section spacing for the largest structural breaks
+   * Use when:    Hero section vertical padding, top-of-page breathing room, space between major landmark sections (hero → features → pricing)
+   * Do not use:  Anything inside or between regular components
+   * Use instead: spacing/layout/lg for standard section gaps
+   * Status:      active
+   */
+  --spacing-layout-xl: 64px;
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-base: 8px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 14px;
+  --radius-3xl: 18px;
+  --radius-4xl: 21px;
+  --radius-full: 9999px;
+  /**
+   * Intent: Smallest readable text size; used for supplementary information.
+   * Use when: Captions, timestamps, helper text below inputs, legal footnotes, badge labels.
+   * Do not use: For body copy or any text that requires sustained reading — too small for comfort.
+   * Use instead: font-size/sm for secondary body text.
+   * Status: Stable
+   */
+  --font-size-xs: 12;
+  /**
+   * Intent: Secondary text size; slightly smaller than body.
+   * Use when: Supporting copy, table cell content, sidebar labels, secondary descriptions, input helper text.
+   * Do not use: For primary headings or hero content.
+   * Status: Stable
+   */
+  --font-size-sm: 14;
+  /**
+   * Intent: Default body text size — the readable baseline for the system.
+   * Use when: Main body copy, paragraph text, form labels, default UI text.
+   * Do not use: For headings — use font-size/lg and above.
+   * Status: Stable
+   */
+  --font-size-base: 16;
+  /**
+   * Intent: Slightly emphasised text; between body and heading.
+   * Use when: Subheadings, lead paragraphs, card titles on smaller cards, section intros.
+   * Do not use: For primary page headings — use font-size/xl or above.
+   * Status: Stable
+   */
+  --font-size-lg: 18;
+  /**
+   * Intent: Small heading size.
+   * Use when: Panel headers, dialog titles, section headings in sidebars or compact layouts.
+   * Do not use: For body text — will feel too large and reduce density.
+   * Status: Stable
+   */
+  --font-size-xl: 20;
+  /**
+   * Intent: Medium heading size.
+   * Use when: Card group headings, page section titles, modal headers.
+   * Do not use: For body or supporting text.
+   * Status: Stable
+   */
+  --font-size-2xl: 24;
+  /**
+   * Intent: Large heading; primary content section titles.
+   * Use when: Page-level h2 headings, feature section titles, prominent labels.
+   * Do not use: Below 600px viewport — scale down to font-size/2xl on mobile.
+   * Status: Stable
+   */
+  --font-size-3xl: 30;
+  /**
+   * Intent: Major display heading.
+   * Use when: Page h1 titles, onboarding screen headings, large dashboard figures.
+   * Do not use: For anything other than the primary heading on a view.
+   * Status: Stable
+   */
+  --font-size-4xl: 36;
+  /**
+   * Intent: Hero display text; the largest regular text size.
+   * Use when: Marketing hero headings, splash screens, empty state primary messages.
+   * Do not use: In dense product UI or data-heavy screens — too dominant for functional layouts.
+   * Use instead: font-size/4xl for product UI headings.
+   * Status: Stable
+   */
+  --font-size-5xl: 48;
+  --font-size-6xl: 60;
+  --font-size-7xl: 72;
+  /**
+   * Intent: Oversized display text for maximum visual impact.
+   * Use when: Large hero numbers (pricing, statistics), splash screen numerals, bold marketing headlines where 7xl is not dominant enough.
+   * Do not use: In product UI or anywhere text needs to coexist with other content — this size dominates everything around it.
+   * Use instead: font-size/7xl or font-size/6xl for standard hero headings.
+   * Status: Stable
+   */
+  --font-size-8xl: 96;
+  /**
+   * Intent: Maximum display size; purely decorative or typographic statement.
+   * Use when: Full-screen typographic art direction, giant background numerals, editorial splash layouts where the number or letter itself is the visual.
+   * Do not use: Anywhere legibility of surrounding content matters — at 128px a single word fills a viewport.
+   * Use instead: font-size/8xl for large but still functional display text.
+   * Status: Stable
+   */
+  --font-size-9xl: 128;
+  /**
+   * Intent: Hairline weight; purely decorative at large display sizes.
+   * Use when: Giant typographic backdrops, display numerals where the lightness itself is the aesthetic.
+   * Do not use: In product UI at any functional size — illegible below 32px on most screens.
+   * Use instead: font-weight/light for the lightest usable UI weight.
+   * Status: Stable
+   */
+  --font-weight-thin: 100;
+  /**
+   * Intent: Very light weight; editorial and display use only.
+   * Use when: Large marketing headlines where an airy, refined feel is intentional.
+   * Do not use: In product UI — too light for legible labels or body text.
+   * Use instead: font-weight/light at minimum for UI contexts.
+   * Status: Stable
+   */
+  --font-weight-extralight: 200;
+  /**
+   * Intent: Below-normal weight for large display text in marketing contexts.
+   * Use when: Hero headings at font-size/4xl or above where the regular weight feels visually heavy — common in Apple-style or editorial layouts.
+   * Do not use: In product UI at any size below 24px — 300 at small sizes is hard to read, especially on non-retina screens. Neither shadcn nor Ant Design uses light weight in product components.
+   * Use instead: font-weight/normal for all product UI text.
+   * Status: Stable
+   */
+  --font-weight-light: 300;
+  /**
+   * Intent: Default reading weight for all body and descriptive text.
+   * Use when: Paragraphs, descriptions, helper text, secondary labels, captions, table cell content. Ant Design uses 400 for all body/description text; shadcn uses it for CardDescription, DialogDescription, p elements.
+   * Do not use: For interactive controls (buttons, tabs, nav links) or headings — those need 500 or 600 to register hierarchy.
+   * Use instead: font-weight/medium for labels and controls.
+   * Status: Stable
+   */
+  --font-weight-normal: 400;
+  /**
+   * Intent: Slightly emphasised weight for interactive controls and UI labels.
+   * Use when: Navigation links, form labels, tab labels, table column headers, secondary buttons, badge text. Ant Design uses 500 for emphasized interactive text; shadcn uses it for Label, nav items, TableHead.
+   * Do not use: For headings — too close to body weight to signal a clear hierarchy jump.
+   * Use instead: font-weight/semibold for titles and headings.
+   * Status: Stable
+   */
+  --font-weight-medium: 500;
+  /**
+   * Intent: Primary heading weight and strong emphasis for UI titles.
+   * Use when: All component headings — card titles, dialog titles, section titles, sidebar headers, alert titles. Ant Design's fontWeightStrong token is 600; shadcn uses 600 for CardTitle, DialogTitle, AlertTitle, h1–h4.
+   * Do not use: For body copy — creates visual noise when overused at paragraph level.
+   * Status: Stable
+   */
+  --font-weight-semibold: 600;
+  /**
+   * Intent: Maximum typographic emphasis; use sparingly.
+   * Use when: Critical callouts, marketing hero text where extra impact is needed beyond semibold, numerical figures in dashboards that need immediate attention (revenue totals, error counts).
+   * Do not use: Routinely in product UI — Ant Design almost never recommends 700; shadcn rarely uses it. Bold loses hierarchy value when overused.
+   * Use instead: font-weight/semibold for all standard headings and emphasis.
+   * Status: Stable
+   */
+  --font-weight-bold: 700;
+  /**
+   * Intent: Very heavy weight for extreme emphasis; rarely needed in UI.
+   * Use when: Display numerals on marketing pages, typographic art direction where maximum weight contrast is the design intent.
+   * Do not use: In product UI — heavier than bold without meaningful visual benefit at normal sizes.
+   * Use instead: font-weight/bold for the heaviest practical UI weight.
+   * Status: Stable
+   */
+  --font-weight-extrabold: 800;
+  /**
+   * Intent: Maximum weight; typographic statement only.
+   * Use when: Giant numerals, poster-style marketing layouts, logotype treatments where the weight itself is the visual element.
+   * Do not use: In any functional UI context — illegibly heavy at body sizes, and unnecessarily dominant at heading sizes.
+   * Use instead: font-weight/bold or font-weight/extrabold for strong emphasis.
+   * Status: Stable
+   */
+  --font-weight-black: 900;
+  /**
+   * CSS reference value: 1 (unitless) = leading-none in Tailwind.
+   * For Figma use: do not bind to text styles — use direct px values on each text style instead (single ratio cannot resolve to a correct px value across multiple font sizes).
+   * Use when (CSS/export only): Single-line UI elements — buttons, badges, nav labels.
+   * Do not use: Multi-line text — lines will collide.
+   * Status: Stable
+   */
+  --line-height-none: 100;
+  /**
+   * CSS reference value: 1.25 (unitless) = leading-tight in Tailwind.
+   * For Figma use: do not bind to text styles — use direct px values on each text style instead.
+   * Use when (CSS/export only): Display headings, hero titles, large typographic elements.
+   * Do not use: Body copy at small sizes — strains readability.
+   * Status: Stable
+   */
+  --line-height-tight: 125;
+  /**
+   * CSS reference value: 1.375 (unitless) = leading-snug in Tailwind.
+   * For Figma use: do not bind to text styles — use direct px values on each text style instead.
+   * Use when (CSS/export only): h2–h4 subheadings, card titles, compact multi-line headings.
+   * Do not use: Long-form paragraph text.
+   * Status: Stable
+   */
+  --line-height-snug: 137.5;
+  /**
+   * CSS reference value: 1.5 (unitless) = leading-normal in Tailwind.
+   * For Figma use: do not bind to text styles — use direct px values on each text style instead.
+   * Use when (CSS/export only): Paragraphs, descriptions, form helper text, any sustained reading.
+   * Do not use: Headings — will feel too loose.
+   * Status: Stable
+   */
+  --line-height-normal: 150;
+  /**
+   * CSS reference value: 1.625 (unitless) = leading-relaxed in Tailwind.
+   * For Figma use: do not bind to text styles — use direct px values on each text style instead.
+   * Use when (CSS/export only): Long-form articles, documentation, editorial content.
+   * Do not use: Dense product UI — wastes vertical space.
+   * Status: Stable
+   */
+  --line-height-relaxed: 162.5;
+  /**
+   * CSS reference value: 2 (unitless) = leading-loose in Tailwind.
+   * For Figma use: do not bind to text styles — use direct px values on each text style instead.
+   * Use when (CSS/export only): Poetry, pull quotes, highly stylised marketing layouts.
+   * Do not use: Product UI or data-heavy screens.
+   * Status: Stable
+   */
+  --line-height-loose: 200;
+  /**
+   * Intent: Tightened tracking for large display text.
+   * Use when: Hero headings and large display type (font-size/4xl and above) where default tracking looks too loose.
+   * Do not use: At small font sizes — negative tracking causes letters to collide.
+   * Use instead: letter-spacing/normal for body and UI text.
+   * Status: Stable
+   */
+  --letter-spacing-tighter: -2.5;
+  /**
+   * Intent: Slightly reduced tracking for headings.
+   * Use when: font-size/2xl to font-size/3xl headings where a more refined, condensed look is needed.
+   * Do not use: At font-size/base or smaller.
+   * Status: Stable
+   */
+  --letter-spacing-tight: -1.5;
+  /**
+   * Intent: Default tracking; the browser and Figma default.
+   * Use when: All body copy, UI labels, buttons, form elements — the safe default for everything.
+   * Do not use: For very large display text — may feel too loose at large sizes.
+   * Use instead: letter-spacing/tight or letter-spacing/tighter for large headings.
+   * Status: Stable
+   */
+  --letter-spacing-normal: 0;
+  /**
+   * Intent: Increased tracking for emphasis or legibility in specific contexts.
+   * Use when: Uppercase labels, small caps, overline text, metadata tags, ALL CAPS UI elements.
+   * Do not use: For normal mixed-case body text — wide tracking on lowercase copy looks spaced-out and hard to read.
+   * Status: Stable
+   */
+  --letter-spacing-wide: 2.5;
+  --letter-spacing-wider: 5;
+  --letter-spacing-widest: 10;
+  /**
+   * Intent: Primary UI typeface for all interface text.
+   * Use when: Body copy, labels, buttons, inputs, headings — everything that is not code or editorial serif.
+   * Do not use: For code blocks or monospace content.
+   * Use instead: font-family/mono for code; font-family/serif for editorial contexts.
+   * Status: Stable
+   */
+  --font-family-sans: Inter;
+  /**
+   * Intent: Monospace typeface for code and technical content.
+   * Use when: Code blocks, inline code snippets, terminal output, token or variable names displayed in UI.
+   * Do not use: For general UI text — monospace has wider character width and will feel visually heavy.
+   * Use instead: font-family/sans for all non-code text.
+   * Status: Stable
+   */
+  --font-family-mono: Roboto Mono;
+  /**
+   * Intent: Serif typeface for editorial or long-form reading contexts.
+   * Use when: Marketing pages, blog posts, article bodies, pull quotes where a traditional editorial tone is intentional.
+   * Do not use: In product UI — serif reads as editorial, not functional.
+   * Use instead: font-family/sans for all product UI text.
+   * Status: Stable
+   */
+  --font-family-serif: Georgia;
+  /**
+   * Intent: Explicitly removes any shadow from an element.
+   * Use when: Resetting shadow on a component that inherits one, flat UI surfaces that must have zero elevation.
+   * Do not use: As the default — omitting a shadow and explicitly setting none are different in CSS cascade terms.
+   * Status: Stable
+   */
+  --shadow-none: none;
+  /**
+   * Intent: Hairline shadow for subtle lift on small elements.
+   * Use when: Buttons, input fields, small cards, tags — elements that need the slightest separation from the background without looking elevated.
+   * Do not use: For floating UI like dropdowns or modals — too subtle to communicate elevation.
+   * Use instead: shadow/default or shadow/md for floating elements.
+   * Status: Stable
+   */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  /**
+   * Intent: Standard shadow for cards and low-elevation surfaces.
+   * Use when: Content cards, list containers, standard panels — elements that sit above the page background but are not floating.
+   * Do not use: For interactive popups or modals — use shadow/md or above for floating UI.
+   * Status: Stable
+   */
+  --shadow-default: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  /**
+   * Intent: Medium elevation for floating UI elements.
+   * Use when: Dropdown menus, select popups, date pickers, context menus — elements that float above page content.
+   * Do not use: For inline cards or non-floating surfaces — shadow/default is sufficient there.
+   * Status: Stable
+   */
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  /**
+   * Intent: High elevation for prominent floating containers.
+   * Use when: Popovers, tooltips, command palettes, floating action panels.
+   * Do not use: For modals — use shadow/xl or shadow/2xl for full-screen overlays.
+   * Status: Stable
+   */
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  /**
+   * Intent: Strong elevation for modal-level overlays.
+   * Use when: Dialog modals, sheet panels, drawer overlays — elements that take focus away from the page.
+   * Do not use: For inline elements or cards — disproportionate shadow for non-floating surfaces.
+   * Status: Stable
+   */
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  /**
+   * Intent: Maximum elevation; deepest shadow in the scale.
+   * Use when: Full-screen modals, onboarding overlays, lightboxes — the topmost layer in a stacking context.
+   * Do not use: For anything below modal level — the opacity and spread are too heavy.
+   * Use instead: shadow/xl for standard dialogs.
+   * Status: Stable
+   */
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  /**
+   * Intent: Inset shadow to signal a recessed or pressed surface.
+   * Use when: Input field backgrounds, pressed button states, search bars — surfaces that should feel sunken rather than raised.
+   * Do not use: On elevated or floating elements — inset shadow conflicts with the elevation metaphor.
+   * Status: Stable
+   */
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  /**
+   * Intent: Zero-duration transition for changes that must feel immediate.
+   * Use when: Checkbox checks, toggle switches, radio selection — binary state changes where animation would feel laggy.
+   * Do not use: For any element that enters or exits the viewport — even instant feels jarring without a tiny transition.
+   * Use instead: motion/duration/fast for the smallest visible transition.
+   * Status: Stable
+   */
+  --motion-duration-instant: 0;
+  /**
+   * Intent: Shortest visible transition for small, contained UI feedback.
+   * Use when: Button press feedback, hover state color changes, tooltip appearance on hover, badge updates.
+   * Do not use: For elements larger than ~100px or elements that move across the screen — too fast to track.
+   * Use instead: motion/duration/normal for dropdowns and popovers.
+   * Status: Stable
+   */
+  --motion-duration-fast: 100;
+  /**
+   * Intent: Default transition duration for standard UI interactions.
+   * Use when: Dropdown menus appearing, tooltips, select popovers, accordion expand/collapse, tab switching.
+   * Do not use: For large elements that enter from off-screen — feels too abrupt for heavy motion.
+   * Use instead: motion/duration/slow for modals and drawers.
+   * Status: Stable
+   */
+  --motion-duration-normal: 200;
+  /**
+   * Intent: Deliberate transition for larger elements entering or leaving the screen.
+   * Use when: Modal dialogs opening, side drawers sliding in, sheet panels, notification toasts entering.
+   * Do not use: For small inline feedback — 300ms on a button hover feels sluggish.
+   * Use instead: motion/duration/normal for small component transitions.
+   * Status: Stable
+   */
+  --motion-duration-slow: 300;
+  /**
+   * Intent: Extended transition for page-level changes and intentional emphasis.
+   * Use when: Page-level route transitions, onboarding step animations, hero element reveals, progress completion celebrations.
+   * Do not use: For any repeated or frequent interaction — 500ms becomes frustrating on actions users trigger many times.
+   * Use instead: motion/duration/slow for standard modal and drawer transitions.
+   * Status: Stable
+   */
+  --motion-duration-slower: 500;
+  /**
+   * Intent: Default easing for UI state changes that do not involve entering or exiting.
+   * Use when: Color transitions, size changes, opacity shifts on elements already present in the layout — anything that transforms in place.
+   * Do not use: For elements entering from off-screen — use motion/easing/enter. Do not use for elements being dismissed — use motion/easing/exit.
+   * Status: Stable
+   */
+  --motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  /**
+   * Intent: Ease-out curve for elements entering the screen. Starts fast, decelerates to rest.
+   * Use when: Modals appearing, dropdowns opening, toasts sliding in, drawers entering — any element that arrives from outside the viewport or appears from nothing.
+   * Do not use: For elements being dismissed or leaving — use motion/easing/exit instead.
+   * Use instead: motion/easing/exit for the reverse (dismissal) animation.
+   * Status: Stable
+   */
+  --motion-easing-enter: cubic-bezier(0, 0, 0.2, 1);
+  /**
+   * Intent: Ease-in curve for elements leaving the screen. Starts slow, accelerates out.
+   * Use when: Modals dismissing, dropdowns closing, toasts sliding out, drawers leaving — any element that exits the viewport or disappears.
+   * Do not use: For elements entering — use motion/easing/enter instead.
+   * Use instead: motion/easing/enter for the arrival animation of the same element.
+   * Status: Stable
+   */
+  --motion-easing-exit: cubic-bezier(0.4, 0, 1, 1);
+  /**
+   * Intent: Constant-speed animation with no acceleration or deceleration.
+   * Use when: Progress bars filling, loading indicators spinning, continuous loops, data-driven animations where the position must map exactly to a value.
+   * Do not use: For UI element transitions — linear motion feels mechanical and unnatural on interactive elements.
+   * Use instead: motion/easing/standard for UI state changes.
+   * Status: Stable
+   */
+  --motion-easing-linear: linear;
+  /**
+   * Intent: Fully transparent — element is invisible but still occupies space in layout.
+   * Use when: Hiding elements while preserving layout (fade-out start state, visibility toggles).
+   * Do not use: To permanently hide elements — use display:none or visibility:hidden instead.
+   * Status: Stable
+   */
+  --opacity-0: 0;
+  /**
+   * Intent: Near-invisible tint; barely perceptible presence.
+   * Use when: Very subtle watermark overlays, ghost placeholder backgrounds, extremely faint decorative elements.
+   * Status: Stable
+   */
+  --opacity-10: 10;
+  /**
+   * Intent: Faint presence; visible but highly transparent.
+   * Use when: Subtle overlay tints, dimmed background decorations, light scrim effects on images.
+   * Status: Stable
+   */
+  --opacity-20: 20;
+  --opacity-30: 30;
+  /**
+   * Intent: Standard disabled state opacity.
+   * Use when: Disabled UI elements — buttons, inputs, selects. Industry standard for signalling non-interactivity without fully hiding the element.
+   * Do not use: For loading states — use opacity/60. Do not use for modal scrims — use opacity/50.
+   * Status: Stable
+   */
+  --opacity-40: 40;
+  /**
+   * Intent: Half-transparent; balanced between visible and transparent.
+   * Use when: Modal backdrop scrims, image overlays with text on top, split-tone effects.
+   * Status: Stable
+   */
+  --opacity-50: 50;
+  /**
+   * Intent: Standard loading state opacity.
+   * Use when: Elements in a loading or processing state — buttons with spinners, skeleton content areas awaiting data.
+   * Do not use: For disabled elements — use opacity/40.
+   * Status: Stable
+   */
+  --opacity-60: 60;
+  --opacity-70: 70;
+  /**
+   * Intent: Mostly opaque with slight transparency.
+   * Use when: Frosted-glass effects, translucent panels over content, secondary overlays that show through slightly.
+   * Status: Stable
+   */
+  --opacity-75: 75;
+  /**
+   * Intent: Ghost element opacity — active but visually receded.
+   * Use when: Ghost buttons in default state, secondary actions that should recede visually, watermark-style elements that remain interactive.
+   * Do not use: For disabled elements — ghost elements are still interactive.
+   * Status: Stable
+   */
+  --opacity-80: 80;
+  /**
+   * Intent: Near-fully opaque with a barely noticeable transparency.
+   * Use when: Tooltips, popovers, contextual panels where a hint of transparency signals layering without obstructing content.
+   * Status: Stable
+   */
+  --opacity-90: 90;
+  /**
+   * Intent: Fully opaque — no transparency.
+   * Use when: Default state for all visible elements. Explicitly setting full opacity after a fade-in animation.
+   * Status: Stable
+   */
+  --opacity-100: 100;
+  /**
+   * Intent: Reduces visual prominence of disabled UI elements to signal non-interactivity.
+   * Use when: Any element in a disabled state — buttons, inputs, selects, checkboxes, form controls.
+   * Do not use: For loading states — use opacity/loading instead. Do not use for placeholder content.
+   * Use instead: opacity/loading for in-progress states, opacity/ghost for subtle but interactive elements.
+   * Status: Stable
+   */
+  --opacity-disabled: 60;
+  /**
+   * Intent: Signals that an element is in a loading or processing state.
+   * Use when: Skeleton loaders, buttons with loading spinners, content areas awaiting data.
+   * Do not use: For disabled elements — use opacity/disabled instead. Loading implies the element will become active; disabled implies it cannot be used.
+   * Use instead: opacity/disabled for permanently non-interactive elements.
+   * Status: Stable
+   */
+  --opacity-loading: 50;
+  /**
+   * Intent: Semi-transparent scrim behind modal dialogs, drawers, and full-screen overlays.
+   * Use when: The backdrop blanket behind a modal, dialog, or drawer — darkens the page to focus attention on the foreground layer.
+   * Do not use: On the modal content itself — only on the backdrop element behind it.
+   * Status: Stable
+   */
+  --opacity-overlay: 50;
+  /**
+   * Intent: Slightly reduced opacity for ghost or subtle interactive elements that are still active.
+   * Use when: Ghost buttons in their default state, secondary actions that should recede visually, watermark-style decorative elements.
+   * Do not use: For disabled elements — ghost elements are still interactive. Use opacity/disabled for non-interactive states.
+   * Status: Stable
+   */
+  --opacity-ghost: 80;
+  /**
+   * Intent: Slightly reduced opacity for ghost or subtle interactive elements that are still active.
+   * Use when: Ghost buttons in their default state, secondary actions that should recede visually, watermark-style decorative elements.
+   * Do not use: For disabled elements — ghost elements are still interactive. Use opacity/disabled for non-interactive states.
+   * Status: Stable
+   */
+  --opacity-active: 80;
+  --z-index-base: 0; /** Normal document flow */
+  --z-index-raised: 10; /** Sticky headers, floating action buttons */
+  --z-index-dropdown: 20; /** Dropdowns, select menus, popovers */
+  --z-index-sticky: 30; /** Sticky sidebars, persistent toolbars */
+  --z-index-overlay: 40; /** Modal backdrops, drawer scrims */
+  --z-index-modal: 50; /** Modals, dialogs, sheets */
+  --z-index-toast: 60; /** Sonner toasts — always above everything */
+  --breakpoint-sm: 640; /** sm: — phones landscape, small tablets. Tailwind prefix: sm: */
+  --breakpoint-md: 768; /** md: — tablets. Tailwind prefix: md: */
+  --breakpoint-lg: 1024; /** lg: — laptops. Primary layout switch point (sidebar, nav). Tailwind prefix: lg: */
+  --breakpoint-xl: 1280; /** xl: — desktops. Tailwind prefix: xl: */
+  --breakpoint-2xl: 1536; /** 2xl: — large screens. Tailwind prefix: 2xl: */
+  --breakpoint-frame-mobile: 390; /** Figma artboard width for mobile designs (below sm:) */
+  --breakpoint-frame-tablet: 768; /** Figma artboard width for tablet designs (md:) */
+  --breakpoint-frame-laptop: 1024; /** Figma artboard width for laptop designs (lg:) */
+  --breakpoint-frame-desktop: 1280; /** Figma artboard width for desktop designs (xl:) */
+  --breakpoint-frame-large: 1440; /** Figma artboard design target — maps to xl: in code, max-width constraint handles the rest */
+  --layout-container-max-width: 1400; /** Maximum content width. Use with mx-auto. Tailwind: max-w-[1400px] */
+  --layout-container-padding-mobile: 16; /** Horizontal container padding on mobile (below md:). Tailwind: px-4 */
+  --layout-container-padding-desktop: 32; /** Horizontal container padding on tablet and above (md:+). Tailwind: md:px-8 */
+  --layout-grid-columns-mobile: 4; /** Grid columns on mobile. Tailwind: grid-cols-4 */
+  --layout-grid-columns-tablet: 8; /** Grid columns on tablet (md:). Tailwind: md:grid-cols-8 */
+  --layout-grid-columns-desktop: 12; /** Grid columns on desktop (lg:+). Tailwind: lg:grid-cols-12 */
+  --layout-grid-gutter-mobile: 16; /** Gap between grid columns on mobile. Tailwind: gap-4 */
+  --layout-grid-gutter-desktop: 24; /** Gap between grid columns on tablet and above. Tailwind: md:gap-6 */
+  --layout-grid-margin-mobile: 16; /** Grid margin on mobile — matches container padding */
+  --layout-grid-margin-tablet: 32; /** Grid margin on tablet */
+  --layout-grid-margin-desktop: 80; /** Grid margin on desktop — the 80px Figma layout guide */
+  --button-primary-bg-bg: #008852;
+  --button-primary-bg-hover: #175e41;
+  --button-primary-bg-active: #00393f;
+  --button-primary-fg-fg: #ffffff;
+  --button-secondary-bg-bg: #c3ead5;
+  --button-secondary-bg-hover: #e6f7ee;
+  --button-secondary-bg-active: #9cddbb;
+  --button-secondary-fg-fg: #175e41;
+  --button-destructive-bg-bg: #ef4444;
+  --button-destructive-bg-hover: #dc2626;
+  --button-destructive-bg-active: #b91c1c;
+  --button-destructive-fg-fg: #ffffff;
+  --button-outline-bg-bg: #ffffff;
+  --button-outline-bg-hover: #f4f4f5;
+  --button-outline-bg-active: #f4f4f5;
+  --button-outline-fg-fg: #18181b;
+  --button-outline-border-default: #e4e4e7;
+  --button-outline-border-hover: #d4d4d8;
+  --button-outline-border-focus: #17bb77;
+  --button-outline-border-active: #a1a1aa;
+  --button-outline-border-disabled: #f4f4f5;
+  --button-ghost-bg-hover: #f4f4f5;
+  --button-ghost-bg-bg: #ffffff;
+  --button-ghost-bg-active: #f4f4f5;
+  --button-ghost-fg-fg: #18181b;
+  --button-link-fg-default: #008852;
+  --button-link-fg-hover: #00995e;
+  --button-link-fg-disabled: #a1a1aa;
+  --button-link-fg-active: #175e41;
+  --button-size-button-radius-1: 9999px;
+  --button-size-button-radius-2: 9999px;
+  --button-size-button-height-default: 40px; /** Height for Default button (40px) — shadcn default */
+  --button-size-button-height-small: 36px; /** Height for Small button (36px) — shadcn sm */
+  --button-size-button-height-large: 44px; /** Height for Large button (44px) — shadcn lg, meets 44px touch target */
+  --button-size-button-spacing: 4px; /** Gap between icon and label — all sizes (4px) */
+  --button-size-button-padding-default: 16px; /** Horizontal padding for Default and Large (16px) */
+  --button-size-button-padding-small: 12px; /** Horizontal padding for Small (12px) */
+  --badge-badge-height-small: 16px; /** Badge-height-small for small badge variant */
+  --badge-badge-height-medium: 20px; /** Badge-height-small for medium badge variant */
+  --badge-badge-height-large: 24px; /** Badge-height-small for large badge variant */
+  --table-table-cell-compact: 40px; /** table-cell height for compact variant */
+  --table-table-cell-default: 48px; /** table-cell height for default variant */
+  /* Tooltip component tokens — alias semantics so they auto-invert per mode */
+  --tooltip-bg: var(--color-background-inverted);
+  --tooltip-fg: var(--color-background-inverted-foreground);
+
+  /* --- Accura-only tokens (not present in Agentic) --- */
+  --color-border-info: #8ec5ff;
+  --color-text-tertiary: #71717a;
+  --breadcrumb-breadcrumb: 4;
+}
+
+/* ─── Dark mode overrides ─────────────────────────────────────────────────────
+   Activated by the .dark class on any ancestor (globals.css:
+   @custom-variant dark (&:is(.dark *)))
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.dark {
+  /* Dark mode — generated from Figma Semantics/Components Dark mode (source of truth).
+     Only tokens whose dark value differs from light are overridden; the rest inherit :root. */
+
+  /* Semantic colors */
+  --color-background-default: #09090b;
+  --color-background-subtle: #18181b;
+  --color-background-muted: #27272a;
+  --color-background-muted-foreground: #a1a1aa;
+  --color-background-inverted: #fafafa;
+  --color-background-inverted-foreground: #000000;
+  --color-surface-default: #18181b;
+  --color-surface-raised: #27272a;
+  --color-surface-overlay: #27272a;
+  --color-surface-accent: #27272a;
+  --color-surface-muted: #27272a;
+  --color-surface-default-foreground: #fafafa;
+  --color-surface-raised-foreground: #fafafa;
+  --color-surface-overlay-foreground: #fafafa;
+  --color-surface-muted-foreground: #a1a1aa;
+  --color-surface-accent-foreground: #fafafa;
+  --color-text-secondary: #a1a1aa;
+  --color-text-disabled: #71717a;
+  --color-text-inverse: #18181b;
+  --color-text-link: #51a2ff;
+  --color-text-link-hover: #8ec5ff;
+  --color-text-link-active: #bedbff;
+  --color-border-default: #71717a;
+  --color-border-subtle: #27272a;
+  --color-border-focus: #17bb77;
+  --color-brand-secondary: #1c398e;
+  --color-brand-secondary-hover: #193cb8;
+  --color-brand-secondary-active: #1447e6;
+  --color-brand-secondary-foreground: #fafafa;
+  --color-status-success: #4ade80;
+  --color-status-success-subtle: #052e16;
+  --color-status-success-subtle-foreground: #4ade80;
+  --color-status-warning: #facc15;
+  --color-status-warning-subtle: #422006;
+  --color-status-warning-subtle-foreground: #facc15;
+  --color-status-danger: #f87171;
+  --color-status-danger-subtle: #450a0a;
+  --color-status-danger-subtle-foreground: #f87171;
+  --color-status-info: #51a2ff;
+  --color-status-info-subtle: #162455;
+  --color-status-info-subtle-foreground: #51a2ff;
+  --color-ring: #17bb77;
+  --color-status-offline: #3f3f46;
+  --color-status-offline-foreground: #fafafa;
+  --color-background-default-foreground: #fafafa;
+  --color-icon-default: #fafafa;
+  --color-icon-muted: #a1a1aa;
+  --color-icon-disabled: #71717a;
+  --color-icon-inverse: #18181b;
+  --color-icon-danger: #f87171;
+  --color-icon-success: #4ade80;
+  --color-icon-warning: #facc15;
+  --color-border-hover: #52525b;
+  --color-border-disabled: #3f3f46;
+  --color-border-error: #f87171;
+  --color-border-success: #4ade80;
+  --color-border-warning: #facc15;
+  --color-background-accent: #27272a;
+  --color-background-accent-foreground: #fafafa;
+  --color-brand-destructive: #dc2626;
+  --color-input-border: #52525b;
+  --color-input-placeholder: #a1a1aa;
+  --color-sidebar-background: #27272a;
+  --color-sidebar-foreground: #f4f4f5;
+  --color-sidebar-primary: #fafafa;
+  --color-sidebar-primary-foreground: #18181b;
+  --color-sidebar-accent: #3f3f46;
+  --color-sidebar-active: #3f3f46;
+  --color-sidebar-accent-foreground: #fafafa;
+  --color-sidebar-border: #3f3f46;
+  --color-sidebar-ring: #51a2ff;
+  --color-brand-destructive-active: #991b1b;
+  --color-sidebar-active-foreground: #fafafa;
+  --color-text-invalid: #f87171;
+  --color-text-success: #4ade80;
+  --color-input-bg: #3f3f46;
+
+  /* Component colors (button, tooltip) */
+  --button-secondary-bg-bg: #c3ead5;
+  --button-secondary-bg-hover: #e6f7ee;
+  --button-secondary-bg-active: #9cddbb;
+  --button-secondary-fg-fg: #175e41;
+  --button-destructive-bg-bg: #dc2626;
+  --button-destructive-bg-active: #991b1b;
+  --button-outline-bg-bg: #27272a;
+  --button-outline-bg-hover: #27272a;
+  --button-outline-bg-active: #27272a;
+  --button-outline-fg-fg: #fafafa;
+  --button-outline-border-default: #71717a;
+  --button-outline-border-hover: #52525b;
+  --button-outline-border-focus: #17bb77;
+  --button-outline-border-disabled: #3f3f46;
+  --button-ghost-bg-bg: #09090b;
+  --button-ghost-bg-hover: #27272a;
+  --button-ghost-bg-active: #27272a;
+  --button-ghost-fg-fg: #fafafa;
+  --button-link-fg-default: #008852;
+  --button-link-fg-hover: #00995e;
+  --button-link-fg-active: #175e41;
+  --button-link-fg-disabled: #71717a;
+  --tooltip-bg: #fafafa;
+  --tooltip-fg: #000000;
+
+  /* --- Accura dark overrides absent from Agentic --- */
+  --color-brand-primary-hover: #4bc68b;
+  --color-icon-brand: #17bb77;
+  --color-brand-primary: #17bb77;
+  --opacity-overlay: 20;
+  --color-brand-primary-active: #70d1a0;
+}
+

@@ -1,0 +1,121 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "./tokens.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--color-background-default);
+  --color-foreground: var(--color-background-default-foreground);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-roboto-mono);
+  --font-heading: var(--font-inter);
+  --color-sidebar-ring: var(--color-sidebar-ring);
+  --color-sidebar-border: var(--color-sidebar-border);
+  --color-sidebar-accent-foreground: var(--color-sidebar-accent-foreground);
+  --color-sidebar-accent: var(--color-sidebar-accent);
+  --color-sidebar-primary-foreground: var(--color-sidebar-primary-foreground);
+  --color-sidebar-primary: var(--color-sidebar-primary);
+  --color-sidebar-foreground: var(--color-sidebar-foreground);
+  --color-sidebar: var(--color-sidebar-background);
+  --color-chart-5: var(--color-chart-5);
+  --color-chart-4: var(--color-chart-4);
+  --color-chart-3: var(--color-chart-3);
+  --color-chart-2: var(--color-chart-2);
+  --color-chart-1: var(--color-chart-1);
+  --color-ring: var(--color-ring);
+  --color-input: var(--color-input-border);
+  --color-border: var(--color-border-default);
+  --color-destructive: var(--color-brand-destructive);
+  --color-destructive-foreground: var(--color-brand-destructive-foreground);
+  --color-accent-foreground: var(--color-surface-accent-foreground);
+  --color-accent: var(--color-surface-accent);
+  --color-muted-foreground: var(--color-surface-muted-foreground);
+  --color-muted: var(--color-surface-muted);
+  --color-secondary-foreground: var(--color-brand-secondary-foreground);
+  --color-secondary: var(--color-brand-secondary);
+  --color-primary-foreground: var(--color-brand-primary-foreground);
+  --color-primary: var(--color-brand-primary);
+  --color-popover-foreground: var(--color-surface-overlay-foreground);
+  --color-popover: var(--color-surface-overlay);
+  --color-card-foreground: var(--color-surface-default-foreground);
+  --color-card: var(--color-surface-default);
+  --radius-sm: calc(var(--radius-base) * 0.6);
+  --radius-md: calc(var(--radius-base) * 0.8);
+  --radius-lg: var(--radius-base);
+  --radius-xl: calc(var(--radius-base) * 1.4);
+  --radius-2xl: calc(var(--radius-base) * 1.8);
+  --radius-3xl: calc(var(--radius-base) * 2.2);
+  --radius-4xl: calc(var(--radius-base) * 2.6);
+}
+
+:root {
+  /* shadcn variable aliases → our design tokens */
+  --background: var(--color-background-default);
+  --foreground: var(--color-background-default-foreground);
+  --card: var(--color-surface-default);
+  --card-foreground: var(--color-surface-default-foreground);
+  --popover: var(--color-surface-overlay);
+  --popover-foreground: var(--color-surface-overlay-foreground);
+  --primary: var(--color-brand-primary);
+  --primary-foreground: var(--color-brand-primary-foreground);
+  --secondary: var(--color-brand-secondary);
+  --secondary-foreground: var(--color-brand-secondary-foreground);
+  --muted: var(--color-surface-muted);
+  --muted-foreground: var(--color-surface-muted-foreground);
+  --accent: var(--color-surface-accent);
+  --accent-foreground: var(--color-surface-accent-foreground);
+  --destructive: var(--color-brand-destructive);
+  --destructive-foreground: var(--color-brand-destructive-foreground);
+  --border: var(--color-border-default);
+  --input: var(--color-input-border);
+  --ring: var(--color-ring);
+  --chart-1: var(--color-chart-1);
+  --chart-2: var(--color-chart-2);
+  --chart-3: var(--color-chart-3);
+  --chart-4: var(--color-chart-4);
+  --chart-5: var(--color-chart-5);
+  --radius: var(--radius-base);
+  --sidebar: var(--color-sidebar-background);
+  --sidebar-foreground: var(--color-sidebar-foreground);
+  --sidebar-primary: var(--color-sidebar-primary);
+  --sidebar-primary-foreground: var(--color-sidebar-primary-foreground);
+  --sidebar-accent: var(--color-sidebar-accent);
+  --sidebar-accent-foreground: var(--color-sidebar-accent-foreground);
+  --sidebar-border: var(--color-sidebar-border);
+  --sidebar-ring: var(--color-sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+
+  /* Themed scrollbars — thumb = color/border/strong (zinc/400 light · zinc/500 dark),
+     track transparent. Auto-switches in dark mode via the .dark token override.
+     Base layer = low specificity, so component opt-outs (e.g. scrollbar-none) still win. */
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-strong) transparent;
+  }
+  /* WebKit — Chrome, Safari, Edge */
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--color-border-strong);
+    border-radius: var(--radius-full);
+  }
+}
