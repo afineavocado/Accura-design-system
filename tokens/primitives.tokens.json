@@ -146,6 +146,64 @@
         "$type": "color"
       }
     },
+    "brand": {
+      "25": {
+        "$value": "#f0faf4",
+        "$type": "color"
+      },
+      "50": {
+        "$value": "#e6f7ee",
+        "$type": "color"
+      },
+      "100": {
+        "$value": "#c3ead5",
+        "$type": "color"
+      },
+      "200": {
+        "$value": "#9cddbb",
+        "$type": "color"
+      },
+      "300": {
+        "$value": "#70d1a0",
+        "$type": "color"
+      },
+      "400": {
+        "$value": "#4bc68b",
+        "$type": "color"
+      },
+      "500": {
+        "$value": "#17bb77",
+        "$type": "color"
+      },
+      "600": {
+        "$value": "#0dac6c",
+        "$type": "color"
+      },
+      "700": {
+        "$value": "#00995e",
+        "$type": "color"
+      },
+      "900": {
+        "$value": "#175e41",
+        "$type": "color"
+      },
+      "975": {
+        "$value": "#0f172a",
+        "$type": "color"
+      },
+      "150-lightshade": {
+        "$value": "#b5e5d1",
+        "$type": "color"
+      },
+      "800-base": {
+        "$value": "#008852",
+        "$type": "color"
+      },
+      "950-darkshade": {
+        "$value": "#00393f",
+        "$type": "color"
+      }
+    },
     "green": {
       "50": {
         "$value": "#f0fdf4",
@@ -257,6 +315,106 @@
       },
       "5": {
         "$value": "#f4a362",
+        "$type": "color"
+      }
+    },
+    "violet": {
+      "25": {
+        "$value": "#fbfaff",
+        "$type": "color"
+      },
+      "50": {
+        "$value": "#f5f3ff",
+        "$type": "color"
+      },
+      "100": {
+        "$value": "#ece9fe",
+        "$type": "color"
+      },
+      "200": {
+        "$value": "#ddd6fe",
+        "$type": "color"
+      },
+      "300": {
+        "$value": "#c3b5fd",
+        "$type": "color"
+      },
+      "400": {
+        "$value": "#a48afb",
+        "$type": "color"
+      },
+      "500": {
+        "$value": "#875bf7",
+        "$type": "color"
+      },
+      "600": {
+        "$value": "#7839ee",
+        "$type": "color"
+      },
+      "700": {
+        "$value": "#6927da",
+        "$type": "color"
+      },
+      "800": {
+        "$value": "#5720b7",
+        "$type": "color"
+      },
+      "900": {
+        "$value": "#491c96",
+        "$type": "color"
+      },
+      "950": {
+        "$value": "#2e125e",
+        "$type": "color"
+      }
+    },
+    "orange": {
+      "25": {
+        "$value": "#fefaf5",
+        "$type": "color"
+      },
+      "50": {
+        "$value": "#fef6ee",
+        "$type": "color"
+      },
+      "100": {
+        "$value": "#fdead7",
+        "$type": "color"
+      },
+      "200": {
+        "$value": "#f9dbaf",
+        "$type": "color"
+      },
+      "300": {
+        "$value": "#f7b27a",
+        "$type": "color"
+      },
+      "400": {
+        "$value": "#f38744",
+        "$type": "color"
+      },
+      "500": {
+        "$value": "#ef6820",
+        "$type": "color"
+      },
+      "600": {
+        "$value": "#e04f16",
+        "$type": "color"
+      },
+      "700": {
+        "$value": "#b93815",
+        "$type": "color"
+      },
+      "800": {
+        "$value": "#932f19",
+        "$type": "color"
+      },
+      "900": {
+        "$value": "#772917",
+        "$type": "color"
+      },
+      "950": {
+        "$value": "#511c10",
         "$type": "color"
       }
     }
@@ -577,7 +735,7 @@
   },
   "font-family": {
     "sans": {
-      "$value": "Inter",
+      "$value": "SF Pro",
       "$type": "string",
       "$description": "Intent: Primary UI typeface for all interface text.\nUse when: Body copy, labels, buttons, inputs, headings — everything that is not code or editorial serif.\nDo not use: For code blocks or monospace content.\nUse instead: font-family/mono for code; font-family/serif for editorial contexts.\nStatus: Stable"
     },

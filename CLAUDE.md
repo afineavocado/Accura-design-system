@@ -49,4 +49,4 @@ Storybook does not reliably hot-reload `.tsx` or token changes. After editing, *
 
 ## Known divergences from Figma
 
-`sidebar/ring`, `sidebar/accent` and `sidebar/accent/foreground` were changed in code ahead of Figma, deliberately. See the table at the end of `llms.txt`. Do not revert them to match Figma.
+Only `color/sidebar/ring` still differs: Figma says blue `#2b7fff`, the code uses green `#17bb77`. That is deliberate. `sidebar/accent` and `sidebar/accent/foreground` have since been reconciled in Figma. See the table at the end of `llms.txt` — regenerating tokens.css from Figma would revert the ring.

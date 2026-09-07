@@ -3,21 +3,21 @@
     "primary": {
       "bg": {
         "bg": {
-          "$value": "{color.brand.primary}",
+          "$value": "{color.brand.800-base}",
           "$type": "color"
         },
         "hover": {
-          "$value": "{color.brand.primary-hover}",
+          "$value": "{color.brand.900}",
           "$type": "color"
         },
         "active": {
-          "$value": "{color.brand.primary-active}",
+          "$value": "{color.brand.950-darkshade}",
           "$type": "color"
         }
       },
       "fg": {
         "fg": {
-          "$value": "{color.brand.primary.foreground}",
+          "$value": "{color.brand.primary-foreground}",
           "$type": "color"
         }
       }
@@ -25,21 +25,21 @@
     "secondary": {
       "bg": {
         "bg": {
-          "$value": "{color.brand.secondary}",
+          "$value": "{color.brand.100}",
           "$type": "color"
         },
         "hover": {
-          "$value": "{color.brand.secondary-hover}",
+          "$value": "{color.brand.50}",
           "$type": "color"
         },
         "active": {
-          "$value": "{color.brand.secondary-active}",
+          "$value": "{color.brand.200}",
           "$type": "color"
         }
       },
       "fg": {
         "fg": {
-          "$value": "{color.brand.secondary.foreground}",
+          "$value": "{color.brand.900}",
           "$type": "color"
         }
       }
@@ -61,7 +61,7 @@
       },
       "fg": {
         "fg": {
-          "$value": "{color.brand.destructive.foreground}",
+          "$value": "{color.brand.destructive-foreground}",
           "$type": "color"
         }
       }
@@ -69,7 +69,7 @@
     "outline": {
       "bg": {
         "bg": {
-          "$value": "{color.background.default}",
+          "$value": "{color.surface.overlay}",
           "$type": "color"
         },
         "hover": {
@@ -83,7 +83,7 @@
       },
       "fg": {
         "fg": {
-          "$value": "{color.background.default.foreground}",
+          "$value": "{color.background.default-foreground}",
           "$type": "color"
         }
       },
@@ -112,12 +112,12 @@
     },
     "ghost": {
       "bg": {
-        "hover": {
-          "$value": "{color.background.accent}",
-          "$type": "color"
-        },
         "bg": {
           "$value": "{color.background.default}",
+          "$type": "color"
+        },
+        "hover": {
+          "$value": "{color.background.accent}",
           "$type": "color"
         },
         "active": {
@@ -127,7 +127,7 @@
       },
       "fg": {
         "fg": {
-          "$value": "{color.background.default.foreground}",
+          "$value": "{color.background.default-foreground}",
           "$type": "color"
         }
       }
@@ -135,47 +135,47 @@
     "link": {
       "fg": {
         "default": {
-          "$value": "{color.text.link}",
+          "$value": "{color.brand.800-base}",
           "$type": "color"
         },
         "hover": {
-          "$value": "{color.text.link-hover}",
+          "$value": "{color.brand.700}",
+          "$type": "color"
+        },
+        "active": {
+          "$value": "{color.brand.900}",
           "$type": "color"
         },
         "disabled": {
           "$value": "{color.text.disabled}",
-          "$type": "color"
-        },
-        "active": {
-          "$value": "{color.text.link-active}",
           "$type": "color"
         }
       }
     },
     "size": {
       "Button radius 1": {
-        "$value": "{radius.xl}",
+        "$value": "{radius.full}",
         "$type": "number",
         "$description": "Corner radius for Large and Icon Large (11px = radius/xl)"
       },
       "Button radius 2": {
-        "$value": "{radius.base}",
+        "$value": "{radius.full}",
         "$type": "number",
         "$description": "Corner radius for Small, Default, Icon Small, Icon Default (8px = radius/base)"
       },
       "Button-height-default": {
         "$value": "{spacing.10}",
-        "$type": "dimension",
+        "$type": "number",
         "$description": "Height for Default button (40px) — shadcn default"
       },
       "Button-height-small": {
         "$value": "{spacing.9}",
-        "$type": "dimension",
+        "$type": "number",
         "$description": "Height for Small button (36px) — shadcn sm"
       },
       "Button-height-large": {
         "$value": "{spacing.11}",
-        "$type": "dimension",
+        "$type": "number",
         "$description": "Height for Large button (44px) — shadcn lg, meets 44px touch target"
       },
       "Button spacing": {
@@ -185,12 +185,12 @@
       },
       "Button-padding-default": {
         "$value": "{spacing.4}",
-        "$type": "dimension",
+        "$type": "number",
         "$description": "Horizontal padding for Default and Large (16px)"
       },
       "Button-padding-small": {
         "$value": "{spacing.3}",
-        "$type": "dimension",
+        "$type": "number",
         "$description": "Horizontal padding for Small (12px)"
       }
     }
@@ -198,42 +198,46 @@
   "badge": {
     "Badge-height-small": {
       "$value": "{spacing.4}",
-      "$type": "dimension",
+      "$type": "number",
       "$description": "Badge-height-small for small badge variant"
     },
     "Badge-height-medium": {
       "$value": "{spacing.5}",
-      "$type": "dimension",
+      "$type": "number",
       "$description": "Badge-height-small for medium badge variant"
     },
     "Badge-height-large": {
       "$value": "{spacing.6}",
-      "$type": "dimension",
+      "$type": "number",
       "$description": "Badge-height-small for large badge variant"
     }
   },
   "table": {
     "table-cell-compact": {
       "$value": "{spacing.10}",
-      "$type": "dimension",
+      "$type": "number",
       "$description": "table-cell height for compact variant"
     },
     "table-cell-default": {
       "$value": "{spacing.12}",
-      "$type": "dimension",
+      "$type": "number",
       "$description": "table-cell height for default variant"
     }
   },
   "tooltip": {
     "bg": {
       "$value": "{color.background.inverted}",
-      "$type": "color",
-      "$description": "Tooltip background — aliases color/background/inverted so it auto-inverts in dark mode: zinc/900 (dark) in light, zinc/50 (light) in dark."
+      "$type": "color"
     },
     "fg": {
-      "$value": "{color.background.inverted.foreground}",
-      "$type": "color",
-      "$description": "Tooltip text — aliases color/background/inverted/foreground so it auto-inverts: white in light, black in dark."
+      "$value": "{color.background.inverted-foreground}",
+      "$type": "color"
+    }
+  },
+  "breadcrumb": {
+    "breadcrumb": {
+      "$value": "{spacing.component.xs}",
+      "$type": "number"
     }
   }
 }

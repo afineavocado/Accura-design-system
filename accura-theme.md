@@ -13,7 +13,7 @@ Because the semantic and component tiers **alias** primitives, editing the primi
 
 **Figma source:** `[Accura] Agentic Design System`
 Primitives `VariableCollectionId:1:2` (mode: Value) · Semantics `1:129` (Light/Dark) · Components `17:4484` (Light)
-228 primitives local / 190 published · 114 semantics local / 113 published · 45 component tokens · 17 text styles
+228 primitives · 115 semantics (Light + Dark) · 45 component tokens · 17 text styles — all exported to `tokens/`
 
 **Code:** `accura-ui/` — Storybook on **port 6007** (Agentic's runs on 6006, so both can run side by side).
 
