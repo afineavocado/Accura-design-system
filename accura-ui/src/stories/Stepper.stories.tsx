@@ -26,14 +26,18 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // The real Accura CAPA workflow — see flow/create-capa.md
+// `description` is optional — Draft and Closed carry none.
 const capaSteps = [
   { label: 'Draft' },
-  { label: 'In Review' },
-  { label: 'In Approval' },
-  { label: 'Action In Progress' },
-  { label: 'Final Approval' },
+  { label: 'In Review', description: 'by Sarah Johnson (QA)' },
+  { label: 'In Approval', description: 'by Sarah Johnson (QA)' },
+  { label: 'Action In Progress', description: '0/0 Actions Submitted' },
+  { label: 'Final Approval', description: 'by Amit Patel' },
   { label: 'Closed' },
 ];
+
+// Same flow with no supporting lines — labels only
+const capaStepsPlain = capaSteps.map(({ label }) => ({ label }));
 
 // ─── Default — CAPA workflow, step 2 active ───────────────────────────────────
 
@@ -68,6 +72,17 @@ export const LastStep: Story = {
 
 export const AllComplete: Story = {
   args: { steps: capaSteps, currentStep: 7 },
+  render: (args) => (
+    <div className="w-full max-w-5xl p-6 bg-[var(--color-background-default)]">
+      <Stepper {...args} aria-label="CAPA progress" />
+    </div>
+  ),
+};
+
+// ─── No descriptions — labels only ────────────────────────────────────────────
+
+export const WithoutDescriptions: Story = {
+  args: { steps: capaStepsPlain, currentStep: 2 },
   render: (args) => (
     <div className="w-full max-w-5xl p-6 bg-[var(--color-background-default)]">
       <Stepper {...args} aria-label="CAPA progress" />

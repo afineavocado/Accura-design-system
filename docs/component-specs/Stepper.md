@@ -38,14 +38,16 @@ Step status is **derived**, never passed:
 
 ```
 stepper                          — OL, flex. row (horizontal) / col (vertical)
-  └─ step                        — LI, flex row, items-center
-       ├─ indicator              — 24×24, radius/full, grid place-center
-       │    └─ check | number    — Check icon (complete) or step number
-       ├─ label                  — TEXT, text-sm
-       └─ connector              — line, flex-1 (horizontal) / w-px h-full (vertical)
+  └─ step                        — LI
+       ├─ indicator row          — half-connector · indicator · half-connector
+       │    └─ indicator         — 24×24, radius/full, grid place-center
+       │         └─ check|number — Check icon (complete) or step number
+       └─ text                   — stacked under (horizontal) / right of (vertical)
+            ├─ label             — TEXT, text-sm
+            └─ description       — TEXT, text-xs — OPTIONAL
 ```
 
-The connector is rendered by every step **except the last**. Its colour is driven by the *preceding* step's status: once a step is complete, the line leaving it is brand-coloured.
+Horizontal steps render **two half-connectors**, one either side of the indicator, meeting at each midpoint. This keeps the line level with the circles and clear of the text below; the outer halves render invisible so spacing stays symmetrical. Vertical renders a single line below each indicator. Colour is driven by the step the line *leaves* — once a step is complete, the line leaving it is brand-coloured.
 
 ---
 
@@ -61,11 +63,22 @@ The connector is rendered by every step **except the last**. Its colour is drive
 
 ### Label — per status
 
+Labels sit **below** the indicator in horizontal, **right** of it in vertical.
+
 | Status | Colour | Weight |
 |---|---|---|
-| `complete` | `color/background/default/foreground` | normal |
-| `current` | `color/background/default/foreground` | **semibold** |
+| `complete` | `color/background/default/foreground` | **semibold** |
+| `current` | **`color/brand/primary`** | **semibold** |
 | `upcoming` | `color/text/secondary` | normal |
+
+### Description — per status
+
+Optional second line (`text-xs`). Steps without one render the label alone.
+
+| Status | Colour |
+|---|---|
+| `complete` · `current` | `color/text/secondary` |
+| `upcoming` | `color/text/tertiary` |
 
 ### Component token — `stepper/border`
 

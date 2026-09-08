@@ -34,6 +34,7 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 - **Sidebar stories would not render.** They imported Untitled UI icon names (`BarChart01`, `Settings01`, `File06`, `Menu01`) from `lucide-react`, which does not export them. 35 such imports across 8 files — also breaking Dialog, Sheet, Toast, ButtonGroup and Item. Each name now comes from the package that exports it.
 
 ### Changed
+- **Stepper layout reworked** — labels moved below the indicator, the current label changed to `color/brand/primary`, and an optional `description` line was added per step (`color/text/secondary` for complete/current, `color/text/tertiary` for upcoming). Applies to both orientations.
 - **Sidebar rebuilt to the Accura design** — two variants only (`Default`, `DefaultCollapsed`), Dashboard + CAPA nav, Setting / Log Out footer, ACCURA wordmark, and a direction-aware collapse chevron. Expanded width 240px → **256px** per Figma `95:15648`.
 - `*.stories.tsx` and `.storybook` excluded from the Next.js typecheck. Stories are not part of the deployed app and Storybook compiles them through vite.
 
