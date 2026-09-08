@@ -119,7 +119,7 @@ ChatLog (flex-col, gap-4, role=log, aria-live=polite)
 | bubble | fill | `color/surface/default` | `color/brand/primary` |
 | bubble | border | `color/border/default` (1px) | none |
 | bubble | text | `color/background/default/foreground` | `color/brand/primary/foreground` |
-| bubble | radius | `radius/2xl` (14px), `radius/sm` top-left | `radius/2xl` (14px), `radius/sm` top-right |
+| bubble | radius | `radius/2xl` (20px), `radius/sm` top-left | `radius/2xl` (20px), `radius/sm` top-right |
 | timestamp | text | `color/text/secondary` | `color/text/secondary` |
 
 ### TypingIndicator

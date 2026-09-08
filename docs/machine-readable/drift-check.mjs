@@ -1,14 +1,15 @@
 /**
  * drift-check.mjs — detect docs/token drift across the design system.
  *
- * Run:  node "Machine Readable/drift-check.mjs"
+ * Run:  node docs/machine-readable/drift-check.mjs   (from the repo root)
  *
  * Checks (drift = a doc restates a fact owned authoritatively elsewhere):
  *   1. llms.txt — every referenced file path resolves
  *   2. Component count — doc claims ("N components") match actual meta.json count
- *   3. agentic-theme.md — every hex value exists in primitives.tokens.json
+ *   3. accura-theme.md — every hex value exists in primitives.tokens.json
  *   4. Figma Dark mode ↔ tokens.css .dark block  (only if figma-cli is connected)
  *   5. Storybook stories — every story file has a matching meta.json (catches undocumented components)
+ *   6. Docs — px values restated beside a token name still match that token
  *
  * Exit code 1 if any drift is found (so CI can gate on it).
  */
@@ -19,7 +20,7 @@ import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const root = path.join(here, '..');               // repo root (parent of "Machine Readable")
+const root = path.join(here, '..', '..');        // repo root — this script lives at docs/machine-readable/
 let problems = 0;
 const ok = (m) => console.log('  ✓ ' + m);
 const bad = (m) => { console.log('  ✗ ' + m); problems++; };
@@ -32,7 +33,7 @@ const ticks = [...llms.matchAll(/`([^`]+)`/g)].map((m) => m[1].trim());
 // Only check directory paths (contain "/") with a file extension or trailing slash —
 // these are the drift-prone references (folder renames/deletions). Bare filenames and
 // story titles are skipped.
-const looksLikePath = (s) => s.includes('/') && (/\.(md|json|tsx?|css|mjs|txt|html)$/.test(s) || /\/$/.test(s));
+const looksLikePath = (s) => !s.includes('\n') && s.includes('/') && (/\.(md|json|tsx?|css|mjs|txt|html)$/.test(s) || /\/$/.test(s));
 const skipIt = (s) =>
   /[\[\]*<>]/.test(s) || s.includes('...') || /^https?:/.test(s) ||
   /^(Screens|UI Template)\//.test(s);   // story titles + the external (out-of-repo) UI Template catalog
@@ -43,7 +44,7 @@ if (miss === 0) ok(`${paths.length} referenced paths all resolve`);
 
 // ── 2. Component count: doc claims vs meta.json files ────────────────────────
 section('2. Component count — docs vs meta.json files');
-const metaDir = path.join(root, 'Machine Readable/artifacts/components');
+const metaDir = path.join(root, 'docs/machine-readable/artifacts/components');
 const metaCount = fs.readdirSync(metaDir).filter((f) => f.endsWith('.meta.json')).length;
 // Require plural "components" so "44 component tokens" doesn't match as a component count.
 const claims = [...new Set([...llms.matchAll(/(\d+)\s+(?:documented\s+)?components\b/gi)].map((m) => +m[1]))];
@@ -51,10 +52,10 @@ const wrong = claims.filter((c) => c !== metaCount);
 if (wrong.length === 0) ok(`meta.json count ${metaCount} matches doc claim(s): ${claims.join(', ') || 'none'}`);
 else bad(`meta.json count is ${metaCount} but docs claim: ${wrong.join(', ')}`);
 
-// ── 3. agentic-theme.md hexes exist in primitives ────────────────────────────
-section('3. agentic-theme.md — hex values exist in primitives.tokens.json');
-const theme = fs.readFileSync(path.join(root, 'agentic-theme.md'), 'utf8');
-const prim = fs.readFileSync(path.join(root, 'Tokens/primitives.tokens.json'), 'utf8').toLowerCase();
+// ── 3. accura-theme.md hexes exist in primitives ─────────────────────────────
+section('3. accura-theme.md — hex values exist in primitives.tokens.json');
+const theme = fs.readFileSync(path.join(root, 'accura-theme.md'), 'utf8');
+const prim = fs.readFileSync(path.join(root, 'tokens/primitives.tokens.json'), 'utf8').toLowerCase();
 const hexes = [...new Set([...theme.matchAll(/#[0-9a-f]{6}/gi)].map((m) => m[0].toLowerCase()))];
 const orphans = hexes.filter((h) => !prim.includes(h));
 if (orphans.length === 0) ok(`all ${hexes.length} theme hexes found in primitives`);
@@ -82,7 +83,7 @@ try {
   if (/Not connected|fetch failed|NO_SEMANTICS/.test(raw)) throw new Error('not connected');
   const rows = raw.split('\n').filter((l) => l.includes('|')).map((l) => l.split('|'));
   // Parse tokens.css :root + .dark
-  const css = fs.readFileSync(path.join(root, 'agentic-ui/src/app/tokens.css'), 'utf8');
+  const css = fs.readFileSync(path.join(root, 'accura-ui/src/app/tokens.css'), 'utf8');
   const di = css.indexOf('.dark');
   const parse = (t) => { const m = {}; const re = /--([\w-]+):\s*([^;]+);/g; let x; while ((x = re.exec(t))) m['--' + x[1]] = x[2].trim().toLowerCase(); return m; };
   const rootMap = parse(css.slice(0, di)), darkMap = parse(css.slice(di));
@@ -101,7 +102,7 @@ try {
 
 // ── 5. Storybook stories ↔ meta.json (catch undocumented components) ──────────
 section('5. Storybook stories — every story is owned by a meta.json');
-const storiesDir = path.join(root, 'agentic-ui/src/stories');
+const storiesDir = path.join(root, 'accura-ui/src/stories');
 // Authoritative link: each meta.json declares the story file it owns via storybook.file.
 // Match on that (by basename) rather than guessing from filenames — a meta named
 // a meta named e.g. radio-group.meta.json legitimately owns RadioGroup.stories.tsx.
@@ -122,6 +123,40 @@ for (const f of storyFiles) {
   if (!ownedStories.has(f)) { bad(`story "${f}" is not owned by any meta.json — undocumented component`); undoc++; }
 }
 if (undoc === 0) ok(`all ${storyFiles.length} story files are owned by a meta.json`);
+
+// ── 6. Resolved px values restated in docs ───────────────────────────────────
+// The alias graph never drifts — Figma → tokens.json → tokens.css all propagate on
+// their own. What rots is prose that hand-copies the *resolved* value next to the
+// token name, e.g. "radius: radius/lg (8px)". The token name stays correct forever;
+// the parenthesised number silently goes stale the moment the primitive changes.
+// This is what the 2026-09-08 base-12 radius rescale exposed across 6 specs.
+section('6. Docs — restated px values match the token they name');
+const dimSrc = JSON.parse(fs.readFileSync(path.join(root, 'tokens/primitives.tokens.json'), 'utf8'));
+const dims = {};
+(function flat(o, p = []) {
+  for (const [k, v] of Object.entries(o)) {
+    if (v && v.$value !== undefined) dims[p.concat(k).join('/')] = String(v.$value);
+    else if (v && typeof v === 'object') flat(v, p.concat(k));
+  }
+})(dimSrc);
+const specDir = path.join(root, 'docs/component-specs');
+// Matches "radius/lg (8px)", "radius/lg` (8px)", "| `radius/lg` | 8px |"
+const dimRe = /(radius|spacing)\/([a-z0-9-]+)`?\s*(?:\||\()\s*(\d+)px/gi;
+let stale = 0, checked = 0;
+for (const file of fs.readdirSync(specDir).filter((f) => f.endsWith('.md'))) {
+  const text = fs.readFileSync(path.join(specDir, file), 'utf8');
+  for (const m of text.matchAll(dimRe)) {
+    const token = `${m[1].toLowerCase()}/${m[2]}`;
+    const actual = dims[token];
+    if (actual === undefined) continue;           // not a primitive we own
+    checked++;
+    if (parseInt(actual, 10) !== parseInt(m[3], 10)) {
+      bad(`${file}: "${token}" is written as ${m[3]}px but the token is ${actual}`);
+      stale++;
+    }
+  }
+}
+if (stale === 0) ok(`${checked} restated px values all match their token`);
 
 // ── Summary ──────────────────────────────────────────────────────────────────
 console.log('\n' + (problems === 0 ? '✅ No drift detected.' : `❌ ${problems} drift issue(s) found.`));

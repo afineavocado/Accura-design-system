@@ -110,7 +110,7 @@ A semantic data table built on shadcn's Table, which renders standard HTML `<tab
 
 ```
 Example-Table                   — FRAME, no fill, stroke: color/border/default 1px
-                                  radius: radius/base (8px) ← required for all tables
+                                  radius: radius/base (12px) ← required for all tables
                                   V AUTO-LAYOUT or stacked, no gap
   ├─ _table-row (Type=Header)   — INSTANCE, fill: color/surface/raised
   ├─ _table-row (Type=Regular)  — INSTANCE, no fill (× N data rows)

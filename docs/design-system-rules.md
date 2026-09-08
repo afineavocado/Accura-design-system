@@ -15,10 +15,11 @@
 > | Sidebar background zinc/50 `#fafafa` | **`#00393f`** dark teal, light foreground | theme §7 |
 > | Sidebar accent zinc/100 | **`#175e41`** (brand/900) + white foreground | theme §7 |
 > | Button radius `radius/xl` 12px / `radius/base` 8px | **`9999`** — Accura buttons are pills | theme §7 |
+> | Radius anchor `radius/base` = 8px, scale `4 · 6 · 8 · 12 · 14 · 18 · 21` | anchor is **12px**, scale **`8 · 10 · 12 · 16 · 20 · 24 · 28`** — Accura is a rounder system | theme §4 |
 > | `border/error` red/500, `border/success` green/700, `border/warning` yellow/700 | red/**300**, green/**400**, yellow/**300** | theme §7 |
-> | Font family Inter | Figma **SF Pro**, code **Inter** — accepted mismatch | theme §6 |
+> | Font family Inter | Body: Figma **SF Pro**, code **Inter** — accepted mismatch. Headings (`h1`–`h3`, overlay titles): **Albert Sans**, code-only, no Figma token | theme §6 |
 > | Contrast reference table (light mode) | computed against Agentic blue — **not valid for Accura** | theme §1 |
-> | Component tokens must alias Semantics, never primitives | **Accura permits primitive aliases** where no semantic fits — see `stepper/border` | theme §7 |
+> | Component tokens must alias Semantics, never primitives | **Accura permits primitive aliases** where no semantic fits (`stepper/border`), and **fixed values** where the scale itself is wrong for the geometry (`checkbox/radius` = 4px — `radius/md` at 10px would clamp the 16×16 box into a circle identical to a radio) | theme §7 |
 >
 > The "Contrast Reference" section near the end of this file is Agentic-specific and must not
 > be used to justify an Accura colour decision. Re-measure against Accura's values instead.

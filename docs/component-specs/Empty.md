@@ -87,7 +87,7 @@ empty                           — COMPONENT, V AUTO-LAYOUT, CENTER×CENTER
 | root | Gap | `spacing/component/sm` | 8px |
 | `media` | Fill (Default, Outline) | `color/background/subtle` | Subtle tint |
 | `media` | Fill (Background) | `color/surface/default` | Component surface — lifts slightly above the subtle bg |
-| `media` | Radius | `radius/lg` | 8px |
+| `media` | Radius | `radius/lg` | 12px |
 | `media` | Dimensions | — | 36×36px |
 | `folder > Icon` | Stroke | `color/background/default/foreground` | Foreground on default canvas |
 | `title` | Fill | `color/background/default/foreground` | Primary text |

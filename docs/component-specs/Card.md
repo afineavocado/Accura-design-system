@@ -57,7 +57,7 @@ A structured container that presents an independent, self-contained block of het
 ```
 card                            — V AUTO-LAYOUT, fill: color/surface/overlay
                                   stroke: color/border/default 1px INSIDE
-                                  radius: radius/lg (8px)
+                                  radius: radius/lg (12px)
                                   padding (all sides): spacing/component/xl (24px)
                                   gap between sections: spacing/component/lg (16px)
 ```
@@ -112,7 +112,7 @@ Free-composition frames for content that doesn't fit the standard header/content
 | Fill | `color/surface/overlay` | White / elevated surface |
 | Stroke | `color/border/default` | Standard border (all except Border variant) |
 | Stroke | `color/border/strong` | Emphasis border (`Property 1=Border` only) |
-| Radius (all 4 corners) | `radius/lg` | 8px |
+| Radius (all 4 corners) | `radius/lg` | 12px |
 | Padding (all sides) | `spacing/component/xl` | 24px |
 | Gap between sections | `spacing/component/lg` | 16px |
 
