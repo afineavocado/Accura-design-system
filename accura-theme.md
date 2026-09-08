@@ -248,15 +248,46 @@ The ring uses `brand/500`, **not** the `/800` anchor. `#17bb77` measures **2.50:
 
 ### Accura-only tokens
 
-Only three tokens exist in Accura and not in Agentic:
+Four tokens exist in Accura and not in Agentic:
 
-| Token | Value |
-|---|---|
-| `color/border/info` | `#8ec5ff` (blue/300) |
-| `color/text/tertiary` | `#71717a` (zinc/500) |
-| `breadcrumb/breadcrumb` | `4` |
+| Token | Value | Source |
+|---|---|---|
+| `color/border/info` | `#8ec5ff` (blue/300) | Figma |
+| `color/text/tertiary` | `#71717a` (zinc/500) | Figma |
+| `breadcrumb/breadcrumb` | `4` | Figma |
+| **`stepper/border`** | **`#d4d4d8` (zinc/300)** | ⚠️ **code only — not in Figma** |
 
 Plus two semantics Agentic lacks: `color/sidebar/active` and `color/sidebar/active/foreground`.
+
+> ⚠️ **`stepper/border` lives only in `tokens/components.tokens.json` and `accura-ui/src/app/tokens.css`.**
+> The token JSONs are generated from Figma, so **a re-export will silently drop it.** Re-add it after any
+> export, or create it in Figma's Components collection to make it durable.
+
+### Rule deviation — component tokens may alias primitives
+
+The inherited ruleset states:
+
+> Collection 3: Component tokens → **Alias Semantics — never alias primitives directly**
+
+**Accura does not follow this.** The component tier is treated as another semantic layer, so a component
+token may alias a primitive where no semantic carries the right meaning.
+
+`stepper/border` is the first case. The Stepper's upcoming indicator needs a ring that reads against a
+`#f4f4f5` fill:
+
+| Candidate | Value | Why it fails |
+|---|---|---|
+| `color/border/default` | `#e4e4e7` | measured — invisible against the muted fill |
+| `color/border/hover` | `#d4d4d8` | right value, but means *hover state* on a static element |
+| `color/input/border` | `#d4d4d8` | right value, but means *input boundary* |
+| `color/border/strong` | `#a1a1aa` | too heavy |
+
+The border ladder has a genuine gap between `default` (`#e4e4e7`) and `strong` (`#a1a1aa`). Rather than
+add a semantic nobody else needed yet, or misuse a hover token on a static state, `stepper/border` aliases
+`color/zinc/300` directly.
+
+**Consequence:** an R1–R8 audit will flag this as a violation of the inherited rule. It is deliberate.
+If the gap recurs for other components, promote it to a proper semantic instead of repeating the pattern.
 
 ---
 

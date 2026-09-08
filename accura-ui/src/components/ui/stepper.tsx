@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils"
 // Indicator — 24×24, radius/full:
 //   complete: color/brand/primary        · check  color/brand/primary/foreground
 //   current:  color/background/default   · 2px border + number color/brand/primary
-//   upcoming: color/background/muted     · 2px color/border/hover · number color/text/secondary
+//   upcoming: color/background/muted     · 2px stepper/border · number color/text/secondary
 //
 // Label:
 //   complete / current: color/background/default/foreground (current is semibold)
@@ -60,7 +60,7 @@ function StepIndicator({ status, number }: { status: StepStatus; number: number 
         status === "current" &&
           "bg-[var(--color-background-default)] border-2 border-[var(--color-brand-primary)] text-[var(--color-brand-primary)]",
         status === "upcoming" &&
-          "bg-[var(--color-background-muted)] border-2 border-[var(--color-border-hover)] text-[var(--color-text-secondary)]"
+          "bg-[var(--color-background-muted)] border-2 border-[var(--stepper-border)] text-[var(--color-text-secondary)]"
       )}
     >
       {status === "complete" ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : number}

@@ -1486,4 +1486,12 @@
   --table-table-cell-default: 48px; /** table-cell height for default variant */
   --tooltip-bg: #18181b;
   --tooltip-fg: #ffffff;
-  --breadcrumb-breadcrumb: 4px;}
+  --breadcrumb-breadcrumb: 4px;
+  /**
+   * Intent:      Ring on the Stepper's upcoming-step indicator.
+   * Use when:    The 2px border of a not-yet-reached step indicator.
+   * Do not use:  Any other border — this is scoped to Stepper.
+   * Note:        Aliases the primitive color/zinc/300 directly. No semantic carries this value with the right meaning — color/border/default (#e4e4e7) is invisible against the #f4f4f5 fill, and color/border/hover / color/input/border mean hover and input-boundary respectively.
+   * Status:      active
+   */
+  --stepper-border: #d4d4d8;}

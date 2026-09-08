@@ -385,3 +385,4 @@ export const tableTableCellDefault = "48px";
 export const tooltipBg = "#18181b";
 export const tooltipFg = "#ffffff";
 export const breadcrumbBreadcrumb = "4px";
+export const stepperBorder = "#d4d4d8";

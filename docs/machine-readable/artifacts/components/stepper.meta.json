@@ -65,7 +65,7 @@
       "upcoming": {
         "fill": "color/background/muted",
         "content": "color/text/secondary",
-        "border": "2px color/border/hover"
+        "border": "2px stepper/border"
       }
     },
     "label": {
@@ -88,6 +88,14 @@
     "focus": {
       "ring": "color/ring",
       "notes": "focus-visible only, and only when onStepClick is set."
+    },
+    "componentTokens": {
+      "stepper/border": {
+        "value": "{color.zinc.300}",
+        "resolved": "#d4d4d8",
+        "notes": "Aliases a PRIMITIVE directly. The inherited ruleset forbids that for component tokens; Accura treats the component tier as another semantic layer and permits it. No semantic carries this value with the right meaning — color/border/default (#e4e4e7) is invisible against the #f4f4f5 fill, and color/border/hover / color/input/border mean hover state and input boundary.",
+        "figma": "DOES NOT EXIST IN FIGMA — code-only. A token re-export will not regenerate it."
+      }
     }
   },
   "composition": {
@@ -135,11 +143,12 @@
     "version": "3.0",
     "openQuestions": [
       "No Figma component set exists. If design needs to own this, build the set and record its node ID here.",
-      "color/border/hover is used for the upcoming indicator ring. The VALUE is right (#d4d4d8 reads against the #f4f4f5 fill; color/border/default at #e4e4e7 is nearly invisible on it) but the NAME means \"border on hover\", so this is a semantic mismatch on a static state. Accura may want a neutral static border token between border/default and border/strong."
+      "stepper/border exists only in code — tokens/components.tokens.json and accura-ui/src/app/tokens.css. If the Components collection is ever re-exported from Figma it will be dropped. Add it to Figma to make it durable."
     ],
     "notes": [
       "Built for Accura 2026-09-08. Not inherited from Agentic — shadcn/ui has no stepper, so this is custom like Item and Sidebar.",
-      "Verified in-browser at build time: indicator 24px / radius 9999px; current #ffffff fill, 2px #008852 border, #008852 number, #18181b semibold label; upcoming #f4f4f5 fill with #52525b number and label; connectors #e4e4e7. Vertical label-to-indicator offset measured at 0px across all steps."
+      "Verified in-browser at build time: indicator 24px / radius 9999px; current #ffffff fill, 2px #008852 border, #008852 number, #18181b semibold label; upcoming #f4f4f5 fill with #52525b number and label; connectors #e4e4e7. Vertical label-to-indicator offset measured at 0px across all steps.",
+      "2026-09-08: upcoming indicator gained a 2px ring. color/border/default was tried first and measured invisible against the muted fill; the value moved to zinc/300 via the new stepper/border component token."
     ]
   },
   "implementation": {

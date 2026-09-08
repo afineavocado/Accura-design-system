@@ -1437,6 +1437,17 @@
   --color-border-info: #8ec5ff;
   --color-text-tertiary: #71717a;
   --breadcrumb-breadcrumb: 4;
+
+  /**
+   * Stepper — upcoming-step indicator ring.
+   * Aliases the primitive color/zinc/300 directly. No semantic carries this value
+   * with the right meaning: color/border/default (#e4e4e7) is invisible against the
+   * #f4f4f5 fill, while color/border/hover and color/input/border mean hover state
+   * and input boundary respectively.
+   * ⚠️ Code-only — this token does NOT exist in Figma. A token re-export will not
+   * regenerate it. See accura-theme.md §7.
+   */
+  --stepper-border: #d4d4d8;
 }
 
 /* ─── Dark mode overrides ─────────────────────────────────────────────────────

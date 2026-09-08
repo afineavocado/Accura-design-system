@@ -18,6 +18,7 @@
 > | `border/error` red/500, `border/success` green/700, `border/warning` yellow/700 | red/**300**, green/**400**, yellow/**300** | theme §7 |
 > | Font family Inter | Figma **SF Pro**, code **Inter** — accepted mismatch | theme §6 |
 > | Contrast reference table (light mode) | computed against Agentic blue — **not valid for Accura** | theme §1 |
+> | Component tokens must alias Semantics, never primitives | **Accura permits primitive aliases** where no semantic fits — see `stepper/border` | theme §7 |
 >
 > The "Contrast Reference" section near the end of this file is Agentic-specific and must not
 > be used to justify an Accura colour decision. Re-measure against Accura's values instead.
