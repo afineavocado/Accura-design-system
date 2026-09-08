@@ -130,11 +130,14 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
         )
       }
       if (type === "avatar") {
+        // Avatar takes props (src / fallback), not compound children — see AvatarProps in avatar.tsx
         return (
-          <Avatar size="default" className="shrink-0">
-            {avatarSrc && <AvatarImage src={avatarSrc} alt={avatarFallback ?? ""} />}
-            <AvatarFallback>{avatarFallback ?? "?"}</AvatarFallback>
-          </Avatar>
+          <Avatar
+            size="default"
+            className="shrink-0"
+            src={avatarSrc}
+            fallback={avatarFallback ?? "?"}
+          />
         )
       }
       if (type === "image") {
