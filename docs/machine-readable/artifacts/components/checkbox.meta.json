@@ -258,6 +258,11 @@
     "knownIssues": [],
     "changelog": [
       {
+        "date": "2026-09-08",
+        "change": "Corner radius moved from radius/md to a new checkbox/radius component token pinned at 4px. The radius scale was rescaled to base 12, making radius/md 10px; CSS clamps border-radius to half the shorter side, so on the 16x16 checkbox that renders a perfect circle indistinguishable from RadioGroup. Shape is the only cue distinguishing an exclusive choice from a multi-select one, so the checkbox had to stop tracking the scale. checkbox/radius exists in Figma Components collection (47 tokens). Verified in-browser: computed border-radius 4px on a 16x16 box.",
+        "breaking": false
+      },
+      {
         "date": "2026-06-03",
         "change": "Invalid state: focus ring uses color/border/error instead of color/ring.",
         "breaking": false
@@ -274,7 +279,9 @@
     "exports": [
       "Checkbox"
     ],
-    "notes": []
+    "notes": [
+      "Uses var(--checkbox-radius), NOT var(--radius-md). Rebinding to radius/md turns the checkbox into a circle identical to the radio button — see accura-theme.md section 4 (small-box clamping)."
+    ]
   },
   "storybook": {
     "file": "src/stories/Checkbox.stories.tsx",

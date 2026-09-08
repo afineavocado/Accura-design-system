@@ -27,6 +27,7 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 - **CAPA prototype flow** on branch `prototype/capa-flow` — listing, create form and mock data at `accura-ui/src/app/prototype/accura/`. Built against the real component library; deploys as three static routes.
 - **`flow/capa-prototype-spec.md`** — single source of truth for CAPA prototype scope, canonical mock data, routes, screen copy, status support, audit trail and electronic-signature flow.
 
+- **`checkbox/radius` component token** (`4px`). Created in Figma's Components collection (46 → 47) and synced to code. **Aliases nothing** — it is a fixed value, the second deliberate break from the inherited "component tokens must alias semantics" rule after `stepper/border`.
 - **Albert Sans for headings** — `h1`–`h3` and the four overlay titles (Dialog, AlertDialog, Sheet, Drawer) now render in Albert Sans; body, labels, inputs, buttons and `h4`–`h6` stay on Inter. Wired at `--font-heading` in `globals.css`, which already existed but was pointing at Inter and consumed nowhere. **Code-only** — Figma has no `font-family/display` primitive, so this is a second accepted Figma↔code type mismatch (`accura-theme.md` §6). Albert Sans loads in **both** `.storybook/preview-head.html` and `src/app/layout.tsx`; changing one without the other desynchronises Storybook from the app.
 
 ### Fixed
@@ -38,6 +39,14 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 - **Sidebar stories would not render.** They imported Untitled UI icon names (`BarChart01`, `Settings01`, `File06`, `Menu01`) from `lucide-react`, which does not export them. 35 such imports across 8 files — also breaking Dialog, Sheet, Toast, ButtonGroup and Item. Each name now comes from the package that exports it.
 
 ### Changed
+- **Radius scale rescaled to base 12** — `radius/base` `8px` → **`12px`**, making radius the third changed primitive lever. Set in Figma and pulled into code by re-export. The shadcn ±4 / ±2 offsets are preserved (`sm 8 · md 10 · lg 12 · xl 16`), so shadcn components still behave; the irregular top end (`14 / 18 / 21`) was regularised to `20 / 24 / 28`. Buttons are unaffected — they were already pill `9999`.
+
+  | | none | sm | md | base | lg | xl | 2xl | 3xl | 4xl | full |
+  |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+  | before | 0 | 4 | 6 | 8 | 8 | 12 | 14 | 18 | 21 | 9999 |
+  | after | 0 | 8 | 10 | 12 | 12 | 16 | 20 | 24 | 28 | 9999 |
+
+  **Side effect worth knowing:** CSS clamps `border-radius` to half the shorter side, so Badge at Small (16px) and Medium (20px) heights now renders as a full pill rather than a rounded rectangle. Accepted as consistent with pill buttons; if rounded-rect badges are wanted, Badge needs its own radius token the way Checkbox now has one.
 - **CAPA prototype mock data unified** — listing, supported detail pages, audit trail and electronic signature now share canonical records. The listing shows all six workflow statuses; only Draft, In Review and In Approval link to detail pages. CAPA status badges now use the Medium size.
 - **CAPA prototype documentation consolidated** — listing, create, detail, audit trail, electronic signature and overall flow copy now live in one specification. The document distinguishes designed detail states (Draft and In Review), the reused In Approval layout, and listing-only statuses without detail designs.
 - **Stepper layout reworked** — labels moved below the indicator, the current label changed to `color/brand/primary`, and an optional `description` line was added per step (`color/text/secondary` for complete/current, `color/text/tertiary` for upcoming). Applies to both orientations.

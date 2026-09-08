@@ -46,7 +46,7 @@ Storybook runs on **http://localhost:6007** (Agentic's uses 6006, so both can ru
 |---|---|---|
 | Brand hue | Blue — anchor `/500` `#2b7fff` | **Green — anchor `/800-base` `#008852`** |
 | Neutral | Zinc `/50–/950` | Zinc — identical |
-| Radius base | `8px` | `8px` — identical |
+| Radius base | `8px` | **`12px`** — Accura is a rounder system |
 | Spacing base | `4px` linear | `4px` linear — identical |
 | Type | Inter | Figma **SF Pro** · code **Inter** ⚠️ |
 

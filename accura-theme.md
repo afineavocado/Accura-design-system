@@ -13,7 +13,7 @@ Because the semantic and component tiers **alias** primitives, editing the primi
 
 **Figma source:** `[Accura] Agentic Design System`
 Primitives `VariableCollectionId:1:2` (mode: Value) · Semantics `1:129` (Light/Dark) · Components `17:4484` (Light)
-228 primitives · 115 semantics (Light + Dark) · 46 component tokens · 17 text styles — all exported to `tokens/`
+228 primitives · 115 semantics (Light + Dark) · 47 component tokens · 17 text styles — all exported to `tokens/`
 
 **Code:** `accura-ui/` — Storybook on **port 6007** (Agentic's runs on 6006, so both can run side by side).
 
@@ -25,11 +25,11 @@ Primitives `VariableCollectionId:1:2` (mode: Value) · Semantics `1:129` (Light/
 |---|---|---|---|
 | **Brand hue** | Blue — anchor `/500` `#2b7fff` | **Green — anchor `/800-base` `#008852`** | ✅ **changed** |
 | **Neutral** | Zinc `/50–/950` | Zinc `/50–/950` — identical hexes | — |
-| **Radius base** | `8px` | `8px` | — |
+| **Radius base** | `8px` | **`12px`** | ✅ **changed** |
 | **Spacing base** | `4px` linear | `4px` linear | — |
 | **Type** | Inter | Body — Figma: **SF Pro** · Code: **Inter**<br>Headings — Code: **Albert Sans** (no Figma token) | ⚠️ **split — see §6** |
 
-Two of the five primitive levers moved. But the primitive layer is not the whole story — Accura also diverges at the **semantic and component tiers** (sidebar, status borders, button radius). Those are in §7 and are easy to miss, because a primitives-only comparison shows them as unchanged.
+Three of the five primitive levers moved. But the primitive layer is not the whole story — Accura also diverges at the **semantic and component tiers** (sidebar, status borders, button radius). Those are in §7 and are easy to miss, because a primitives-only comparison shows them as unchanged.
 
 ---
 
@@ -127,20 +127,55 @@ Neither is mapped to any semantic token. See Q4.
 
 ---
 
-## 4. Radius — primitives unchanged, button usage is not
+## 4. Radius — rescaled to base 12
 
-Primitive scale is **identical to Agentic**:
+**This is the third changed primitive lever.** Agentic anchors at `8px`; Accura anchors at
+**`12px`**. Accura is deliberately a rounder system.
+
+The shadcn offset relationships are preserved, so shadcn components that expect
+`sm/md/lg/xl` to sit ±4 and ±2 around the anchor still behave:
 
 ```
-sm  = base − 4   →  4px
-md  = base − 2   →  6px
-lg  = base       →  8px   ← anchor (radius/base)
-xl  = base + 4   → 12px
+sm  = base − 4   →   8px
+md  = base − 2   →  10px
+lg  = base       →  12px   ← anchor (radius/base)
+xl  = base + 4   →  16px
 ```
 
-`none 0` · `sm 4` · `md 6` · **`base/lg 8`** · `xl 12` · `2xl 14` · `3xl 18` · `4xl 21` · `full 9999`
+| Token | Agentic | **Accura** | Consumed by |
+|---|---:|---:|---|
+| `none` | 0 | **0** | — |
+| `sm` | 4 | **8** | breadcrumb |
+| `md` | 6 | **10** | 42 uses — inputs, select, tabs, badge, tooltip, sidebar |
+| `base` | 8 | **12** | 1 use |
+| `lg` | 8 | **12** | 29 uses — cards, dialogs, sheets, drawers, toasts |
+| `xl` | 12 | **16** | — |
+| `2xl` | 14 | **20** | chat-bubble |
+| `3xl` | 18 | **24** | — |
+| `4xl` | 21 | **28** | — |
+| `full` | 9999 | **9999** | pills, stepper, avatar |
 
-> ⚠️ **But Accura's buttons are pills.** The component tokens `button/size/Button radius 1` and `radius 2` both resolve to **`9999`**, where Agentic uses `12px` and `8px`. Accura buttons are fully rounded by design. See §7.
+The top of the scale (`2xl`–`4xl`) was regularised to +4 steps; Agentic's `14 / 18 / 21`
+was irregular and nothing consumed `3xl` or `4xl`.
+
+> ⚠️ **Buttons are pills regardless.** `button/size/Button radius 1` and `radius 2` both
+> resolve to **`9999`**, where Agentic uses `12px` and `8px`. Unaffected by the rescale.
+
+### Small-box clamping — read before raising `md` again
+
+CSS clamps `border-radius` to **half the shorter side**. Anything ≤ 20px tall that uses
+`radius/md` (10px) therefore renders as a **full pill**, not a rounded rectangle:
+
+| Element | Size | Effect at md = 10 |
+|---|---|---|
+| **Checkbox** | 16×16 | Would be a circle → **indistinguishable from RadioGroup**. Broken out to `checkbox/radius` = 4. |
+| Badge (Small) | height 16 | Clamps to a pill. Accepted — consistent with pill buttons. |
+| Badge (Medium) | height 20 | Exactly a pill. Accepted. |
+| Input, Select, Textarea | height 36 | 10px, no clamping. Intended. |
+
+The checkbox case is the one that matters: a checkbox and a radio must be
+distinguishable by shape alone, since that is the only cue that tells the user whether
+the choice is exclusive.
 
 ---
 
@@ -295,12 +330,13 @@ Four tokens exist in Accura and not in Agentic:
 | `color/text/tertiary` | `#71717a` (zinc/500) | Figma |
 | `breadcrumb/breadcrumb` | `4` | Figma |
 | **`stepper/border`** | **`#d4d4d8` (zinc/300)** | Figma |
+| **`checkbox/radius`** | **`4px`** | Figma |
 
 Plus two semantics Agentic lacks: `color/sidebar/active` and `color/sidebar/active/foreground`.
 
-> ⚠️ **`stepper/border` lives only in `tokens/components.tokens.json` and `accura-ui/src/app/tokens.css`.**
-> The token JSONs are generated from Figma, so **a re-export will silently drop it.** Re-add it after any
-> export, or create it in Figma's Components collection to make it durable.
+> ✅ Both `stepper/border` and `checkbox/radius` exist in Figma's **Components** collection
+> (47 tokens) and were confirmed present by re-export on 2026-09-08. They are durable — a
+> re-export will not drop them.
 
 ### Rule deviation — component tokens may alias primitives
 
@@ -327,6 +363,13 @@ add a semantic nobody else needed yet, or misuse a hover token on a static state
 
 **Consequence:** an R1–R8 audit will flag this as a violation of the inherited rule. It is deliberate.
 If the gap recurs for other components, promote it to a proper semantic instead of repeating the pattern.
+
+`checkbox/radius` is the second case, and the reason is geometric rather than semantic. Every other form
+control takes `radius/md`. After the base-12 rescale that is `10px`, and the checkbox is `16×16` — CSS
+clamps `border-radius` to half the shorter side, so the checkbox would render as a perfect circle,
+**visually identical to a radio button**. Shape is the only cue that tells a user whether a choice is
+exclusive, so this is a comprehension failure, not a styling preference. No radius primitive can fix it:
+the value has to stop tracking the scale. Pinned at `4px`.
 
 ---
 
@@ -411,7 +454,7 @@ Same 5-lever workflow Agentic uses:
 
 1. **Brand** → pick a hue, regenerate the full ramp, **validate the anchor against white** (≥3:1 floor, ≥4.5:1 ideal). Move the anchor step if the hue can't clear the floor at `/500` — as Accura does at `/800`.
 2. **Neutral** → swap zinc for slate/stone/gray. Highest mood-impact per effort.
-3. **Radius** → change `radius/base`; sm/md/xl follow the calc offsets.
+3. **Radius** → change `radius/base`; sm/md/xl follow the calc offsets. Check every box ≤ 20px that uses `radius/md` — CSS clamps radius to half the shorter side, so small controls silently become pills (§4).
 4. **Spacing** → change the 4px base or retune semantic mappings.
 5. **Type** → swap `font-family/sans` and/or pick a new size-scale ratio. To change the
    heading font instead, edit `--font-heading` in `accura-ui/src/app/globals.css` and load

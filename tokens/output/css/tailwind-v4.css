@@ -915,14 +915,14 @@
    */
   --spacing-layout-xl: 64px;
   --radius-none: 0px;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-base: 8px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  --radius-2xl: 14px;
-  --radius-3xl: 18px;
-  --radius-4xl: 21px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-base: 12px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 24px;
+  --radius-4xl: 28px;
   --radius-full: 9999px;
   /**
    * Intent: Smallest readable text size; used for supplementary information.
@@ -1487,4 +1487,5 @@
   --tooltip-bg: #18181b;
   --tooltip-fg: #ffffff;
   --breadcrumb-breadcrumb: 4px;
-  --stepper-border: #d4d4d8;}
+  --stepper-border: #d4d4d8;
+  --checkbox-radius: 4px; /** Checkbox corner radius. Pinned at 4px and deliberately NOT aliased to radius/md: the checkbox is 16x16, and CSS clamps border-radius to half the box, so any value >= 8 renders it as a circle indistinguishable from a radio button. radius/md is 10 after the base-12 rescale, which would do exactly that. Exists in Figma Components collection. */}

@@ -57,7 +57,7 @@ checkbox-item                     — HORIZONTAL, gap: spacing/component/sm (8px
 ### checkbox-box
 
 ```
-checkbox-box                      — 16×16px, radius: radius/md
+checkbox-box                      — 16×16px, radius: checkbox/radius
   ├─ check    (VECTOR)            — visible in Checked, Checked Disabled
   └─ dash     (RECTANGLE)         — visible in Indeterminate
 ```
@@ -88,9 +88,14 @@ checkbox-box                      — 16×16px, radius: radius/md
 | `check` | VECTOR | stroke weight | 1.5px |
 | `check` | VECTOR | stroke align | CENTER |
 | `dash` | RECTANGLE | fill | `color/brand/primary/foreground` |
-| `dash` | RECTANGLE | border-radius | `radius/md` |
+| `dash` | RECTANGLE | border-radius | `checkbox/radius` |
 
-All variants: `border-radius → radius/md` (6px) bound on all four corners.
+All variants: `border-radius → checkbox/radius` (**4px**) bound on all four corners.
+
+> ⚠️ **Do not rebind this to `radius/md`.** `radius/md` is `10px` after the base-12 rescale, and CSS clamps
+> `border-radius` to half the shorter side — on a 16×16 box that renders a perfect circle, making the
+> checkbox indistinguishable from a RadioGroup item. Shape is the only cue that tells the user whether the
+> choice is exclusive. `checkbox/radius` exists in Figma's Components collection. See accura-theme.md §4 and §7.
 
 ### checkbox-item — text tokens per State
 
