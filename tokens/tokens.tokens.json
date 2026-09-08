@@ -222,12 +222,12 @@
         "$description": "Intent:      Darkest brand fill for the pressed/active state of a primary element\nUse when:    Primary button :active fill — the moment of click or tap\nDo not use:  Hover or resting states\nUse instead: color/brand/primary-hover for hover, color/brand/primary for resting\nStatus:      active"
       },
       "secondary": {
-        "$value": "{color.brand.150-lightshade}",
+        "$value": "{color.brand.25}",
         "$type": "color",
         "$description": "Intent:      Light brand-tinted surface for lower-emphasis brand presence\nUse when:    Secondary button fill, selected row highlight, brand-tinted badge background, active nav item background\nDo not use:  High-emphasis CTAs — too light to read as a primary action\nUse instead: color/brand/primary for high-emphasis filled actions\nForeground:  color/brand/secondary/foreground\nStatus:      active"
       },
       "secondary-hover": {
-        "$value": "{color.brand.200}",
+        "$value": "{color.brand.150-lightshade}",
         "$type": "color",
         "$description": "Intent:      Light brand-tinted surface for lower-emphasis brand presence\nUse when:    Secondary button fill, selected row highlight, brand-tinted badge background, active nav item background\nDo not use:  High-emphasis CTAs — too light to read as a primary action\nUse instead: color/brand/primary for high-emphasis filled actions\nForeground:  color/brand/secondary/foreground\nStatus:      active"
       },
@@ -1320,6 +1320,12 @@
     "breadcrumb": {
       "$value": "{spacing.component.xs}",
       "$type": "number"
+    }
+  },
+  "stepper": {
+    "border": {
+      "$value": "{color.zinc.300}",
+      "$type": "color"
     }
   }
 }

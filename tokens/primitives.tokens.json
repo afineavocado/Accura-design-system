@@ -523,35 +523,35 @@
       "$type": "dimension"
     },
     "sm": {
-      "$value": "4px",
+      "$value": "8px",
       "$type": "dimension"
     },
     "md": {
-      "$value": "6px",
+      "$value": "10px",
       "$type": "dimension"
     },
     "base": {
-      "$value": "8px",
-      "$type": "dimension"
-    },
-    "lg": {
-      "$value": "8px",
-      "$type": "dimension"
-    },
-    "xl": {
       "$value": "12px",
       "$type": "dimension"
     },
+    "lg": {
+      "$value": "12px",
+      "$type": "dimension"
+    },
+    "xl": {
+      "$value": "16px",
+      "$type": "dimension"
+    },
     "2xl": {
-      "$value": "14px",
+      "$value": "20px",
       "$type": "dimension"
     },
     "3xl": {
-      "$value": "18px",
+      "$value": "24px",
       "$type": "dimension"
     },
     "4xl": {
-      "$value": "21px",
+      "$value": "28px",
       "$type": "dimension"
     },
     "full": {

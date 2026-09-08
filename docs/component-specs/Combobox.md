@@ -202,7 +202,7 @@ combobox-field              — V AUTO-LAYOUT, gap: spacing/component/xs
 
 Tag Input chip tokens are identical to `Basic, State=Filled-chips` — see chip layer rows above.
 
-> **`radius/lg` vs `radius/md`:** Combobox uses `radius/lg` (8px) while `input` and `select-trigger` use `radius/md` (6px). This is intentional — the combobox trigger has a slightly rounder feel to signal that it is an interactive search or selection control, not a plain text input.
+> **`radius/lg` vs `radius/md`:** Combobox uses `radius/lg` (12px) while `input` and `select-trigger` use `radius/md` (10px). This is intentional — the combobox trigger has a slightly rounder feel to signal that it is an interactive search or selection control, not a plain text input.
 
 ### `combobox-field` — description and label per state
 

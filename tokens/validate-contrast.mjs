@@ -68,8 +68,12 @@ function contrast(hex1, hex2) {
 // ─── Collect pairs ────────────────────────────────────────────────────────────
 const pairs = [];
 for (const [path, val] of semMap) {
-  if (!path.endsWith('.foreground')) continue;
-  const bgPath = path.replace('.foreground', '');
+  // DTCG forbids a node being both token and group, so the Figma export collapses
+  // `x/foreground` onto its parent as `x-foreground`. Accept both spellings.
+  const isNested = path.endsWith('.foreground');
+  const isFlat = path.endsWith('-foreground');
+  if (!isNested && !isFlat) continue;
+  const bgPath = isNested ? path.slice(0, -'.foreground'.length) : path.slice(0, -'-foreground'.length);
   const bgVal  = semMap.get(bgPath);
   if (!bgVal) continue;
   const bgHex = resolve(bgVal);

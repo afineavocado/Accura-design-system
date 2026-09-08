@@ -57,7 +57,7 @@ Next.js + Tailwind v4 + shadcn/ui. Forked from `agentic-ui`; identical component
 cd accura-ui && npm install --legacy-peer-deps && npm run storybook   # → :6007
 ```
 
-- `accura-ui/src/app/tokens.css` — **470 CSS custom properties**, generated from Figma. `:root` light, `.dark` dark. Do not hand-edit; change the Figma variable and regenerate.
+- `accura-ui/src/app/tokens.css` — **345 CSS custom properties** (450 declarations, including `.dark` overrides), generated from Figma. `:root` light, `.dark` dark. **Not a plain copy of `tokens/output/css/variables.css`** — it carries a different ordering, extra descriptive comments, and the hand-applied `--font-family-sans: Inter` override. Change the Figma variable, rebuild with `tokens/sd.build.mjs`, then patch the changed properties into this file surgically. Copying the generated file over it wipes the overrides.
 - `accura-ui/src/components/ui/*.tsx` — 38 component files.
 - `accura-ui/src/stories/*.stories.tsx` — 35 story files.
 - `accura-ui/.storybook/preview.tsx` — light/dark via `withThemeByClassName`.
@@ -67,7 +67,9 @@ cd accura-ui && npm install --legacy-peer-deps && npm run storybook   # → :600
 
 ## Tokens — `tokens/`
 
-DTCG source + Style Dictionary build. **Exported from Accura's Figma file** — 228 primitives, 115 semantics (Light + Dark), 45 component tokens.
+DTCG source + Style Dictionary build. **Exported from Accura's Figma file** — 228 primitives, 115 semantics (Light + Dark), 47 component tokens.
+
+> `stepper/border` aliases a **primitive** directly rather than a semantic — a deliberate Accura rule deviation, see `accura-theme.md` §7. It exists in Figma and survives re-export.
 
 ```bash
 cd tokens && npm install && node sd.build.mjs   # → output/css/, output/js/
@@ -78,7 +80,7 @@ cd tokens && npm install && node sd.build.mjs   # → output/css/, output/js/
 | `primitives.tokens.json` | 228 raw values |
 | `semantics.tokens.json` | 115 semantics, **Light** mode |
 | `semantics.dark.tokens.json` | the same 115 in **Dark** — source for the `.dark` block |
-| `components.tokens.json` | 45 component tokens |
+| `components.tokens.json` | 47 component tokens |
 | `tokens.tokens.json` | all three combined |
 | `sd.build.mjs` · `validate-contrast.mjs` | build + contrast gate |
 | `output/` | generated — `variables.css` (403 props), `tailwind-v4.css`, `tokens.mjs` |
@@ -92,8 +94,15 @@ cd tokens && npm install && node sd.build.mjs   # → output/css/, output/js/
 
 ## Tracking
 
-- `docs/tracking/Storybook Status.md` — per-component pipeline status. ⚠️ Reflects Agentic's status, not Accura's.
-- `docs/tracking/Audit Status.md` — Figma component audit log. ⚠️ Agentic's audits.
+Both reset to Accura's real state on 2026-09-08. Agentic's ticks did not transfer — the brand ramp, sidebar, button radius and status borders all changed, so its verification certified nothing here.
+
+- `docs/tracking/AI-Readiness.md` — 15-factor assessment **scored for Accura**, the measured counts, and the root-cause analysis of why docs drift (restated values and counts, not aliases). Read before trusting any inherited ✅.
+- `docs/tracking/Storybook Status.md` — **3 of 36 stories verified for Accura** (Sidebar, Stepper, AlertDialog). The rest are inherited-unverified. Lists the highest-risk components to check first.
+- `docs/tracking/Audit Status.md` — **zero R1–R8 audits run against Accura's Figma file.** The largest gap in the system. Includes a suggested audit order.
+
+## Changelog
+
+- `CHANGELOG.md` — every Accura-specific change, with the breaking ones called out. **Record breaking changes here before they ship.**
 
 ---
 
@@ -101,7 +110,7 @@ cd tokens && npm install && node sd.build.mjs   # → output/css/, output/js/
 
 **Accura DS file:** `32llw6anFsjPISJrrp1and` — `[Accura] Agentic Design System`
 Collections: Primitives `1:2` (Value) · Semantics `1:129` (Light/Dark) · Components `17:4484` (Light)
-228 primitives · 115 semantics (Light + Dark) · 45 component tokens · 17 text styles
+228 primitives · 115 semantics (Light + Dark) · 47 component tokens · 17 text styles
 (Published-library counts are lower — 190 / 113 — because some variables are hidden from publishing. `tokens/` is exported from the **local** file, which is complete.)
 
 **Known drift:** two Accura libraries exist. `[Accura One] WebApp` consumes `[Accura] Agentic Design System`; `[Accura One] Website Design` consumes `[Accura] Agentic Design System (beta) (Copy)`. They hold **different values for the same token names** (sidebar background, button radius). This repo documents the **non-Copy** library. See open question Q8 in `accura-theme.md`.

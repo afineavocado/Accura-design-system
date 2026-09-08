@@ -860,14 +860,14 @@
    */
   --spacing-layout-xl: 64px;
   --radius-none: 0px;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-base: 8px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  --radius-2xl: 14px;
-  --radius-3xl: 18px;
-  --radius-4xl: 21px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-base: 12px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 24px;
+  --radius-4xl: 28px;
   --radius-full: 9999px;
   /**
    * Intent: Smallest readable text size; used for supplementary information.
@@ -1437,6 +1437,29 @@
   --color-border-info: #8ec5ff;
   --color-text-tertiary: #71717a;
   --breadcrumb-breadcrumb: 4;
+
+  /**
+   * Stepper — upcoming-step indicator ring.
+   * Aliases the primitive color/zinc/300 directly. No semantic carries this value
+   * with the right meaning: color/border/default (#e4e4e7) is invisible against the
+   * #f4f4f5 fill, while color/border/hover and color/input/border mean hover state
+   * and input boundary respectively.
+   * Exists in Figma's Components collection and survives re-export.
+   * See accura-theme.md §7 for the rule deviation.
+   */
+  --stepper-border: #d4d4d8;
+
+  /**
+   * Checkbox — corner radius.
+   * Pinned at 4px and deliberately NOT aliased to radius/md, which is the value
+   * every other form control uses. The checkbox is 16×16, and CSS clamps
+   * border-radius to half the box, so any value ≥ 8px renders it as a perfect
+   * circle — visually identical to the radio button. After the base-12 rescale
+   * radius/md is 10px, which would do exactly that.
+   * Exists in Figma's Components collection and survives re-export.
+   * See accura-theme.md §7 for the rule deviation.
+   */
+  --checkbox-radius: 4px;
 }
 
 /* ─── Dark mode overrides ─────────────────────────────────────────────────────

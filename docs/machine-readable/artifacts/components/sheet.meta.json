@@ -194,7 +194,13 @@
       "Footer button fills are intentional — the parent sets the root fill on each button instance (primary/outline). These fills are required and should not be cleared."
     ],
     "knownIssues": [],
-    "changelog": [],
+    "changelog": [
+      {
+        "date": "2026-09-08",
+        "change": "SheetTitle now renders in Albert Sans via the font-heading utility; body text in the same overlay stays Inter. Headings-only type split, code-only — Figma has no font-family/display token, so this is an accepted Figma-to-code mismatch documented in accura-theme.md section 6. Albert Sans is loaded in both .storybook/preview-head.html and src/app/layout.tsx; change one, change both. Verified in-browser: title computed font-family Albert Sans, description Inter.",
+        "breaking": false
+      }
+    ],
     "darkMode": {
       "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
       "pairedSurfaceRisk": "None identified."
@@ -206,7 +212,10 @@
     "exports": [
       "Sheet"
     ],
-    "notes": []
+    "notes": [
+      "2026-09-08: close button changed from a bare 16×16 icon to a Button instance (variant=ghost, size=icon-sm, 36×36). It had been rendering as an unsized icon with an opacity-70 hover — no hit area, no ghost states. Measured 36×36 after the fix.",
+      "SheetTitle carries font-heading (Albert Sans). Do not replace it with a font-family token — none exists in Figma; the family is wired at --font-heading in globals.css."
+    ]
   },
   "storybook": {
     "file": "src/stories/Sheet.stories.tsx",

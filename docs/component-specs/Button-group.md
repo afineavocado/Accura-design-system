@@ -48,7 +48,7 @@ button-group                    — AUTO LAYOUT (HORIZONTAL or VERTICAL), radius
 |---|---|---|
 | Fill | `color/surface/default` | Component surface — adapts to any parent surface |
 | Stroke | `color/border/default` | 1px · INSIDE |
-| Radius (all 4 corners) | `radius/md` | 6px |
+| Radius (all 4 corners) | `radius/md` | 10px |
 | Padding | none (0px) | Buttons fill edge-to-edge |
 | Gap | none (0px) | Buttons are flush — separator provides the visual divide |
 

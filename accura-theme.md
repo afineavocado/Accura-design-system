@@ -13,7 +13,7 @@ Because the semantic and component tiers **alias** primitives, editing the primi
 
 **Figma source:** `[Accura] Agentic Design System`
 Primitives `VariableCollectionId:1:2` (mode: Value) · Semantics `1:129` (Light/Dark) · Components `17:4484` (Light)
-228 primitives · 115 semantics (Light + Dark) · 45 component tokens · 17 text styles — all exported to `tokens/`
+228 primitives · 115 semantics (Light + Dark) · 47 component tokens · 17 text styles — all exported to `tokens/`
 
 **Code:** `accura-ui/` — Storybook on **port 6007** (Agentic's runs on 6006, so both can run side by side).
 
@@ -25,11 +25,11 @@ Primitives `VariableCollectionId:1:2` (mode: Value) · Semantics `1:129` (Light/
 |---|---|---|---|
 | **Brand hue** | Blue — anchor `/500` `#2b7fff` | **Green — anchor `/800-base` `#008852`** | ✅ **changed** |
 | **Neutral** | Zinc `/50–/950` | Zinc `/50–/950` — identical hexes | — |
-| **Radius base** | `8px` | `8px` | — |
+| **Radius base** | `8px` | **`12px`** | ✅ **changed** |
 | **Spacing base** | `4px` linear | `4px` linear | — |
-| **Type** | Inter | Figma: **SF Pro** · Code: **Inter** | ⚠️ **split — see §6** |
+| **Type** | Inter | Body — Figma: **SF Pro** · Code: **Inter**<br>Headings — Code: **Albert Sans** (no Figma token) | ⚠️ **split — see §6** |
 
-Two of the five primitive levers moved. But the primitive layer is not the whole story — Accura also diverges at the **semantic and component tiers** (sidebar, status borders, button radius). Those are in §7 and are easy to miss, because a primitives-only comparison shows them as unchanged.
+Three of the five primitive levers moved. But the primitive layer is not the whole story — Accura also diverges at the **semantic and component tiers** (sidebar, status borders, button radius). Those are in §7 and are easy to miss, because a primitives-only comparison shows them as unchanged.
 
 ---
 
@@ -127,20 +127,55 @@ Neither is mapped to any semantic token. See Q4.
 
 ---
 
-## 4. Radius — primitives unchanged, button usage is not
+## 4. Radius — rescaled to base 12
 
-Primitive scale is **identical to Agentic**:
+**This is the third changed primitive lever.** Agentic anchors at `8px`; Accura anchors at
+**`12px`**. Accura is deliberately a rounder system.
+
+The shadcn offset relationships are preserved, so shadcn components that expect
+`sm/md/lg/xl` to sit ±4 and ±2 around the anchor still behave:
 
 ```
-sm  = base − 4   →  4px
-md  = base − 2   →  6px
-lg  = base       →  8px   ← anchor (radius/base)
-xl  = base + 4   → 12px
+sm  = base − 4   →   8px
+md  = base − 2   →  10px
+lg  = base       →  12px   ← anchor (radius/base)
+xl  = base + 4   →  16px
 ```
 
-`none 0` · `sm 4` · `md 6` · **`base/lg 8`** · `xl 12` · `2xl 14` · `3xl 18` · `4xl 21` · `full 9999`
+| Token | Agentic | **Accura** | Consumed by |
+|---|---:|---:|---|
+| `none` | 0 | **0** | — |
+| `sm` | 4 | **8** | breadcrumb |
+| `md` | 6 | **10** | 42 uses — inputs, select, tabs, badge, tooltip, sidebar |
+| `base` | 8 | **12** | 1 use |
+| `lg` | 8 | **12** | 29 uses — cards, dialogs, sheets, drawers, toasts |
+| `xl` | 12 | **16** | — |
+| `2xl` | 14 | **20** | chat-bubble |
+| `3xl` | 18 | **24** | — |
+| `4xl` | 21 | **28** | — |
+| `full` | 9999 | **9999** | pills, stepper, avatar |
 
-> ⚠️ **But Accura's buttons are pills.** The component tokens `button/size/Button radius 1` and `radius 2` both resolve to **`9999`**, where Agentic uses `12px` and `8px`. Accura buttons are fully rounded by design. See §7.
+The top of the scale (`2xl`–`4xl`) was regularised to +4 steps; Agentic's `14 / 18 / 21`
+was irregular and nothing consumed `3xl` or `4xl`.
+
+> ⚠️ **Buttons are pills regardless.** `button/size/Button radius 1` and `radius 2` both
+> resolve to **`9999`**, where Agentic uses `12px` and `8px`. Unaffected by the rescale.
+
+### Small-box clamping — read before raising `md` again
+
+CSS clamps `border-radius` to **half the shorter side**. Anything ≤ 20px tall that uses
+`radius/md` (10px) therefore renders as a **full pill**, not a rounded rectangle:
+
+| Element | Size | Effect at md = 10 |
+|---|---|---|
+| **Checkbox** | 16×16 | Would be a circle → **indistinguishable from RadioGroup**. Broken out to `checkbox/radius` = 4. |
+| Badge (Small) | height 16 | Clamps to a pill. Accepted — consistent with pill buttons. |
+| Badge (Medium) | height 20 | Exactly a pill. Accepted. |
+| Input, Select, Textarea | height 36 | 10px, no clamping. Intended. |
+
+The checkbox case is the one that matters: a checkbox and a radio must be
+distinguishable by shape alone, since that is the only cue that tells the user whether
+the choice is exclusive.
 
 ---
 
@@ -162,12 +197,51 @@ Base unit **4px** · half-steps `px(1) · 0-5(2) · 1-5(6) · 2-5(10) · 3-5(14)
 
 | Aspect | Figma primitive | Code (`accura-ui`) |
 |---|---|---|
-| **Sans (UI)** | `SF Pro` | **`Inter`** |
+| **Sans (UI / body)** | `SF Pro` | **`Inter`** |
+| **Headings** | *no token — does not exist* | **`Albert Sans`** |
 | **Mono** | `Roboto Mono` | `Roboto Mono` |
 | **Serif** | `Georgia` | `Georgia` |
 | Size scale · weights · line-height · tracking | identical to Agentic | identical |
 
-### Decision — code keeps Inter (resolved)
+### Decision — headings are Albert Sans, code-only (resolved 2026-09-08)
+
+Figma has exactly three font-family primitives — `sans`, `mono`, `serif`. There is **no
+display/heading token**, so headings and body both resolve to `font-family/sans`.
+Accura splits them **in code only**:
+
+| Surface | Font | Wired at |
+|---|---|---|
+| `h1`, `h2`, `h3` | Albert Sans | `globals.css` base layer |
+| `DialogTitle`, `AlertDialogTitle`, `SheetTitle`, `DrawerTitle` | Albert Sans | `font-heading` class on each component |
+| `h4`–`h6`, body, labels, inputs, buttons, table cells | Inter | unchanged |
+
+`h4`–`h6` stay on Inter deliberately — at those sizes they read as labels, not titles.
+`CardTitle` also stays on Inter: it is a component label, and switching it would put
+Albert Sans on every card in the product.
+
+**Why not a token.** Adding `font-family/display` would mean either editing Figma (out of
+scope — this was scoped code-only) or hand-adding a token to `primitives.tokens.json`
+that has no Figma counterpart. The second option creates silent drift: `tokens.css` is
+generated by `tokens/sd.build.mjs`, so the next re-export would either drop the token or
+resurrect a value nobody set in Figma. Instead the font lives in `globals.css` alongside
+`--font-sans` / `--font-mono`, which is where the existing code-side font wiring already
+sits.
+
+**Consequence — this is now a second accepted Figma↔code mismatch.** A Figma mockup
+renders every heading in SF Pro; Storybook renders `h1`–`h3` and overlay titles in Albert
+Sans. Do not "fix" a component to close that gap. To retire it, create
+`font-family/display` in Figma and rebind the `heading/*` and `display/*` text styles.
+
+**Loading.** Albert Sans is a Google Font, loaded twice because Storybook and Next are
+independent: `.storybook/preview-head.html` (Google Fonts `<link>`) and
+`src/app/layout.tsx` (`next/font/google`). **Change one, change both** — otherwise
+Storybook and the Next app disagree, and Storybook is where the system is reviewed.
+
+Verified in-browser 2026-09-08 — computed `font-family`: `h1`/`h2`/`h3` Albert Sans;
+`h4`/`p`/`button` Inter; Dialog, AlertDialog, Sheet and Drawer titles Albert Sans with
+Inter descriptions in the same overlay.
+
+### Decision — body copy keeps Inter (resolved)
 
 Figma's `font-family/sans` resolves to **SF Pro**; `accura-ui` loads **Inter** via `preview-head.html`. **The decision is to keep Inter in code and leave the Figma primitive on SF Pro for now.**
 
@@ -248,15 +322,54 @@ The ring uses `brand/500`, **not** the `/800` anchor. `#17bb77` measures **2.50:
 
 ### Accura-only tokens
 
-Only three tokens exist in Accura and not in Agentic:
+Four tokens exist in Accura and not in Agentic:
 
-| Token | Value |
-|---|---|
-| `color/border/info` | `#8ec5ff` (blue/300) |
-| `color/text/tertiary` | `#71717a` (zinc/500) |
-| `breadcrumb/breadcrumb` | `4` |
+| Token | Value | Source |
+|---|---|---|
+| `color/border/info` | `#8ec5ff` (blue/300) | Figma |
+| `color/text/tertiary` | `#71717a` (zinc/500) | Figma |
+| `breadcrumb/breadcrumb` | `4` | Figma |
+| **`stepper/border`** | **`#d4d4d8` (zinc/300)** | Figma |
+| **`checkbox/radius`** | **`4px`** | Figma |
 
 Plus two semantics Agentic lacks: `color/sidebar/active` and `color/sidebar/active/foreground`.
+
+> ✅ Both `stepper/border` and `checkbox/radius` exist in Figma's **Components** collection
+> (47 tokens) and were confirmed present by re-export on 2026-09-08. They are durable — a
+> re-export will not drop them.
+
+### Rule deviation — component tokens may alias primitives
+
+The inherited ruleset states:
+
+> Collection 3: Component tokens → **Alias Semantics — never alias primitives directly**
+
+**Accura does not follow this.** The component tier is treated as another semantic layer, so a component
+token may alias a primitive where no semantic carries the right meaning.
+
+`stepper/border` is the first case. The Stepper's upcoming indicator needs a ring that reads against a
+`#f4f4f5` fill:
+
+| Candidate | Value | Why it fails |
+|---|---|---|
+| `color/border/default` | `#e4e4e7` | measured — invisible against the muted fill |
+| `color/border/hover` | `#d4d4d8` | right value, but means *hover state* on a static element |
+| `color/input/border` | `#d4d4d8` | right value, but means *input boundary* |
+| `color/border/strong` | `#a1a1aa` | too heavy |
+
+The border ladder has a genuine gap between `default` (`#e4e4e7`) and `strong` (`#a1a1aa`). Rather than
+add a semantic nobody else needed yet, or misuse a hover token on a static state, `stepper/border` aliases
+`color/zinc/300` directly.
+
+**Consequence:** an R1–R8 audit will flag this as a violation of the inherited rule. It is deliberate.
+If the gap recurs for other components, promote it to a proper semantic instead of repeating the pattern.
+
+`checkbox/radius` is the second case, and the reason is geometric rather than semantic. Every other form
+control takes `radius/md`. After the base-12 rescale that is `10px`, and the checkbox is `16×16` — CSS
+clamps `border-radius` to half the shorter side, so the checkbox would render as a perfect circle,
+**visually identical to a radio button**. Shape is the only cue that tells a user whether a choice is
+exclusive, so this is a comprehension failure, not a styling preference. No radius primitive can fix it:
+the value has to stop tracking the scale. Pinned at `4px`.
 
 ---
 
@@ -288,7 +401,8 @@ Forked from `agentic-ui`; identical components, Accura tokens.
 | 1 | Brand hue green, anchor `/800-base` | ✅ **Correct** — required to clear the 3:1 contrast floor |
 | 2 | Sidebar dark teal `#00393f` + light foreground | ✅ Intentional brand identity |
 | 3 | Button radius `9999` (pill) | ✅ Intentional |
-| 4 | Figma SF Pro vs code Inter | ✅ Accepted mismatch (§6) |
+| 4 | Figma SF Pro vs code Inter (body) | ✅ Accepted mismatch (§6) |
+| 4b | Headings Albert Sans in code, no Figma token | ✅ Accepted, code-only (§6) |
 | 5 | Status borders at 300/400 steps | ⚠️ Very pale for error signalling (Q10) |
 | 6 | `color/ring` = `brand/500`, 2.50:1 | ⚠️ Likely WCAG 1.4.11 failure (Q11) |
 | 7 | Brand ramp steps `25`, `150-lightshade`, `950-darkshade`, `975` | ⚠️ Naming breaks convention (Q1) |
@@ -340,9 +454,11 @@ Same 5-lever workflow Agentic uses:
 
 1. **Brand** → pick a hue, regenerate the full ramp, **validate the anchor against white** (≥3:1 floor, ≥4.5:1 ideal). Move the anchor step if the hue can't clear the floor at `/500` — as Accura does at `/800`.
 2. **Neutral** → swap zinc for slate/stone/gray. Highest mood-impact per effort.
-3. **Radius** → change `radius/base`; sm/md/xl follow the calc offsets.
+3. **Radius** → change `radius/base`; sm/md/xl follow the calc offsets. Check every box ≤ 20px that uses `radius/md` — CSS clamps radius to half the shorter side, so small controls silently become pills (§4).
 4. **Spacing** → change the 4px base or retune semantic mappings.
-5. **Type** → swap `font-family/sans` and/or pick a new size-scale ratio.
+5. **Type** → swap `font-family/sans` and/or pick a new size-scale ratio. To change the
+   heading font instead, edit `--font-heading` in `accura-ui/src/app/globals.css` and load
+   the new family in **both** `.storybook/preview-head.html` and `src/app/layout.tsx` (§6).
 
 Then regenerate `accura-ui/src/app/tokens.css` from Figma — minding the two traps in §8.
 

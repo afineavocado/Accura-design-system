@@ -99,7 +99,7 @@ Icon stroke is bound on the VECTOR nodes inside the icon instance — never on t
 | Stroke align | `OUTSIDE` |
 | Corner radius | `radius/sm` (all 4 corners individually) |
 
-`radius/sm` (5px) is used on Focus to match the rounded corners of the focus ring. Without it the ring appears as a sharp rectangle around inline text. `radius/md` or above would make the item feel button-like — `radius/sm` is the correct choice for inline text elements.
+`radius/sm` (8px) is used on Focus to match the rounded corners of the focus ring. Without it the ring appears as a sharp rectangle around inline text. `radius/md` or above would make the item feel button-like — `radius/sm` is the correct choice for inline text elements.
 
 ### `_breadcrumb-item` — spacing
 

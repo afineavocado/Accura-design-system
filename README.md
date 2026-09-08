@@ -24,6 +24,7 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 | `docs/tracking/` | Storybook and audit status. ⚠️ Reflects Agentic's status, not Accura's. |
 | `tokens/` | DTCG token JSONs + Style Dictionary build. ⚠️ Agentic's exported values — see `llms.txt`. |
 | **`accura-ui/`** | Component library + Storybook. Same components as `agentic-ui`, Accura tokens. |
+| `CHANGELOG.md` | Every Accura-specific change, breaking ones called out. |
 
 The repository is **self-contained** — no external vault, no absolute paths. A fresh agent can clone it and work.
 
@@ -45,7 +46,7 @@ Storybook runs on **http://localhost:6007** (Agentic's uses 6006, so both can ru
 |---|---|---|
 | Brand hue | Blue — anchor `/500` `#2b7fff` | **Green — anchor `/800-base` `#008852`** |
 | Neutral | Zinc `/50–/950` | Zinc — identical |
-| Radius base | `8px` | `8px` — identical |
+| Radius base | `8px` | **`12px`** — Accura is a rounder system |
 | Spacing base | `4px` linear | `4px` linear — identical |
 | Type | Inter | Figma **SF Pro** · code **Inter** ⚠️ |
 

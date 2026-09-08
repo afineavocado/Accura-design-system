@@ -50,7 +50,7 @@ for (const fileName of fs.readdirSync(componentsDir).filter((file) => file.endsW
 
   // Storybook file reference (v3) — agentic-ui is a sibling of "Machine Readable" under the repo root
   if (data.storybook?.file) {
-    const storyPath = path.join(root, "..", "agentic-ui", data.storybook.file);
+    const storyPath = path.join(root, "..", "..", "accura-ui", data.storybook.file);
     if (!fs.existsSync(storyPath)) {
       errors.push(`${fileName}: storybook.file not found at ${data.storybook.file}`);
     }

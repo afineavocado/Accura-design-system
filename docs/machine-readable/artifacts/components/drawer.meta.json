@@ -164,7 +164,13 @@
       "Examples assume shadcn/Vaul Drawer primitives plus an Agentic DrawerPanel wrapper."
     ],
     "knownIssues": [],
-    "changelog": [],
+    "changelog": [
+      {
+        "date": "2026-09-08",
+        "change": "DrawerTitle now renders in Albert Sans via the font-heading utility; body text in the same overlay stays Inter. Headings-only type split, code-only — Figma has no font-family/display token, so this is an accepted Figma-to-code mismatch documented in accura-theme.md section 6. Albert Sans is loaded in both .storybook/preview-head.html and src/app/layout.tsx; change one, change both. Verified in-browser: title computed font-family Albert Sans, description Inter.",
+        "breaking": false
+      }
+    ],
     "darkMode": {
       "notes": "Container fill uses color/surface/default (Dark: zinc/900) — matches shadcn --card. Previously surface/overlay (zinc/800); changed to align with shadcn card hierarchy.",
       "pairedSurfaceRisk": "None identified."
@@ -176,7 +182,9 @@
     "exports": [
       "Drawer"
     ],
-    "notes": []
+    "notes": [
+      "DrawerTitle carries font-heading (Albert Sans). Do not replace it with a font-family token — none exists in Figma; the family is wired at --font-heading in globals.css."
+    ]
   },
   "storybook": {
     "file": "src/stories/Drawer.stories.tsx",

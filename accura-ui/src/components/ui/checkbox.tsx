@@ -35,8 +35,10 @@ const Checkbox = React.forwardRef<
     className={cn(
       // Base — 16×16px square
       "group peer h-4 w-4 shrink-0",
-      // Shape
-      "rounded-[var(--radius-md)]",
+      // Shape — checkbox/radius, NOT radius/md. On a 16×16 box CSS clamps
+      // border-radius to 8px, so md (10px after the base-12 rescale) would
+      // render a circle indistinguishable from RadioGroup.
+      "rounded-[var(--checkbox-radius)]",
       // Default (Unchecked): transparent fill + input/border stroke
       "border border-[var(--color-input-border)]",
       // Hover state

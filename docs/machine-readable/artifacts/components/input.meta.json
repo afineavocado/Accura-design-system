@@ -124,7 +124,7 @@
         "borderToken": "color/border/error",
         "ringToken": "color/border/error",
         "ringGlow": "color-mix(in_srgb,var(--color-border-error)_20%,transparent)",
-        "notes": "Uses [&[aria-invalid]] compound selector to beat data-[state=open]/focus-visible specificity. Blue ring must NOT appear when invalid."
+        "notes": "Uses [&[aria-invalid]] compound selector to beat data-[state=open]/focus-visible specificity. The default focus ring (color/ring) must NOT appear when invalid."
       }
     }
   },
@@ -247,7 +247,7 @@
     "changelog": [
       {
         "date": "2026-06-03",
-        "change": "Invalid state: blue focus ring replaced with red ring using [&[aria-invalid]] compound selector. Prevents blue ring appearing on focused invalid field.",
+        "change": "Invalid state: default focus ring (color/ring) replaced with the error ring (color/border/error) using [&[aria-invalid]] compound selector. Prevents the default focus ring appearing on a focused invalid field.",
         "breaking": false
       }
     ],
