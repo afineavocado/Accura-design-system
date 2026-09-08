@@ -5,7 +5,6 @@
   "category": "overlay",
   "shadcnBase": "alert-dialog",
   "primitiveBase": "Radix UI AlertDialog (@radix-ui/react-alert-dialog)",
-
   "meta": {
     "sourceMarkdown": "Component Markdown/AlertDialog.md",
     "storyFile": "src/stories/AlertDialog.stories.tsx",
@@ -22,6 +21,11 @@
     "changelog": [
       {
         "date": "2026-09-08",
+        "change": "AlertDialogTitle now renders in Albert Sans via the font-heading utility; body text in the same overlay stays Inter. Headings-only type split, code-only — Figma has no font-family/display token, so this is an accepted Figma-to-code mismatch documented in accura-theme.md section 6. Albert Sans is loaded in both .storybook/preview-head.html and src/app/layout.tsx; change one, change both. Verified in-browser: title computed font-family Albert Sans, description Inter.",
+        "breaking": false
+      },
+      {
+        "date": "2026-09-08",
         "change": "AlertDialogAction now takes real `variant` and `size` props (VariantProps<typeof buttonVariants>) instead of requiring className={buttonVariants({ variant: 'destructive' })}. The className route only worked by CSS source order — both fills were emitted and there is no tailwind-merge — so it was fragile and easy to get wrong. AlertDialogCancel takes `size` (no `variant`: cancel is always outline). Stories updated to `variant=\"destructive\"`. Separately, the Default story was fixed: it paired destructive content ('Delete workspace? … cannot be undone') with the primary (green) confirm, contradicting AlertDialog.md:192-193, which lists 'Publish this draft?' under Type=Default and 'Delete workspace?' under Type=Destructive. Default now confirms publishing; the delete case moved to a new DeleteWorkspace story using the destructive variant.",
         "breaking": false
       },
@@ -36,48 +40,73 @@
       "pairedSurfaceRisk": "icon-container Destructive uses color/status/danger-subtle — icon must use danger-subtle/foreground, not color/icon/danger."
     }
   },
-
   "implementation": {
     "tsxFile": "src/components/ui/alert-dialog.tsx",
-    "packageDeps": ["@radix-ui/react-alert-dialog"],
+    "packageDeps": [
+      "@radix-ui/react-alert-dialog"
+    ],
     "exports": [
-      "AlertDialog", "AlertDialogPortal", "AlertDialogOverlay", "AlertDialogTrigger",
-      "AlertDialogContent", "AlertDialogHeader", "AlertDialogFooter",
-      "AlertDialogTitle", "AlertDialogDescription", "AlertDialogAction", "AlertDialogCancel"
+      "AlertDialog",
+      "AlertDialogPortal",
+      "AlertDialogOverlay",
+      "AlertDialogTrigger",
+      "AlertDialogContent",
+      "AlertDialogHeader",
+      "AlertDialogFooter",
+      "AlertDialogTitle",
+      "AlertDialogDescription",
+      "AlertDialogAction",
+      "AlertDialogCancel"
     ],
     "notes": [
       "No × close button on destructive modals — closing ≠ cancelling. If × is needed, use Dialog instead.",
       "Focus is trapped by Radix on open. Initial focus goes to first focusable element (cancel button).",
       "Backdrop click does NOT close — by design. Forces explicit decision.",
       "AlertDialogAction defaults to the primary fill. For any irreversible confirm (delete, revoke, overwrite) pass variant=\"destructive\" — it is a real prop forwarded to buttonVariants, so exactly one fill is emitted.",
-      "Do NOT wrap a nested <Button variant='destructive'> via asChild, and do NOT pass className={buttonVariants({ variant: 'destructive' })}. AlertDialogAction is already a button; Radix Slot and cn() both concatenate class strings with no tailwind-merge, so two competing fills land and the winner is decided by CSS source order, not by intent."
+      "Do NOT wrap a nested <Button variant='destructive'> via asChild, and do NOT pass className={buttonVariants({ variant: 'destructive' })}. AlertDialogAction is already a button; Radix Slot and cn() both concatenate class strings with no tailwind-merge, so two competing fills land and the winner is decided by CSS source order, not by intent.",
+      "AlertDialogTitle carries font-heading (Albert Sans). Do not replace it with a font-family token — none exists in Figma; the family is wired at --font-heading in globals.css."
     ]
   },
-
   "links": {
     "figma": "https://www.figma.com/design/YWfTOUTpFZ0BNxHobfUqme?node-id=152:3240",
     "shadcn": "https://ui.shadcn.com/docs/components/alert-dialog",
     "radix": "https://www.radix-ui.com/primitives/docs/components/alert-dialog",
     "storybook": "http://localhost:6006/?path=/docs/overlay-alertdialog--docs"
   },
-
   "relationships": {
     "subComponents": [],
     "usedBy": [],
     "relatedComponents": [
-      { "name": "alert", "reason": "Alert is inline non-blocking; AlertDialog is modal and blocks until decided" },
-      { "name": "dialog", "reason": "Dialog has neutral close (×/backdrop); AlertDialog forces an explicit decision" },
-      { "name": "button", "reason": "Footer buttons are Button instances — Primary or Destructive for confirm, Outline for cancel" }
+      {
+        "name": "alert",
+        "reason": "Alert is inline non-blocking; AlertDialog is modal and blocks until decided"
+      },
+      {
+        "name": "dialog",
+        "reason": "Dialog has neutral close (×/backdrop); AlertDialog forces an explicit decision"
+      },
+      {
+        "name": "button",
+        "reason": "Footer buttons are Button instances — Primary or Destructive for confirm, Outline for cancel"
+      }
     ],
     "mustBeChildOf": [],
     "mustNotBeChildOf": [],
-    "composedWith": ["Button"],
+    "composedWith": [
+      "Button"
+    ],
     "requires": [],
-    "triggers": ["onConfirm action", "onCancel action"],
-    "blocksWhen": ["open === true — blocks all page interaction"],
-    "exposesState": ["open"]
+    "triggers": [
+      "onConfirm action",
+      "onCancel action"
+    ],
+    "blocksWhen": [
+      "open === true — blocks all page interaction"
+    ],
+    "exposesState": [
+      "open"
+    ]
   },
-
   "componentSets": {
     "alert-dialog": {
       "id": "152:3240",
@@ -85,14 +114,19 @@
       "purpose": "Overlay modal requiring explicit user decision — Align × Footer × Type"
     }
   },
-
   "variants": {
     "Align": {
       "type": "enum",
-      "values": ["Left", "Center"],
+      "values": [
+        "Left",
+        "Center"
+      ],
       "default": "Left",
       "reactProp": "align",
-      "reactValues": { "Left": "left", "Center": "center" },
+      "reactValues": {
+        "Left": "left",
+        "Center": "center"
+      },
       "intent": {
         "Left": "Default layout — title and description left-aligned. Use for longer explanatory text.",
         "Center": "Centered layout — use for brief, unambiguous confirmations with short title."
@@ -100,10 +134,16 @@
     },
     "Footer": {
       "type": "enum",
-      "values": ["Inline", "Full-width"],
+      "values": [
+        "Inline",
+        "Full-width"
+      ],
       "default": "Inline",
       "reactProp": "footerLayout",
-      "reactValues": { "Inline": "inline", "Full-width": "full-width" },
+      "reactValues": {
+        "Inline": "inline",
+        "Full-width": "full-width"
+      },
       "intent": {
         "Inline": "Buttons side by side, right-aligned. Use on desktop with short button labels.",
         "Full-width": "Buttons stacked, each full width. Use on mobile or when labels are long."
@@ -111,17 +151,22 @@
     },
     "Type": {
       "type": "enum",
-      "values": ["Default", "Destructive"],
+      "values": [
+        "Default",
+        "Destructive"
+      ],
       "default": "Default",
       "reactProp": "type",
-      "reactValues": { "Default": "default", "Destructive": "destructive" },
+      "reactValues": {
+        "Default": "default",
+        "Destructive": "destructive"
+      },
       "intent": {
         "Default": "Non-destructive decision — acknowledgement, confirmation, terms. Cancel may be equivalent to ×.",
         "Destructive": "Irreversible or high-stakes action. No × allowed. Both buttons are real decisions."
       }
     }
   },
-
   "tokens": {
     "container": {
       "All": {
@@ -136,15 +181,23 @@
     },
     "typography": {
       "title": {
-        "All": { "fill": "color/surface/overlay/foreground" }
+        "All": {
+          "fill": "color/surface/overlay/foreground"
+        }
       },
       "description": {
-        "All": { "fill": "color/text/secondary" }
+        "All": {
+          "fill": "color/text/secondary"
+        }
       }
     },
     "iconContainer": {
-      "Default": { "fill": "color/background/muted" },
-      "Destructive": { "fill": "color/status/danger-subtle" }
+      "Default": {
+        "fill": "color/background/muted"
+      },
+      "Destructive": {
+        "fill": "color/status/danger-subtle"
+      }
     },
     "spacing": {
       "paddingTop": "spacing/component/xl",
@@ -163,7 +216,6 @@
       }
     }
   },
-
   "composition": {
     "structure": "root > [icon-container?] + content > [title, description, footer > [btn-cancel, btn-confirm]]",
     "slots": [],
@@ -176,12 +228,15 @@
       "No × button on destructive type — both buttons must be real decisions"
     ]
   },
-
   "behavior": {
     "interactionModel": "controlled",
     "openState": {
       "trigger": "AlertDialogTrigger click",
-      "closeTriggers": ["AlertDialogAction click", "AlertDialogCancel click", "Escape key"],
+      "closeTriggers": [
+        "AlertDialogAction click",
+        "AlertDialogCancel click",
+        "Escape key"
+      ],
       "delay": "none"
     },
     "focusManagement": {
@@ -190,12 +245,14 @@
       "returnFocus": "trigger element on close"
     },
     "animation": {
-      "dataAttributes": ["data-state=open", "data-state=closed"],
+      "dataAttributes": [
+        "data-state=open",
+        "data-state=closed"
+      ],
       "description": "Overlay fades in. Panel zooms in from center (zoom-in-95). Reverses on close."
     },
     "scrollBehavior": "body scroll locked while open"
   },
-
   "accessibility": {
     "role": "alertdialog",
     "ariaAttributes": {
@@ -216,17 +273,27 @@
     "screenReaderName": "Derived from AlertDialogTitle via aria-labelledby",
     "focusIndicator": "color/ring 2px outside on focused buttons",
     "touchTarget": "Buttons meet 44px minimum via Button component",
-    "requiredMarkup": ["AlertDialogTitle (required for aria-labelledby)", "AlertDialogDescription (required for aria-describedby)"]
+    "requiredMarkup": [
+      "AlertDialogTitle (required for aria-labelledby)",
+      "AlertDialogDescription (required for aria-describedby)"
+    ]
   },
-
   "storybook": {
     "file": "src/stories/AlertDialog.stories.tsx",
     "title": "Overlay/AlertDialog",
-    "stories": ["Default", "Destructive", "DeleteWorkspace", "CenterAlign", "FullWidthFooter", "DestructiveCentered"],
-    "decorators": ["none"],
+    "stories": [
+      "Default",
+      "Destructive",
+      "DeleteWorkspace",
+      "CenterAlign",
+      "FullWidthFooter",
+      "DestructiveCentered"
+    ],
+    "decorators": [
+      "none"
+    ],
     "notes": "Footer gap fixed 2026-06-03: flex-col gap changed from xs (4px) to sm (8px) per spec. Destructive confirms use variant=\"destructive\" on AlertDialogAction (not asChild + nested Button, not a buttonVariants className). Measured in-browser 2026-09-08 — confirm background: Default #008852, Destructive #ef4444, DeleteWorkspace #ef4444, DestructiveCentered #ef4444, CenterAlign #008852, FullWidthFooter #008852; 6/6 as specified."
   },
-
   "constraints": {
     "usage": [
       "Use only when the user must make a decision before continuing.",
@@ -248,7 +315,6 @@
       ]
     }
   },
-
   "bestPractice": {
     "useCases": [
       "Confirming workspace or project deletion — irreversible, user must explicitly choose",
@@ -261,19 +327,31 @@
     "variantExamples": {
       "Type=Default": {
         "whenToUse": "Decision required but not destructive — acknowledgement, confirmation, opt-in",
-        "examples": ["Accept invitation?", "Mark all as read?", "Publish this draft?"]
+        "examples": [
+          "Accept invitation?",
+          "Mark all as read?",
+          "Publish this draft?"
+        ]
       },
       "Type=Destructive": {
         "whenToUse": "Irreversible or high-stakes action where confirm is dangerous",
-        "examples": ["Delete workspace?", "Revoke API key?", "Discard unsaved changes?"]
+        "examples": [
+          "Delete workspace?",
+          "Revoke API key?",
+          "Discard unsaved changes?"
+        ]
       },
       "Footer=Full-width": {
         "whenToUse": "Long button labels or mobile layout",
-        "examples": ["'Yes, delete my account' / 'No, keep my account' stacked"]
+        "examples": [
+          "'Yes, delete my account' / 'No, keep my account' stacked"
+        ]
       },
       "Align=Center": {
         "whenToUse": "Brief, unambiguous confirmation with short title and description",
-        "examples": ["Centered 'Archive project?' with icon"]
+        "examples": [
+          "Centered 'Archive project?' with icon"
+        ]
       }
     },
     "comparedTo": [

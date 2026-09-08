@@ -196,7 +196,7 @@ const SheetTitle = React.forwardRef<
   <SheetPrimitive.Title
     ref={ref}
     className={cn(
-      "text-lg font-semibold leading-snug",
+      "font-heading text-lg font-semibold leading-snug",
       "text-[var(--color-surface-overlay-foreground)]",
       className
     )}

@@ -25,9 +25,12 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 - **`stepper/border` component token** (`#d4d4d8` / zinc/300) for the upcoming-step ring. **Aliases a primitive directly**, which the inherited ruleset forbids — Accura now treats the component tier as another semantic layer. Added in code first, then created in Figma and confirmed by re-export, so it is durable. Component tokens: 45 → 46.
 - **Stepper component** — horizontal and vertical progress indicator for multi-step flows, built for the CAPA workflow. Spec, component, 7 stories and `meta.json`. Custom, since shadcn/ui has no stepper.
 - **CAPA prototype flow** on branch `prototype/capa-flow` — listing, create form and mock data at `accura-ui/src/app/prototype/accura/`. Built against the real component library; deploys as three static routes.
-- `flow/capa-listing.md` and `flow/create-capa.md` — screen content, fields and states for the CAPA screens.
+- **`flow/capa-prototype-spec.md`** — single source of truth for CAPA prototype scope, canonical mock data, routes, screen copy, status support, audit trail and electronic-signature flow.
+
+- **Albert Sans for headings** — `h1`–`h3` and the four overlay titles (Dialog, AlertDialog, Sheet, Drawer) now render in Albert Sans; body, labels, inputs, buttons and `h4`–`h6` stay on Inter. Wired at `--font-heading` in `globals.css`, which already existed but was pointing at Inter and consumed nowhere. **Code-only** — Figma has no `font-family/display` primitive, so this is a second accepted Figma↔code type mismatch (`accura-theme.md` §6). Albert Sans loads in **both** `.storybook/preview-head.html` and `src/app/layout.tsx`; changing one without the other desynchronises Storybook from the app.
 
 ### Fixed
+- **AlertDialog taught the wrong destructive pattern.** The `Default` story paired destructive content ("Delete workspace? … cannot be undone") with the primary green confirm, contradicting `AlertDialog.md`, which files "Publish this draft?" under `Type=Default` and "Delete workspace?" under `Type=Destructive`. Being first on the Docs page, it was the most likely thing to be copied. `Default` now confirms a reversible publish; the delete case moved to a new `DeleteWorkspace` story. `AlertDialogAction` also gained real `variant`/`size` props — the previous `className={buttonVariants({ variant: 'destructive' })}` route emitted two competing fills and was decided by CSS source order rather than intent.
 - **Sheet and Dialog close buttons were bare 16×16 icons**, not the Ghost Icon buttons their specs called for. No hit area, no ghost hover, opacity-based states. Both now use a Button instance at `icon-sm` (36×36). `Sheet.md` corrected from 32×32, a size Button does not provide.
 - **`validate-contrast.mjs` was reporting success while checking nothing.** It collects pairs by looking for token paths ending `.foreground`, but the Figma re-export collapses those to `-foreground`. Zero paths matched, so it printed `0 pairs checked · 0 fail` and exited clean. Now accepts both spellings: 24 pairs, 19 pass, 5 warn, 0 fail.
 - **`validate-artifacts.mjs` failed all 36 artifacts** — it resolved story paths against an `agentic-ui` folder that does not exist here. Now points at `accura-ui`; errors down to 1 real one.
@@ -35,11 +38,14 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 - **Sidebar stories would not render.** They imported Untitled UI icon names (`BarChart01`, `Settings01`, `File06`, `Menu01`) from `lucide-react`, which does not export them. 35 such imports across 8 files — also breaking Dialog, Sheet, Toast, ButtonGroup and Item. Each name now comes from the package that exports it.
 
 ### Changed
+- **CAPA prototype mock data unified** — listing, supported detail pages, audit trail and electronic signature now share canonical records. The listing shows all six workflow statuses; only Draft, In Review and In Approval link to detail pages. CAPA status badges now use the Medium size.
+- **CAPA prototype documentation consolidated** — listing, create, detail, audit trail, electronic signature and overall flow copy now live in one specification. The document distinguishes designed detail states (Draft and In Review), the reused In Approval layout, and listing-only statuses without detail designs.
 - **Stepper layout reworked** — labels moved below the indicator, the current label changed to `color/brand/primary`, and an optional `description` line was added per step (`color/text/secondary` for complete/current, `color/text/tertiary` for upcoming). Applies to both orientations.
 - **Sidebar rebuilt to the Accura design** — two variants only (`Default`, `DefaultCollapsed`), Dashboard + CAPA nav, Setting / Log Out footer, ACCURA wordmark, and a direction-aware collapse chevron. Expanded width 240px → **256px** per Figma `95:15648`.
 - `*.stories.tsx` and `.storybook` excluded from the Next.js typecheck. Stories are not part of the deployed app and Storybook compiles them through vite.
 
 ### Removed
+- Six superseded CAPA prototype documents: `flow/capa-listing.md`, `flow/create-capa.md`, `flow/capa-detail.md`, `flow/audit-trail-record.md`, `flow/e-signature.md` and `flow/prototype-flow.md`. Their content is preserved in `flow/capa-prototype-spec.md`.
 - Three unrelated demo apps inherited from the fork — ElevenLabs, GrabFood, Simon (18 files).
 - Five unused create-next-app placeholder SVGs from `public/`.
 - `src/app/page.tsx` — an Agentic-era showcase built from 24 shadcn default classes rather than Accura tokens.

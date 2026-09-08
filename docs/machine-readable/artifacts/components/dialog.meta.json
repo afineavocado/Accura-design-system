@@ -206,7 +206,13 @@
       "Type=Form has Slot 1 and Slot 2 between input fields for checkboxes, selects, helper text rows, or custom form elements."
     ],
     "knownIssues": [],
-    "changelog": [],
+    "changelog": [
+      {
+        "date": "2026-09-08",
+        "change": "DialogTitle now renders in Albert Sans via the font-heading utility; body text in the same overlay stays Inter. Headings-only type split, code-only — Figma has no font-family/display token, so this is an accepted Figma-to-code mismatch documented in accura-theme.md section 6. Albert Sans is loaded in both .storybook/preview-head.html and src/app/layout.tsx; change one, change both. Verified in-browser: title computed font-family Albert Sans, description Inter.",
+        "breaking": false
+      }
+    ],
     "darkMode": {
       "notes": "Popup fill uses color/surface/default (Dark: zinc/900) — matches shadcn --card. Previously surface/overlay (zinc/800); changed to align with shadcn card/popover hierarchy.",
       "pairedSurfaceRisk": "None identified."
@@ -219,7 +225,8 @@
       "Dialog"
     ],
     "notes": [
-      "2026-09-08: close button changed from a bare 16×16 icon to a Button instance (variant=ghost, size=icon-sm, 36×36). It had been rendering as an unsized icon with an opacity-70 hover — no hit area, no ghost states. Measured 36×36 after the fix."
+      "2026-09-08: close button changed from a bare 16×16 icon to a Button instance (variant=ghost, size=icon-sm, 36×36). It had been rendering as an unsized icon with an opacity-70 hover — no hit area, no ghost states. Measured 36×36 after the fix.",
+      "DialogTitle carries font-heading (Albert Sans). Do not replace it with a font-family token — none exists in Figma; the family is wired at --font-heading in globals.css."
     ]
   },
   "storybook": {

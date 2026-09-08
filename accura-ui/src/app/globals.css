@@ -10,7 +10,9 @@
   --color-foreground: var(--color-background-default-foreground);
   --font-sans: var(--font-inter);
   --font-mono: var(--font-roboto-mono);
-  --font-heading: var(--font-inter);
+  /* Headings are Albert Sans; body stays Inter. Code-only — there is no
+     font-family/display token in Figma. See accura-theme.md §6. */
+  --font-heading: var(--font-albert-sans);
   --color-sidebar-ring: var(--color-sidebar-ring);
   --color-sidebar-border: var(--color-sidebar-border);
   --color-sidebar-accent-foreground: var(--color-sidebar-accent-foreground);
@@ -96,6 +98,14 @@
   }
   html {
     @apply font-sans;
+  }
+  /* Page headings in Albert Sans. Base layer = low specificity, so any component
+     that sets its own family still wins. h4–h6 stay on body sans deliberately:
+     they read as labels, not titles. */
+  h1,
+  h2,
+  h3 {
+    @apply font-heading;
   }
 
   /* Themed scrollbars — thumb = color/border/strong (zinc/400 light · zinc/500 dark),
