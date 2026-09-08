@@ -45,7 +45,7 @@ sheet                           — COMPONENT, V AUTO-LAYOUT
   │    ├─ text-block            — FRAME, V AUTO-LAYOUT, gap: spacing/component/sm (8px)
   │    │    ├─ title            — TEXT, fill: color/surface/overlay/foreground
   │    │    └─ description      — TEXT, fill: color/text/secondary
-  │    └─ close-button          — INSTANCE (button, Ghost Icon, 32×32)
+  │    └─ close-button          — INSTANCE (Button, variant=Ghost, size=Icon Small — 36×36)
 
   ├─ sheet-body                 — SLOT, V AUTO-LAYOUT
   │                               padding (all sides): spacing/component/lg (16px)
@@ -66,6 +66,16 @@ sheet                           — COMPONENT, V AUTO-LAYOUT
 |---|---|---|
 | `Side=Horizontal` | 380px | 720px (full viewport height) |
 | `Side=Vertical` | 1200px (full viewport width) | 423px |
+
+---
+
+## Close button
+
+The close control is a **Button instance** — `variant="ghost"`, `size="icon-sm"` — not a bare icon. It inherits ghost hover, focus ring and the pill radius from Button, so it cannot drift from the rest of the system.
+
+> **Spec corrected 2026-09-08: 32×32 → 36×36.** Button has no 32×32 icon size — its icon sizes are 36 (Small), 40 (Default) and 44 (Large). The spec asked for a size the component set does not provide, so the code had been rendering a bare 16×16 icon instead. Icon Small is the closest real size.
+>
+> ⚠️ 36×36 is still below the WCAG 2.5.5 minimum of 44×44 — the same accepted constraint that applies to every Small button in the system. Add hit-area padding if the close control needs to meet AAA.
 
 ---
 

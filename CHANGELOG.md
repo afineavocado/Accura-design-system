@@ -28,6 +28,7 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 - `flow/capa-listing.md` and `flow/create-capa.md` — screen content, fields and states for the CAPA screens.
 
 ### Fixed
+- **Sheet and Dialog close buttons were bare 16×16 icons**, not the Ghost Icon buttons their specs called for. No hit area, no ghost hover, opacity-based states. Both now use a Button instance at `icon-sm` (36×36). `Sheet.md` corrected from 32×32, a size Button does not provide.
 - **`validate-contrast.mjs` was reporting success while checking nothing.** It collects pairs by looking for token paths ending `.foreground`, but the Figma re-export collapses those to `-foreground`. Zero paths matched, so it printed `0 pairs checked · 0 fail` and exited clean. Now accepts both spellings: 24 pairs, 19 pass, 5 warn, 0 fail.
 - **`validate-artifacts.mjs` failed all 36 artifacts** — it resolved story paths against an `agentic-ui` folder that does not exist here. Now points at `accura-ui`; errors down to 1 real one.
 - **`item.tsx` broke the production build.** It called `Avatar` with shadcn's compound children (`AvatarImage` / `AvatarFallback`) while Accura's `Avatar` takes props. `avatar.tsx` exports both APIs, which is how they were mixed. Rewritten to the props form.

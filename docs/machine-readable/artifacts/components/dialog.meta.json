@@ -218,7 +218,9 @@
     "exports": [
       "Dialog"
     ],
-    "notes": []
+    "notes": [
+      "2026-09-08: close button changed from a bare 16×16 icon to a Button instance (variant=ghost, size=icon-sm, 36×36). It had been rendering as an unsized icon with an opacity-70 hover — no hit area, no ghost states. Measured 36×36 after the fix."
+    ]
   },
   "storybook": {
     "file": "src/stories/Dialog.stories.tsx",

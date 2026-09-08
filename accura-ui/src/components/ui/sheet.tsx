@@ -6,6 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { XClose } from "@untitledui/icons";
 
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 // ─── Sheet ────────────────────────────────────────────────────────────────────
 // Built on Radix UI Dialog (same primitive as Dialog — NOT Vaul like Drawer).
@@ -123,20 +124,18 @@ const SheetContent = React.forwardRef<
       {...props}
     >
       {children}
-      <SheetPrimitive.Close
-        className={cn(
-          "absolute right-[var(--spacing-component-md)] top-[var(--spacing-component-md)]",
-          "rounded-[var(--radius-sm)]",
-          "text-[var(--color-text-secondary)]",
-          "opacity-70 transition-opacity hover:opacity-100",
-          "focus:outline-none focus:ring-2 focus:ring-[var(--color-ring)]",
-          "data-[state=open]:bg-[var(--color-background-accent)]",
-          "data-[state=open]:text-[var(--color-background-accent-foreground)]",
-          "disabled:pointer-events-none",
-        )}
-      >
-        <XClose className="h-4 w-4" />
-        <span className="sr-only">Close</span>
+      {/* Ghost Icon Small (36×36) per Sheet.md — a Button instance, not a bare
+          icon. Component-First rule: never re-implement an interactive element
+          that already exists as a component. */}
+      <SheetPrimitive.Close asChild>
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          className="absolute right-[var(--spacing-component-md)] top-[var(--spacing-component-md)]"
+        >
+          <XClose className="h-4 w-4" />
+          <span className="sr-only">Close</span>
+        </Button>
       </SheetPrimitive.Close>
     </SheetPrimitive.Content>
   </SheetPortal>

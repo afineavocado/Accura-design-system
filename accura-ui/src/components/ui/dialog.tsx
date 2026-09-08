@@ -5,6 +5,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { XClose } from "@untitledui/icons";
 
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 // ─── Dialog ───────────────────────────────────────────────────────────────────
 // Tokens (from Dialog.md — verified against Figma 266:131):
@@ -92,21 +93,18 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       {children}
+      {/* Ghost Icon Small (36×36) — a Button instance, not a bare icon.
+          Matches Sheet; see Component-First rule in design-system-rules.md. */}
       {showClose && (
-        <DialogPrimitive.Close
-          className={cn(
-            "absolute right-[var(--spacing-component-md)] top-[var(--spacing-component-md)]",
-            "rounded-[var(--radius-sm)]",
-            "text-[var(--color-text-secondary)]",
-            "opacity-70 transition-opacity hover:opacity-100",
-            "focus:outline-none focus:ring-2 focus:ring-[var(--color-ring)]",
-            "data-[state=open]:bg-[var(--color-background-accent)]",
-            "data-[state=open]:text-[var(--color-background-accent-foreground)]",
-            "disabled:pointer-events-none",
-          )}
-        >
-          <XClose className="h-4 w-4" />
-          <span className="sr-only">Close</span>
+        <DialogPrimitive.Close asChild>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="absolute right-[var(--spacing-component-md)] top-[var(--spacing-component-md)]"
+          >
+            <XClose className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </Button>
         </DialogPrimitive.Close>
       )}
     </DialogPrimitive.Content>
