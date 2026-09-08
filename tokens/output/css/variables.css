@@ -1479,6 +1479,11 @@
   --button-size-button-spacing: 4px; /** Gap between icon and label — all sizes (4px) */
   --button-size-button-padding-default: 16px; /** Horizontal padding for Default and Large (16px) */
   --button-size-button-padding-small: 12px; /** Horizontal padding for Small (12px) */
+  --button-destructive-secondary-bg-bg: #fee2e2; /** Low-emphasis destructive button, resting fill. Mirrors button/secondary (brand/100) on the red ramp. */
+  --button-destructive-secondary-bg-hover: #fef2f2; /** Hover — lightens, matching button/secondary which goes brand/100 to brand/50. */
+  --button-destructive-secondary-bg-active: #fecaca; /** Pressed — darkens, matching button/secondary going to brand/200. */
+  --button-destructive-secondary-fg-fg: #7f1d1d; /** Label. red/900 not red/700: on the pressed red/200 surface, red/700 measures 4.47:1 and misses AA. red/900 holds 6.93:1 across all three states. */
+  --button-destructive-secondary-border-default: #ef4444; /** Boundary. red/500 = 3.76:1 against white, clearing the 3:1 floor WCAG 1.4.11 sets for a control boundary. color/border/error (red/300) measures 1.90:1 and would fail — see accura-theme.md Q10. */
   --badge-badge-height-small: 16px; /** Badge-height-small for small badge variant */
   --badge-badge-height-medium: 20px; /** Badge-height-small for medium badge variant */
   --badge-badge-height-large: 24px; /** Badge-height-small for large badge variant */

@@ -13,7 +13,7 @@ Because the semantic and component tiers **alias** primitives, editing the primi
 
 **Figma source:** `[Accura] Agentic Design System`
 Primitives `VariableCollectionId:1:2` (mode: Value) · Semantics `1:129` (Light/Dark) · Components `17:4484` (Light)
-228 primitives · 115 semantics (Light + Dark) · 47 component tokens · 17 text styles — all exported to `tokens/`
+228 primitives · 115 semantics (Light + Dark) · 52 component tokens · 17 text styles — all exported to `tokens/`
 
 **Code:** `accura-ui/` — Storybook on **port 6007** (Agentic's runs on 6006, so both can run side by side).
 
@@ -331,6 +331,7 @@ Four tokens exist in Accura and not in Agentic:
 | `breadcrumb/breadcrumb` | `4` | Figma |
 | **`stepper/border`** | **`#d4d4d8` (zinc/300)** | Figma |
 | **`checkbox/radius`** | **`4px`** | Figma |
+| **`button/destructive-secondary/*`** (5) | red `100 / 50 / 200 / 900` + `brand/destructive` | **code only — not yet in Figma** |
 
 Plus two semantics Agentic lacks: `color/sidebar/active` and `color/sidebar/active/foreground`.
 
@@ -363,6 +364,22 @@ add a semantic nobody else needed yet, or misuse a hover token on a static state
 
 **Consequence:** an R1–R8 audit will flag this as a violation of the inherited rule. It is deliberate.
 If the gap recurs for other components, promote it to a proper semantic instead of repeating the pattern.
+
+`button/destructive-secondary/*` follows the same pattern as every other button variant —
+`button/secondary` already aliases `color.brand.100 / 50 / 200 / 900` directly, so aliasing the
+red ramp is consistent, not a new exception. Two of its five values were chosen *against* the
+obvious semantic and the reasons are worth keeping:
+
+| Token | Obvious choice | Actually used | Why |
+|---|---|---|---|
+| `fg/fg` | `status/danger-subtle/foreground` (red/700) | **red/900** | red/700 on the pressed red/200 fill is **4.47:1** — misses AA. red/900 holds ≥ 6.93:1 in all three states. |
+| `border/default` | `color/border/error` (red/300) | **`brand/destructive`** (red/500) | red/300 is **1.90:1** on white, below the 3:1 floor WCAG 1.4.11 sets for a control boundary. red/500 is 3.76:1. |
+
+> ⚠️ This does **not** resolve **Q10**. `color/border/error` is still red/300 everywhere else it
+> is used. One component routed around it; the underlying question is still open.
+
+> ⚠️ **Code-only.** Figma's button component set has 6 Types and does not include
+> `Destructive Secondary`. Until it is built there, Figma is not the source of truth for Button.
 
 `checkbox/radius` is the second case, and the reason is geometric rather than semantic. Every other form
 control takes `radius/md`. After the base-12 rescale that is `10px`, and the checkbox is `16×16` — CSS
