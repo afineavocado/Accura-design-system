@@ -92,8 +92,14 @@ cd tokens && npm install && node sd.build.mjs   # → output/css/, output/js/
 
 ## Tracking
 
-- `docs/tracking/Storybook Status.md` — per-component pipeline status. ⚠️ Reflects Agentic's status, not Accura's.
-- `docs/tracking/Audit Status.md` — Figma component audit log. ⚠️ Agentic's audits.
+Both reset to Accura's real state on 2026-09-08. Agentic's ticks did not transfer — the brand ramp, sidebar, button radius and status borders all changed, so its verification certified nothing here.
+
+- `docs/tracking/Storybook Status.md` — **1 of 35 stories verified for Accura** (Sidebar). The other 34 are inherited-unverified. Lists the highest-risk components to check first.
+- `docs/tracking/Audit Status.md` — **zero R1–R8 audits run against Accura's Figma file.** The largest gap in the system. Includes a suggested audit order.
+
+## Changelog
+
+- `CHANGELOG.md` — every Accura-specific change, with the breaking ones called out. **Record breaking changes here before they ship.**
 
 ---
 

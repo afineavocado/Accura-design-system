@@ -24,6 +24,7 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 | `docs/tracking/` | Storybook and audit status. ⚠️ Reflects Agentic's status, not Accura's. |
 | `tokens/` | DTCG token JSONs + Style Dictionary build. ⚠️ Agentic's exported values — see `llms.txt`. |
 | **`accura-ui/`** | Component library + Storybook. Same components as `agentic-ui`, Accura tokens. |
+| `CHANGELOG.md` | Every Accura-specific change, breaking ones called out. |
 
 The repository is **self-contained** — no external vault, no absolute paths. A fresh agent can clone it and work.
 
