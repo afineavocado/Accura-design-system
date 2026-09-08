@@ -1127,6 +1127,15 @@
    * Status: Stable
    */
   --font-family-serif: Georgia;
+
+  /**
+   * Heading typeface. Bound in Figma to display/* and heading/md|lg|xl (>= 18px);
+   * heading/sm and heading/xs stay on font-family/sans.
+   * NOTE: this names the family, it does not load it. The runtime family comes from
+   * --font-heading in globals.css, fed by next/font (layout.tsx) and the Google Fonts
+   * link (.storybook/preview-head.html). Both must load Albert Sans or nothing renders.
+   */
+  --font-family-display: Albert Sans;
   /**
    * Intent: Explicitly removes any shadow from an element.
    * Use when: Resetting shadow on a component that inherits one, flat UI surfaces that must have zero elevation.

@@ -1182,6 +1182,7 @@
    * Status: Stable
    */
   --font-family-serif: Georgia;
+  --font-family-display: 'Albert Sans'; /** Heading typeface. Bound to display/* and heading/md-lg-xl text styles (>= 18px). heading/sm and heading/xs stay on font-family/sans. */
   /**
    * Intent: Explicitly removes any shadow from an element.
    * Use when: Resetting shadow on a component that inherits one, flat UI surfaces that must have zero elevation.

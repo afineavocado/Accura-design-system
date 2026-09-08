@@ -67,7 +67,7 @@ cd accura-ui && npm install --legacy-peer-deps && npm run storybook   # → :600
 
 ## Tokens — `tokens/`
 
-DTCG source + Style Dictionary build. **Exported from Accura's Figma file** — 228 primitives, 115 semantics (Light + Dark), 52 component tokens.
+DTCG source + Style Dictionary build. **Exported from Accura's Figma file** — 229 primitives, 115 semantics (Light + Dark), 52 component tokens.
 
 > `stepper/border` aliases a **primitive** directly rather than a semantic — a deliberate Accura rule deviation, see `accura-theme.md` §7. It exists in Figma and survives re-export.
 
@@ -77,7 +77,7 @@ cd tokens && npm install && node sd.build.mjs   # → output/css/, output/js/
 
 | File | |
 |---|---|
-| `primitives.tokens.json` | 228 raw values |
+| `primitives.tokens.json` | 229 raw values |
 | `semantics.tokens.json` | 115 semantics, **Light** mode |
 | `semantics.dark.tokens.json` | the same 115 in **Dark** — source for the `.dark` block |
 | `components.tokens.json` | 52 component tokens |
@@ -110,7 +110,7 @@ Both reset to Accura's real state on 2026-09-08. Agentic's ticks did not transfe
 
 **Accura DS file:** `32llw6anFsjPISJrrp1and` — `[Accura] Agentic Design System`
 Collections: Primitives `1:2` (Value) · Semantics `1:129` (Light/Dark) · Components `17:4484` (Light)
-228 primitives · 115 semantics (Light + Dark) · 52 component tokens · 17 text styles
+229 primitives · 115 semantics (Light + Dark) · 52 component tokens · 17 text styles
 (Published-library counts are lower — 190 / 113 — because some variables are hidden from publishing. `tokens/` is exported from the **local** file, which is complete.)
 
 **Known drift:** two Accura libraries exist. `[Accura One] WebApp` consumes `[Accura] Agentic Design System`; `[Accura One] Website Design` consumes `[Accura] Agentic Design System (beta) (Copy)`. They hold **different values for the same token names** (sidebar background, button radius). This repo documents the **non-Copy** library. See open question Q8 in `accura-theme.md`.

@@ -748,6 +748,11 @@
       "$value": "Georgia",
       "$type": "string",
       "$description": "Intent: Serif typeface for editorial or long-form reading contexts.\nUse when: Marketing pages, blog posts, article bodies, pull quotes where a traditional editorial tone is intentional.\nDo not use: In product UI — serif reads as editorial, not functional.\nUse instead: font-family/sans for all product UI text.\nStatus: Stable"
+    },
+    "display": {
+      "$value": "Albert Sans",
+      "$type": "fontFamily",
+      "$description": "Heading typeface. Bound to display/* and heading/md-lg-xl text styles (>= 18px). heading/sm and heading/xs stay on font-family/sans."
     }
   },
   "shadow": {

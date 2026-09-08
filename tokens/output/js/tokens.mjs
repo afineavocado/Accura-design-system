@@ -278,6 +278,7 @@ export const letterSpacingWidest = 10;
 export const fontFamilySans = "SF Pro";
 export const fontFamilyMono = "Roboto Mono";
 export const fontFamilySerif = "Georgia";
+export const fontFamilyDisplay = "Albert Sans";
 export const shadowNone = "none";
 export const shadowSm = "0 1px 2px 0 rgb(0 0 0 / 0.05)";
 export const shadowDefault = "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)";
