@@ -66,14 +66,14 @@ function AccuraLogo() {
 function SidebarNavigation() {
   return (
     <>
-      <SidebarHeader className="h-14 px-6"><AccuraLogo /></SidebarHeader>
+      <SidebarHeader className="h-14 px-[var(--spacing-component-xl)]"><AccuraLogo /></SidebarHeader>
       <SidebarContent>
-        <SidebarGroup className="gap-1 px-3 py-4">
+        <SidebarGroup className="gap-[var(--spacing-component-xs)] px-[var(--spacing-component-md)] py-[var(--spacing-component-lg)]">
           <SidebarMenuItem icon={<LayoutDashboard className="h-4 w-4" />} label="Dashboard" href="#" />
           <SidebarMenuItem icon={<ClipboardCheck className="h-4 w-4" />} label="CAPA" href="/prototype/accura/capa" active />
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="flex flex-col gap-1 px-3 py-3">
+      <SidebarFooter className="flex flex-col gap-[var(--spacing-component-xs)] px-[var(--spacing-component-md)] py-[var(--spacing-component-md)]">
         <SidebarMenuItem icon={<Settings className="h-4 w-4" />} label="Settings" href="#" />
         <SidebarMenuItem icon={<LogOut className="h-4 w-4" />} label="Logout" href="#" />
       </SidebarFooter>
@@ -86,6 +86,8 @@ function SelectField({
   label,
   placeholder,
   defaultValue,
+  value,
+  onValueChange,
   disabled,
   options,
 }: {
@@ -93,19 +95,21 @@ function SelectField({
   label: string
   placeholder: string
   defaultValue?: string
+  value?: string
+  onValueChange?: (value: string) => void
   disabled?: boolean
-  options: Array<{ value: string; label: string }>
+  options: Array<{ value: string; label: string; disabled?: boolean }>
 }) {
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-[var(--spacing-component-xs)]">
       <RequiredLabel htmlFor={id}>{label}</RequiredLabel>
-      <Select defaultValue={defaultValue} disabled={disabled}>
+      <Select defaultValue={defaultValue} value={value} onValueChange={onValueChange} disabled={disabled}>
         <SelectTrigger id={id} aria-label={label}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
           {options.map((option) => (
-            <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+            <SelectItem key={option.value} value={option.value} disabled={option.disabled}>{option.label}</SelectItem>
           ))}
         </SelectContent>
       </Select>
@@ -115,6 +119,14 @@ function SelectField({
 
 export default function CreateCapaPage() {
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false)
+  const [source, setSource] = React.useState("")
+  const [sourceLink, setSourceLink] = React.useState("")
+
+  const sourceLinkOptions = source === "risk-assessment"
+    ? [{ value: "ra-2026-0012", label: "RA-2026-0012 — Equipment failure" }]
+    : source === "deviation"
+      ? [{ value: "dev-2026-0089", label: "DEV-2026-0089" }]
+      : [{ value: "no-audit-records", label: "No audit records available", disabled: true }]
 
   return (
     <SidebarProvider>
@@ -124,11 +136,11 @@ export default function CreateCapaPage() {
         </Sidebar>
 
         <main className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <header className="flex h-14 shrink-0 items-center border-b border-[var(--color-border-default)] bg-[var(--color-background-default)] px-4 md:px-6">
+          <header className="flex h-14 shrink-0 items-center border-b border-[var(--color-border-default)] bg-[var(--color-background-default)] px-[var(--spacing-layout-xs)] md:px-[var(--spacing-layout-sm)]">
             <Button
               variant="ghost"
               size="icon-sm"
-              className="mr-2 lg:hidden"
+              className="mr-[var(--spacing-component-sm)] lg:hidden"
               aria-label="Toggle navigation"
               aria-expanded={mobileNavOpen}
               onClick={() => setMobileNavOpen((open) => !open)}
@@ -139,15 +151,15 @@ export default function CreateCapaPage() {
           </header>
 
           {mobileNavOpen && (
-            <div className="border-b border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-background)] p-3 lg:hidden">
+            <div className="border-b border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-background)] p-[var(--spacing-component-md)] lg:hidden">
               <SidebarMenuItem icon={<LayoutDashboard className="h-4 w-4" />} label="Dashboard" href="#" />
               <SidebarMenuItem icon={<ClipboardCheck className="h-4 w-4" />} label="CAPA" href="/prototype/accura/capa" active />
             </div>
           )}
 
-          <div className="flex min-h-0 flex-1 overflow-y-auto px-4 py-6 md:px-8 lg:px-12">
-            <div className="mx-auto flex w-full max-w-5xl flex-col gap-5">
-              <div className="flex flex-col gap-2">
+          <div className="flex min-h-0 flex-1 overflow-y-auto px-[var(--spacing-layout-xs)] py-[var(--spacing-layout-sm)] md:px-[var(--spacing-layout-md)] lg:px-[var(--spacing-layout-lg)]">
+            <div className="mx-auto flex w-full max-w-5xl flex-col gap-[var(--spacing-layout-sm)]">
+              <div className="flex flex-col gap-[var(--spacing-component-sm)]">
                 <Button asChild variant="link" className="h-auto w-fit p-0 text-sm no-underline hover:no-underline">
                   <Link href="/prototype/accura/capa">
                     <ChevronLeft className="h-4 w-4" />
@@ -159,13 +171,13 @@ export default function CreateCapaPage() {
                 </h1>
               </div>
 
-              <Card className="gap-5 p-[var(--spacing-component-xl)]">
+              <Card>
                 <CardHeader>
                   <CardTitle className="text-xl">CAPA Details</CardTitle>
                 </CardHeader>
                 <Separator />
-                <CardContent className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2">
-                  <div className="flex flex-col gap-1.5">
+                <CardContent className="grid grid-cols-1 gap-[var(--spacing-component-lg)] md:grid-cols-2">
+                  <div className="flex flex-col gap-[var(--spacing-component-xs)]">
                     <RequiredLabel htmlFor="capa-title">Title</RequiredLabel>
                     <Input id="capa-title" placeholder="Enter title" />
                   </div>
@@ -185,6 +197,11 @@ export default function CreateCapaPage() {
                     id="capa-source"
                     label="Source"
                     placeholder="Select CAPA source"
+                    value={source}
+                    onValueChange={(value) => {
+                      setSource(value)
+                      setSourceLink("")
+                    }}
                     options={[
                       { value: "risk-assessment", label: "Risk Assessment" },
                       { value: "audit", label: "Audit" },
@@ -196,8 +213,10 @@ export default function CreateCapaPage() {
                     id="source-link"
                     label="Source Link"
                     placeholder="Select source link"
-                    disabled
-                    options={[{ value: "none", label: "Select source link" }]}
+                    value={sourceLink}
+                    onValueChange={setSourceLink}
+                    disabled={!source}
+                    options={sourceLinkOptions}
                   />
 
                   <SelectField
@@ -232,19 +251,19 @@ export default function CreateCapaPage() {
                     ]}
                   />
 
-                  <div className="flex flex-col gap-1.5">
+                  <div className="flex flex-col gap-[var(--spacing-component-xs)]">
                     <RequiredLabel htmlFor="due-date">Due Date</RequiredLabel>
                     <DatePicker id="due-date" type="input" placeholder="Select due date" />
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="gap-4 p-[var(--spacing-component-xl)]">
+              <Card>
                 <CardHeader className="flex-row items-center justify-between">
                   <CardTitle className="text-xl">Actions</CardTitle>
                   <span className="text-sm text-[var(--color-text-secondary)]">0 actions</span>
                 </CardHeader>
-                <CardContent className="gap-4">
+                <CardContent>
                   <p className="text-sm text-[var(--color-text-secondary)]">
                     No actions added yet. Add one or more actions with a description, owner and due date. All fields are required for each action.
                   </p>
@@ -252,7 +271,7 @@ export default function CreateCapaPage() {
                 </CardContent>
               </Card>
 
-              <div className="flex flex-wrap items-center justify-end gap-2 pb-8">
+              <div className="flex flex-wrap items-center justify-end gap-[var(--spacing-component-sm)] pb-[var(--spacing-layout-md)]">
                 <Button variant="ghost">Cancel</Button>
                 <Button variant="outline">Save as Draft</Button>
                 <Button>Submit</Button>

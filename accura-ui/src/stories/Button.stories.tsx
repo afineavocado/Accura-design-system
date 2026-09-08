@@ -29,7 +29,7 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'outline', 'secondary', 'ghost', 'link', 'destructive'],
+      options: ['default', 'outline', 'secondary', 'ghost', 'link', 'destructive', 'destructiveSecondary'],
       description: 'Visual style — maps to Figma Type property',
     },
     size: {
@@ -53,6 +53,10 @@ type Story = StoryObj<typeof meta>;
 // --- Variant stories ---
 
 export const Default: Story = {};
+
+export const DestructiveSecondary: Story = {
+  args: { variant: 'destructiveSecondary', children: 'Reject' },
+};
 
 export const Outline: Story = {
   args: { variant: 'outline', children: 'Cancel' },

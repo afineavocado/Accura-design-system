@@ -3,9 +3,9 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import {
   ClipboardCheck,
-  Eye,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -15,15 +15,6 @@ import {
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
 import { Empty } from "@/components/ui/empty"
 import { Input } from "@/components/ui/input"
 import {
@@ -60,28 +51,12 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
-import {
+  canViewCapaDetail,
   capaStatuses,
+  capaStatusVariant,
   initialCapaRecords,
   type CapaRecord,
-  type CapaStatus,
 } from "./mock-data"
-
-const statusVariant: Record<
-  CapaStatus,
-  "success" | "warning" | "blue" | "secondary"
-> = {
-  Close: "success",
-  "Action in Progress": "warning",
-  "In Approval": "blue",
-  "In Review": "warning",
-  Draft: "secondary",
-}
 
 function AccuraLogo() {
   return (
@@ -141,52 +116,20 @@ function StatusBadge({ record }: { record: CapaRecord }) {
     : record.status
 
   return (
-    <Badge variant={statusVariant[record.status]} shape="pill" size="sm">
+    <Badge variant={capaStatusVariant[record.status]} shape="pill" size="md">
       {label}
     </Badge>
   )
 }
 
-function RecordDetails({ record }: { record: CapaRecord }) {
-  const fields = [
-    ["CAPA ID", record.id],
-    ["Title", record.title],
-    ["Due date", record.dueDate],
-    ["Owner", `${record.owner} · ${record.ownerTeam}`],
-    ["QA approver", `${record.approver} · ${record.approverTeam}`],
-    ["Source", `${record.source} · ${record.sourceId}`],
-  ]
-
-  return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      {fields.map(([label, value]) => (
-        <div key={label} className="flex flex-col gap-1">
-          <span className="text-xs font-medium uppercase tracking-wide text-[var(--color-text-secondary)]">
-            {label}
-          </span>
-          <span className="text-sm text-[var(--color-surface-default-foreground)]">
-            {value}
-          </span>
-        </div>
-      ))}
-      <div className="flex flex-col gap-1 sm:col-span-2">
-        <span className="text-xs font-medium uppercase tracking-wide text-[var(--color-text-secondary)]">
-          Status
-        </span>
-        <div><StatusBadge record={record} /></div>
-      </div>
-    </div>
-  )
-}
-
 export default function CapaListingPage() {
+  const router = useRouter()
   const records = initialCapaRecords
   const [query, setQuery] = React.useState("")
   const [status, setStatus] = React.useState("all")
   const [source, setSource] = React.useState("all")
   const [pageSize, setPageSize] = React.useState(10)
   const [page, setPage] = React.useState(1)
-  const [selectedRecord, setSelectedRecord] = React.useState<CapaRecord | null>(null)
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false)
 
   const sourceOptions = React.useMemo(
@@ -216,8 +159,7 @@ export default function CapaListingPage() {
   )
 
   return (
-    <TooltipProvider delayDuration={300}>
-      <SidebarProvider>
+    <SidebarProvider>
         <div className="flex h-screen overflow-hidden bg-[var(--color-background-muted)]">
           <Sidebar type="default" collapsible="none" className="hidden lg:flex">
             <SidebarNavigation />
@@ -319,21 +261,31 @@ export default function CapaListingPage() {
                         <TableHead className="h-10 px-3 text-[11px] uppercase tracking-wide">Owner</TableHead>
                         <TableHead className="h-10 px-3 text-[11px] uppercase tracking-wide">QA approver</TableHead>
                         <TableHead className="h-10 px-3 text-[11px] uppercase tracking-wide">Source</TableHead>
-                        <TableHead className="h-10 w-12 px-2"><span className="sr-only">Actions</span></TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {visibleRecords.map((record) => (
-                        <TableRow key={record.key}>
+                      {visibleRecords.map((record) => {
+                        const detailAvailable = canViewCapaDetail(record)
+
+                        return (
+                        <TableRow
+                          key={record.key}
+                          className={detailAvailable ? "cursor-pointer" : "hover:bg-transparent"}
+                          onClick={(event) => {
+                            if (!detailAvailable || (event.target as HTMLElement).closest("a, button")) return
+                            router.push(`/prototype/accura/capa/${record.id}`)
+                          }}
+                        >
                           <TableCell className="px-3 py-1.5">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-auto p-0 text-xs font-medium text-[var(--color-brand-primary)] hover:bg-transparent hover:underline"
-                              onClick={() => setSelectedRecord(record)}
-                            >
-                              {record.id}
-                            </Button>
+                            {detailAvailable ? (
+                              <Button asChild variant="ghost" size="sm" className="h-auto p-0 text-xs font-medium text-[var(--color-brand-primary)] hover:bg-transparent hover:underline">
+                                <Link href={`/prototype/accura/capa/${record.id}`}>{record.id}</Link>
+                              </Button>
+                            ) : (
+                              <span className="text-xs font-medium text-[var(--color-surface-default-foreground)]">
+                                {record.id}
+                              </span>
+                            )}
                           </TableCell>
                           <TableCell className="px-3 py-1.5 text-xs">{record.title}</TableCell>
                           <TableCell className="px-3 py-1.5"><StatusBadge record={record} /></TableCell>
@@ -353,33 +305,14 @@ export default function CapaListingPage() {
                           <TableCell className="px-3 py-1.5">
                             <div className="flex flex-col text-xs leading-4">
                               <span>{record.source}</span>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-auto justify-start p-0 text-xs font-normal text-[var(--color-text-link)] underline underline-offset-2 hover:bg-transparent"
-                                onClick={() => setSelectedRecord(record)}
-                              >
+                              <span className="text-xs font-normal text-[var(--color-text-link)] underline underline-offset-2">
                                 {record.sourceId}
-                              </Button>
+                              </span>
                             </div>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5 text-right">
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Button
-                                  variant="ghost"
-                                  size="icon-sm"
-                                  aria-label={`View ${record.id}`}
-                                  onClick={() => setSelectedRecord(record)}
-                                >
-                                  <Eye className="h-4 w-4" />
-                                </Button>
-                              </TooltipTrigger>
-                              <TooltipContent side="left">View CAPA</TooltipContent>
-                            </Tooltip>
-                          </TableCell>
                         </TableRow>
-                      ))}
+                        )
+                      })}
                     </TableBody>
                   </Table>
                 ) : (
@@ -470,20 +403,6 @@ export default function CapaListingPage() {
           </main>
         </div>
 
-        <Dialog open={Boolean(selectedRecord)} onOpenChange={(open) => !open && setSelectedRecord(null)}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{selectedRecord?.id}</DialogTitle>
-              <DialogDescription>CAPA record details</DialogDescription>
-            </DialogHeader>
-            {selectedRecord && <RecordDetails record={selectedRecord} />}
-            <DialogFooter>
-              <DialogClose asChild><Button variant="outline">Close</Button></DialogClose>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-
-      </SidebarProvider>
-    </TooltipProvider>
+    </SidebarProvider>
   )
 }

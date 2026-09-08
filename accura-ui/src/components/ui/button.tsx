@@ -17,6 +17,12 @@ const buttonVariants = cva(
           // focus/destructive: red @ 40% opacity, 3px spread (Figma effect style)
           // ring-0 cancels the base ring-2; explicit box-shadow gives correct 3px spread
           "bg-[var(--button-destructive-bg-bg)] text-[var(--button-destructive-fg-fg)] hover:bg-[var(--button-destructive-bg-hover)] active:bg-[var(--button-destructive-bg-active)] focus-visible:ring-0 focus-visible:[box-shadow:0_0_0_3px_rgba(220,38,38,0.4)]",
+        // Low-emphasis destructive — a subtle red surface rather than a solid fill.
+        // For a destructive action that sits beside a primary one and must not
+        // out-shout it (CAPA "Reject" next to "Approve & Sign").
+        // Same focus treatment as `destructive` above.
+        destructiveSecondary:
+          "border border-[var(--color-border-error)] bg-[var(--color-status-danger-subtle)] text-[var(--color-status-danger-subtle-foreground)] hover:bg-[var(--color-red-100)] active:bg-[var(--color-red-200)] dark:hover:bg-[var(--color-red-950)] dark:active:bg-[var(--color-red-900)] focus-visible:ring-0 focus-visible:[box-shadow:0_0_0_3px_rgba(220,38,38,0.4)]",
         outline:
           "border border-[var(--button-outline-border-default)] bg-[var(--button-outline-bg-bg)] text-[var(--button-outline-fg-fg)] hover:bg-[var(--button-outline-bg-hover)] hover:border-[var(--button-outline-border-hover)] active:bg-[var(--button-outline-bg-active)] active:border-[var(--button-outline-border-active)] focus-visible:border-[var(--button-outline-border-focus)] disabled:border-[var(--button-outline-border-disabled)]",
         secondary:

@@ -12,7 +12,7 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'secondary', 'destructive', 'outline', 'dashed', 'success', 'error', 'warning', 'blue', 'online', 'offline', 'notification'],
+      options: ['default', 'secondary', 'destructive', 'outline', 'dashed', 'success', 'error', 'warning', 'blue', 'violet', 'online', 'offline', 'notification'],
       description: 'Visual style — maps to Figma Variant property',
     },
     shape: {
@@ -68,6 +68,10 @@ export const Error: Story = {
 
 export const Blue: Story = {
   args: { variant: 'blue', shape: 'pill', children: 'In Progress' },
+};
+
+export const Violet: Story = {
+  args: { variant: 'violet', shape: 'pill', children: 'Final Approval' },
 };
 
 export const Online: Story = {

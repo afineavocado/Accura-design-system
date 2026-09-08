@@ -25,6 +25,8 @@ const badgeVariants = cva(
           "bg-[var(--color-status-warning-subtle)] border-[var(--color-border-warning)] text-[var(--color-status-warning-subtle-foreground)]",
         error:
           "bg-[var(--color-status-danger-subtle)] border-[var(--color-border-error)] text-[var(--color-status-danger-subtle-foreground)]",
+        violet:
+          "bg-[var(--color-violet-50)] border-[var(--color-violet-300)] text-[var(--color-violet-700)] dark:text-[var(--color-violet-800)]",
         blue:
           "bg-[var(--color-status-info-subtle)] border-[var(--color-border-subtle)] text-[var(--color-status-info-subtle-foreground)]",
         // Presence variants — Pill shape only, dot-slot rendered in JSX
