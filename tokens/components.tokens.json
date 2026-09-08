@@ -193,6 +193,39 @@
         "$type": "number",
         "$description": "Horizontal padding for Small (12px)"
       }
+    },
+    "destructive-secondary": {
+      "bg": {
+        "bg": {
+          "$value": "{color.red.100}",
+          "$type": "color",
+          "$description": "Low-emphasis destructive button, resting fill. Mirrors button/secondary (brand/100) on the red ramp."
+        },
+        "hover": {
+          "$value": "{color.red.50}",
+          "$type": "color",
+          "$description": "Hover — lightens, matching button/secondary which goes brand/100 to brand/50."
+        },
+        "active": {
+          "$value": "{color.red.200}",
+          "$type": "color",
+          "$description": "Pressed — darkens, matching button/secondary going to brand/200."
+        }
+      },
+      "fg": {
+        "fg": {
+          "$value": "{color.red.900}",
+          "$type": "color",
+          "$description": "Label. red/900 not red/700: on the pressed red/200 surface, red/700 measures 4.47:1 and misses AA. red/900 holds 6.93:1 across all three states."
+        }
+      },
+      "border": {
+        "default": {
+          "$value": "{color.brand.destructive}",
+          "$type": "color",
+          "$description": "Boundary. red/500 = 3.76:1 against white, clearing the 3:1 floor WCAG 1.4.11 sets for a control boundary. color/border/error (red/300) measures 1.90:1 and would fail — see accura-theme.md Q10."
+        }
+      }
     }
   },
   "badge": {

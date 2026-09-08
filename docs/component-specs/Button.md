@@ -8,7 +8,7 @@ A clickable action element. Supports 6 visual types, 5 states, and 6 sizes inclu
 
 | Property | Options | Default |
 |---|---|---|
-| `Type` | `Default`, `Outline`, `Secondary`, `Ghost`, `Link`, `Destructive` | `Default` |
+| `Type` | `Default`, `Outline`, `Secondary`, `Ghost`, `Link`, `Destructive`, `Destructive Secondary` | `Default` |
 | `State` | `Enabled`, `Hover`, `Focus`, `Disabled`, `Active` | `Enabled` |
 | `Size` | `Small`, `Default`, `Large`, `Icon Small`, `Icon Default`, `Icon Large` | `Default` |
 
@@ -86,6 +86,46 @@ button
 | `Ghost` | — (transparent) | — | `button/ghost/fg/fg` |
 | `Link` | — (transparent) | — | `button/link/fg/default` |
 | `Destructive` | `button/destructive/bg/bg` | — | `button/destructive/fg/fg` |
+| `Destructive Secondary` | `button/destructive-secondary/bg/bg` | `button/destructive-secondary/border/default` | `button/destructive-secondary/fg/fg` |
+
+### Destructive Secondary — low-emphasis destructive
+
+| State | Fill | Label | Border |
+|---|---|---|---|
+| `Enabled` | `button/destructive-secondary/bg/bg` (red/100) | `button/destructive-secondary/fg/fg` (red/900) | `button/destructive-secondary/border/default` (red/500) |
+| `Hover` | `button/destructive-secondary/bg/hover` (red/50) | unchanged | unchanged |
+| `Active` | `button/destructive-secondary/bg/active` (red/200) | unchanged | unchanged |
+| `Focus` | — | — | red glow, identical to `Destructive` |
+
+Structure mirrors `Secondary` (brand 100 / 50 / 200 / 900) on the red ramp — this variant
+is to `Destructive` what `Secondary` is to `Default`.
+
+**When to use.** A destructive action that shares a footer with a primary action which must
+stay dominant — CAPA `Reject` beside `Approve & Sign`, or `Return for revision` beside
+`Approve`.
+
+**Why not two solid fills.** Solid `Destructive` beside solid `Default` measures **1.20:1**
+between the two fills — near-identical lightness, so the meaning rides entirely on hue. Under
+deuteranopia (1 in 12 men) they resolve to `#939338` and `#747455`: two olive pills, 1.48:1
+apart. Two maximum-weight buttons also leave no default path, on a control that ends in a
+21 CFR Part 11 signature.
+
+**Why not `Outline`.** On the CAPA detail screen `Outline` already carries *View audit trail*
+(navigation) and *Cancel* (dismiss). An outline `Reject` would look identical to a read-only
+nav action, under-signalling a formal, signed, audit-logged decision.
+
+**Two token choices worth knowing:**
+- Label is **red/900, not red/700**. `color/status/danger-subtle/foreground` is red/700, which
+  measures **4.47:1** on the pressed red/200 fill and misses AA. red/900 holds ≥ 6.93:1 across
+  all three states.
+- Border is **red/500 via `color/brand/destructive`**, not `color/border/error` (red/300).
+  red/300 is **1.90:1** against white and fails the 3:1 floor WCAG 1.4.11 sets for a control
+  boundary. red/500 is 3.76:1. This does **not** resolve **Q10** — `border/error` is still pale
+  wherever else it is used.
+
+Mode-invariant — no `.dark` override, exactly like `Secondary`.
+
+Verified in-browser: rest 8.20:1 · hover 9.16:1 · active 6.93:1 · focus ring identical to `Destructive`.
 
 ### Per State — border overrides (Outline only)
 

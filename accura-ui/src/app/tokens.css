@@ -1460,6 +1460,23 @@
    * See accura-theme.md §7 for the rule deviation.
    */
   --checkbox-radius: 4px;
+
+  /**
+   * Button — Destructive Secondary (low-emphasis destructive).
+   * For a destructive action standing beside a primary one that must stay dominant:
+   * CAPA "Reject" next to "Approve & Sign". Two solid fills side by side give the
+   * user no default path, and red-vs-green solids measure 1.20:1 against each other.
+   * Structure mirrors button/secondary (brand 100 / 50 / 200 / 900) on the red ramp.
+   * Mode-invariant, exactly like button/secondary — no .dark override.
+   */
+  --button-destructive-secondary-bg-bg: #fee2e2;
+  --button-destructive-secondary-bg-hover: #fef2f2;
+  --button-destructive-secondary-bg-active: #fecaca;
+  /* red/900, not red/700: red/700 on the pressed red/200 fill is 4.47:1 and misses AA. */
+  --button-destructive-secondary-fg-fg: #7f1d1d;
+  /* red/500 = 3.76:1 on white. color/border/error (red/300) is 1.90:1 and would fail
+     the 3:1 control-boundary floor — see accura-theme.md Q10. */
+  --button-destructive-secondary-border-default: #ef4444;
 }
 
 /* ─── Dark mode overrides ─────────────────────────────────────────────────────

@@ -29,7 +29,7 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'outline', 'secondary', 'ghost', 'link', 'destructive'],
+      options: ['default', 'outline', 'secondary', 'ghost', 'link', 'destructive', 'destructiveSecondary'],
       description: 'Visual style — maps to Figma Type property',
     },
     size: {
@@ -72,6 +72,40 @@ export const Link: Story = {
 
 export const Destructive: Story = {
   args: { variant: 'destructive', children: 'Delete project' },
+};
+
+// Low-emphasis destructive — for a destructive action that shares the footer with
+// a primary one that must stay dominant.
+export const DestructiveSecondary: Story = {
+  args: { variant: 'destructiveSecondary', children: 'Reject' },
+};
+
+// The pairing this variant exists for. Solid red beside solid green measures
+// 1.20:1 — the two fills are near-identical in lightness, so the meaning rides
+// entirely on hue and collapses for red-green colour blindness (1 in 12 men).
+export const RejectVersusApprove: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <div>
+        <p className="mb-2 text-xs font-semibold text-[var(--color-background-default-foreground)]">
+          Correct — one primary, one low-emphasis destructive
+        </p>
+        <div className="flex justify-end gap-[var(--spacing-component-sm)]">
+          <Button variant="destructiveSecondary" size="sm">Reject</Button>
+          <Button size="sm">Approve &amp; Sign</Button>
+        </div>
+      </div>
+      <div>
+        <p className="mb-2 text-xs font-semibold text-[var(--color-text-secondary)]">
+          Avoid — two solid fills compete, and neither reads as the default path
+        </p>
+        <div className="flex justify-end gap-[var(--spacing-component-sm)]">
+          <Button variant="destructive" size="sm">Reject</Button>
+          <Button size="sm">Approve &amp; Sign</Button>
+        </div>
+      </div>
+    </div>
+  ),
 };
 
 // --- Size stories ---
@@ -137,9 +171,7 @@ export const DestructiveWithConfirmation: Story = {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction asChild>
-            <Button variant="destructive">Delete project</Button>
-          </AlertDialogAction>
+          <AlertDialogAction variant="destructive">Delete project</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
