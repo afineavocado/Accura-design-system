@@ -13,7 +13,7 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Agentic Design System",
+  title: "Accura Design System",
   description: "Component library — Figma → tokens → shadcn/ui",
 };
 

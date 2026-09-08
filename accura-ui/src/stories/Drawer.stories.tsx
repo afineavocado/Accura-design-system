@@ -120,7 +120,7 @@ export const Right: Story = {
         <div className="flex-1 p-[var(--spacing-component-lg)] flex flex-col gap-[var(--spacing-component-lg)]">
           <div className="flex flex-col gap-[var(--spacing-component-xs)]">
             <Label htmlFor="proj-name">Project name</Label>
-            <Input id="proj-name" defaultValue="Agentic Design System" />
+            <Input id="proj-name" defaultValue="Accura Design System" />
           </div>
           <div className="flex flex-col gap-[var(--spacing-component-xs)]">
             <Label htmlFor="proj-owner">Owner</Label>

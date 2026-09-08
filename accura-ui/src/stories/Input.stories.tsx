@@ -39,7 +39,7 @@ export const Default: Story = {};
 // ─── Filled — typed value, same border as Default ─────────────────────────────
 
 export const Filled: Story = {
-  args: { defaultValue: 'Agentic Design System', placeholder: 'Project name' },
+  args: { defaultValue: 'Accura Design System', placeholder: 'Project name' },
 };
 
 // ─── Disabled — fill: color/background/muted · border: color/border/disabled ──
