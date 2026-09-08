@@ -21,6 +21,11 @@
     "knownIssues": [],
     "changelog": [
       {
+        "date": "2026-09-08",
+        "change": "AlertDialogAction now takes real `variant` and `size` props (VariantProps<typeof buttonVariants>) instead of requiring className={buttonVariants({ variant: 'destructive' })}. The className route only worked by CSS source order — both fills were emitted and there is no tailwind-merge — so it was fragile and easy to get wrong. AlertDialogCancel takes `size` (no `variant`: cancel is always outline). Stories updated to `variant=\"destructive\"`. Separately, the Default story was fixed: it paired destructive content ('Delete workspace? … cannot be undone') with the primary (green) confirm, contradicting AlertDialog.md:192-193, which lists 'Publish this draft?' under Type=Default and 'Delete workspace?' under Type=Destructive. Default now confirms publishing; the delete case moved to a new DeleteWorkspace story using the destructive variant.",
+        "breaking": false
+      },
+      {
         "date": "2026-06-17",
         "change": "Destructive stories (Destructive, DestructiveCentered): confirm button switched from asChild + <Button variant='destructive'> to AlertDialogAction className={buttonVariants({ variant: 'destructive' })} (shadcn-canonical). The asChild approach made Radix Slot concatenate AlertDialogAction's default buttonVariants() (primary) with the child's destructive classes without tailwind-merge, so primary won and the confirm rendered in the primary style rather than destructive. Story-only; component tsx unchanged.",
         "breaking": false
@@ -44,7 +49,8 @@
       "No × close button on destructive modals — closing ≠ cancelling. If × is needed, use Dialog instead.",
       "Focus is trapped by Radix on open. Initial focus goes to first focusable element (cancel button).",
       "Backdrop click does NOT close — by design. Forces explicit decision.",
-      "AlertDialogAction already applies buttonVariants() (default primary). For a destructive confirm, pass className={buttonVariants({ variant: 'destructive' })} on AlertDialogAction. Do NOT wrap a nested <Button variant='destructive'> via asChild — Radix Slot concatenates both classNames without tailwind-merge, so primary wins and the button renders in the primary style rather than destructive."
+      "AlertDialogAction defaults to the primary fill. For any irreversible confirm (delete, revoke, overwrite) pass variant=\"destructive\" — it is a real prop forwarded to buttonVariants, so exactly one fill is emitted.",
+      "Do NOT wrap a nested <Button variant='destructive'> via asChild, and do NOT pass className={buttonVariants({ variant: 'destructive' })}. AlertDialogAction is already a button; Radix Slot and cn() both concatenate class strings with no tailwind-merge, so two competing fills land and the winner is decided by CSS source order, not by intent."
     ]
   },
 
@@ -216,9 +222,9 @@
   "storybook": {
     "file": "src/stories/AlertDialog.stories.tsx",
     "title": "Overlay/AlertDialog",
-    "stories": ["Default", "Destructive", "CenterAlign", "FullWidthFooter", "DestructiveCentered"],
+    "stories": ["Default", "Destructive", "DeleteWorkspace", "CenterAlign", "FullWidthFooter", "DestructiveCentered"],
     "decorators": ["none"],
-    "notes": "Footer gap fixed 2026-06-03: flex-col gap changed from xs (4px) to sm (8px) per spec. Destructive confirm uses buttonVariants({ variant: 'destructive' }) on AlertDialogAction (not asChild + nested Button) — verified red in light + dark 2026-06-17."
+    "notes": "Footer gap fixed 2026-06-03: flex-col gap changed from xs (4px) to sm (8px) per spec. Destructive confirms use variant=\"destructive\" on AlertDialogAction (not asChild + nested Button, not a buttonVariants className). Measured in-browser 2026-09-08 — confirm background: Default #008852, Destructive #ef4444, DeleteWorkspace #ef4444, DestructiveCentered #ef4444, CenterAlign #008852, FullWidthFooter #008852; 6/6 as specified."
   },
 
   "constraints": {

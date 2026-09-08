@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
+import { type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
@@ -154,30 +155,41 @@ const AlertDialogDescription = React.forwardRef<
 AlertDialogDescription.displayName = AlertDialogPrimitive.Description.displayName
 
 // ─── AlertDialogAction ────────────────────────────────────────────────────────
-// Uses buttonVariants — pass variant="destructive" for destructive confirmations.
-// Button component owns all token bindings — do not override fills here.
+// Type=Destructive → pass variant="destructive". Any irreversible confirm (delete,
+// revoke, overwrite) MUST use it — see Alert.md.
+//
+// The variant is a real prop, not a className. AlertDialogAction is already a
+// button, so it cannot take asChild + a nested <Button>: Radix Slot concatenates
+// class strings with no tailwind-merge, both fills land, and primary wins on CSS
+// source order. Passing the variant through buttonVariants generates one class
+// set, so the intended fill is the only one present.
 
 const AlertDialogAction = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Action>,
-  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action> &
+    VariantProps<typeof buttonVariants>
+>(({ className, variant, size, ...props }, ref) => (
   <AlertDialogPrimitive.Action
     ref={ref}
-    className={cn(buttonVariants(), className)}
+    className={cn(buttonVariants({ variant, size }), className)}
     {...props}
   />
 ))
 AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName
 
 // ─── AlertDialogCancel ────────────────────────────────────────────────────────
+// Always outline — the cancel path must never compete with the confirm button,
+// so no `variant` prop is exposed. `size` is passed through to stay in step
+// with the action button.
 
 const AlertDialogCancel = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Cancel>,
-  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel> &
+    Pick<VariantProps<typeof buttonVariants>, "size">
+>(({ className, size, ...props }, ref) => (
   <AlertDialogPrimitive.Cancel
     ref={ref}
-    className={cn(buttonVariants({ variant: "outline" }), className)}
+    className={cn(buttonVariants({ variant: "outline", size }), className)}
     {...props}
   />
 ))

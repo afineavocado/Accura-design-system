@@ -82,10 +82,12 @@ The icon inside `Destructive` icon-container sits on `color/status/danger-subtle
 
 Footer button fills are set by the **parent alert-dialog** on the button instance root — not overridden inside the button. This is intentional Figma composition.
 
-| Type | btn-confirm | btn-cancel |
-|---|---|---|
-| `Default` | Primary (`button/primary/bg/bg`) | Outline (`button/outline/bg/bg`) |
-| `Destructive` | Destructive (`button/destructive/bg/bg`) | Outline (`button/outline/bg/bg`) |
+| Type | btn-confirm | btn-cancel | React |
+|---|---|---|---|
+| `Default` | Primary (`button/primary/bg/bg`) | Outline (`button/outline/bg/bg`) | `<AlertDialogAction>` |
+| `Destructive` | Destructive (`button/destructive/bg/bg`) | Outline (`button/outline/bg/bg`) | `<AlertDialogAction variant="destructive">` |
+
+> **In code:** `variant` is a real prop on `AlertDialogAction`. Do **not** set the type with `className={buttonVariants({ variant: 'destructive' })}`, and do **not** wrap a nested `<Button>` via `asChild` — `AlertDialogAction` is already a button, and neither Radix Slot nor `cn()` runs tailwind-merge, so both fills are emitted and CSS source order picks the winner. `AlertDialogCancel` exposes no `variant`: cancel is always Outline.
 
 > **R8 rule:** Setting fills on button instance roots is correct Figma composition — never flag this as an R8 violation. The button component owns its internal fills; the parent sets the root instance fill to define the button type.
 
@@ -167,6 +169,7 @@ Radix UI AlertDialog uses `data-state=open/closed` for enter/exit. The overlay f
 
 - Use `alert-dialog` only when the user must acknowledge or decide before continuing
 - `Type=Destructive` — always include a cancel path. Label confirm clearly ("Delete", "Revoke", "Overwrite")
+- Match the Type to the **consequence, not the layout**: if the description says the action cannot be undone, the confirm button must be Destructive. A delete behind a green Primary button reads as "safe to proceed"
 - Do not add a × close button to destructive alert-dialogs — it signals an escape that shouldn't exist
 - `Footer=Full-width` — use on mobile or when the button labels are long
 - `Align=Center` — use for brief confirmations with short title + description

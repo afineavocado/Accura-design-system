@@ -10,7 +10,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 
 // Source: Alert.md (alert-dialog section) — Figma 152:3240
 // Separate shadcn component from Alert (inline banner) — follows one-story-per-component rule.
@@ -39,24 +39,28 @@ type Story = StoryObj<typeof meta>;
 // ─── Default — Type=Default, Align=Left, Footer=Inline ────────────────────────
 // Standard confirmation. Cancel (outline) + Action (primary) buttons.
 // role="alertdialog" — Escape does NOT close (unlike Dialog) — user must choose.
+//
+// Type=Default is for confirmations the user can walk back — publish, submit,
+// send. Anything irreversible belongs in the Destructive story below; a delete
+// behind a primary (green) button reads as "safe to proceed" and is a bug.
 
 export const Default: Story = {
   render: () => (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline">Delete workspace</Button>
+        <Button variant="outline">Publish changes</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete workspace?</AlertDialogTitle>
+          <AlertDialogTitle>Publish these changes?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete the workspace and all its projects.
-            This action cannot be undone.
+            The updated CAPA will become visible to everyone in the workspace.
+            You can keep editing it after publishing.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Delete workspace</AlertDialogAction>
+          <AlertDialogAction>Publish</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -64,9 +68,10 @@ export const Default: Story = {
 };
 
 // ─── Destructive — Type=Destructive ───────────────────────────────────────────
-// Action button uses the destructive variant via buttonVariants on AlertDialogAction
-// (shadcn-canonical). AlertDialogAction is already a button — do NOT wrap a nested
-// <Button> via asChild: both buttonVariants would collide and primary would win.
+// Every irreversible confirm — delete, revoke, overwrite — uses variant="destructive"
+// (button/destructive/bg/bg, #ef4444). AlertDialogAction is already a button, so do
+// NOT wrap a nested <Button> via asChild: Radix Slot concatenates both class strings
+// with no tailwind-merge and primary wins on source order. Pass the prop instead.
 
 export const Destructive: Story = {
   render: () => (
@@ -84,9 +89,34 @@ export const Destructive: Story = {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className={buttonVariants({ variant: 'destructive' })}>
-            Revoke access
-          </AlertDialogAction>
+          <AlertDialogAction variant="destructive">Revoke access</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  ),
+};
+
+// ─── Delete workspace — the canonical destructive confirmation ────────────────
+// Kept as its own story because "delete + cannot be undone" is the case most
+// likely to be copied. It must be red.
+
+export const DeleteWorkspace: Story = {
+  render: () => (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="outline">Delete workspace</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete workspace?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This will permanently delete the workspace and all its projects.
+            This action cannot be undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction variant="destructive">Delete workspace</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -162,9 +192,7 @@ export const DestructiveCentered: Story = {
         </AlertDialogHeader>
         <AlertDialogFooter className="justify-center">
           <AlertDialogCancel>Keep account</AlertDialogCancel>
-          <AlertDialogAction className={buttonVariants({ variant: 'destructive' })}>
-            Delete account
-          </AlertDialogAction>
+          <AlertDialogAction variant="destructive">Delete account</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
