@@ -73,35 +73,35 @@
         "Small": {
           "height": 36,
           "paddingH": 12,
-          "radius": 8,
+          "radius": 9999,
           "textStyle": "label/sm"
         },
         "Default": {
           "height": 40,
           "paddingH": 16,
-          "radius": 8,
+          "radius": 9999,
           "textStyle": "label/md"
         },
         "Large": {
           "height": 44,
           "paddingH": 16,
-          "radius": 12,
+          "radius": 9999,
           "textStyle": "label/md"
         },
         "Icon Small": {
           "height": 36,
           "width": 36,
-          "radius": 8
+          "radius": 9999
         },
         "Icon Default": {
           "height": 40,
           "width": 40,
-          "radius": 8
+          "radius": 9999
         },
         "Icon Large": {
           "height": 44,
           "width": 44,
-          "radius": 12
+          "radius": 9999
         }
       }
     }

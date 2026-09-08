@@ -117,7 +117,7 @@ Destructive uses the `focus/destructive` effect style instead (no ring stroke).
 
 | Property | Token |
 |---|---|
-| `border-radius` | `button/size/Button radius 1` → `radius/xl` 12px (Large / Icon Large) · `button/size/Button radius 2` → `radius/base` 8px (Small / Default / Icon Small / Icon Default) |
+| `border-radius` | **Accura: both tokens → `radius/full` = `9999` (pill), every size.** `button/size/Button radius 1` (Large / Icon Large) · `button/size/Button radius 2` (Small / Default / Icon Small / Icon Default). *(Agentic maps these to `radius/xl` 12px and `radius/base` 8px — not Accura.)* |
 | `height` | `button/size/Button-height-small` (36px) · `Button-height medium` (40px) · `Button-height-large` (44px) |
 | `padding-left` / `padding-right` | `button/size/Button-padding-default` → `spacing/4` 16px (Default / Large) · `button/size/Button-padding-small` → `spacing/3` 12px (Small) |
 | `gap` | `button/size/Button spacing` → `spacing/component/xs` (4px) |
