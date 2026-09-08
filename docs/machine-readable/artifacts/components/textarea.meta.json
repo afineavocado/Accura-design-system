@@ -29,7 +29,7 @@
       },
       {
         "date": "2026-06-03",
-        "change": "Invalid state: blue focus ring replaced with red ring using [&[aria-invalid]] compound selector. Prevents blue ring appearing on focused invalid field.",
+        "change": "Invalid state: default focus ring (color/ring) replaced with the error ring (color/border/error) using [&[aria-invalid]] compound selector. Prevents the default focus ring appearing on a focused invalid field.",
         "breaking": false
       }
     ],
@@ -176,7 +176,7 @@
         "borderToken": "color/border/error",
         "ringToken": "color/border/error",
         "ringGlow": "color-mix(in_srgb,var(--color-border-error)_20%,transparent)",
-        "notes": "Uses [&[aria-invalid]] compound selector to beat focus-visible specificity. Blue ring must NOT appear when invalid."
+        "notes": "Uses [&[aria-invalid]] compound selector to beat focus-visible specificity. The default focus ring (color/ring) must NOT appear when invalid."
       },
       "disabled": {
         "opacity": null,
@@ -209,7 +209,7 @@
     "interactionModel": "uncontrolled",
     "typeGuide": {
       "Default": "Empty field awaiting input. Shows placeholder text.",
-      "Focused": "User has clicked in. Blue border + ring glow. Enter inserts newline.",
+      "Focused": "User has clicked in. Focus border + ring glow — color/border/focus with color/ring. Enter inserts newline.",
       "Filled": "User has typed content. Value text replaces placeholder.",
       "Invalid": "Validation failed. Red border + red ring. Description shows specific error message.",
       "Disabled": "Non-interactive. Muted fill. No focus possible."

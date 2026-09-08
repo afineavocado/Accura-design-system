@@ -136,7 +136,7 @@
         "borderToken": "color/border/error",
         "ringToken": "color/border/error",
         "ringGlow": "color-mix(in_srgb,var(--color-border-error)_20%,transparent)",
-        "notes": "Uses [&[aria-invalid]] compound selector to beat data-[state=open]/focus-visible specificity. Blue ring must NOT appear when invalid."
+        "notes": "Uses [&[aria-invalid]] compound selector to beat data-[state=open]/focus-visible specificity. The default focus ring (color/ring) must NOT appear when invalid."
       }
     }
   },

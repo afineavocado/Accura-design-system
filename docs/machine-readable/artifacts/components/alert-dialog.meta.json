@@ -22,7 +22,7 @@
     "changelog": [
       {
         "date": "2026-06-17",
-        "change": "Destructive stories (Destructive, DestructiveCentered): confirm button switched from asChild + <Button variant='destructive'> to AlertDialogAction className={buttonVariants({ variant: 'destructive' })} (shadcn-canonical). The asChild approach made Radix Slot concatenate AlertDialogAction's default buttonVariants() (primary) with the child's destructive classes without tailwind-merge, so primary won and the confirm rendered blue. Story-only; component tsx unchanged.",
+        "change": "Destructive stories (Destructive, DestructiveCentered): confirm button switched from asChild + <Button variant='destructive'> to AlertDialogAction className={buttonVariants({ variant: 'destructive' })} (shadcn-canonical). The asChild approach made Radix Slot concatenate AlertDialogAction's default buttonVariants() (primary) with the child's destructive classes without tailwind-merge, so primary won and the confirm rendered in the primary style rather than destructive. Story-only; component tsx unchanged.",
         "breaking": false
       }
     ],
@@ -44,7 +44,7 @@
       "No × close button on destructive modals — closing ≠ cancelling. If × is needed, use Dialog instead.",
       "Focus is trapped by Radix on open. Initial focus goes to first focusable element (cancel button).",
       "Backdrop click does NOT close — by design. Forces explicit decision.",
-      "AlertDialogAction already applies buttonVariants() (default primary). For a destructive confirm, pass className={buttonVariants({ variant: 'destructive' })} on AlertDialogAction. Do NOT wrap a nested <Button variant='destructive'> via asChild — Radix Slot concatenates both classNames without tailwind-merge, so primary wins and the button renders blue."
+      "AlertDialogAction already applies buttonVariants() (default primary). For a destructive confirm, pass className={buttonVariants({ variant: 'destructive' })} on AlertDialogAction. Do NOT wrap a nested <Button variant='destructive'> via asChild — Radix Slot concatenates both classNames without tailwind-merge, so primary wins and the button renders in the primary style rather than destructive."
     ]
   },
 
