@@ -1444,8 +1444,8 @@
    * with the right meaning: color/border/default (#e4e4e7) is invisible against the
    * #f4f4f5 fill, while color/border/hover and color/input/border mean hover state
    * and input boundary respectively.
-   * ⚠️ Code-only — this token does NOT exist in Figma. A token re-export will not
-   * regenerate it. See accura-theme.md §7.
+   * Exists in Figma's Components collection and survives re-export.
+   * See accura-theme.md §7 for the rule deviation.
    */
   --stepper-border: #d4d4d8;
 }

@@ -22,7 +22,7 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 ## 2026-09-08
 
 ### Added
-- **`stepper/border` component token** (`#d4d4d8` / zinc/300) for the upcoming-step ring. **Aliases a primitive directly**, which the inherited ruleset forbids — Accura now treats the component tier as another semantic layer. ⚠️ Code-only: it is not in Figma, so a token re-export will drop it.
+- **`stepper/border` component token** (`#d4d4d8` / zinc/300) for the upcoming-step ring. **Aliases a primitive directly**, which the inherited ruleset forbids — Accura now treats the component tier as another semantic layer. Added in code first, then created in Figma and confirmed by re-export, so it is durable. Component tokens: 45 → 46.
 - **Stepper component** — horizontal and vertical progress indicator for multi-step flows, built for the CAPA workflow. Spec, component, 7 stories and `meta.json`. Custom, since shadcn/ui has no stepper.
 - **CAPA prototype flow** on branch `prototype/capa-flow` — listing, create form and mock data at `accura-ui/src/app/prototype/accura/`. Built against the real component library; deploys as three static routes.
 - `flow/capa-listing.md` and `flow/create-capa.md` — screen content, fields and states for the CAPA screens.

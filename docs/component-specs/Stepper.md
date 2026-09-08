@@ -73,7 +73,7 @@ The connector is rendered by every step **except the last**. Its colour is drive
 
 It aliases a **primitive directly**, which the inherited ruleset forbids. Accura treats the component tier as another semantic layer, so this is allowed — see `accura-theme.md` §7. The value exists because no semantic carries it with the right meaning: `color/border/default` (`#e4e4e7`) is invisible against the `#f4f4f5` fill, and `color/border/hover` / `color/input/border` mean hover state and input boundary.
 
-> ⚠️ **Code-only.** This token does not exist in Figma. Re-exporting tokens will not regenerate it — it lives in `tokens/components.tokens.json` and `accura-ui/src/app/tokens.css` by hand.
+> Created in Figma's Components collection 2026-09-08 — it survives token re-export.
 
 ### Connector
 

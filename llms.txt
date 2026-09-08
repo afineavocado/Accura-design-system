@@ -69,7 +69,7 @@ cd accura-ui && npm install --legacy-peer-deps && npm run storybook   # → :600
 
 DTCG source + Style Dictionary build. **Exported from Accura's Figma file** — 228 primitives, 115 semantics (Light + Dark), 46 component tokens.
 
-> ⚠️ **`stepper/border` is hand-added and not in Figma.** Re-exporting the Components collection will drop it. Re-add it after any export, or create it in Figma to make it durable. It also aliases a primitive directly — a deliberate Accura rule deviation, see `accura-theme.md` §7.
+> `stepper/border` aliases a **primitive** directly rather than a semantic — a deliberate Accura rule deviation, see `accura-theme.md` §7. It exists in Figma and survives re-export.
 
 ```bash
 cd tokens && npm install && node sd.build.mjs   # → output/css/, output/js/
@@ -80,7 +80,7 @@ cd tokens && npm install && node sd.build.mjs   # → output/css/, output/js/
 | `primitives.tokens.json` | 228 raw values |
 | `semantics.tokens.json` | 115 semantics, **Light** mode |
 | `semantics.dark.tokens.json` | the same 115 in **Dark** — source for the `.dark` block |
-| `components.tokens.json` | 46 component tokens — 45 exported from Figma, plus `stepper/border` which is **code-only** |
+| `components.tokens.json` | 46 component tokens |
 | `tokens.tokens.json` | all three combined |
 | `sd.build.mjs` · `validate-contrast.mjs` | build + contrast gate |
 | `output/` | generated — `variables.css` (403 props), `tailwind-v4.css`, `tokens.mjs` |

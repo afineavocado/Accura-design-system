@@ -243,8 +243,7 @@
   "stepper": {
     "border": {
       "$value": "{color.zinc.300}",
-      "$type": "color",
-      "$description": "Intent:      Ring on the Stepper's upcoming-step indicator.\nUse when:    The 2px border of a not-yet-reached step indicator.\nDo not use:  Any other border — this is scoped to Stepper.\nNote:        Aliases the primitive color/zinc/300 directly. No semantic carries this value with the right meaning — color/border/default (#e4e4e7) is invisible against the #f4f4f5 fill, and color/border/hover / color/input/border mean hover and input-boundary respectively.\nStatus:      active"
+      "$type": "color"
     }
   }
 }

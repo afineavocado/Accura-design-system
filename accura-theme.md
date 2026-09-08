@@ -13,7 +13,7 @@ Because the semantic and component tiers **alias** primitives, editing the primi
 
 **Figma source:** `[Accura] Agentic Design System`
 Primitives `VariableCollectionId:1:2` (mode: Value) · Semantics `1:129` (Light/Dark) · Components `17:4484` (Light)
-228 primitives · 115 semantics (Light + Dark) · 45 component tokens · 17 text styles — all exported to `tokens/`
+228 primitives · 115 semantics (Light + Dark) · 46 component tokens · 17 text styles — all exported to `tokens/`
 
 **Code:** `accura-ui/` — Storybook on **port 6007** (Agentic's runs on 6006, so both can run side by side).
 
@@ -255,7 +255,7 @@ Four tokens exist in Accura and not in Agentic:
 | `color/border/info` | `#8ec5ff` (blue/300) | Figma |
 | `color/text/tertiary` | `#71717a` (zinc/500) | Figma |
 | `breadcrumb/breadcrumb` | `4` | Figma |
-| **`stepper/border`** | **`#d4d4d8` (zinc/300)** | ⚠️ **code only — not in Figma** |
+| **`stepper/border`** | **`#d4d4d8` (zinc/300)** | Figma |
 
 Plus two semantics Agentic lacks: `color/sidebar/active` and `color/sidebar/active/foreground`.
 
