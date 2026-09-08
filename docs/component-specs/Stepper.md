@@ -57,7 +57,7 @@ The connector is rendered by every step **except the last**. Its colour is drive
 |---|---|---|---|
 | `complete` | `color/brand/primary` | none | Check icon · `color/brand/primary/foreground` |
 | `current` | `color/background/default` | 2px `color/brand/primary` | number · `color/brand/primary` |
-| `upcoming` | `color/background/muted` | none | number · `color/text/secondary` |
+| `upcoming` | `color/background/muted` | 2px `color/border/hover` | number · `color/text/secondary` |
 
 ### Label — per status
 
@@ -83,6 +83,7 @@ The connector is rendered by every step **except the last**. Its colour is drive
 | Indicator ↔ label gap | `spacing/component/sm` | 8px |
 | Step ↔ connector gap | `spacing/component/md` | 12px |
 | Connector thickness | — | 2px |
+| Indicator border | — | 2px on `current` and `upcoming`; none on `complete` |
 | Vertical step spacing | `spacing/component/lg` | 16px |
 
 ---

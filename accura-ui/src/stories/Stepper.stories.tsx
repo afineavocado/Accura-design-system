@@ -105,17 +105,27 @@ export const Vertical: Story = {
 export const Clickable: Story = {
   args: { steps: capaSteps, currentStep: 3 },
   render: function Render(args) {
-    const [step, setStep] = React.useState(args.currentStep);
+    // Progress is where the process actually is — clicking to review an earlier
+    // step must NOT rewind it, or the later steps become "upcoming", turn
+    // unclickable, and strand the user with no way back to the current step.
+    const progress = args.currentStep;
+    const [viewing, setViewing] = React.useState(progress);
+
     return (
       <div className="w-full max-w-5xl p-6 bg-[var(--color-background-default)] flex flex-col gap-4">
         <Stepper
           {...args}
-          currentStep={step}
-          onStepClick={setStep}
+          currentStep={progress}
+          onStepClick={setViewing}
           aria-label="CAPA progress"
         />
         <p className="text-sm text-[var(--color-text-secondary)]">
-          Step {step} selected — completed and current steps are clickable, upcoming ones are not.
+          Progress is at step {progress} — <strong>{capaSteps[progress - 1].label}</strong>.
+          Viewing step {viewing} — <strong>{capaSteps[viewing - 1].label}</strong>.
+        </p>
+        <p className="text-sm text-[var(--color-text-secondary)]">
+          Click any completed step to review it, then click step {progress} to come back.
+          Upcoming steps stay disabled — you cannot skip ahead.
         </p>
       </div>
     );

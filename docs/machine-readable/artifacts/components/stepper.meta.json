@@ -64,7 +64,8 @@
       },
       "upcoming": {
         "fill": "color/background/muted",
-        "content": "color/text/secondary"
+        "content": "color/text/secondary",
+        "border": "2px color/border/hover"
       }
     },
     "label": {
@@ -133,7 +134,8 @@
     "auditRules": "not audited — code-only component, no Figma set",
     "version": "3.0",
     "openQuestions": [
-      "No Figma component set exists. If design needs to own this, build the set and record its node ID here."
+      "No Figma component set exists. If design needs to own this, build the set and record its node ID here.",
+      "color/border/hover is used for the upcoming indicator ring. The VALUE is right (#d4d4d8 reads against the #f4f4f5 fill; color/border/default at #e4e4e7 is nearly invisible on it) but the NAME means \"border on hover\", so this is a semantic mismatch on a static state. Accura may want a neutral static border token between border/default and border/strong."
     ],
     "notes": [
       "Built for Accura 2026-09-08. Not inherited from Agentic — shadcn/ui has no stepper, so this is custom like Item and Sidebar.",
