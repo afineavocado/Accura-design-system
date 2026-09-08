@@ -22,6 +22,7 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 ## 2026-09-08
 
 ### Added
+- **Stepper component** — horizontal and vertical progress indicator for multi-step flows, built for the CAPA workflow. Spec, component, 7 stories and `meta.json`. Custom, since shadcn/ui has no stepper.
 - **CAPA prototype flow** on branch `prototype/capa-flow` — listing, create form and mock data at `accura-ui/src/app/prototype/accura/`. Built against the real component library; deploys as three static routes.
 - `flow/capa-listing.md` and `flow/create-capa.md` — screen content, fields and states for the CAPA screens.
 

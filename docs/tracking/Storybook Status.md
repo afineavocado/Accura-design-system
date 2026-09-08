@@ -29,11 +29,12 @@ Tracks the Storybook pipeline per component **for Accura**. Update after complet
 
 ---
 
-## Status — 35 stories
+## Status — 36 stories
 
 | Component | .tsx tokens | Figma parity | Story written | Story verified |
 |---|---|---|---|---|
 | **Sidebar** | ✅ | ✅ | ✅ | ✅ |
+| **Stepper** | ✅ | — | ✅ | ✅ |
 | Accordion | ✅ | ⚠️ | ✅ | ❌ |
 | Alert | ✅ | ⚠️ | ✅ | ❌ |
 | AlertDialog | ✅ | ⚠️ | ✅ | ❌ |
@@ -69,7 +70,9 @@ Tracks the Storybook pipeline per component **for Accura**. Update after complet
 | Toast | ✅ | ⚠️ | ✅ | ❌ |
 | Tooltip | ✅ | ⚠️ | ✅ | ❌ |
 
-**Summary: 1 verified · 34 inherited-unverified · 0 missing stories.**
+**Summary: 2 verified · 34 inherited-unverified · 0 missing stories.**
+
+ is code-only — there is no Figma set, so Figma parity reads `—` rather than ✅. Built and verified for Accura 2026-09-08.
 
 ---
 

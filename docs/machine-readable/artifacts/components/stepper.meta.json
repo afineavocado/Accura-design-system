@@ -1,0 +1,171 @@
+{
+  "name": "stepper",
+  "figmaNodeId": null,
+  "description": "Horizontal or vertical progress indicator for a multi-step process. Shows which steps are complete, which is current, and which remain. Also known as Progress Steps.",
+  "category": "feedback",
+  "shadcnBase": null,
+  "primitiveBase": null,
+  "variants": {
+    "orientation": {
+      "type": "enum",
+      "reactProp": "orientation",
+      "reactValues": {
+        "horizontal": "horizontal",
+        "vertical": "vertical"
+      },
+      "values": [
+        "horizontal",
+        "vertical"
+      ],
+      "default": "horizontal",
+      "intent": {
+        "horizontal": "Connectors stretch to fill available width; labels sit inline right of each indicator. Best for 3-7 steps in a full-width header.",
+        "vertical": "Connectors run down the left edge with a 16px minimum, giving a 40px step pitch. Best for side panels, narrow columns and mobile."
+      }
+    }
+  },
+  "componentProperties": {
+    "steps": {
+      "type": "array",
+      "required": true,
+      "shape": "{ label: string }[]",
+      "notes": "Ordered. Labels read best at 1–3 words."
+    },
+    "currentStep": {
+      "type": "number",
+      "required": true,
+      "notes": "1-based. currentStep={2} makes the second step current. Status is DERIVED from this — never passed per step, so complete/current/upcoming cannot contradict each other. A value above steps.length marks every step complete."
+    },
+    "onStepClick": {
+      "type": "(stepNumber: number) => void",
+      "required": false,
+      "notes": "When provided, complete and current steps render as buttons. Upcoming steps stay non-interactive — a user cannot skip ahead. Without it, steps are plain text."
+    },
+    "aria-label": {
+      "type": "string",
+      "required": false,
+      "default": "Progress",
+      "notes": "Accessible name on the <ol>."
+    }
+  },
+  "tokens": {
+    "indicator": {
+      "size": 24,
+      "radius": "radius/full",
+      "complete": {
+        "fill": "color/brand/primary",
+        "content": "color/brand/primary/foreground",
+        "icon": "Check (lucide), 14px, aria-hidden"
+      },
+      "current": {
+        "fill": "color/background/default",
+        "border": "2px color/brand/primary",
+        "content": "color/brand/primary"
+      },
+      "upcoming": {
+        "fill": "color/background/muted",
+        "content": "color/text/secondary"
+      }
+    },
+    "label": {
+      "complete": "color/background/default/foreground",
+      "current": "color/background/default/foreground, font-semibold",
+      "upcoming": "color/text/secondary",
+      "textStyle": "text-sm"
+    },
+    "connector": {
+      "thickness": 2,
+      "afterCompleteStep": "color/brand/primary",
+      "otherwise": "color/border/default",
+      "notes": "Colour is driven by the PRECEDING step's status, not the following one."
+    },
+    "spacing": {
+      "indicatorToLabel": "spacing/component/sm",
+      "stepToConnector": "spacing/component/md",
+      "verticalStepPitch": 40
+    },
+    "focus": {
+      "ring": "color/ring",
+      "notes": "focus-visible only, and only when onStepClick is set."
+    }
+  },
+  "composition": {
+    "root": "ol[aria-label]",
+    "child": "li — aria-current='step' on the active one",
+    "parts": [
+      "indicator",
+      "label",
+      "connector"
+    ],
+    "slots": [],
+    "notes": "Not composable — driven entirely by the steps array. There is no exported StepperItem."
+  },
+  "behavior": {
+    "statusDerivation": "index + 1 < currentStep -> complete; === currentStep -> current; > currentStep -> upcoming",
+    "state": "None. currentStep is fully controlled by the caller.",
+    "navigation": "Display-only unless onStepClick is provided.",
+    "typeGuide": {
+      "complete": "Step is done. Filled brand indicator with a check; the connector leaving it is brand-coloured.",
+      "current": "Step in progress. White indicator with a 2px brand ring and a brand number; label is semibold.",
+      "upcoming": "Not started. Muted indicator and secondary label; not clickable even when onStepClick is set."
+    }
+  },
+  "accessibility": {
+    "role": "ol / li — an ordered list is the correct semantic for a sequence",
+    "currentStep": "aria-current='step' on the active li",
+    "label": "aria-label on the ol, default 'Progress'",
+    "statusText": "Each step carries visually hidden status text (', completed' / ', current step' / ', not started') so the number is never announced alone",
+    "icon": "Check icon is aria-hidden — the status text carries the meaning",
+    "keyboard": "Only when onStepClick is set: Tab moves between clickable steps, Enter/Space activates"
+  },
+  "constraints": [
+    "3–7 steps horizontally — beyond that labels crowd; switch to vertical",
+    "Labels of 1–3 words; long labels break horizontal alignment",
+    "currentStep should stay within 1…steps.length",
+    "Upcoming steps are never clickable, even with onStepClick"
+  ],
+  "bestPractice": "Use for a known, ordered, finite sequence — approval flows, onboarding, checkout. It communicates position in a process, not completion percentage; use Progress for that. Prefer vertical in side panels, narrow columns and on mobile.",
+  "meta": {
+    "sourceMarkdown": "docs/component-specs/Stepper.md",
+    "storyFile": "src/stories/Stepper.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": null,
+    "auditRules": "not audited — code-only component, no Figma set",
+    "version": "3.0",
+    "openQuestions": [
+      "No Figma component set exists. If design needs to own this, build the set and record its node ID here."
+    ],
+    "notes": [
+      "Built for Accura 2026-09-08. Not inherited from Agentic — shadcn/ui has no stepper, so this is custom like Item and Sidebar.",
+      "Verified in-browser at build time: indicator 24px / radius 9999px; current #ffffff fill, 2px #008852 border, #008852 number, #18181b semibold label; upcoming #f4f4f5 fill with #52525b number and label; connectors #e4e4e7. Vertical label-to-indicator offset measured at 0px across all steps."
+    ]
+  },
+  "implementation": {
+    "file": "src/components/ui/stepper.tsx",
+    "dependencies": [
+      "lucide-react (Check)"
+    ],
+    "notes": [
+      "Status is derived from currentStep rather than passed per step. This is deliberate — it makes an impossible state (two current steps, a complete step after an upcoming one) unrepresentable.",
+      "The connector belongs to the step it leaves, so its colour reflects the preceding status. Colouring it from the following step puts the brand line one position late.",
+      "Vertical alignment: the label wrapper is h-6 to match the indicator, and step pitch comes from the connector's min-height. Adding padding to the label instead squeezes the text to the top of its box."
+    ]
+  },
+  "storybook": {
+    "file": "src/stories/Stepper.stories.tsx",
+    "title": "Feedback/Stepper",
+    "stories": [
+      "Default",
+      "FirstStep",
+      "LastStep",
+      "AllComplete",
+      "ThreeSteps",
+      "Vertical",
+      "Clickable"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": "Default uses the real Accura CAPA workflow from flow/create-capa.md — Draft, In Review, In Approval, Action In Progress, Final Approval, Closed."
+  }
+}
