@@ -54,6 +54,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
+export const DestructiveSecondary: Story = {
+  args: { variant: 'destructiveSecondary', children: 'Reject' },
+};
+
 export const Outline: Story = {
   args: { variant: 'outline', children: 'Cancel' },
 };

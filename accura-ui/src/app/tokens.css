@@ -1443,6 +1443,12 @@
   --tooltip-fg: var(--color-background-inverted-foreground);
 
   /* --- Accura-only tokens (not present in Agentic) --- */
+  /* Violet ramp — exists in Figma primitives but was unmapped (accura-theme.md Q4).
+     Surfaced here for the CAPA Final Approval badge. */
+  --color-violet-50: #f5f3ff;
+  --color-violet-300: #c3b5fd;
+  --color-violet-700: #6927da;
+  --color-violet-800: #5720b7;
   --color-border-info: #8ec5ff;
   --color-text-tertiary: #71717a;
   --breadcrumb-breadcrumb: 4;
