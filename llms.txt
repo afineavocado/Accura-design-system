@@ -55,7 +55,7 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 Next.js + Tailwind v4 + shadcn/ui. Forked from `agentic-ui`; identical components, Accura tokens.
 
 ```bash
-cd accura-ui && npm install --legacy-peer-deps
+cd accura-ui && npm install      # .npmrc handles the React 19 / Storybook 10 peer conflict
 npm run storybook   # component library → :6007   ← the design system lives here
 npm run dev         # CAPA prototype    → :3001
 ```

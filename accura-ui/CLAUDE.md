@@ -35,9 +35,13 @@ All 351 of them are in `src/app/tokens.css`. That file is the runtime source of 
 ## Running it
 
 ```bash
+npm install         # no flag needed — .npmrc sets legacy-peer-deps
 npm run storybook   # component library → :6007   ← the design system lives here
 npm run dev         # CAPA prototype    → :3001
 ```
+
+**Deploying:** the deploy platform's root directory must be `accura-ui`, not the repo root.
+The root has no `package.json`, so a platform pointed there builds nothing and every route 404s.
 
 `/` redirects to `/prototype/accura/capa`. **There is no home screen** — the app exists to host
 the prototype. Do not build a landing page.

@@ -29,7 +29,7 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 ## Working on code
 
 ```bash
-cd accura-ui && npm install --legacy-peer-deps && npm run storybook   # → :6007
+cd accura-ui && npm install && npm run storybook   # → :6007
 ```
 
 Read `accura-ui/CLAUDE.md` before writing any component. Key points:

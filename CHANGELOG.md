@@ -22,6 +22,10 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 ## 2026-09-09
 
 ### Fixed
+- **Deploying the repo returned 404 on every route.** Two compounding causes, neither in the app code. The Next app lives in `accura-ui/`, and the **repo root has no `package.json`** — a platform pointed at the root finds no application, builds nothing, and serves an empty site, so even `/` 404s and it looks like the app is broken. And `npm install` fails with `ERESOLVE` without `--legacy-peer-deps` (Storybook 10 declares peers against React 18; this app runs React 19 / Next 16), so the build would fail at install even after the root was fixed. Added `accura-ui/.npmrc` with `legacy-peer-deps=true` so install works everywhere without anyone remembering a flag, and a **Deploying** section to the README stating that the platform's root directory must be `accura-ui`. The `--legacy-peer-deps` instruction was removed from `README.md`, `llms.txt`, `CLAUDE.md` and `accura-ui/CLAUDE.md`, since it is now automatic — leaving it would have been a second stale instruction to trip over.
+
+
+### Fixed
 - **A fresh agent cloning the repo hit a 404 at `/` and started building a landing page.** Not its fault: `accura-ui/src/app` had no root route, and **no document — `llms.txt`, `README.md`, `CLAUDE.md` or `accura-ui/CLAUDE.md` — named a URL or a port for the app.** Added `src/app/page.tsx` redirecting to `/prototype/accura/capa`, and documented the ports, the route list, and the fact that there is deliberately no home screen.
 - **Same agent was guessing shadcn token names** — grepping for `--background-default`, `--card-radius`, `--border-default`, `--surface-default`, `--text-primary`. **None of those exist.** Accura uses `--color-background-default`, `--radius-lg`, `--color-border-default`, `--color-surface-default`, and has no `--text-primary` at all. This fails *silently*: `var(--text-primary)` resolves to nothing rather than erroring, so the screen looks roughly right and uses none of the system. The naming rule now leads `accura-ui/CLAUDE.md` with a shadcn→Accura mapping table, and is summarised in `llms.txt`.
 

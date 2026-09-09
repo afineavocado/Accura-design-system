@@ -32,14 +32,15 @@ The repository is **self-contained** — no external vault, no absolute paths. A
 
 ## Quick start
 
-`--legacy-peer-deps` is required — there is a `storybook/addon-themes` peer conflict without it.
-
 ```bash
-cd accura-ui && npm install --legacy-peer-deps
+cd accura-ui && npm install
 
 npm run storybook   # component library  → http://localhost:6007
 npm run dev         # CAPA prototype     → http://localhost:3001
 ```
+
+> **The Next app lives in `accura-ui/`, not at the repo root.** Everything below assumes you are in that folder.
+> No `--legacy-peer-deps` flag needed — `accura-ui/.npmrc` sets it. Storybook 10 declares peers against React 18 while this app runs React 19 and Next 16, so a plain install would otherwise fail with `ERESOLVE`.
 
 Storybook uses 6007 because Agentic's uses 6006, so both can run side by side.
 
@@ -61,6 +62,29 @@ Prototype routes:
 > There is **no home screen** beyond that redirect. The app exists to host the
 > prototype; the component library lives in Storybook. If `/` 404s, you are on a
 > commit before this was added — it is not a missing feature to build.
+
+### Deploying
+
+**Set the project's root directory to `accura-ui`.** This is the setting people miss.
+
+The repository root holds the design system — `docs/`, `tokens/`, `flow/` — and has **no
+`package.json`**. A platform pointed at the repo root finds no application, builds nothing,
+and serves an empty site, so **every route returns 404 including `/`**. It looks like the app
+is broken; it was never built.
+
+| Setting | Value |
+|---|---|
+| Root directory | `accura-ui` |
+| Framework | Next.js (auto-detected once the root is right) |
+| Install / build | defaults — `.npmrc` handles the peer resolution |
+
+A deployment serves **the CAPA prototype only**. Storybook is a separate build
+(`npm run storybook`) and is not included; publishing the component library means a second
+deployment.
+
+> The prototype runs on mock data and includes a simulated 21 CFR Part 11 e-signature screen.
+> It is a design artefact, not a working quality system — worth being deliberate about before
+> putting it on a public URL.
 
 ---
 
