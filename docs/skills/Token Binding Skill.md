@@ -2,6 +2,15 @@
 
 # Token Binding Skill
 
+> **Localised for Accura.** Vendored from the Agentic Design System, with the radius values
+> in the quick-reference table below updated to Accura's scale (`base 12`, not Agentic's
+> `base 8`). Those numbers are maintained by `docs/machine-readable/sync-doc-values.mjs` —
+> do not hand-edit them. **If this file is ever re-vendored from upstream, re-run that
+> script**, or the table silently reverts to Agentic's values.
+>
+> Everything else here — the two binding APIs, the radius-corner gotcha, the verification
+> gate — is system-agnostic and applies unchanged.
+
 A standalone reference for binding design tokens to Figma nodes — during builds, fixes, and re-audits. Works alongside the Component Audit Skill (which checks correctness) and the Build Skill (which calls this during Phase 3).
 
 ---
@@ -258,8 +267,8 @@ Values below 2px — no token, leave hardcoded.
 ### Radius tokens
 | Usage | Token | Value |
 |---|---|---|
-| Outer component corners | `radius/lg` | 8px |
-| Inner elements, buttons, cells | `radius/md` | 6px |
+| Outer component corners | `radius/lg` | 12px |
+| Inner elements, buttons, cells | `radius/md` | 10px |
 | Pills, circles, full rounding | `radius/full` | 9999px |
 
 ### Opacity tokens

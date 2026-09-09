@@ -19,6 +19,21 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ---
 
+## 2026-09-09
+
+### Added
+- **`docs/machine-readable/sync-doc-values.mjs`** — rewrites restated px values (`spacing/component/lg (16px)`, `| radius/lg | 8px |`) from `tokens/*.json`, across specs, skills, tracking and the ruleset. Makes those numbers **derived rather than authored**: a value-only edit used to invalidate ~150 hand-typed numbers silently, which is the single largest source of doc drift during a re-theme. Ported from Agentic with a fork-specific exclusion mechanism it did not have.
+
+### Fixed
+- **`drift-check.mjs` check 6 was fail-open.** It scanned `docs/component-specs` only — **12 of 171 restatements, 7%** — and reported green. Widened to every doc, honouring the same exclusions as the sync script. Verified by planting a wrong value in a file the old check never read: it is now caught and exits 1. This was a gate that passed by not looking, which is worse than no gate.
+- **Two live wrong values** in `docs/skills/Token Binding Skill.md` — `radius/lg` written as 8px (Accura: 12px) and `radius/md` as 6px (Accura: 10px), inherited from Agentic. Token *names* were right so bindings were unaffected, but any agent reasoning about sizes from that table got Agentic's numbers. The file now carries a localisation note so a re-vendor does not silently revert it.
+- **Six stale counts** — `llms.txt` claimed 345 CSS custom properties (351), 38 specs (39), 36 meta.json (37), 38 component files (39), 35 stories (36), and `variables.css` 403 props (391). `AI-Readiness.md`'s counts table still read 228 primitives / 47 component tokens (229 / 52). All re-measured, not estimated.
+
+### Notes
+- Three classes of document must **never** be rewritten by the sync script, now documented in it: vendored bodies corrected by an override header (`docs/design-system-rules.md`), prose quoting a stale value as an *example* of drift (per-line `<!-- sync-doc-values:ignore -->`), and changelogs — a dated entry describing a past state is correct as written.
+
+---
+
 ## 2026-09-08
 
 ### Added

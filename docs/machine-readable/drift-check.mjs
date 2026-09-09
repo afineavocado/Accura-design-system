@@ -125,38 +125,66 @@ for (const f of storyFiles) {
 if (undoc === 0) ok(`all ${storyFiles.length} story files are owned by a meta.json`);
 
 // ── 6. Resolved px values restated in docs ───────────────────────────────────
-// The alias graph never drifts — Figma → tokens.json → tokens.css all propagate on
-// their own. What rots is prose that hand-copies the *resolved* value next to the
-// token name, e.g. "radius: radius/lg (8px)". The token name stays correct forever;
-// the parenthesised number silently goes stale the moment the primitive changes.
-// This is what the 2026-09-08 base-12 radius rescale exposed across 6 specs.
+// Docs name a token and restate its value as a convenience:
+//   padding: spacing/component/lg (16px)   ·   | `radius/lg` | 8px |
+// The name is right forever; the number is a hand-typed snapshot that goes stale the
+// moment a primitive changes — which is what a re-theme does by definition.
+//
+// This MUST cover every doc, not just the component specs. Scoped to component-specs
+// alone it checked 12 of 171 restatements — 7% — and reported green. A gate that is
+// not looking is worse than no gate.
+//
+// Exclusions mirror sync-doc-values.mjs exactly; if they drift apart, the script will
+// rewrite something this check then flags, or vice versa.
 section('6. Docs — restated px values match the token they name');
-const dimSrc = JSON.parse(fs.readFileSync(path.join(root, 'tokens/primitives.tokens.json'), 'utf8'));
-const dims = {};
-(function flat(o, p = []) {
-  for (const [k, v] of Object.entries(o)) {
-    if (v && v.$value !== undefined) dims[p.concat(k).join('/')] = String(v.$value);
-    else if (v && typeof v === 'object') flat(v, p.concat(k));
+{
+  const SKIP = ['docs/design-system-rules.md'];   // vendored; its override table depends on the body keeping Agentic's values
+  const IGNORE_MARK = 'sync-doc-values:ignore';   // per-line opt-out, e.g. prose quoting a stale value as an example
+
+  const flatT = {};
+  for (const tf of ['primitives.tokens.json', 'semantics.tokens.json']) {
+    const p = path.join(root, 'tokens', tf);
+    if (!fs.existsSync(p)) continue;
+    (function walk(n, trail = []) {
+      for (const [k, v] of Object.entries(n)) {
+        if (v && v.$value !== undefined) flatT[trail.concat(k).join('/')] = String(v.$value);
+        else if (v && typeof v === 'object') walk(v, trail.concat(k));
+      }
+    })(JSON.parse(fs.readFileSync(p, 'utf8')));
   }
-})(dimSrc);
-const specDir = path.join(root, 'docs/component-specs');
-// Matches "radius/lg (8px)", "radius/lg` (8px)", "| `radius/lg` | 8px |"
-const dimRe = /(radius|spacing)\/([a-z0-9-]+)`?\s*(?:\||\()\s*(\d+)px/gi;
-let stale = 0, checked = 0;
-for (const file of fs.readdirSync(specDir).filter((f) => f.endsWith('.md'))) {
-  const text = fs.readFileSync(path.join(specDir, file), 'utf8');
-  for (const m of text.matchAll(dimRe)) {
-    const token = `${m[1].toLowerCase()}/${m[2]}`;
-    const actual = dims[token];
-    if (actual === undefined) continue;           // not a primitive we own
-    checked++;
-    if (parseInt(actual, 10) !== parseInt(m[3], 10)) {
-      bad(`${file}: "${token}" is written as ${m[3]}px but the token is ${actual}`);
-      stale++;
+  const resolveT = (name) => {
+    let v = flatT[name], g = 0;
+    while (v && /^\{.*\}$/.test(v) && g++ < 10) v = flatT[v.replace(/[{}]/g, '').replace(/\./g, '/')];
+    const m = v === undefined ? null : String(v).match(/^(\d+(?:\.\d+)?)(px)?$/);
+    return m ? m[1] : null;
+  };
+
+  const dirs = ['docs/component-specs', 'docs/skills', 'docs/machine-readable', 'docs/tracking'];
+  const loose = ['docs/design-system-rules.md', 'docs/content-guidelines.md', 'llms.txt'];
+  const docs = [];
+  for (const d of dirs) {
+    const dp = path.join(root, d);
+    if (fs.existsSync(dp)) for (const fn of fs.readdirSync(dp)) if (fn.endsWith('.md')) docs.push(path.join(d, fn));
+  }
+  for (const fn of loose) if (fs.existsSync(path.join(root, fn))) docs.push(fn);
+
+  const re = /((?:radius|spacing|font-size)\/[a-z0-9/-]+)`?\s*[(|]\s*(\d+)px/gi;
+  let seen = 0, stale = 0, skippedLines = 0;
+  for (const rel of docs) {
+    if (SKIP.includes(rel)) continue;
+    for (const line of fs.readFileSync(path.join(root, rel), 'utf8').split('\n')) {
+      if (line.includes(IGNORE_MARK)) { skippedLines++; continue; }
+      for (const m of line.matchAll(re)) {
+        const actual = resolveT(m[1]);
+        if (actual === null) continue;
+        seen++;
+        if (actual !== m[2]) { bad(`${rel}: "${m[1]}" written as ${m[2]}px but the token is ${actual}px`); stale++; }
+      }
     }
   }
+  if (stale === 0) ok(`${seen} restated px values all match their token` + (skippedLines ? ` (${skippedLines} ignore-marked, ${SKIP.length} file excluded)` : ''));
+  else console.log('     → fix with: node docs/machine-readable/sync-doc-values.mjs --write');
 }
-if (stale === 0) ok(`${checked} restated px values all match their token`);
 
 // ── Summary ──────────────────────────────────────────────────────────────────
 console.log('\n' + (problems === 0 ? '✅ No drift detected.' : `❌ ${problems} drift issue(s) found.`));

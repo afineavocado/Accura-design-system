@@ -18,8 +18,8 @@ values.
 | Storybook stories | 36 |
 | `.tsx` components | 39 |
 | `.examples.tsx` | **0** |
-| Tokens | 228 primitives · 115 semantics · 47 components = **390** |
-| CSS custom properties | 345 (450 declarations incl. `.dark`) |
+| Tokens | 229 primitives · 115 semantics · 52 components = **396** |
+| CSS custom properties | 351 (456 declarations incl. `.dark`) |
 | Components audited R1–R8 **in Accura's Figma** | **0** |
 | Stories verified **against Accura** | 3 |
 
@@ -64,7 +64,7 @@ Drift comes from **denormalised copies of resolved values**, and there are exact
 
 | Kind | Example | Rots when |
 |---|---|---|
-| Resolved value restated beside a token name | `radius: radius/lg (8px)` in a spec | any primitive value changes |
+| Resolved value restated beside a token name | `radius: radius/lg (8px)` in a spec | any primitive value changes | <!-- sync-doc-values:ignore — the 8px here is the EXAMPLE of staleness, not a live value -->
 | Counts | `llms.txt`: "470 CSS custom properties" (actual 345), "46 component tokens" (actual 47) | anything is added or removed |
 | Vendored upstream values | Agentic's radius scale inside `docs/design-system-rules.md` | Accura's values move away from Agentic's |
 

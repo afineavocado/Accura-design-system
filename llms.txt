@@ -40,14 +40,15 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 
 ## Component documentation
 
-- `docs/component-specs/[Name].md` — **38 files**: 36 component specs, plus `docs/component-specs/_template.md` and `docs/component-specs/Form-shared.md` (shared `label`, `menu-dropdown`, `menu-dropdown-item`).
-- `docs/machine-readable/artifacts/components/[name].meta.json` — **36 files**, v3 schema: variants, tokens per state, storybook reference, known issues, dark-mode risks.
+- `docs/component-specs/[Name].md` — **39 files**: 37 component specs, plus `docs/component-specs/_template.md` and `docs/component-specs/Form-shared.md` (shared `label`, `menu-dropdown`, `menu-dropdown-item`).
+- `docs/machine-readable/artifacts/components/[name].meta.json` — **37 files**, v3 schema: variants, tokens per state, storybook reference, known issues, dark-mode risks.
 - `docs/machine-readable/component-quick-reference.md` — scan before building any screen.
 - `docs/machine-readable/component-directory.md` — Figma node ID ↔ Storybook title ↔ tsx file.
 - `docs/machine-readable/meta-artifact-template.md` — required fields for any new meta.json.
 - `docs/machine-readable/generation-rules.md` — when to regenerate a meta.json.
 - `docs/machine-readable/figma-ids.md` — Figma node, effect-style and text-style IDs. ⚠️ IDs are Agentic's; Accura's Figma file is different — verify before use.
-- `docs/machine-readable/validate-artifacts.mjs` · `drift-check.mjs` — validation scripts.
+- `docs/machine-readable/sync-doc-values.mjs` — **rewrites restated px values from `tokens/*.json`.** Docs name a token then restate its value (`spacing/component/lg (16px)`). The name is right forever; the number is a hand-typed snapshot that goes stale the moment a primitive changes — one re-theme edit invalidates ~150 of them at once. This makes them derived, not authored. Dry-run by default; `--write` applies. **Run after any token value change, before committing.** Excludes `docs/design-system-rules.md` (vendored body + override table), any line marked `<!-- sync-doc-values:ignore -->`, and changelogs (historical by nature).
+- `docs/machine-readable/validate-artifacts.mjs` · `drift-check.mjs` — validation scripts. `drift-check` check 6 verifies every restated px against its token across specs, skills, tracking and the ruleset — it exits 1 on drift and names the fix command.
 
 ## Code — `accura-ui/`
 
@@ -57,9 +58,9 @@ Next.js + Tailwind v4 + shadcn/ui. Forked from `agentic-ui`; identical component
 cd accura-ui && npm install --legacy-peer-deps && npm run storybook   # → :6007
 ```
 
-- `accura-ui/src/app/tokens.css` — **345 CSS custom properties** (450 declarations, including `.dark` overrides), generated from Figma. `:root` light, `.dark` dark. **Not a plain copy of `tokens/output/css/variables.css`** — it carries a different ordering, extra descriptive comments, and the hand-applied `--font-family-sans: Inter` override. Change the Figma variable, rebuild with `tokens/sd.build.mjs`, then patch the changed properties into this file surgically. Copying the generated file over it wipes the overrides.
-- `accura-ui/src/components/ui/*.tsx` — 38 component files.
-- `accura-ui/src/stories/*.stories.tsx` — 35 story files.
+- `accura-ui/src/app/tokens.css` — **351 CSS custom properties** (456 declarations, including `.dark` overrides), generated from Figma. `:root` light, `.dark` dark. **Not a plain copy of `tokens/output/css/variables.css`** — it carries a different ordering, extra descriptive comments, and the hand-applied `--font-family-sans: Inter` override. Change the Figma variable, rebuild with `tokens/sd.build.mjs`, then patch the changed properties into this file surgically. Copying the generated file over it wipes the overrides.
+- `accura-ui/src/components/ui/*.tsx` — 39 component files.
+- `accura-ui/src/stories/*.stories.tsx` — 36 story files.
 - `accura-ui/.storybook/preview.tsx` — light/dark via `withThemeByClassName`.
 - `accura-ui/CLAUDE.md` — agent rules for the code side. Read before writing any component.
 
@@ -83,7 +84,7 @@ cd tokens && npm install && node sd.build.mjs   # → output/css/, output/js/
 | `components.tokens.json` | 52 component tokens |
 | `tokens.tokens.json` | all three combined |
 | `sd.build.mjs` · `validate-contrast.mjs` | build + contrast gate |
-| `output/` | generated — `variables.css` (403 props), `tailwind-v4.css`, `tokens.mjs` |
+| `output/` | generated — `variables.css` (391 props), `tailwind-v4.css`, `tokens.mjs` |
 
 **Two shape fixes are applied during export — preserve them if you rewrite the exporter:**
 
