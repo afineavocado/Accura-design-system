@@ -32,11 +32,35 @@ The repository is **self-contained** — no external vault, no absolute paths. A
 
 ## Quick start
 
+`--legacy-peer-deps` is required — there is a `storybook/addon-themes` peer conflict without it.
+
 ```bash
-cd accura-ui && npm install --legacy-peer-deps && npm run storybook
+cd accura-ui && npm install --legacy-peer-deps
+
+npm run storybook   # component library  → http://localhost:6007
+npm run dev         # CAPA prototype     → http://localhost:3001
 ```
 
-Storybook runs on **http://localhost:6007** (Agentic's uses 6006, so both can run side by side for comparison).
+Storybook uses 6007 because Agentic's uses 6006, so both can run side by side.
+
+### Where to look
+
+| | |
+|---|---|
+| **Every component** | Storybook, **:6007** — 36 stories. This is the design system. |
+| **The CAPA prototype** | **:3001** — `/` redirects to `/prototype/accura/capa` |
+
+Prototype routes:
+
+```
+/prototype/accura/capa            CAPA listing
+/prototype/accura/capa/new        Create CAPA
+/prototype/accura/capa/CAPA-0005  CAPA detail (dynamic route)
+```
+
+> There is **no home screen** beyond that redirect. The app exists to host the
+> prototype; the component library lives in Storybook. If `/` 404s, you are on a
+> commit before this was added — it is not a missing feature to build.
 
 ---
 

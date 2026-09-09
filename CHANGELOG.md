@@ -21,6 +21,13 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## 2026-09-09
 
+### Fixed
+- **A fresh agent cloning the repo hit a 404 at `/` and started building a landing page.** Not its fault: `accura-ui/src/app` had no root route, and **no document — `llms.txt`, `README.md`, `CLAUDE.md` or `accura-ui/CLAUDE.md` — named a URL or a port for the app.** Added `src/app/page.tsx` redirecting to `/prototype/accura/capa`, and documented the ports, the route list, and the fact that there is deliberately no home screen.
+- **Same agent was guessing shadcn token names** — grepping for `--background-default`, `--card-radius`, `--border-default`, `--surface-default`, `--text-primary`. **None of those exist.** Accura uses `--color-background-default`, `--radius-lg`, `--color-border-default`, `--color-surface-default`, and has no `--text-primary` at all. This fails *silently*: `var(--text-primary)` resolves to nothing rather than erroring, so the screen looks roughly right and uses none of the system. The naming rule now leads `accura-ui/CLAUDE.md` with a shadcn→Accura mapping table, and is summarised in `llms.txt`.
+
+  Both symptoms share one cause: the repo was self-contained but not **self-announcing**. `llms.txt` is a good index only if you know to open it first; from the code alone, shadcn's conventions are the obvious guess.
+
+
 ### Added
 - **`docs/machine-readable/sync-doc-values.mjs`** — rewrites restated px values (`spacing/component/lg (16px)`, `| radius/lg | 8px |`) from `tokens/*.json`, across specs, skills, tracking and the ruleset. Makes those numbers **derived rather than authored**: a value-only edit used to invalidate ~150 hand-typed numbers silently, which is the single largest source of doc drift during a re-theme. Ported from Agentic with a fork-specific exclusion mechanism it did not have.
 

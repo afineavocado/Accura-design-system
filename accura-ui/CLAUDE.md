@@ -2,6 +2,48 @@
 
 ---
 
+## ⚠️ Token names — the mistake every fresh agent makes
+
+**Do not guess token names, and do not use shadcn's.** Accura's do not look like them.
+
+| shadcn / guessed | ❌ | Accura's actual name |
+|---|---|---|
+| `--background`, `--background-default` | | `--color-background-default` |
+| `--foreground`, `--text-primary` | | `--color-background-default-foreground` |
+| `--border`, `--border-default` | | `--color-border-default` |
+| `--surface-default` | | `--color-surface-default` |
+| `--card-radius`, `--radius` | | `--radius-lg` (12px) · `--radius-md` (10px) |
+| `--primary` | | `--color-brand-primary` (#008852) |
+
+**The rules:** every colour token starts `--color-`. Radius is `--radius-{none,sm,md,base,lg,xl,2xl,3xl,4xl,full}`.
+Spacing is `--spacing-component-{xs..2xl}`. Component tokens are `--button-*`, `--checkbox-radius`,
+`--stepper-border`. There is **no** `--text-primary`, `--card-radius` or `--radius`.
+
+**This fails silently.** `var(--text-primary)` does not error — it resolves to nothing and the text
+inherits whatever is above it, so the screen looks roughly right and uses none of the system.
+
+Before writing any class, confirm the variable exists:
+
+```bash
+grep -n -- "--color-brand-primary" src/app/tokens.css
+```
+
+All 351 of them are in `src/app/tokens.css`. That file is the runtime source of truth.
+
+---
+
+## Running it
+
+```bash
+npm run storybook   # component library → :6007   ← the design system lives here
+npm run dev         # CAPA prototype    → :3001
+```
+
+`/` redirects to `/prototype/accura/capa`. **There is no home screen** — the app exists to host
+the prototype. Do not build a landing page.
+
+---
+
 ## Design System — Read Before Any UI Work
 
 This repo implements the **Accura design system** — a **re-theme of the Agentic Design System**, not a separate system.

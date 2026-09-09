@@ -55,8 +55,14 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 Next.js + Tailwind v4 + shadcn/ui. Forked from `agentic-ui`; identical components, Accura tokens.
 
 ```bash
-cd accura-ui && npm install --legacy-peer-deps && npm run storybook   # → :6007
+cd accura-ui && npm install --legacy-peer-deps
+npm run storybook   # component library → :6007   ← the design system lives here
+npm run dev         # CAPA prototype    → :3001
 ```
+
+`/` redirects to `/prototype/accura/capa`. **There is no home screen** — the app exists only to host the prototype. A 404 at `/` on an older commit is not a missing feature to build.
+
+⚠️ **Token names are `--color-*`, not shadcn's.** `--color-background-default`, not `--background`. `--radius-lg`, not `--radius`. There is no `--text-primary`. Guessed names fail *silently* — `var(--text-primary)` resolves to nothing rather than erroring. Confirm against `accura-ui/src/app/tokens.css` before writing a class. Full rule: `accura-ui/CLAUDE.md`.
 
 - `accura-ui/src/app/tokens.css` — **351 CSS custom properties** (456 declarations, including `.dark` overrides), generated from Figma. `:root` light, `.dark` dark. **Not a plain copy of `tokens/output/css/variables.css`** — it carries a different ordering, extra descriptive comments, and the hand-applied `--font-family-sans: Inter` override. Change the Figma variable, rebuild with `tokens/sd.build.mjs`, then patch the changed properties into this file surgically. Copying the generated file over it wipes the overrides.
 - `accura-ui/src/components/ui/*.tsx` — 39 component files.
