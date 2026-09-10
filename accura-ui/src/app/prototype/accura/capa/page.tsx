@@ -1,16 +1,11 @@
 "use client"
 
 import * as React from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import {
-  ClipboardCheck,
-  LayoutDashboard,
-  LogOut,
   Menu,
   Search,
-  Settings,
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -32,16 +27,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
-  SidebarLogo,
-  SidebarMenuItem,
-  SidebarProvider,
-} from "@/components/ui/sidebar"
+import { AppNavItems, AppSidebar } from "../app-sidebar"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import {
   Table,
   TableBody,
@@ -58,57 +45,6 @@ import {
   type CapaRecord,
 } from "./mock-data"
 
-function AccuraLogo() {
-  return (
-    <SidebarLogo className="h-9 w-[104px]">
-      <Image
-        src="/accura-logo.png"
-        alt="Accura"
-        width={104}
-        height={36}
-        className="h-full w-full object-contain"
-        priority
-      />
-    </SidebarLogo>
-  )
-}
-
-function SidebarNavigation() {
-  return (
-    <>
-      <SidebarHeader className="h-14 px-6">
-        <AccuraLogo />
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup className="gap-1 px-3 py-4">
-          <SidebarMenuItem
-            icon={<LayoutDashboard className="h-4 w-4" />}
-            label="Dashboard"
-            href="#"
-          />
-          <SidebarMenuItem
-            icon={<ClipboardCheck className="h-4 w-4" />}
-            label="CAPA"
-            href="/prototype/accura/capa"
-            active
-          />
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter className="flex flex-col gap-1 px-3 py-3">
-        <SidebarMenuItem
-          icon={<Settings className="h-4 w-4" />}
-          label="Settings"
-          href="#"
-        />
-        <SidebarMenuItem
-          icon={<LogOut className="h-4 w-4" />}
-          label="Logout"
-          href="#"
-        />
-      </SidebarFooter>
-    </>
-  )
-}
 
 function StatusBadge({ record }: { record: CapaRecord }) {
   const label = record.statusDetail
@@ -161,9 +97,7 @@ export default function CapaListingPage() {
   return (
     <SidebarProvider>
         <div className="flex h-screen overflow-hidden bg-[var(--color-background-muted)]">
-          <Sidebar type="default" collapsible="none" className="hidden lg:flex">
-            <SidebarNavigation />
-          </Sidebar>
+          <AppSidebar />
 
           <main className="flex min-h-0 min-w-0 flex-1 flex-col">
             <header className="flex h-14 shrink-0 items-center border-b border-[var(--color-border-default)] bg-[var(--color-background-default)] px-4 md:px-6">
@@ -177,15 +111,14 @@ export default function CapaListingPage() {
               >
                 <Menu className="h-4 w-4" />
               </Button>
-              <h1 className="text-base font-medium text-[var(--color-background-default-foreground)]">
+              <h1 className="font-sans text-base font-medium text-[var(--color-background-default-foreground)]">
                 CAPA
               </h1>
             </header>
 
             {mobileNavOpen && (
               <div className="border-b border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-background)] p-3 lg:hidden">
-                <SidebarMenuItem icon={<LayoutDashboard className="h-4 w-4" />} label="Dashboard" href="#" />
-                <SidebarMenuItem icon={<ClipboardCheck className="h-4 w-4" />} label="CAPA" href="/prototype/accura/capa" active />
+              <AppNavItems />
               </div>
             )}
 
@@ -254,13 +187,13 @@ export default function CapaListingPage() {
                   <Table className="min-w-[960px]">
                     <TableHeader>
                       <TableRow className="hover:bg-transparent">
-                        <TableHead className="h-10 px-3 text-[11px] uppercase tracking-wide">CAPA ID</TableHead>
-                        <TableHead className="h-10 px-3 text-[11px] uppercase tracking-wide">Title</TableHead>
-                        <TableHead className="h-10 px-3 text-[11px] uppercase tracking-wide">Status</TableHead>
-                        <TableHead className="h-10 px-3 text-[11px] uppercase tracking-wide">Due date</TableHead>
-                        <TableHead className="h-10 px-3 text-[11px] uppercase tracking-wide">Owner</TableHead>
-                        <TableHead className="h-10 px-3 text-[11px] uppercase tracking-wide">QA approver</TableHead>
-                        <TableHead className="h-10 px-3 text-[11px] uppercase tracking-wide">Source</TableHead>
+                        <TableHead className="h-10 px-3 uppercase tracking-wide">CAPA ID</TableHead>
+                        <TableHead className="h-10 px-3 uppercase tracking-wide">Title</TableHead>
+                        <TableHead className="h-10 px-3 uppercase tracking-wide">Status</TableHead>
+                        <TableHead className="h-10 px-3 uppercase tracking-wide">Due date</TableHead>
+                        <TableHead className="h-10 px-3 uppercase tracking-wide">Owner</TableHead>
+                        <TableHead className="h-10 px-3 uppercase tracking-wide">QA approver</TableHead>
+                        <TableHead className="h-10 px-3 uppercase tracking-wide">Source</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>

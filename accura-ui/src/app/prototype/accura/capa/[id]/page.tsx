@@ -1,20 +1,15 @@
 "use client"
 
 import * as React from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { notFound, useParams } from "next/navigation"
 import {
   ChevronLeft,
   CircleCheck,
-  ClipboardCheck,
   Clock3,
-  LayoutDashboard,
-  LogOut,
   Mail,
   Menu,
   PenTool,
-  Settings,
   UserRound,
 } from "lucide-react"
 
@@ -52,16 +47,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Stepper } from "@/components/ui/stepper"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
-  SidebarLogo,
-  SidebarMenuItem,
-  SidebarProvider,
-} from "@/components/ui/sidebar"
+import { AppNavItems, AppSidebar } from "../../app-sidebar"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import {
   auditRecords,
   canViewCapaDetail,
@@ -89,41 +76,6 @@ const statusStep: Record<CapaStatus, number> = {
   Close: 6,
 }
 
-function AccuraLogo() {
-  return (
-    <SidebarLogo className="h-9 w-[104px]">
-      <Image
-        src="/accura-logo.png"
-        alt="Accura"
-        width={104}
-        height={36}
-        className="h-full w-full object-contain"
-        priority
-      />
-    </SidebarLogo>
-  )
-}
-
-function SidebarNavigation() {
-  return (
-    <>
-      <SidebarHeader className="h-14 px-[var(--spacing-component-xl)]">
-        <AccuraLogo />
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup className="gap-[var(--spacing-component-xs)] px-[var(--spacing-component-md)] py-[var(--spacing-component-lg)]">
-          <p className="px-[var(--spacing-component-md)] pb-[var(--spacing-component-sm)] text-xs text-[var(--color-sidebar-foreground)]">Platform</p>
-          <SidebarMenuItem icon={<LayoutDashboard className="h-4 w-4" />} label="Dashboard" href="#" />
-          <SidebarMenuItem icon={<ClipboardCheck className="h-4 w-4" />} label="CAPA" href="/prototype/accura/capa" active />
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter className="flex flex-col gap-[var(--spacing-component-xs)] px-[var(--spacing-component-md)] py-[var(--spacing-component-md)]">
-        <SidebarMenuItem icon={<Settings className="h-4 w-4" />} label="Setting" href="#" />
-        <SidebarMenuItem icon={<LogOut className="h-4 w-4" />} label="Log Out" href="#" />
-      </SidebarFooter>
-    </>
-  )
-}
 
 function IdentityField({
   icon,
@@ -195,9 +147,7 @@ export default function CapaDetailPage() {
   return (
     <SidebarProvider>
       <div className="flex h-screen overflow-hidden bg-[var(--color-background-muted)]">
-        <Sidebar type="default" collapsible="none" className="hidden lg:flex">
-          <SidebarNavigation />
-        </Sidebar>
+        <AppSidebar />
 
         <main className="flex min-h-0 min-w-0 flex-1 flex-col">
           <header className="flex h-14 shrink-0 items-center border-b border-[var(--color-border-default)] bg-[var(--color-background-default)] px-[var(--spacing-layout-xs)] md:px-[var(--spacing-layout-sm)]">
@@ -216,8 +166,7 @@ export default function CapaDetailPage() {
 
           {mobileNavOpen && (
             <div className="border-b border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-background)] p-[var(--spacing-component-md)] lg:hidden">
-              <SidebarMenuItem icon={<LayoutDashboard className="h-4 w-4" />} label="Dashboard" href="#" />
-              <SidebarMenuItem icon={<ClipboardCheck className="h-4 w-4" />} label="CAPA" href="/prototype/accura/capa" active />
+              <AppNavItems />
             </div>
           )}
 

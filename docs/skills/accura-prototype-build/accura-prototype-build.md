@@ -73,6 +73,120 @@ For a detail screen reached from a listing:
 - Provide the documented back control.
 - Remove obsolete modal state if the page replaces a previous detail dialog.
 
+## Established patterns — reuse, do not reinvent
+
+Decided while building the CAPA and Training prototypes. Each one replaced something
+hand-rolled. Follow them; if a screen needs to break one, say so out loud.
+
+### Layout
+
+| Concern | Pattern |
+|---|---|
+| Sidebar + header + tabs | One shared shell per module (`training/training-shell.tsx`). **Never build the sidebar in a page** — CAPA did, four times, and Training was invisible from CAPA until it was extracted to `prototype/accura/app-sidebar.tsx` |
+| Nav items | One `platformNav` array in `app-sidebar.tsx`. Adding a module is one line, not one edit per page |
+| Active nav state | Matches the href **and everything under it**, so the module stays lit on detail routes |
+| Module tabs | `Tabs` `variant="line"` with each `TabsTrigger asChild` around a `Link`, `value={pathname}`. Real navigation, design-system styling |
+| Unbuilt tabs / routes | Render an "not built in this prototype" notice, never a 404. A dead end reads as broken; a notice reads as scoped |
+
+### Cards and titles
+
+- **Every section card is `Card` / `CardHeader` / `CardTitle` / `CardContent`.** Do not hand-roll
+  `<section className="rounded-… border …">`. A hand-rolled card used `surface/default` where
+  `Card` uses `surface/overlay` — identical in light mode, divergent in dark.
+- **`CardTitle` is the one section-title token.** `heading/sm` — 16px · 600 ·
+  `color/surface/overlay/foreground`. Used by CAPA `CAPA Details` / `Actions` and every Training
+  card. Do not introduce a second title size.
+- A table **inside** a card gets its own surface: `radius/md` + `border/default` on `CardContent`.
+  **One step below the parent's `radius/lg`** — a nested surface never matches its container.
+- A table **not** inside a card (a listing on the page background) takes `radius/lg`.
+
+### Clickable rows
+
+The row is a convenience target; **the first cell always carries the real control.**
+
+```tsx
+const onClick = useRowClick<HTMLTableRowElement>(() => router.push(href))
+<TableRow className="cursor-pointer" onClick={onClick}>
+  <TableCell><Link href={href} className="font-medium text-[var(--color-brand-primary)] hover:underline">{name}</Link>
+```
+
+- Helper: `prototype/accura/row-click.ts`. The guard is `closest("a, button")`, which stops a
+  click on the inner control firing twice.
+- **`<Link>` when it navigates. `<button>` when it opens a panel.** Training History rows open a
+  Sheet, so the course name is a button.
+- **Never** put `role="button"` / `tabIndex` / `onKeyDown` on a `TableRow`. That reimplements what
+  the inner control does natively and announces the whole row as a single target.
+- The control is `brand/primary`, weight 500, with the secondary line beneath in
+  `text/secondary` at `text-xs`.
+
+### Tables versus cards for a listing
+
+Default to a **table**. Cards earn their place only when the object has an image, a status that
+needs colour, or a preview. A training role is name + description + two counts — tabular.
+Counts belong in **numeric columns**, not footer prose: they sort, they scan, and a `0` becomes
+visible. The Roles tab was converted from the product's card grid on exactly this reasoning.
+
+### Status badges
+
+`Badge variant={statusVariant[status]} shape="pill" size="md"`, where `statusVariant` is a
+`Record<Status, BadgeVariant>` in `mock-data.ts`. **Status colour is data, never markup.**
+
+### Mock data
+
+- One `mock-data.ts` per module. Typed unions for every status set, plus the variant map.
+- **Derive, never re-type.** `assignedRoles` on the user rail is a `filter()` over
+  `trainingRoles`. Two hand-written copies of the same role drift — the same failure the token
+  docs keep hitting.
+- Comment *why* a row exists when it demonstrates something (a role with `0` users, a
+  self-signed record).
+
+### Known component gaps — hand-rolled, and why
+
+Two patterns the prototype needs that the design system cannot express. **Both are hand-rolled
+today.** Do not treat either as a licence to hand-roll anything else — they are logged so the next
+person finds a decision rather than a mystery.
+
+**Segmented control** — *choose one of N, all options visible, and the choice changes the form.*
+
+- Built as `Button`s with `role="radio"` + `aria-checked`, styling swapped via `variant`
+  (`default` when selected, `outline` otherwise). See the Automatic Assessment Trigger card in
+  `training/courses/new/page.tsx`.
+- **Not `ButtonGroup`** — its spec says the actions it groups are *"mutually independent"*. It
+  groups actions, not choices.
+- **Not `RadioGroup`** — semantically right, but renders as radio circles, which read as too weak
+  for a control that restructures the form beneath it.
+- Right pattern for the job: few options, short labels, and the user must see the alternatives to
+  understand that picking one reveals different fields. A `Select` would hide two of three.
+- **If a second screen needs it, build it** as `ToggleGroup` — component + spec + meta.json +
+  story — rather than copying the markup a second time.
+
+**Combobox option with a qualifier** — *`Amit Kothari · Quality Assurance` on one line.*
+
+- `ComboboxOption.label` is a plain `string`, rendered in both the list item and the chip, so the
+  name and its qualifier cannot take different weight.
+- Closing it means an optional `sublabel` on `ComboboxOption`: rendered beneath the label in the
+  list, omitted from the chip (which also shortens crowded chips), matched by the filter.
+  Raised and deferred 2026-09-10.
+- It is a general gap: any picker of people, documents or courses wants a qualifier.
+
+**The rule this does not change:** everything with a design-system equivalent uses it. These two
+are documented exceptions with a named reason, not precedent.
+
+### Type and spacing floors
+
+| Rule | Why |
+|---|---|
+| Nothing below **12px** | `label/sm` / `body/xs` is the floor. `text-[10px]` and `text-[11px]` were both found and removed |
+| Albert Sans starts at **18px** | Base layer applies `font-heading` to `h1`–`h3`. Any heading under 18px needs `font-sans`, or it silently violates the theme. `CardTitle` renders a `div` and so is safe by construction |
+| Spacing on the 4px scale | `spacing/component/*` = 2·4·8·12·16·24·32. `px-2.5`, `p-5` and `p-10` were all found and removed |
+| No decorative strokes | There is no timeline component in Accura, and `border-l-2` already means *selected row* (`table.tsx:78`). Do not borrow it |
+
+### Before claiming any of this is done
+
+Every number above was wrong at least once because **the dev server served a stale compile while
+the file on disk was correct**. `rm -rf .next` and restart before measuring, then verify in the
+browser — see Validate below.
+
 ## Validate
 
 Run targeted checks on changed prototype files first:
