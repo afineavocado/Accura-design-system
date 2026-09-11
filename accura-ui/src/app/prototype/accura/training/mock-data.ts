@@ -779,3 +779,76 @@ export const assessmentRounds: AssessmentListRow[] = [
     completed: 28, total: 28, status: "Completed",
   },
 ]
+
+/* The Review queue — participant records awaiting a manager's signature.
+ *
+ * Only methods that are NOT self-evidencing reach here (Q10): Practical,
+ * Written, and failed quizzes. Acknowledge, Read & acknowledge and passed
+ * quizzes never enter the queue, which is what stops it filling with records
+ * nobody needs to read. */
+export type ReviewItem = {
+  id: string
+  userId: string
+  name: string
+  department: string
+  course: string
+  method: string
+  /** Days since the trainee completed and signed. The primary sort. */
+  waitingDays: number
+  due: string
+  overdue?: boolean
+  /** What reviewing this will involve — visible before opening. */
+  evidence: string
+  evidenceIsFile?: boolean
+  /** Set on a failed auto-graded quiz — the Q14 case with no defined route. */
+  score?: string
+  document?: string
+}
+
+export const reviewItems: ReviewItem[] = [
+  {
+    id: "rev-001", userId: "amit-kothari", name: "Amit Kothari",
+    department: "Quality Assurance", course: "Cleanroom gowning",
+    method: "Practical", waitingDays: 9, due: "8 Sep 2026", overdue: true,
+    evidence: "gowning-checklist.pdf", evidenceIsFile: true,
+  },
+  {
+    id: "rev-002", userId: "tom-reilly", name: "Tom Reilly",
+    department: "Manufacturing", course: "Goods-in inspection",
+    method: "Written", waitingDays: 6, due: "22 Sep 2026",
+    evidence: "Written answer",
+  },
+  {
+    id: "rev-003", userId: "lena-fischer", name: "Lena Fischer",
+    department: "Manufacturing", course: "Waste segregation",
+    method: "Quiz", waitingDays: 3, due: "30 Sep 2026",
+    evidence: "10 answers", score: "scored 4 of 10 — failed",
+    document: "SOP-030 v2.0",
+  },
+  {
+    id: "rev-004", userId: "priya-nair", name: "Priya Nair",
+    department: "Engineering", course: "Cleanroom gowning",
+    method: "Practical", waitingDays: 1, due: "22 Oct 2026",
+    evidence: "gowning-priya.jpg", evidenceIsFile: true,
+  },
+]
+
+/* Excluded from the reviewer's own queue — a manager signing off their own
+   training is an audit finding in a GxP system (Q6). */
+export const ownRecordsAwaitingOtherManager = 2
+
+/* Structured rejection reasons (Q15). An auditor seeing `rejected then
+   approved` will ask what changed, so the reason is not free text alone. */
+export const rejectionReasons = [
+  "Evidence insufficient",
+  "Did not meet required standard",
+  "Wrong document version",
+  "Other",
+] as const
+
+/* The signed-in reviewer. Their own records are excluded from their queue. */
+export const currentUser = {
+  name: "Sarah Johnson",
+  email: "sarah@accura.one",
+  roleAtSignOff: "Training Manager",
+}

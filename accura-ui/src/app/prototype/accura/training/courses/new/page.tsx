@@ -239,10 +239,13 @@ export default function CreateCoursePage() {
             {trigger === "Specific date" && (
               <div className="flex flex-col gap-[var(--spacing-component-xs)]">
                 <RequiredLabel htmlFor="trigger-date">Trigger date</RequiredLabel>
+                {/* Same width as the recurring-period select beside it —
+                    two forms of one control should not change size. */}
                 <DatePicker
                   id="trigger-date"
                   type="input"
                   placeholder="Select date"
+                  className="sm:w-[220px]"
                 />
               </div>
             )}

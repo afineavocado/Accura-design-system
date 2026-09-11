@@ -319,7 +319,84 @@ product's:
 **There is no action on this screen.** A manager who has found the problem can open the person's
 record, and that is all — no chase, no remind, no approve. §8 landing where it hurts most.
 
-### 5.7 Shared patterns
+### 5.7 Review queue
+
+**Built 2026-09-11.** The manager's core job, and the module's largest gap until now (§8).
+Prototyped as the post-review future state — no approval event exists in the data model yet.
+
+**Selection-first**, the pattern most eQMS use: tick rows, act from a toolbar.
+
+> **The checkbox is scope and nothing else.** An earlier build made it mean *approved*, so
+> ticking a rejected row silently turned it into an approval. Decisions now come only from an
+> explicit `Approve` or `Reject`, which removes the collision by construction rather than by rule.
+
+**What reaches the queue.** Only methods that are not self-evidencing — `Practical`, `Written`,
+and failed quizzes (Q10). Acknowledgements and passed quizzes never arrive, which is what stops
+the queue filling with records nobody needs to read.
+
+**Columns:** ☐ · `Person` · `Assessment` (method chip, score if failed) · `Waiting` · `Evidence` ·
+record state.
+
+- **`Waiting` is the primary column and the sort.** *9 days* is the fact that matters — someone
+  finished and has been sitting unsigned since. Oldest first, so the worst case is row one.
+- **`Evidence` is visible before opening** — a filename, `Written answer`, `10 answers`. You can
+  see what reviewing will involve, and a row missing evidence where evidence is expected shows.
+- Decided rows lock: checkbox disabled, excluded from `select all`.
+
+### Approve requires opening. Reject does not.
+
+The load-bearing decision on this screen.
+
+| Action | Gate | Why |
+|---|---|---|
+| **Approve** | **must open the record** | approving attests the evidence is satisfactory. The row shows a *filename*, not the evidence — `gowning-checklist.pdf` says a file exists, not whether the gowning was correct |
+| **Reject** | none | rejection causes are often administrative and visible from the row: wrong document version, superseded SOP, sent to the wrong person |
+
+The toolbar states it rather than failing silently: `Approve` is disabled while the selection
+contains unopened rows, with *"2 not opened yet — open to approve"* beside the count. Rows carry
+an `Opened` marker once viewed.
+
+> Without this gate, `select all → Approve` would be a two-click path to approving evidence
+> nobody looked at — the most audit-exposed interaction in the module.
+
+**The record panel is read-only** — record, evidence, waiting, and a `Close`. Decisions are made
+on the selection, never in two places.
+
+### Signing
+
+**Both decisions are signed.** Rejecting changes a record's state and writes to a permanent
+training history, exactly as approving does.
+
+- **`Dialog`, not `AlertDialog`** — closing without signing loses nothing, which is the ×
+  test in `AlertDialog.md`.
+- One signature covers the batch (Part 11 §11.200); the **meaning is recorded with it**
+  (§11.50): *"Approve 3 training completions"*, or *"Reject 1 training completion — Wrong
+  document version"*.
+- Identity block — name, email, role at sign-off, timestamp stamped when the dialog opens.
+- **The attestation gates the button.** A signature nobody affirmed is not a signature.
+
+**Rejecting is two short steps** — reason, then sign — rather than one long dialog. The reason is
+a radio list (Q15), chosen so all four options are visible at once, and it travels into the
+signature's meaning.
+
+**Bulk reject shares one reason.** Correct for a batch with a common cause; when reasons differ,
+reject separately.
+
+**Self-approval is handled:** the reviewer's own records are excluded and the screen says where
+they went — *"2 of your own records need another manager's sign-off"* (Q6).
+
+**The empty state is the normal state** — a well-run queue is empty, so it reads *"Nothing
+awaiting your review"*, not as an error.
+
+### Open on this screen
+
+- **`select all` includes a failed assessment.** Lena's 4-of-10 quiz is swept in with everything
+  else; the approve gate happens to cover it, but whether failed records should be excluded from
+  `select all` outright is undecided.
+- **Nothing here exists in the data model** — no approval event, and `Awaiting review` is not a
+  state records enter. See §8.
+
+### 5.8 Shared patterns
 
 Pagination on every listing (`Rows per page` 5·10·20). Row-click plus a real control in the
 first cell. `CardTitle` as the one section-title token. Full pattern list, including two
@@ -485,11 +562,32 @@ automation firing.
 
 ### Workflow the brief does not settle
 
-**Q10 — Which assessment methods require review?** The brief states review and sign-off without
-exception, but splits the module into automated and human-verified training. The line falls
-where the trainee's own click stops being evidence: `Acknowledge` and `Read & acknowledge` are
-self-evidencing; `On-the-job` structurally is not; `Quiz` splits on grading.
-**Recommended: a setting on the assessment method, not a hard-coded rule.**
+**Q10 — RESOLVED 2026-09-11. Which assessment methods require review?**
+The brief states review and sign-off without exception, but splits the module into automated and
+human-verified training. The line falls where the trainee's own click stops being evidence.
+
+> **Decision: behaviour is fixed by assessment type. No per-method setting.**
+>
+> | Method | Completion | Why |
+> |---|---|---|
+> | `Acknowledge` · `Read & acknowledge` | trainee signature is sufficient | the act **is** the evidence |
+> | `Quiz` | trainee signature, **if auto-graded against a pass mark** | the score is the evidence |
+> | `Written` · `Practical` (on-the-job) | **manager sign-off** | someone must read the answer or witness the task |
+>
+> A per-method toggle was proposed and **rejected as unnecessary**: it would have added a control
+> with nothing behind it until review exists. The cost, accepted knowingly: organisations that
+> require sign-off on *every* GxP SOP acknowledgement cannot express that without a code change.
+>
+> **This setting decides what enters the Review queue** — only sign-off methods generate review
+> work, which is what stops the queue filling with acknowledgements nobody needs to read.
+>
+> **The requirement must be captured on the record, not read live.** If the rule changes later,
+> records completed under the old rule keep their original requirement — the same principle as
+> `Via role`, and as Edit Course's *"assessments already sent keep the methods they were sent
+> with."* Otherwise a rule change retroactively rewrites whether past records were compliant.
+>
+> **Depends on Q14:** `Quiz` is only self-evidencing when auto-graded and passed. A failed quiz,
+> or one whose answers need reading, has no defined route while Q14 is open.
 
 **Q11 — `Assign to` is a snapshot.** Editing the pre-filled list means a person can be assigned
 while belonging to no linked role, leaving `Via role` with nothing to point at. Assignments need
@@ -589,7 +687,7 @@ shows `… - Assessment -1`. The name the user approved is not the name stored.
 
 | | |
 |---|---|
-| **Review tab** | the manager's core job. Highest-priority gap (§8) |
+| ~~**Review tab**~~ | **built 2026-09-11 (§5.7)** — as the future state; the workflow behind it still does not exist |
 | **Trainee screens** | the whole other role (**Q6**) |
-| **Approve / reject controls** | the assessment detail is built (§5.6) but has no action, because review does not exist |
+| **The workflow behind Review** | no approval event in the data model, and `Awaiting review` is not a state records enter. §5.7 is a design of the target state |
 | **Role-scoped rollup** | `Outstanding` and role-scoped `Status` (§5.4) and the removal-dialog counts all need the same per-user, per-role query |

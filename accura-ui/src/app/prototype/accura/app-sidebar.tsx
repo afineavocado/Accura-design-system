@@ -7,6 +7,7 @@ import {
   BarChart3,
   BookOpen,
   ChevronLeft,
+  ChevronRight,
   ClipboardCheck,
   FileText,
   GraduationCap,
@@ -98,13 +99,24 @@ function AccuraLogo() {
 
 export function AppSidebar() {
   const isActive = useIsActive()
+  const { collapsed } = useSidebar()
 
   return (
     <Sidebar type="default" collapsible="icon" className="hidden lg:flex">
       <SidebarHeader className="h-14 justify-between px-4">
         <AccuraLogo />
-        <SidebarToggle className="shrink-0 rounded-full bg-[var(--color-sidebar-accent)]">
-          <ChevronLeft className="h-4 w-4" />
+        {/* The chevron points where the click will take the sidebar: left to
+            collapse, right to expand. A fixed chevron reads as a direction the
+            control does not go. */}
+        <SidebarToggle
+          className="shrink-0 rounded-full bg-[var(--color-sidebar-accent)]"
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          {collapsed ? (
+            <ChevronRight className="h-4 w-4" />
+          ) : (
+            <ChevronLeft className="h-4 w-4" />
+          )}
         </SidebarToggle>
       </SidebarHeader>
 
