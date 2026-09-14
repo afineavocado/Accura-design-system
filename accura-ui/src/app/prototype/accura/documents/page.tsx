@@ -3,6 +3,7 @@
 import { useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useRowClick } from "../row-click";
+import { ListSummary } from "../list-summary";
 import { TablePagination, usePagination } from "../table-pagination";
 import Link from "next/link";
 import { Search, ArrowDown, ArrowUp, Plus } from "lucide-react";
@@ -80,11 +81,6 @@ export default function DocumentListing() {
     .sort((a, b) => a.name.localeCompare(b.name) * (ascending ? 1 : -1));
   const paged = usePagination(filtered);
   const { setPage } = paged;
-  const active =
-    search ||
-    [type, department, workflow, availability, category].some(
-      (v) => v !== "All"
-    );
   return (
     <>
       <div className="mb-[var(--spacing-layout-sm)] flex w-full flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
@@ -109,18 +105,21 @@ export default function DocumentListing() {
         {[
           {
             label: "Category",
+            allLabel: "All categories",
             value: category,
             options: ["All", "Normal", "Pre-approved / External"],
             change: setCategory,
           },
           {
             label: "Type",
+            allLabel: "All types",
             value: type,
             options: ["All", ...documentTypes],
             change: setType,
           },
           {
             label: "Department",
+            allLabel: "All departments",
             value: department,
             options: [
               "All",
@@ -130,12 +129,14 @@ export default function DocumentListing() {
           },
           {
             label: "Workflow",
+            allLabel: "All workflows",
             value: workflow,
             options: ["All", ...stages],
             change: setWorkflow,
           },
           {
             label: "Use status",
+            allLabel: "All use statuses",
             value: availability,
             options: [
               "All",
@@ -151,15 +152,13 @@ export default function DocumentListing() {
         ].map((filter) => (
           <div
             key={filter.label}
-            className={
-              filter.label === "Type" ? "w-32 flex-none" : "w-40 flex-none"
-            }
+            className="flex-none"
           >
             <Choice
               label={filter.label}
               value={filter.value}
               options={filter.options}
-              prefix
+              allLabel={filter.allLabel}
               onChange={(value) => {
                 filter.change(value);
                 setPage(1);
@@ -177,29 +176,20 @@ export default function DocumentListing() {
         </Button>
       </div>
 
-      <div className="mb-[var(--spacing-component-md)] flex min-h-8 items-center justify-between gap-[var(--spacing-component-sm)] text-xs text-[var(--color-text-secondary)]">
-        <p aria-live="polite">
-          {filtered.length} revision records ·{" "}
-          {active ? "Filtered results" : "All records"}
-        </p>
-        {active && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              setSearch("");
-              setType("All");
-              setDepartment("All");
-              setWorkflow("All");
-              setAvailability("All");
-              setCategory("All");
-              setPage(1);
-            }}
-          >
-            Clear filters
-          </Button>
-        )}
-      </div>
+      <ListSummary
+        showing={filtered.length}
+        total={docs.length}
+        noun="revision records"
+        onClear={() => {
+          setSearch("");
+          setType("All");
+          setDepartment("All");
+          setWorkflow("All");
+          setAvailability("All");
+          setCategory("All");
+          setPage(1);
+        }}
+      />
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
         <Table className="min-w-[1100px]">
           <TableHeader>

@@ -14,7 +14,10 @@ longer match Training and CAPA. Everything below is known, deliberate and not ye
 
 > **Heading fixed 2026-09-14** (items 1, 2, 5). All three modules now render the same
 > `<h1 class="text-lg font-semibold …">` in the white header bar, and Create sits on the search
-> row. **Toolbar copy and the summary row (items 3, 4, 6, 7) are still outstanding.**
+> row. **Toolbar copy and summary row fixed 2026-09-14** (items 3, 4) — filters read
+> `All categories` / `All types` / `All departments` / `All workflows` / `All use statuses`, and
+> the triggers size to their content so no value clips. **Card padding and `RequiredLabel`
+> (items 6, 7) are still outstanding.**
 
 Each of these was implemented before and was overwritten by the adoption.
 
@@ -22,8 +25,8 @@ Each of these was implemented before and was overwritten by the adoption.
 |---|---|---|---|
 | ~~1~~ | ~~`PageHeading` is back~~ — **fixed 2026-09-14.** Component deleted, description dropped | `documents/components.tsx` | `393016c` |
 | ~~2~~ | ~~`title="Documents"` removed~~ — **fixed 2026-09-14.** Back in `ApplicationHeader`, heading/md like CAPA and Training | `documents/layout.tsx` | `393016c` |
-| 3 | `ListSummary` replaced by a hand-rolled summary row, copy `"N revision records · Filtered results"` | `documents/page.tsx` | `9f18d8b` |
-| 4 | Filter copy back to the `Label: value` prefix (`Workflow: In...` clipping) instead of `allLabel` | `documents/components.tsx`, `page.tsx` | `9f18d8b` |
+| ~~3~~ | ~~hand-rolled summary row~~ — **fixed 2026-09-14.** `ListSummary`, link-styled `Clear filters`, `1 of 10 revision records` | `documents/page.tsx` | `9f18d8b` |
+| ~~4~~ | ~~`Label: value` prefix clipping~~ — **fixed 2026-09-14.** `allLabel` copy + auto-width triggers | `documents/components.tsx`, `page.tsx` | `9f18d8b` |
 | ~~5~~ | ~~`Create Document` inside `PageHeading`~~ — **fixed 2026-09-14.** Moved to the search row as a sibling of the filter group, matching CAPA | `documents/page.tsx` | `393016c` |
 | 6 | Card padding: 5 explicit `spacing/component/xl` (24px) overrides, vs the 16px primitive default agreed in Q12 | `documents/document-detail.tsx` | `bff58f4`, Q12 |
 | 7 | `Label` required-asterisk usage predates the shared `RequiredLabel` | `documents/*.tsx` | `1b927ca` |
@@ -51,8 +54,9 @@ URL is unusual. Verified working, but never discussed.
 `opacity: calc(var(--opacity-disabled) / 100)` plus `line-through`. The only
 styling in the prototype that bypasses className tokens.
 
-**d. Summary copy diverges** — `"N revision records"` against the `ListSummary`
-noun pattern standardised across all three modules. Folded into #3 above.
+**d. ~~Summary copy diverges~~** — **resolved 2026-09-14.** `ListSummary` now renders it, but the
+noun `revision records` was kept: Documents genuinely lists revisions, not documents, so `1 of 10
+revision records` is the accurate statement the pattern asks for.
 
 ---
 

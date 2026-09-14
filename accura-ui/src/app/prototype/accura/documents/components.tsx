@@ -57,23 +57,29 @@ export function Choice({
   value,
   options,
   onChange,
-  prefix = false,
+  allLabel,
 }: {
   label: string;
   value: string;
   options: string[];
   onChange: (value: string) => void;
-  prefix?: boolean;
+  /** Filters only: what "All" reads as — "All departments", not
+   *  "Department: All". Matches Training and CAPA. The stored value stays
+   *  "All", so filter logic is untouched. The old `Label: value` prefix
+   *  doubled the string, which clipped inside a fixed-width trigger. */
+  allLabel?: string;
 }) {
+  const display = (option: string) =>
+    allLabel && option === "All" ? allLabel : option;
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger aria-label={label}>
-        <SelectValue>{prefix ? `${label}: ${value}` : value}</SelectValue>
+      <SelectTrigger aria-label={label} className="w-auto min-w-40">
+        <SelectValue>{display(value)}</SelectValue>
       </SelectTrigger>
       <SelectContent>
         {options.map((option) => (
           <SelectItem value={option} key={option}>
-            {option}
+            {display(option)}
           </SelectItem>
         ))}
       </SelectContent>
