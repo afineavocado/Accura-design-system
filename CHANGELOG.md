@@ -11,6 +11,18 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-14 — Team workflow written down
+
+**Added**
+
+- **`docs/team-workflow.md`** (Tiếng Việt) — branch-per-module + PR workflow for the two people
+  building the prototypes. Covers one-time collaborator setup, the daily pull/branch/cache
+  routine, the four shared files both sides touch (`app-sidebar.tsx`, `tokens.css`,
+  `components/ui/*`, the root docs), and conflict handling. Folds in three failure modes this
+  repo has already hit: uncommitted work lost to an automatic stash on branch switch, a stale
+  `.next` misread as a broken pull, and agents editing files outside the request.
+- Indexed in `README.md` and `llms.txt`.
+
 ### 2026-09-14 — Body type is Inter; the SF Pro mismatch is retired
 
 **Changed**
