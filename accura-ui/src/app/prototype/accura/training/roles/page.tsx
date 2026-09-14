@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table"
 
 import { useRowClick } from "../../row-click"
+import { ListSummary } from "../../list-summary"
 import { TablePagination, usePagination } from "../../table-pagination"
 import { TrainingShell, TrainingTabs } from "../training-shell"
 import { trainingRoles, type TrainingRole } from "../mock-data"
@@ -103,6 +104,13 @@ export default function TrainingRolesPage() {
       {/* A table, not the product's card grid: the counts are the role's whole
           meaning, and as numeric columns they sort. Cards bury them in footer
           prose and stop scanning at ~a dozen roles. */}
+      <ListSummary
+        showing={visibleRoles.length}
+        total={trainingRoles.length}
+        noun="training roles"
+        onClear={() => { setQuery("") }}
+      />
+
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
         <Table>
           <TableHeader>

@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/select"
 import { CapaHeader } from "././capa-header"
 import { AppNavItems, AppSidebar } from "../app-sidebar"
+import { ListSummary } from "../list-summary"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import {
   Table,
@@ -135,10 +136,10 @@ export default function CapaListingPage() {
                     }}
                   >
                     <SelectTrigger className="w-[160px]" aria-label="Filter by status">
-                      <SelectValue placeholder="Status: All" />
+                      <SelectValue placeholder="All statuses" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Status: All</SelectItem>
+                      <SelectItem value="all">All statuses</SelectItem>
                       {capaStatuses.map((option) => (
                         <SelectItem key={option} value={option}>{option}</SelectItem>
                       ))}
@@ -153,10 +154,10 @@ export default function CapaListingPage() {
                     }}
                   >
                     <SelectTrigger className="w-[160px]" aria-label="Filter by source">
-                      <SelectValue placeholder="Source: All" />
+                      <SelectValue placeholder="All sources" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Source: All</SelectItem>
+                      <SelectItem value="all">All sources</SelectItem>
                       {sourceOptions.map((option) => (
                         <SelectItem key={option} value={option}>{option}</SelectItem>
                       ))}
@@ -171,6 +172,18 @@ export default function CapaListingPage() {
                   </Link>
                 </Button>
               </div>
+
+              <ListSummary
+                showing={filteredRecords.length}
+                total={records.length}
+                noun="results"
+                onClear={() => {
+                  setQuery("")
+                  setStatus("all")
+                  setSource("all")
+                  setPage(1)
+                }}
+              />
 
               <div className="overflow-hidden rounded-[var(--radius-base)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
                 {visibleRecords.length ? (

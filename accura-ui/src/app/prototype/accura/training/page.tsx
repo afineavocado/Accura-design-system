@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/table"
 
 import { useRowClick } from "../row-click"
+import { ListSummary } from "../list-summary"
 import { TablePagination, usePagination } from "../table-pagination"
 import { TrainingShell, TrainingTabs } from "./training-shell"
 import {
@@ -105,10 +106,10 @@ export default function TrainingUsersPage() {
         </div>
         <Select value={status} onValueChange={setStatus}>
           <SelectTrigger className="sm:w-[180px]" aria-label="Filter by status">
-            <SelectValue placeholder="Status" />
+            <SelectValue placeholder="All statuses" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="all">All statuses</SelectItem>
             {userStatuses.map((value) => (
               <SelectItem key={value} value={value}>
                 {value}
@@ -117,6 +118,13 @@ export default function TrainingUsersPage() {
           </SelectContent>
         </Select>
       </div>
+
+      <ListSummary
+        showing={visibleUsers.length}
+        total={trainingUsers.length}
+        noun="users"
+        onClear={() => { setQuery(""); setStatus("all") }}
+      />
 
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
         <Table>

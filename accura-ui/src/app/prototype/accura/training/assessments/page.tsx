@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/table"
 
 import { useRowClick } from "../../row-click"
+import { ListSummary } from "../../list-summary"
 import { TablePagination, usePagination } from "../../table-pagination"
 import { TrainingShell, TrainingTabs } from "../training-shell"
 import {
@@ -147,6 +148,13 @@ export default function TrainingAssessmentsPage() {
           </SelectContent>
         </Select>
       </div>
+
+      <ListSummary
+        showing={visibleRounds.length}
+        total={assessmentRounds.length}
+        noun="assessments"
+        onClear={() => { setQuery(""); setStatus("all") }}
+      />
 
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
         <Table>

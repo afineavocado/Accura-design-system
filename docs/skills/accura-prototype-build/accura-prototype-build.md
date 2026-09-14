@@ -134,6 +134,36 @@ same size competes with the record name; 18px keeps the module below the record 
   with the other controls that act on the list.
 - Verified at 1500 / 1200 / 1000px: one row in all three modules.
 
+### The summary row, between toolbar and table
+
+Every list carries one: `ListSummary` in `prototype/accura/list-summary.tsx`.
+
+```tsx
+<ListSummary showing={visible.length} total={all.length} noun="training roles" onClear={…} />
+```
+
+- **The copy states what is true.** Unfiltered it is a count — `8 courses`. Filtered it says how
+  many of how many — `1 of 8 courses`. Documents previously read `3 documents · All records`
+  while a filter was applied, which contradicts itself.
+- **`Clear filters` is a link-styled action**, 12px, `brand/primary` — not a Button. A ghost
+  `Button` brings its own colour and 36px height, so it overrode the row's `text-secondary` and
+  made a 12px row 36px tall. Only appears when something is actually filtered.
+- `aria-live="polite"` on the count, so filtering is announced.
+- Omit `onClear` on a list with no filters.
+
+### Filter copy: name the set, do not repeat the label
+
+`All departments`, not `Department: All`.
+
+- The trigger has a fixed width and the component clips long values
+  (`select.tsx` → `[&>span]:line-clamp-1`). Prefixing the label doubles the string, so
+  `Workflow: In Approval` clipped to `Workflow: In…` — and because the trigger is
+  `justify-between`, the ellipsis left a gap before the chevron that read as broken padding.
+- Naming the set keeps every value short enough to fit, and reads better: the label is already
+  visible as the filter's position in the row.
+- `Choice` in Documents takes `allLabel` for this; the stored value stays `"All"` so filter
+  logic is untouched.
+
 ### Cards and titles
 
 - **Every section card is `Card` / `CardHeader` / `CardTitle` / `CardContent`.** Do not hand-roll

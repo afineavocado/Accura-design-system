@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/table"
 
 import { useRowClick } from "../../row-click"
+import { ListSummary } from "../../list-summary"
 import { TablePagination, usePagination } from "../../table-pagination"
 import { TrainingShell, TrainingTabs } from "../training-shell"
 import {
@@ -172,6 +173,13 @@ export default function TrainingCoursesPage() {
           </Link>
         </Button>
       </div>
+
+      <ListSummary
+        showing={visibleCourses.length}
+        total={allCourses.length}
+        noun="courses"
+        onClear={() => { setQuery(""); setTrigger("all") }}
+      />
 
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
         <Table>

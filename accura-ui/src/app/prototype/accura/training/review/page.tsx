@@ -54,6 +54,7 @@ import {
 } from "@/components/ui/table"
 import { Textarea } from "@/components/ui/textarea"
 
+import { ListSummary } from "../../list-summary"
 import { TrainingShell, TrainingTabs } from "../training-shell"
 import {
   currentUser,
@@ -189,6 +190,16 @@ export default function ReviewQueuePage() {
           </SelectContent>
         </Select>
       </div>
+
+      <ListSummary
+        showing={visible.length}
+        total={reviewItems.length}
+        noun="records"
+        onClear={() => {
+          setQuery("")
+          setMethod("all")
+        }}
+      />
 
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
         {/* Decisions live in the toolbar, on the selection. */}
