@@ -34,7 +34,7 @@ Do NOT write timing values, thresholds, or click-sequence behavior from memory �
 
 ## Step 1 — Before Writing
 
-1. Read `agentic-design-system.md` token rules if not already loaded this session
+1. Read `docs/design-system-rules.md` token rules if not already loaded this session — **values come from `accura-theme.md`, which wins on every value**
 2. Check `docs/tracking/Audit Status.md` — confirm the component has been audited and all issues resolved
 3. Fetch the relevant library docs for this component (see Rule Zero above)
 4. Check `docs/component-specs/` — if a doc already exists, read it first (may be stale, not blank)
@@ -206,7 +206,7 @@ Include these when relevant — insert between Token Bindings and Behavior:
 1. **Update Tracking/Audit Status.md** — confirm the doc date matches the last audit date
 2. **Cross-check the Do Not table** — every fix made during audit should appear as a row
 3. **Check section order** — Component Sets → Variant Matrix → Structure → Token Bindings → [optional] → Behavior → Accessibility → Usage Rules → Do Not
-4. **Verify all token names** — spot-check 2–3 tokens against `agentic-design-system.md` to confirm they exist
+4. **Verify all token names** — spot-check 2–3 tokens against `accura-ui/src/app/tokens.css` to confirm they exist
 
 ---
 
@@ -217,7 +217,7 @@ Include these when relevant — insert between Token Bindings and Behavior:
 | Writing Behavior from general UI knowledge | Always fetch library docs first |
 | Skipping Behavior entirely | Required section — every doc needs it |
 | Documenting a stale state (post-rebuild, pre-audit) | Mark with `⚠️ STALE` at top, fix before finalising |
-| Token names that don't match our collection | Cross-check against `agentic-design-system.md` |
+| Token names that don't match our collection | Cross-check against `accura-ui/src/app/tokens.css` |
 | Mixing `color/background/*` and `color/surface/*` without rationale | Document why in Design Decisions |
 | Leaving "implementation-defined" behaviors vague | Name at least one concrete implementation pattern |
 | Documenting composite behavior before sub-components | Document leaf/sub-components first, composite last |

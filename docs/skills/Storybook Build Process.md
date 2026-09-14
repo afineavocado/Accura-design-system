@@ -10,8 +10,8 @@ Each phase gate must pass before the next starts. A component is not done until 
 **Paths:**
 | | |
 |---|---|
-| Stories | `agentic-ui/src/stories/*.stories.tsx` |
-| Components | `agentic-ui/src/components/ui/<name>.tsx` |
+| Stories | `accura-ui/src/stories/*.stories.tsx` |
+| Components | `accura-ui/src/components/ui/<name>.tsx` |
 | Artifacts | `Agentic-design-system/docs/machine-readable/artifacts/` |
 | Status tracker | `docs/tracking/Storybook Status.md` — update every component, same session |
 
@@ -92,7 +92,7 @@ Extract from **Token Bindings section:**
 ```
 1. Read spec token name (from .md or meta.json)
 2. Confirm the CSS variable exists in tokens.css:
-   grep -n "<token-name>" agentic-ui/src/app/tokens.css
+   grep -n "<token-name>" accura-ui/src/app/tokens.css
 3. Write class using var(--exact-token-name)
 4. Save → verify in Storybook Controls
 5. Only move to the next variant when this one passes

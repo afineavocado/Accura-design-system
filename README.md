@@ -18,7 +18,7 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 | **`CLAUDE.md`** | Agent instructions and the rules-vs-values precedence. |
 | **`accura-theme.md`** | The theme reference — every token value, every deviation from Agentic, the reasoning, and 12 open questions. |
 | **`docs/design-system-rules.md`** | The inherited ruleset, vendored from Agentic. **Contains Agentic's values — see its override header.** |
-| `docs/skills/` | 8 process skills — audit, build, token binding, documentation, Storybook, theming, prototype build. |
+| `docs/skills/` | 7 process skills — audit, build, token binding, documentation, Storybook, component implementation, prototype build. |
 | `docs/component-specs/` | 39 spec files — 37 components, plus `_template.md` and `Form-shared.md`. |
 | `docs/machine-readable/` | 38 `meta.json` artifacts, component directory, quick reference, validation scripts. |
 | `docs/tracking/` | Storybook and audit status. ⚠️ Reflects Agentic's status, not Accura's. |

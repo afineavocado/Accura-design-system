@@ -35,13 +35,13 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 | Bind or fix tokens | `docs/skills/Token Binding Skill.md` |
 | Write component docs | `docs/skills/Component Documentation Skill.md` |
 | Any Storybook work | `docs/skills/Storybook Build Process.md` |
-| Re-theme / re-skin | `docs/skills/Theme Generator Skill.md` |
+| Build or extend a prototype | `docs/skills/accura-prototype-build/accura-prototype-build.md` |
 | Implement a component in code | `docs/skills/Component implementation process.md` |
 
 ## Component documentation
 
 - `docs/component-specs/[Name].md` — **39 files**: 37 component specs, plus `docs/component-specs/_template.md` and `docs/component-specs/Form-shared.md` (shared `label`, `menu-dropdown`, `menu-dropdown-item`).
-- `docs/machine-readable/artifacts/components/[name].meta.json` — **37 files**, v3 schema: variants, tokens per state, storybook reference, known issues, dark-mode risks.
+- `docs/machine-readable/artifacts/components/[name].meta.json` — **38 files**, v3 schema: variants, tokens per state, storybook reference, known issues, dark-mode risks.
 - `docs/machine-readable/component-quick-reference.md` — scan before building any screen.
 - `docs/machine-readable/component-directory.md` — Figma node ID ↔ Storybook title ↔ tsx file.
 - `docs/machine-readable/meta-artifact-template.md` — required fields for any new meta.json.
