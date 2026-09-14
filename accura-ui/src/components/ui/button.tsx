@@ -1,13 +1,40 @@
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
+"use client";
 
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
+
+type ActionSize = "default" | "sm" | "lg";
+const ActionSizeContext = React.createContext<ActionSize | undefined>(
+  undefined
+);
+
+/** Independent actions sharing one token size, including nested drawer triggers. */
+export function ActionGroup({
+  size = "default",
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & { size?: ActionSize }) {
+  return (
+    <ActionSizeContext.Provider value={size}>
+      <div
+        role="group"
+        className={cn(
+          "flex flex-wrap items-center gap-[var(--spacing-component-sm)]",
+          className
+        )}
+        {...props}
+      />
+    </ActionSizeContext.Provider>
+  );
+}
 
 const buttonVariants = cva(
   // focus/destructive = red glow (DROP_SHADOW rgb(220,38,38) @40% spread 3px) — replaces color/ring
-// All other variants use color/ring (blue, 2px) via focus-visible:ring-*
-"inline-flex items-center justify-center gap-[var(--button-size-button-spacing)] whitespace-nowrap rounded-[var(--button-size-button-radius-2)] text-sm leading-none font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)] disabled:pointer-events-none disabled:opacity-[calc(var(--opacity-disabled)/100)] [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  // All other variants use color/ring (blue, 2px) via focus-visible:ring-*
+  "inline-flex items-center justify-center gap-[var(--button-size-button-spacing)] whitespace-nowrap rounded-[var(--button-size-button-radius-2)] text-sm leading-none font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)] disabled:pointer-events-none disabled:opacity-[calc(var(--opacity-disabled)/100)] [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -32,18 +59,14 @@ const buttonVariants = cva(
           "bg-[var(--button-secondary-bg-bg)] text-[var(--button-secondary-fg-fg)] hover:bg-[var(--button-secondary-bg-hover)] active:bg-[var(--button-secondary-bg-active)]",
         ghost:
           "bg-transparent text-[var(--button-ghost-fg-fg)] hover:bg-[var(--button-ghost-bg-hover)] active:bg-[var(--button-ghost-bg-active)]",
-        link:
-          "text-[var(--button-link-fg-default)] underline-offset-4 hover:underline hover:text-[var(--button-link-fg-hover)] active:text-[var(--button-link-fg-active)] disabled:text-[var(--button-link-fg-disabled)]",
+        link: "text-[var(--button-link-fg-default)] underline-offset-4 hover:underline hover:text-[var(--button-link-fg-hover)] active:text-[var(--button-link-fg-active)] disabled:text-[var(--button-link-fg-disabled)]",
       },
       size: {
         default:
           "h-[var(--button-size-button-height-default)] px-[var(--button-size-button-padding-default)]",
-        sm:
-          "h-[var(--button-size-button-height-small)] px-[var(--button-size-button-padding-small)] text-xs",
-        lg:
-          "h-[var(--button-size-button-height-large)] rounded-[var(--button-size-button-radius-1)] px-[var(--button-size-button-padding-default)]",
-        icon:
-          "h-[var(--button-size-button-height-default)] w-[var(--button-size-button-height-default)]",
+        sm: "h-[var(--button-size-button-height-small)] px-[var(--button-size-button-padding-small)] text-xs",
+        lg: "h-[var(--button-size-button-height-large)] rounded-[var(--button-size-button-radius-1)] px-[var(--button-size-button-padding-default)]",
+        icon: "h-[var(--button-size-button-height-default)] w-[var(--button-size-button-height-default)]",
         "icon-sm":
           "h-[var(--button-size-button-height-small)] w-[var(--button-size-button-height-small)]",
         "icon-lg":
@@ -55,26 +78,36 @@ const buttonVariants = cva(
       size: "default",
     },
   }
-)
+);
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  asChild?: boolean
+  asChild?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button"
+    const groupSize = React.useContext(ActionSizeContext);
+    const resolvedSize = groupSize
+      ? ((size?.startsWith("icon")
+          ? groupSize === "default"
+            ? "icon"
+            : `icon-${groupSize}`
+          : groupSize) as ButtonProps["size"])
+      : size;
+    const Comp = asChild ? Slot : "button";
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(
+          buttonVariants({ variant, size: resolvedSize, className })
+        )}
         ref={ref}
         {...props}
       />
-    )
+    );
   }
-)
-Button.displayName = "Button"
+);
+Button.displayName = "Button";
 
-export { Button, buttonVariants }
+export { Button, buttonVariants };

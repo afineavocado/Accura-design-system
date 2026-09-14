@@ -7,10 +7,12 @@ import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { ActionGroup, Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { ComboboxField } from "@/components/ui/combobox";
 import { DocumentFiles, DocumentAttachments } from "./document-files";
 import {
@@ -31,6 +33,14 @@ import {
   reviewerFor,
   qaFor,
   approvalEffectiveDate,
+  recordKey,
+  documentHref,
+  isRetired,
+  normalizeDocument,
+  nextDocumentId,
+  documentTypes,
+  departments,
+  displayTime,
   type DemoDocument,
 } from "./mock-data";
 import { useDocuments, saveDocument } from "./store";
@@ -51,7 +61,7 @@ function InfoSection({
   children: ReactNode;
 }) {
   return (
-    <Card className="text-[var(--color-surface-overlay-foreground)]">
+    <Card className="p-[var(--spacing-component-xl)] text-[var(--color-surface-overlay-foreground)]">
       <CardHeader className="border-b border-[var(--color-border-default)] pb-[var(--spacing-component-lg)]">
         <CardTitle>
           <h2 className="font-sans">{title}</h2>
@@ -67,7 +77,10 @@ const gap = "space-y-[var(--spacing-component-sm)]";
 
 export default function DocumentDetail({ id }: { id: string }) {
   const docs = useDocuments();
-  const existing = docs.find((d) => d.id === id);
+  const existing =
+    docs.find((d) => recordKey(d) === id) ||
+    docs.find((d) => d.id === id && !isRetired(d)) ||
+    docs.find((d) => d.id === id);
   if (id !== "new" && !existing)
     return (
       <>
@@ -77,18 +90,11 @@ export default function DocumentDetail({ id }: { id: string }) {
         </Button>
       </>
     );
-  const nextId = `SOP-${String(
-    Math.max(
-      0,
-      ...docs
-        .filter((d) => d.type === "SOP")
-        .map((d) => Number(d.id.split("-")[1]))
-    ) + 1
-  ).padStart(3, "0")}`;
+  const nextId = nextDocumentId(docs, "SOP");
   return (
     <DetailEditor
       key={`${id}-${existing?.activity[0]?.timestamp || "new"}`}
-      initial={existing || newDocument(nextId)}
+      initial={existing || normalizeDocument(newDocument(nextId))}
       isNew={id === "new"}
     />
   );
@@ -104,22 +110,35 @@ function DetailEditor({
   const router = useRouter();
   const documents = useDocuments();
   const [doc, setDoc] = useState(initial);
-  const [signing, setSigning] = useState(false);
+  const [signing, setSigning] = useState<
+    "submit" | "approve" | "reject" | "obsolete" | null
+  >(null);
   const actionHost = useContext(DocumentActionHost);
-  const draft = doc.status === "Draft";
+  const retired = isRetired(doc);
+  const external = doc.category === "Pre-approved / External";
+  const draft = doc.status === "Draft" && !retired;
   const approved = doc.status === "Approved";
-  const actor = responsible(doc);
+  const actor =
+    signing === "obsolete" || signing === "submit"
+      ? doc.author || actors.owner
+      : responsible(doc);
   const reviewer = reviewerFor(doc);
   const qa = qaFor(doc);
   const plannedDate =
     doc.effectiveDateOverride ||
     approvalEffectiveDate(new Date().toISOString());
-  const workflowSteps = [
-    { label: "Draft", description: actors.owner.name },
-    { label: "In Review", description: reviewer.name },
-    { label: "In Approval", description: qa.name },
-    { label: "Approved", description: "Read-only document" },
-  ];
+  const workflowSteps = external
+    ? [
+        { label: "Draft", description: doc.author?.name || actors.owner.name },
+        { label: "Submitted / Signed", description: "Author acknowledgement" },
+        { label: "Approved", description: "No QA gate" },
+      ]
+    : [
+        { label: "Draft", description: actors.owner.name },
+        { label: "In Review", description: reviewer.name },
+        { label: "In QA Approval", description: qa.name },
+        { label: "Approved", description: "Read-only document" },
+      ];
   const auditEvents: RecordAuditEvent[] = doc.activity.map((event, i) => ({
     ...event,
     id: `activity-${i}`,
@@ -140,9 +159,15 @@ function DetailEditor({
     );
     const entry = {
       ...signature,
-      fromStatus:
-        signature.role === "QA Approver" ? "In Approval" : "In Review",
-      toStatus: signature.role === "QA Approver" ? "Approved" : "In Approval",
+      meaning:
+        signature.meaning +
+        (signature.invalidatedAt
+          ? ` · Historical only — invalidated on ${displayTime(
+              signature.invalidatedAt
+            )}`
+          : ""),
+      fromStatus: signature.fromStatus,
+      toStatus: signature.toStatus,
     };
     if (match) Object.assign(match, entry);
     else
@@ -150,14 +175,43 @@ function DetailEditor({
         ...entry,
         id: `signature-${i}`,
         action:
-          signature.role === "QA Approver"
+          signature.action ||
+          (signature.role === "QA Approver"
             ? "Final approval signed"
-            : "Review approval signed",
+            : "Review approval signed"),
       });
   });
-  const ready = Boolean(doc.name.trim() && doc.file && reviewer && qa);
+  const ready = Boolean(
+    doc.name.trim() && doc.file && (external || (reviewer && qa))
+  );
   const update = (patch: Partial<DemoDocument>) =>
-    setDoc((prev) => ({ ...prev, ...patch }));
+    setDoc((prev) => ({
+      ...prev,
+      ...patch,
+      ...(patch.file &&
+      prev.file &&
+      (patch.file !== prev.file || patch.sourceKey !== prev.sourceKey)
+        ? {
+            uploadHistory: [
+              ...(prev.uploadHistory || []),
+              {
+                file: prev.file,
+                sourceKey: prev.sourceKey,
+                sample: prev.sample,
+                timestamp: new Date().toISOString(),
+              },
+            ],
+            activity: [
+              {
+                text: `Draft file replaced: ${prev.file} → ${patch.file}. Previous upload retained.`,
+                name: prev.author?.name || actors.owner.name,
+                timestamp: new Date().toISOString(),
+              },
+              ...prev.activity,
+            ],
+          }
+        : {}),
+    }));
   const persist = (next: DemoDocument, text: string, name = actor.name) => {
     const updated = {
       ...next,
@@ -178,18 +232,122 @@ function DetailEditor({
     toast.success("Draft saved to Documents");
     router.push(basePath);
   };
-  const submit = () => {
-    persist(
-      { ...doc, status: "In Review" },
-      `Submitted for review · PDF conversion simulated · assigned to ${reviewer.name}`
+  const submit = () => setSigning("submit");
+  const createRevision = () => {
+    const pending = documents.find(
+      (d) => d.id === doc.id && !isRetired(d) && d.status !== "Approved"
     );
-    toast.success("Submitted for review");
-    if (isNew) router.replace(`${basePath}/${doc.id}`);
+    if (pending) {
+      router.push(documentHref(pending));
+      return;
+    }
+    const revision = `v${
+      Math.max(
+        ...documents
+          .filter((d) => d.id === doc.id)
+          .map((d) => parseInt(d.revision.replace("v", ""), 10) || 1)
+      ) + 1
+    }.0`;
+    const next: DemoDocument = {
+      ...doc,
+      revision,
+      status: "Draft",
+      lifecycle: "Current",
+      previousRevision: recordKey(doc),
+      supersededBy: undefined,
+      obsolete: undefined,
+      returned: undefined,
+      approvedAt: undefined,
+      effectiveDate: "",
+      effectiveDateOverride: undefined,
+      signatures: [],
+      uploadHistory: [],
+      activity: [
+        {
+          text: `New revision ${revision} created from ${doc.revision}; fresh signatures required`,
+          name: doc.author?.name || actors.owner.name,
+          timestamp: new Date().toISOString(),
+        },
+      ],
+    };
+    saveDocument(next);
+    router.push(documentHref(next));
   };
   const signed = (receipt: SignatureReceipt) => {
-    const status = doc.status === "In Review" ? "In Approval" : "Approved";
+    const action = signing;
+    if (
+      draft &&
+      (action === "obsolete" || action === "reject" || action === "approve")
+    )
+      return;
+    if (action === "reject" || action === "obsolete") {
+      const reason = receipt.meaning
+        .split("Reason: ")
+        .slice(1)
+        .join("Reason: ");
+      const entry = {
+        ...receipt,
+        action:
+          action === "reject"
+            ? "Rejection signed — returned to Draft"
+            : "Obsolete decision signed",
+        fromStatus: doc.status,
+        toStatus: action === "reject" ? "Draft" : "Obsolete",
+      };
+      persist(
+        {
+          ...doc,
+          ...(action === "reject"
+            ? {
+                status: "Draft" as const,
+                returned: {
+                  reason,
+                  name: actor.name,
+                  timestamp: receipt.timestamp,
+                  fromStatus: doc.status,
+                },
+                effectiveDate: "",
+                effectiveDateOverride: undefined,
+                approvedAt: undefined,
+              }
+            : {
+                lifecycle: "Obsolete" as const,
+                obsolete: {
+                  reason,
+                  name: actor.name,
+                  timestamp: receipt.timestamp,
+                },
+              }),
+          signatures: [
+            ...doc.signatures.map((s) =>
+              action === "reject" &&
+              (!s.action ||
+                /approval|submission|acknowledgement/i.test(s.action))
+                ? { ...s, invalidatedAt: s.invalidatedAt || receipt.timestamp }
+                : s
+            ),
+            entry,
+          ],
+        },
+        entry.action
+      );
+      toast.success(
+        action === "reject"
+          ? "Returned to Draft — fresh signatures required"
+          : "Document marked Obsolete"
+      );
+      return;
+    }
+    const status =
+      action === "submit"
+        ? external
+          ? "Approved"
+          : "In Review"
+        : doc.status === "In Review"
+        ? "In QA Approval"
+        : "Approved";
     const effectiveDate =
-      status === "Approved"
+      status === "Approved" && !external
         ? doc.effectiveDateOverride || approvalEffectiveDate(receipt.timestamp)
         : "";
     persist(
@@ -198,9 +356,29 @@ function DetailEditor({
         status,
         effectiveDate,
         approvedAt: status === "Approved" ? receipt.timestamp : undefined,
-        signatures: [...doc.signatures, receipt],
+        returned: undefined,
+        signatures: [
+          ...doc.signatures,
+          {
+            ...receipt,
+            action:
+              action === "submit"
+                ? external
+                  ? "External acknowledgement signed · Submitted / Signed → Approved"
+                  : "Author submission signed"
+                : status === "Approved"
+                ? "QA approval signed"
+                : "Review approval signed",
+            fromStatus: doc.status,
+            toStatus: status,
+          },
+        ],
       },
-      status === "Approved"
+      action === "submit"
+        ? external
+          ? "External acknowledgement signed · Submitted / Signed → Approved (no QA gate)"
+          : `Author submission signed · assigned to ${reviewer.name}`
+        : status === "Approved"
         ? `QA approval signed · effective date ${displayDate(
             effectiveDate
           )} · ${
@@ -213,6 +391,7 @@ function DetailEditor({
         ? "Document approved"
         : "Review complete — ready for QA approval"
     );
+    if (isNew) router.replace(documentHref(doc));
   };
   return (
     <>
@@ -240,37 +419,160 @@ function DetailEditor({
             <UseBadge doc={doc} />
           </div>
           <p className="mt-[var(--spacing-component-sm)] text-xs text-[var(--color-text-secondary)]">
-            {doc.id} · {doc.revision} · Normal document · Current revision
+            {doc.id} · {doc.revision} · {doc.category || "Normal"} ·{" "}
+            {retired
+              ? "Historical record"
+              : doc.status === "Approved"
+              ? "Current approved revision"
+              : "Working revision"}
           </p>
         </div>
-        <RecordAuditDrawer
-          record={`${doc.id} · ${doc.revision}`}
-          events={auditEvents}
-        />
+        <ActionGroup aria-label="Document actions">
+          {approved && !retired && (
+            <Button onClick={createRevision}>New version</Button>
+          )}
+          {!retired && !isNew && (draft || approved) && (
+            <Button
+              variant="outline"
+              disabled={draft}
+              onClick={() => setSigning("obsolete")}
+            >
+              Mark as Obsolete
+            </Button>
+          )}
+          <RecordAuditDrawer
+            record={`${doc.id} · ${doc.revision}`}
+            events={auditEvents}
+          />
+        </ActionGroup>
       </div>
+      {((doc.returned && draft) || retired || doc.previousRevision) && (
+        <Alert
+          variant={
+            (doc.returned && draft) || doc.lifecycle === "Obsolete"
+              ? "destructive"
+              : "default"
+          }
+          className="mb-[var(--spacing-layout-sm)]"
+        >
+          <AlertTitle>
+            {doc.lifecycle === "Obsolete"
+              ? "Obsolete — not available for use"
+              : doc.lifecycle === "Superseded"
+              ? "Superseded — historical revision"
+              : doc.returned
+              ? `Returned to Draft by ${doc.returned.name}`
+              : approved
+              ? "Replacement revision approved"
+              : "New revision in progress"}
+          </AlertTitle>
+          <AlertDescription>
+            {doc.lifecycle === "Obsolete"
+              ? `${doc.obsolete?.reason || "No longer required or in use."} · ${
+                  doc.obsolete?.name || "Author"
+                }${
+                  doc.obsolete
+                    ? ` · ${displayTime(doc.obsolete.timestamp)}`
+                    : ""
+                }. Retained for history.`
+              : doc.lifecycle === "Superseded"
+              ? "Replaced on approval of a newer revision. This revision is no longer effective."
+              : doc.returned
+              ? `${doc.returned.fromStatus} · ${displayTime(
+                  doc.returned.timestamp
+                )} · ${
+                  doc.returned.reason
+                }. Previous submission/approval signatures are historical only; resubmit with a new signature.`
+              : approved
+              ? external
+                ? "The previous revision is now Superseded. This external record was submitted with author acknowledgement."
+                : `The previous revision is now Superseded. This revision is available for controlled use from ${displayDate(
+                    doc.effectiveDate
+                  )}.`
+              : "The previous approved revision is unchanged until this revision is approved. Fresh signatures are required."}
+            {(doc.supersededBy || doc.previousRevision) && (
+              <Link
+                className="ml-[var(--spacing-component-sm)] text-[var(--color-brand-primary)] underline"
+                href={`${basePath}/${encodeURIComponent(
+                  doc.supersededBy || doc.previousRevision!
+                )}`}
+              >
+                {doc.supersededBy
+                  ? "View replacement revision"
+                  : "View previous revision"}
+              </Link>
+            )}
+          </AlertDescription>
+        </Alert>
+      )}
+      {isNew && draft && (
+        <div className="mb-[var(--spacing-layout-sm)]">
+          <InfoSection title="Document category">
+            <RadioGroup
+              value={doc.category || "Normal"}
+              onValueChange={(value) =>
+                update({ category: value as DemoDocument["category"] })
+              }
+              aria-label="Document category"
+              className="grid gap-[var(--spacing-component-lg)] sm:grid-cols-2"
+            >
+              {(["Normal", "Pre-approved / External"] as const).map(
+                (category, i) => (
+                  <label
+                    key={category}
+                    className="flex cursor-pointer items-start gap-[var(--spacing-component-md)] rounded-[var(--radius-lg)] border border-[var(--color-border-default)] p-[var(--spacing-component-lg)] has-[[data-state=checked]]:border-[var(--color-brand-primary)]"
+                  >
+                    <RadioGroupItem id={`category-${i}`} value={category} />
+                    <span>
+                      <span className="block text-sm font-medium">
+                        {category}
+                      </span>
+                      <span className="text-sm text-[var(--color-text-secondary)]">
+                        {i === 0
+                          ? "Author signs submission, then Reviewer and QA approve."
+                          : "Author signs acknowledgement. Already approved externally; no Reviewer or QA gate."}
+                      </span>
+                    </span>
+                  </label>
+                )
+              )}
+            </RadioGroup>
+          </InfoSection>
+        </div>
+      )}
       <RecordDetailLayout
         ratio="70/30"
         progress={
-          <Card>
-            <CardContent>
-              <div className="hidden md:block">
-                <Stepper
-                  className="[&>li:first-child]:flex-[0.5] [&>li:last-child]:flex-[0.5]"
-                  steps={workflowSteps}
-                  currentStep={approved ? 5 : stages.indexOf(doc.status) + 1}
-                  aria-label="Record workflow"
-                />
-              </div>
-              <div className="md:hidden">
-                <Stepper
-                  steps={workflowSteps}
-                  currentStep={approved ? 5 : stages.indexOf(doc.status) + 1}
-                  orientation="vertical"
-                  aria-label="Record workflow"
-                />
-              </div>
-            </CardContent>
-          </Card>
+          !retired && (
+            <Card className="p-[var(--spacing-component-xl)]">
+              <CardContent>
+                <div className="hidden md:block">
+                  <Stepper
+                    className="[&>li:first-child]:flex-[0.5] [&>li:last-child]:flex-[0.5]"
+                    steps={workflowSteps}
+                    currentStep={
+                      approved
+                        ? workflowSteps.length + 1
+                        : stages.indexOf(doc.status) + 1
+                    }
+                    aria-label="Record workflow"
+                  />
+                </div>
+                <div className="md:hidden">
+                  <Stepper
+                    steps={workflowSteps}
+                    currentStep={
+                      approved
+                        ? workflowSteps.length + 1
+                        : stages.indexOf(doc.status) + 1
+                    }
+                    orientation="vertical"
+                    aria-label="Record workflow"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          )
         }
         main={
           <>
@@ -284,7 +586,7 @@ function DetailEditor({
               {draft ? (
                 <>
                   <div className={gap}>
-                    <Label required htmlFor="document-name">Document name</Label>
+                    <Label htmlFor="document-name">Document name *</Label>
                     <Input
                       id="document-name"
                       value={doc.name}
@@ -295,23 +597,16 @@ function DetailEditor({
                   </div>
                   <div className="grid gap-[var(--spacing-component-lg)]">
                     <div className={gap}>
-                      <Label required>Document type</Label>
+                      <Label>Document type *</Label>
                       {isNew ? (
                         <Choice
                           label="Document type"
                           value={doc.type}
-                          options={["SOP", "POL"]}
+                          options={documentTypes}
                           onChange={(type) =>
                             update({
                               type,
-                              id: `${type}-${String(
-                                Math.max(
-                                  0,
-                                  ...documents
-                                    .filter((d) => d.type === type)
-                                    .map((d) => Number(d.id.split("-")[1]))
-                                ) + 1
-                              ).padStart(3, "0")}`,
+                              id: nextDocumentId(documents, type),
                             })
                           }
                         />
@@ -327,15 +622,11 @@ function DetailEditor({
                       </p>
                     </div>
                     <div className={gap}>
-                      <Label required>Department</Label>
+                      <Label>Department *</Label>
                       <Choice
                         label="Department"
                         value={doc.department}
-                        options={[
-                          "Quality Assurance",
-                          "Manufacturing",
-                          "Regulatory",
-                        ]}
+                        options={departments}
                         onChange={(department) => update({ department })}
                       />
                     </div>
@@ -348,8 +639,15 @@ function DetailEditor({
                     ["Document type", doc.type],
                     ["Title", doc.name],
                     ["Department", doc.department],
-                    ["Document owner", actors.owner.name],
-                    ["QA approver", qa.name],
+                    ["Category", doc.category || "Normal"],
+                    ["Author", doc.author?.name || actors.owner.name],
+                    ["Document owner", doc.owner?.name || actors.owner.name],
+                    ...(!external
+                      ? [
+                          ["Reviewer", reviewer.name],
+                          ["QA approver", qa.name],
+                        ]
+                      : []),
                     ["Revision", doc.revision],
                   ].map(([label, value]) => (
                     <div key={label} className="min-w-0">
@@ -360,7 +658,9 @@ function DetailEditor({
                   <div className="min-w-0">
                     <dt className={infoLabel}>Effective date</dt>
                     <dd>
-                      {doc.effectiveDate ? (
+                      {external ? (
+                        "Not applicable — external approval"
+                      ) : doc.effectiveDate ? (
                         displayDate(doc.effectiveDate)
                       ) : (
                         <>
@@ -377,24 +677,30 @@ function DetailEditor({
               {draft && (
                 <dl className="grid gap-[var(--spacing-component-xl)] text-sm">
                   <div>
-                    <dt className={infoLabel}>Document owner</dt>
-                    <dd>{actors.owner.name}</dd>
+                    <dt className={infoLabel}>Author / Document owner</dt>
+                    <dd>{doc.author?.name || actors.owner.name}</dd>
                   </div>
                   <div>
                     <dt className={infoLabel}>Effective date</dt>
                     <dd>
-                      <Badge variant="secondary" shape="pill" size="md">
-                        Automatic
-                      </Badge>
-                      <span> : Approval Date plus 14 Days</span>
+                      {external ? (
+                        "Not applicable — external approval"
+                      ) : (
+                        <>
+                          <Badge variant="secondary" shape="pill" size="md">
+                            Automatic
+                          </Badge>
+                          <span> : Approval Date plus 14 Days</span>
+                        </>
+                      )}
                     </dd>
                   </div>
                 </dl>
               )}
-              {draft && (
+              {draft && !external && (
                 <div className="space-y-[var(--spacing-component-lg)]">
                   <div className={gap}>
-                    <Label required>Reviewer</Label>
+                    <Label>Reviewer *</Label>
                     <Choice
                       label="Reviewer"
                       value={reviewer.name}
@@ -403,7 +709,7 @@ function DetailEditor({
                     />
                   </div>
                   <div className={gap}>
-                    <Label required>QA approver</Label>
+                    <Label>QA approver *</Label>
                     <Choice
                       label="QA approver"
                       value={qa.name}
@@ -441,9 +747,9 @@ function DetailEditor({
                       value={doc[field] || []}
                       placeholder="Select documents"
                       options={documents
-                        .filter((d) => d.id !== doc.id)
+                        .filter((d) => d.id !== doc.id && !isRetired(d))
                         .map((d) => ({
-                          value: d.id,
+                          value: recordKey(d),
                           label: `${d.id} · ${d.name} · ${d.revision}`,
                         }))}
                       onValueChange={(value) =>
@@ -462,7 +768,9 @@ function DetailEditor({
                             className="block text-sm font-medium text-[var(--color-brand-primary)] hover:underline"
                             href={`${basePath}/${id}`}
                           >
-                            {id} · {documents.find((d) => d.id === id)?.name}
+                            {documents.find(
+                              (d) => recordKey(d) === id || d.id === id
+                            )?.name || id}
                           </Link>
                         ))
                       ) : (
@@ -479,6 +787,7 @@ function DetailEditor({
         }
       />
       {!approved &&
+        !retired &&
         actionHost &&
         createPortal(
           <footer
@@ -486,7 +795,7 @@ function DetailEditor({
             className="relative z-10 flex flex-col gap-[var(--spacing-component-lg)] border-t border-[var(--color-border-default)] bg-[var(--color-surface-overlay)] p-[var(--spacing-component-lg)] text-[var(--color-surface-overlay-foreground)] before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:rotate-180 before:shadow-[var(--shadow-lg)] lg:flex-row lg:items-center lg:justify-between lg:px-[var(--spacing-component-xl)]"
           >
             <div className="min-w-0 space-y-[var(--spacing-component-sm)]">
-              {doc.status === "In Approval" ? (
+              {doc.status === "In QA Approval" ? (
                 <>
                   <p className="text-xs text-[var(--color-text-secondary)]">
                     The effective date defaults to 14 days after approval
@@ -550,23 +859,32 @@ function DetailEditor({
                     Save as Draft
                   </Button>
                   <Button disabled={!ready} onClick={submit}>
-                    Submit for Review
+                    {external
+                      ? "Sign and submit"
+                      : "Sign and submit for review"}
                     <ArrowRight className="size-4" />
                   </Button>
                 </>
               ) : (
-                <Button
-                  className="w-full lg:min-w-64"
-                  disabled={
-                    doc.status === "In Approval" &&
-                    doc.effectiveDateOverride === ""
-                  }
-                  onClick={() => setSigning(true)}
-                >
-                  {doc.status === "In Review"
-                    ? "Sign review"
-                    : "Sign final approval"}
-                </Button>
+                <>
+                  <Button
+                    variant="outline"
+                    onClick={() => setSigning("reject")}
+                  >
+                    Reject
+                  </Button>
+                  <Button
+                    disabled={
+                      doc.status === "In QA Approval" &&
+                      doc.effectiveDateOverride === ""
+                    }
+                    onClick={() => setSigning("approve")}
+                  >
+                    {doc.status === "In Review"
+                      ? "Sign review"
+                      : "Sign final approval"}
+                  </Button>
+                </>
               )}
             </div>
           </footer>,
@@ -574,15 +892,45 @@ function DetailEditor({
         )}
       {signing && (
         <ElectronicSignatureModal
-          open={signing}
-          onOpenChange={setSigning}
+          open={Boolean(signing)}
+          onOpenChange={(open) => {
+            if (!open) setSigning(null);
+          }}
+          actionLabel={
+            signing === "submit"
+              ? "Sign and submit"
+              : signing === "reject"
+              ? "Sign and reject"
+              : signing === "obsolete"
+              ? "Sign and mark Obsolete"
+              : "Sign and approve"
+          }
+          reasonRequired={signing === "reject" || signing === "obsolete"}
           title={
-            doc.status === "In Review" ? "Sign review" : "Sign final approval"
+            signing === "submit"
+              ? external
+                ? "Sign external acknowledgement"
+                : "Sign author submission"
+              : signing === "reject"
+              ? "Reject and return to Draft"
+              : signing === "obsolete"
+              ? "Mark document as Obsolete"
+              : doc.status === "In Review"
+              ? "Sign review"
+              : "Sign final approval"
           }
           record={`${doc.id} · ${doc.name} · ${doc.revision}`}
           signer={actor}
           meaning={
-            doc.status === "In Review"
+            signing === "reject"
+              ? "I reject this submission and return it to the author for revision."
+              : signing === "obsolete"
+              ? "I confirm this document is no longer required for use. It will remain searchable as a read-only historical record."
+              : signing === "submit"
+              ? external
+                ? "I acknowledge this document was approved externally and submit it as a pre-approved record."
+                : "I confirm this revision is complete and submit it for review."
+              : doc.status === "In Review"
               ? "I approve this document following technical review."
               : `I approve this document for controlled use from ${displayDate(
                   plannedDate

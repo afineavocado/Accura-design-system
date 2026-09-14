@@ -3,18 +3,13 @@
 import { useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useRowClick } from "../row-click";
-import { ListSummary } from "../list-summary";
 import { TablePagination, usePagination } from "../table-pagination";
 import Link from "next/link";
-import * as Popover from "@radix-ui/react-popover";
+import { Search, ArrowDown, ArrowUp } from "lucide-react";
 import {
-  Plus,
-  Search,
-  ArrowDown,
-  ArrowUp,
-  MoreHorizontal,
-  FileText,
-} from "lucide-react";
+  RecordRowAction,
+  RecordRowActionHeading,
+} from "@/components/record-row-action";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -25,15 +20,19 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
-import {  Choice, WorkflowBadge, UseBadge } from "./components";
+import { PageHeading, Choice, WorkflowBadge, UseBadge } from "./components";
 import {
   actors,
-  basePath,
   displayDate,
   nextAction,
   responsible,
   stages,
   getUseStatus,
+  documentTypes,
+  departments,
+  recordKey,
+  documentHref,
+  isRetired,
 } from "./mock-data";
 import { useDocuments } from "./store";
 
@@ -47,7 +46,10 @@ function DocumentRow({
   const router = useRouter();
   const onClick = useRowClick<HTMLTableRowElement>(() => router.push(href));
   return (
-    <TableRow className="cursor-pointer" onClick={onClick}>
+    <TableRow
+      className="cursor-pointer focus-within:bg-[var(--color-background-accent)]"
+      onClick={onClick}
+    >
       {children}
     </TableRow>
   );
@@ -60,6 +62,7 @@ export default function DocumentListing() {
   const [department, setDepartment] = useState("All");
   const [workflow, setWorkflow] = useState("All");
   const [availability, setAvailability] = useState("All");
+  const [category, setCategory] = useState("All");
   const [ascending, setAscending] = useState(true);
   const filtered = docs
     .filter(
@@ -70,19 +73,25 @@ export default function DocumentListing() {
         (type === "All" || d.type === type) &&
         (department === "All" || d.department === department) &&
         (workflow === "All" || d.status === workflow) &&
-        (availability === "All" || getUseStatus(d) === availability)
+        (availability === "All" || getUseStatus(d) === availability) &&
+        (category === "All" || (d.category || "Normal") === category)
     )
     .sort((a, b) => a.name.localeCompare(b.name) * (ascending ? 1 : -1));
   const paged = usePagination(filtered);
   const { setPage } = paged;
+  const active =
+    search ||
+    [type, department, workflow, availability, category].some(
+      (v) => v !== "All"
+    );
   return (
     <>
+      <PageHeading />
       <div
-        className="mb-[var(--spacing-layout-sm)] flex w-full flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]"
+        className="mb-[var(--spacing-layout-sm)] flex w-full flex-wrap gap-[var(--spacing-component-sm)] 2xl:w-3/4 xl:w-4/5"
         aria-label="Document filters"
       >
-        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-[var(--spacing-component-sm)]">
-        <div className="relative min-w-[240px] flex-1 sm:max-w-[380px]">
+        <div className="relative min-w-52 flex-1 basis-full sm:basis-auto">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
           <Input
             type="search"
@@ -98,31 +107,44 @@ export default function DocumentListing() {
         </div>
         {[
           {
+            label: "Category",
+            value: category,
+            options: ["All", "Normal", "Pre-approved / External"],
+            change: setCategory,
+          },
+          {
             label: "Type",
-            allLabel: "All types",
             value: type,
-            options: ["All", "SOP", "POL"],
+            options: ["All", ...documentTypes],
             change: setType,
           },
           {
             label: "Department",
-            allLabel: "All departments",
             value: department,
-            options: ["All", ...new Set(docs.map((d) => d.department))],
+            options: [
+              "All",
+              ...new Set([...departments, ...docs.map((d) => d.department)]),
+            ],
             change: setDepartment,
           },
           {
             label: "Workflow",
-            allLabel: "All workflows",
             value: workflow,
             options: ["All", ...stages],
             change: setWorkflow,
           },
           {
             label: "Use status",
-            allLabel: "All use statuses",
             value: availability,
-            options: ["All", "Effective", "Pending effective", "Not effective"],
+            options: [
+              "All",
+              "Effective",
+              "Pending effective",
+              "Not effective",
+              "External record",
+              "Superseded",
+              "Obsolete",
+            ],
             change: setAvailability,
           },
         ].map((filter) => (
@@ -136,7 +158,7 @@ export default function DocumentListing() {
               label={filter.label}
               value={filter.value}
               options={filter.options}
-              allLabel={filter.allLabel}
+              prefix
               onChange={(value) => {
                 filter.change(value);
                 setPage(1);
@@ -144,29 +166,30 @@ export default function DocumentListing() {
             />
           </div>
         ))}
-        </div>
-
-        <Button asChild className="shrink-0">
-          <Link href={`${basePath}/new`}>
-            <Plus className="size-4" />
-            Create Document
-          </Link>
-        </Button>
       </div>
-      <ListSummary
-        showing={filtered.length}
-        total={docs.length}
-        noun="documents"
-        onClear={() => {
-          setSearch("");
-          setType("All");
-          setDepartment("All");
-          setWorkflow("All");
-          setAvailability("All");
-          setPage(1);
-        }}
-      />
-
+      <div className="mb-[var(--spacing-component-md)] flex min-h-8 items-center justify-between gap-[var(--spacing-component-sm)] text-xs text-[var(--color-text-secondary)]">
+        <p aria-live="polite">
+          {filtered.length} revision records ·{" "}
+          {active ? "Filtered results" : "All records"}
+        </p>
+        {active && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              setSearch("");
+              setType("All");
+              setDepartment("All");
+              setWorkflow("All");
+              setAvailability("All");
+              setCategory("All");
+              setPage(1);
+            }}
+          >
+            Clear filters
+          </Button>
+        )}
+      </div>
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
         <Table className="min-w-[1100px]">
           <TableHeader>
@@ -189,38 +212,55 @@ export default function DocumentListing() {
               <TableHead>Use status</TableHead>
               <TableHead>Next action</TableHead>
               <TableHead>Document owner</TableHead>
-              <TableHead>
-                <span className="sr-only">Actions</span>
-              </TableHead>
+              <RecordRowActionHeading />
             </TableRow>
           </TableHeader>
           <TableBody>
             {paged.visible.map((doc) => (
-              <DocumentRow key={doc.id} href={`${basePath}/${doc.id}`}>
+              <DocumentRow key={recordKey(doc)} href={documentHref(doc)}>
                 <TableCell className="min-w-52">
                   <Link
                     className="font-medium text-[var(--color-brand-primary)] hover:underline focus-visible:underline"
-                    href={`${basePath}/${doc.id}`}
+                    href={documentHref(doc)}
                   >
                     {doc.name}
                   </Link>
                   <p className="mt-[var(--spacing-component-xs)] text-xs text-[var(--color-text-secondary)]">
                     {doc.id} · {doc.type}
+                    {doc.category === "Pre-approved / External"
+                      ? " · External"
+                      : " · Normal"}
                   </p>
                 </TableCell>
                 <TableCell>
                   <p>{doc.revision}</p>
                   <p className="mt-[var(--spacing-component-xs)] whitespace-nowrap text-xs text-[var(--color-text-secondary)]">
-                    Current revision
+                    {isRetired(doc)
+                      ? "Historical revision"
+                      : doc.status === "Approved"
+                      ? "Current approved revision"
+                      : "Working revision"}
                   </p>
                 </TableCell>
                 <TableCell>
                   <WorkflowBadge status={doc.status} />
+                  {doc.returned &&
+                    doc.status === "Draft" &&
+                    !isRetired(doc) && (
+                      <p className="mt-[var(--spacing-component-xs)] text-xs text-[var(--color-text-invalid)]">
+                        Returned
+                      </p>
+                    )}
                 </TableCell>
                 <TableCell>
                   <UseBadge doc={doc} />
                   <p className="mt-[var(--spacing-component-xs)] whitespace-nowrap text-xs text-[var(--color-text-secondary)]">
-                    {doc.status === "Approved"
+                    {isRetired(doc)
+                      ? "Not available for use"
+                      : doc.category === "Pre-approved / External" &&
+                        doc.status === "Approved"
+                      ? "Externally approved"
+                      : doc.status === "Approved"
                       ? `${
                           getUseStatus(doc) === "Effective" ? "Since" : "From"
                         } ${displayDate(doc.effectiveDate)}`
@@ -228,46 +268,29 @@ export default function DocumentListing() {
                   </p>
                 </TableCell>
                 <TableCell>
-                  <p className="whitespace-nowrap">{nextAction(doc)}</p>
-                  {doc.status !== "Approved" && (
+                  <p className="whitespace-nowrap">
+                    {doc.status === "Approved" || isRetired(doc)
+                      ? "-"
+                      : nextAction(doc)}
+                  </p>
+                  {doc.status !== "Approved" && !isRetired(doc) && (
                     <p className="mt-[var(--spacing-component-xs)] text-xs text-[var(--color-text-secondary)]">
                       {responsible(doc).name} · {responsible(doc).role}
                     </p>
                   )}
                 </TableCell>
                 <TableCell>
-                  <p className="whitespace-nowrap">{actors.owner.name}</p>
+                  <p className="whitespace-nowrap">
+                    {doc.owner?.name || actors.owner.name}
+                  </p>
                   <p className="mt-[var(--spacing-component-xs)] text-xs text-[var(--color-text-secondary)]">
                     {doc.department}
                   </p>
                 </TableCell>
-                <TableCell>
-                  <Popover.Root>
-                    <Popover.Trigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        aria-label={`Actions for ${doc.id}`}
-                      >
-                        <MoreHorizontal className="size-4" />
-                      </Button>
-                    </Popover.Trigger>
-                    <Popover.Portal>
-                      <Popover.Content
-                        align="end"
-                        sideOffset={4}
-                        className="z-50 rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-surface-overlay)] p-[var(--spacing-component-xs)]"
-                      >
-                        <Button variant="ghost" asChild>
-                          <Link href={`${basePath}/${doc.id}`}>
-                            <FileText className="size-4" />
-                            Open document
-                          </Link>
-                        </Button>
-                      </Popover.Content>
-                    </Popover.Portal>
-                  </Popover.Root>
-                </TableCell>
+                <RecordRowAction
+                  href={documentHref(doc)}
+                  label={`Open ${doc.name} · ${doc.revision}`}
+                />
               </DocumentRow>
             ))}
           </TableBody>
@@ -282,7 +305,7 @@ export default function DocumentListing() {
         )}
       </div>
       <div className="mt-[var(--spacing-component-lg)]">
-        <TablePagination {...paged} noun="documents" />
+        <TablePagination {...paged} noun="revision records" />
       </div>
     </>
   );

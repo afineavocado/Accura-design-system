@@ -5,7 +5,7 @@ Route: http://localhost:3001/prototype/accura/documents
 Training alignment: see [TRAINING-MAPPING.md](./TRAINING-MAPPING.md) for the 2026-09-12 update against remote main `c6f7868`, shared patterns adopted, and deliberate domain differences.
 
 This is the only active Document prototype, promoted from `documents-demo` on 2026-09-14 at the user's request. Develop only in this `documents` folder. Legacy routes were removed, not redirected.
-Read the repository `docs/demo-scope.md` before expanding scope.
+Read the repository `docs/demo-design-contract.md` before expanding scope.
 
 ## Walkthrough
 
@@ -26,14 +26,12 @@ Signature and activity history now share `src/components/record-audit-drawer.tsx
 
 - PhaseGateStepper: configurable stages, current assignee, no gate-skipping navigation; horizontal desktop / vertical mobile.
 - ElectronicSignatureModal: record + revision, signer/account/role, signature meaning, explicit intent, simulated authentication; emits a signature receipt.
-- RecordDetailLayout: fractional desktop columns after a 24px token gap, stacked on narrow screens. Ratio per the prototype-build skill · Record masters (70/30).
+- RecordDetailLayout: desktop 65/35 after a 24px token gap, stacked on narrow screens.
 - RecordSection: shared Card composition with heading and optional description.
 
 Existing primitives / stories: Stepper (Feedback/Stepper), Dialog (Overlay/Dialog), Card (Layout/Card), Button, Badge, Input, Select, Checkbox, Table, Sidebar, Toaster. ApplicationHeader reuses the existing notification panel and account identity. There is no standalone Popover component in this checkout, so the row action composition uses installed Radix Popover with Accura Button and semantic surface/border/radius tokens.
 
-The Card specification says 24px padding while the implementation defaults to 16px — a
-design-system gap, logged for the Figma ↔ code pass. **Detail compositions use the 16px
-default**, matching Training and CAPA; the explicit 24px overrides were removed on 2026-09-14. Card primary text uses `color/surface/overlay/foreground`; metadata uses `color/text/secondary`. Typography uses existing 20px page heading, 18px preview heading, 16px card title, 14px body, 12px metadata. Other component-owned spacing is preserved.
+The Card specification says 24px padding while the implementation defaults to 16px. Detail compositions explicitly use `spacing/component/xl` (24px), without changing the base primitive. Card primary text uses `color/surface/overlay/foreground`; metadata uses `color/text/secondary`. Typography uses existing 20px page heading, 18px preview heading, 16px card title, 14px body, 12px metadata. Other component-owned spacing is preserved.
 
 Listing is one all-record table. Desktop toolbar uses 75–80% width and wraps; record names and row Open document controls share the same detail destination. The standard TableRow hover is preserved. Workflow and Use status remain separate. No due date is introduced.
 

@@ -1,5 +1,10 @@
-import * as React from "react"
-import { cn } from "@/lib/utils"
+"use client";
+
+import * as React from "react";
+import { cn } from "@/lib/utils";
+
+const TableOverflowContext = React.createContext(false);
+export const useTableOverflow = () => React.useContext(TableOverflowContext);
 
 // ─── Table ────────────────────────────────────────────────────────────────────
 // shadcn Table — semantic HTML elements, token-correct styling.
@@ -15,16 +20,37 @@ import { cn } from "@/lib/utils"
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
->(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto">
-    <table
-      ref={ref}
-      className={cn("w-full caption-bottom text-sm", className)}
-      {...props}
-    />
-  </div>
-))
-Table.displayName = "Table"
+>(({ className, ...props }, ref) => {
+  const container = React.useRef<HTMLDivElement>(null);
+  const [overflow, setOverflow] = React.useState(false);
+  React.useEffect(() => {
+    const element = container.current;
+    if (!element) return;
+    const measure = () =>
+      setOverflow(element.scrollWidth > element.clientWidth + 1);
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    if (element.firstElementChild) observer.observe(element.firstElementChild);
+    measure();
+    return () => observer.disconnect();
+  }, []);
+  return (
+    <TableOverflowContext.Provider value={overflow}>
+      <div
+        ref={container}
+        data-overflow-x={overflow}
+        className="relative w-full overflow-auto"
+      >
+        <table
+          ref={ref}
+          className={cn("w-full caption-bottom text-sm", className)}
+          {...props}
+        />
+      </div>
+    </TableOverflowContext.Provider>
+  );
+});
+Table.displayName = "Table";
 
 const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
@@ -35,8 +61,8 @@ const TableHeader = React.forwardRef<
     className={cn("bg-[var(--color-surface-raised)]", className)}
     {...props}
   />
-))
-TableHeader.displayName = "TableHeader"
+));
+TableHeader.displayName = "TableHeader";
 
 const TableBody = React.forwardRef<
   HTMLTableSectionElement,
@@ -47,8 +73,8 @@ const TableBody = React.forwardRef<
     className={cn("[&_tr:last-child]:border-0", className)}
     {...props}
   />
-))
-TableBody.displayName = "TableBody"
+));
+TableBody.displayName = "TableBody";
 
 const TableFooter = React.forwardRef<
   HTMLTableSectionElement,
@@ -62,8 +88,8 @@ const TableFooter = React.forwardRef<
     )}
     {...props}
   />
-))
-TableFooter.displayName = "TableFooter"
+));
+TableFooter.displayName = "TableFooter";
 
 const TableRow = React.forwardRef<
   HTMLTableRowElement,
@@ -80,8 +106,8 @@ const TableRow = React.forwardRef<
     )}
     {...props}
   />
-))
-TableRow.displayName = "TableRow"
+));
+TableRow.displayName = "TableRow";
 
 // TableHead: h-12 (48px) + horizontal padding. Consistent with shadcn.
 const TableHead = React.forwardRef<
@@ -98,8 +124,8 @@ const TableHead = React.forwardRef<
     )}
     {...props}
   />
-))
-TableHead.displayName = "TableHead"
+));
+TableHead.displayName = "TableHead";
 
 // TableCell: p-4 (16px all sides) + align-middle. Content determines row height.
 const TableCell = React.forwardRef<
@@ -116,8 +142,8 @@ const TableCell = React.forwardRef<
     )}
     {...props}
   />
-))
-TableCell.displayName = "TableCell"
+));
+TableCell.displayName = "TableCell";
 
 const TableCaption = React.forwardRef<
   HTMLTableCaptionElement,
@@ -128,10 +154,16 @@ const TableCaption = React.forwardRef<
     className={cn("mt-4 text-sm text-[var(--color-text-secondary)]", className)}
     {...props}
   />
-))
-TableCaption.displayName = "TableCaption"
+));
+TableCaption.displayName = "TableCaption";
 
 export {
-  Table, TableHeader, TableBody, TableFooter,
-  TableRow, TableHead, TableCell, TableCaption,
-}
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+};

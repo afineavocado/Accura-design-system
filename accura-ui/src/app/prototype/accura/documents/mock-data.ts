@@ -5,21 +5,30 @@ export const basePath = "/prototype/accura/documents";
 export const stages = [
   "Draft",
   "In Review",
-  "In Approval",
+  "In QA Approval",
   "Approved",
 ] as const;
 export type Stage = (typeof stages)[number];
 export const workflowVariants: Record<Stage, BadgeProps["variant"]> = {
   Draft: "secondary",
   "In Review": "warning",
-  "In Approval": "blue",
+  "In QA Approval": "blue",
   Approved: "success",
 };
-export type UseStatus = "Not effective" | "Pending effective" | "Effective";
+export type UseStatus =
+  | "Not effective"
+  | "Pending effective"
+  | "Effective"
+  | "Superseded"
+  | "Obsolete"
+  | "External record";
 export const useStatusVariants: Record<UseStatus, BadgeProps["variant"]> = {
   "Not effective": "secondary",
   "Pending effective": "blue",
   Effective: "success",
+  Superseded: "secondary",
+  Obsolete: "destructive",
+  "External record": "secondary",
 };
 export const actors = {
   owner: {
@@ -42,6 +51,25 @@ export const actors = {
   },
 };
 export type DemoDocument = {
+  category?: "Normal" | "Pre-approved / External";
+  lifecycle?: "Current" | "Superseded" | "Obsolete";
+  author?: typeof actors.owner;
+  owner?: typeof actors.owner;
+  previousRevision?: string;
+  supersededBy?: string;
+  obsolete?: { reason: string; name: string; timestamp: string };
+  returned?: {
+    reason: string;
+    name: string;
+    timestamp: string;
+    fromStatus: string;
+  };
+  uploadHistory?: {
+    file: string;
+    sourceKey?: string;
+    sample: boolean;
+    timestamp: string;
+  }[];
   id: string;
   name: string;
   type: string;
@@ -200,7 +228,7 @@ export const seeds: DemoDocument[] = initialDocuments.map((d, index) => ({
   type: d.type,
   department: d.department,
   revision: d.version,
-  status: d.status === "In QA Approval" ? "In Approval" : d.status,
+  status: d.status,
   file: `${d.id}.docx`,
   sample: true,
   effectiveDate:
@@ -229,16 +257,14 @@ export const seeds: DemoDocument[] = initialDocuments.map((d, index) => ({
         ],
   activity: [
     {
-      text: `Demo record initialized · ${
-        d.status === "In QA Approval" ? "In Approval" : d.status
-      }`,
+      text: `Demo record initialized · ${d.status}`,
       name: "Demo system",
       timestamp: "2026-09-12T02:00:00Z",
     },
   ],
   content: d.content,
-  relatedDocuments: d.relatedDocuments,
-  referredDocuments: d.referredDocuments,
+  relatedDocuments: d.relatedDocuments.map((id) => id.split(":")[0]),
+  referredDocuments: d.referredDocuments.map((id) => id.split(":")[0]),
 }));
 export function newDocument(id: string): DemoDocument {
   return {
@@ -270,7 +296,10 @@ export function newDocument(id: string): DemoDocument {
   };
 }
 export function getUseStatus(doc: DemoDocument): UseStatus {
+  if (doc.lifecycle === "Obsolete" || doc.lifecycle === "Superseded")
+    return doc.lifecycle;
   if (doc.status !== "Approved") return "Not effective";
+  if (doc.category === "Pre-approved / External") return "External record";
   return doc.effectiveDate &&
     doc.effectiveDate <= new Date().toLocaleDateString("en-CA")
     ? "Effective"
@@ -297,9 +326,9 @@ export function displayTime(date: string) {
 export function responsible(doc: DemoDocument) {
   return doc.status === "In Review"
     ? reviewerFor(doc)
-    : doc.status === "In Approval"
+    : doc.status === "In QA Approval"
     ? qaFor(doc)
-    : actors.owner;
+    : doc.owner || actors.owner;
 }
 // Existing people from the project's original Document fixtures; one selected per gate.
 export const reviewers = [
@@ -335,10 +364,173 @@ export function approvalEffectiveDate(approvalTimestamp: string) {
   )}-${String(date.getDate()).padStart(2, "0")}`;
 }
 export function nextAction(doc: DemoDocument) {
+  if (doc.lifecycle === "Superseded" || doc.lifecycle === "Obsolete")
+    return "View history";
+  if (doc.returned && doc.status === "Draft") return "Revise and resubmit";
+  if (doc.category === "Pre-approved / External" && doc.status === "Draft")
+    return "Sign and submit";
   return {
     Draft: "Complete and submit",
     "In Review": "Review document",
-    "In Approval": "QA approval",
+    "In QA Approval": "QA approval",
     Approved: "No action required",
   }[doc.status];
 }
+
+export const documentTypes = ["SOP", "POL", "WI", "FRM"];
+export const departments = [
+  "Quality Assurance",
+  "Manufacturing",
+  "Regulatory Affairs",
+];
+export function recordKey(doc: Pick<DemoDocument, "id" | "revision">) {
+  return `${doc.id.replaceAll("/", "~")}--${doc.revision}`;
+}
+export function documentHref(doc: Pick<DemoDocument, "id" | "revision">) {
+  return `${basePath}/${encodeURIComponent(recordKey(doc))}`;
+}
+export function isRetired(doc: DemoDocument) {
+  return doc.lifecycle === "Superseded" || doc.lifecycle === "Obsolete";
+}
+export function normalizeDocument(doc: DemoDocument): DemoDocument {
+  return {
+    ...doc,
+    status:
+      (doc.status as string) === "In Approval" ? "In QA Approval" : doc.status,
+    category: doc.category || "Normal",
+    lifecycle: doc.lifecycle || "Current",
+    author: doc.author || { ...actors.owner, role: "Author" },
+    owner: doc.owner || actors.owner,
+    department:
+      doc.department === "Regulatory" ? "Regulatory Affairs" : doc.department,
+    relatedDocuments: doc.relatedDocuments?.map((id) => id.split(":")[0]),
+    referredDocuments: doc.referredDocuments?.map((id) => id.split(":")[0]),
+  };
+}
+export function nextDocumentId(docs: DemoDocument[], type: string) {
+  const max = Math.max(
+    0,
+    ...docs
+      .filter((d) => d.type === type)
+      .map((d) => Number(d.id.split(/[/-]/).at(-1)) || 0)
+  );
+  return `ACME/${type}/2026/${String(max + 1).padStart(6, "0")}`;
+}
+
+// Additional fixtures demonstrate the newly requested contexts without changing saved records.
+export const contextSeeds: DemoDocument[] = [
+  normalizeDocument({
+    ...newDocument("ACME/WI/2026/000002"),
+    name: "Equipment cleaning instruction",
+    type: "WI",
+    department: "Manufacturing",
+    file: "Cleaning-instruction.doc",
+    sample: true,
+    returned: {
+      reason: "Clarify which equipment is covered before resubmission.",
+      name: actors.qa.name,
+      timestamp: "2026-09-13T09:00:00Z",
+      fromStatus: "In QA Approval",
+    },
+    content: {
+      purpose: "Define the equipment cleaning procedure.",
+      scope: "Manufacturing equipment; scope awaiting clarification.",
+    },
+    signatures: [
+      {
+        ...actors.owner,
+        role: "Author",
+        record: "ACME/WI/2026/000002 · v1.0",
+        meaning: "I submit this revision for review.",
+        action: "Author submission signed",
+        fromStatus: "Draft",
+        toStatus: "In Review",
+        timestamp: "2026-09-12T09:00:00Z",
+        invalidatedAt: "2026-09-13T09:00:00Z",
+      },
+      {
+        ...actors.reviewer,
+        record: "ACME/WI/2026/000002 · v1.0",
+        meaning: "I approve this revision following review.",
+        action: "Review approval signed",
+        fromStatus: "In Review",
+        toStatus: "In QA Approval",
+        timestamp: "2026-09-12T10:00:00Z",
+        invalidatedAt: "2026-09-13T09:00:00Z",
+      },
+      {
+        ...actors.qa,
+        record: "ACME/WI/2026/000002 · v1.0",
+        meaning:
+          "I return this revision to Draft. Reason: Clarify which equipment is covered before resubmission.",
+        action: "Rejection signed — returned to Draft",
+        fromStatus: "In QA Approval",
+        toStatus: "Draft",
+        timestamp: "2026-09-13T09:00:00Z",
+      },
+    ],
+  }),
+  normalizeDocument({
+    ...seeds[0],
+    revision: "v1.0",
+    lifecycle: "Superseded",
+    supersededBy: recordKey(seeds[0]),
+    signatures: [],
+    activity: [
+      {
+        text: "Superseded by v2.0 on replacement approval (sample history)",
+        name: "Demo system",
+        timestamp: "2025-06-11T09:00:00Z",
+      },
+    ],
+  }),
+  normalizeDocument({
+    ...newDocument("ACME/FRM/2026/000001"),
+    name: "External calibration certificate",
+    type: "FRM",
+    category: "Pre-approved / External",
+    department: "Regulatory Affairs",
+    status: "Approved",
+    file: "Calibration-certificate.doc",
+    sample: true,
+    content: {
+      purpose:
+        "Externally approved calibration evidence retained in the document repository.",
+      scope: "Supporting equipment documentation.",
+    },
+    signatures: [
+      {
+        ...actors.owner,
+        role: "Author",
+        record: "ACME/FRM/2026/000001 · v1.0",
+        meaning: "I acknowledge external approval and submit this record.",
+        timestamp: "2026-09-12T09:00:00Z",
+        action: "External acknowledgement signed",
+        fromStatus: "Draft",
+        toStatus: "Approved",
+      },
+    ],
+  }),
+  normalizeDocument({
+    ...newDocument("ACME/WI/2026/000001"),
+    name: "Retired equipment instruction",
+    type: "WI",
+    status: "Approved",
+    lifecycle: "Obsolete",
+    file: "Retired-instruction.doc",
+    sample: true,
+    effectiveDate: "2025-06-11",
+    obsolete: {
+      reason: "Equipment has been retired; instruction no longer required.",
+      name: actors.owner.name,
+      timestamp: "2026-09-12T09:00:00Z",
+    },
+    activity: [
+      {
+        text: "Marked Obsolete — equipment retired (sample history)",
+        name: actors.owner.name,
+        timestamp: "2026-09-12T09:00:00Z",
+      },
+    ],
+  }),
+];

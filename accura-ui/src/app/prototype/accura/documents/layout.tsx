@@ -7,7 +7,7 @@ import { ApplicationHeader } from "@/components/application-header";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/toast";
 import { AppNavItems, AppSidebar } from "../app-sidebar";
-import { actors, basePath, responsible } from "./mock-data";
+import { actors, basePath, responsible, recordKey } from "./mock-data";
 import { useDocuments } from "./store";
 
 export default function DemoLayout({ children }: { children: ReactNode }) {
@@ -15,7 +15,10 @@ export default function DemoLayout({ children }: { children: ReactNode }) {
   const [mobile, setMobile] = useState(false);
   const pathname = usePathname();
   const docs = useDocuments();
-  const current = docs.find((d) => pathname.endsWith("/" + d.id));
+  const current =
+    docs.find((d) =>
+      decodeURIComponent(pathname).endsWith("/" + recordKey(d))
+    ) || docs.find((d) => pathname.endsWith("/" + d.id));
   const user = current ? responsible(current) : actors.owner;
   return (
     <SidebarProvider>
@@ -23,7 +26,6 @@ export default function DemoLayout({ children }: { children: ReactNode }) {
         <AppSidebar />
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
           <ApplicationHeader
-            title="Documents"
             user={user}
             initialNotifications={[
               {
@@ -51,7 +53,9 @@ export default function DemoLayout({ children }: { children: ReactNode }) {
             </nav>
           )}
           <main className="min-h-0 flex-1 overflow-y-auto p-[var(--spacing-component-lg)] lg:p-[var(--spacing-component-xl)]">
-            <DocumentActionHost.Provider value={actionHost}>{children}</DocumentActionHost.Provider>
+            <DocumentActionHost.Provider value={actionHost}>
+              {children}
+            </DocumentActionHost.Provider>
           </main>
           <div ref={setActionHost} className="shrink-0" />
         </div>

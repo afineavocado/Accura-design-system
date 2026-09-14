@@ -117,6 +117,10 @@ export type SignatureReceipt = {
   meaning: string;
   record: string;
   timestamp: string;
+  action?: string;
+  fromStatus?: string;
+  toStatus?: string;
+  invalidatedAt?: string;
 };
 
 /** Demo presentation only. Production must authenticate and bind immutable signatures server-side. */
@@ -128,6 +132,8 @@ export function ElectronicSignatureModal({
   signer,
   meaning,
   onSign,
+  actionLabel = "Sign and approve",
+  reasonRequired = false,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -136,19 +142,57 @@ export function ElectronicSignatureModal({
   signer: { name: string; role: string; account: string };
   meaning: string;
   onSign: (receipt: SignatureReceipt) => void;
+  actionLabel?: string;
+  reasonRequired?: boolean;
 }) {
   const [confirmation, setConfirmation] = useState(false);
   const [credential, setCredential] = useState("");
+  const [reason, setReason] = useState("");
+  const [displayTime] = useState(() =>
+    new Date()
+      .toISOString()
+      .replace("T", " ")
+      .replace(/\.\d+Z$/, " UTC")
+  );
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+          <DialogTitle>Electronic Signature — 21 CFR Part 11</DialogTitle>
           <DialogDescription>
-            Confirm your identity and the meaning of this electronic signature.
+            Verify your identity to sign this regulated record.
           </DialogDescription>
         </DialogHeader>
-        <dl className="space-y-[var(--spacing-component-md)] text-sm">
+        <div className="grid grid-cols-2 gap-[var(--spacing-component-md)]">
+          <div className="space-y-[var(--spacing-component-sm)]">
+            <Label htmlFor="signature-name">Full Name</Label>
+            <Input
+              id="signature-name"
+              value={signer.name}
+              readOnly
+              className="bg-[var(--color-background-accent)]"
+            />
+          </div>
+          <div className="space-y-[var(--spacing-component-sm)]">
+            <Label htmlFor="signature-role">Role at Sign-off</Label>
+            <Input
+              id="signature-role"
+              value={signer.role}
+              readOnly
+              className="bg-[var(--color-background-accent)]"
+            />
+          </div>
+          <div className="col-span-2 space-y-[var(--spacing-component-sm)]">
+            <Label htmlFor="signature-time">Time and Date</Label>
+            <Input
+              id="signature-time"
+              value={displayTime}
+              readOnly
+              className="bg-[var(--color-background-accent)]"
+            />
+          </div>
+        </div>
+        <dl className="space-y-[var(--spacing-component-sm)] text-xs text-[var(--color-text-secondary)]">
           <div>
             <dt className="text-[var(--color-text-secondary)]">
               Document · revision
@@ -156,28 +200,30 @@ export function ElectronicSignatureModal({
             <dd className="font-medium">{record}</dd>
           </div>
           <div>
-            <dt className="text-[var(--color-text-secondary)]">Signing as</dt>
-            <dd>
-              {signer.name} · {signer.role}
-            </dd>
-            <dd className="text-[var(--color-text-secondary)]">
-              {signer.account}
-            </dd>
-          </div>
-          <div>
-            <dt className="text-[var(--color-text-secondary)]">
-              Signature meaning
-            </dt>
+            <dt className="text-[var(--color-text-secondary)]">{title}</dt>
             <dd>{meaning}</dd>
           </div>
         </dl>
+        {reasonRequired && (
+          <div className="space-y-[var(--spacing-component-sm)]">
+            <Label htmlFor="decision-reason">Reason *</Label>
+            <Input
+              id="decision-reason"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              placeholder="Explain this decision"
+              required
+            />
+          </div>
+        )}
         <div className="space-y-[var(--spacing-component-sm)]">
-          <Label htmlFor="demo-credential">Demo confirmation</Label>
+          <Label htmlFor="demo-credential">Enter password</Label>
           <Input
             id="demo-credential"
+            type="password"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
-            placeholder="Type demo"
+            placeholder="Enter your password"
             autoComplete="off"
             aria-describedby="demo-auth-note"
           />
@@ -185,7 +231,7 @@ export function ElectronicSignatureModal({
             id="demo-auth-note"
             className="text-xs text-[var(--color-text-secondary)]"
           >
-            Simulation only. Type “demo”; do not enter a real password. No
+            Prototype only. Type “demo”; do not enter a real password. No
             authentication or legally binding signature is performed.
           </p>
         </div>
@@ -205,21 +251,27 @@ export function ElectronicSignatureModal({
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
+            <Button variant="ghost">Cancel</Button>
           </DialogClose>
           <Button
-            disabled={!confirmation || credential !== "demo"}
+            disabled={
+              !confirmation ||
+              credential !== "demo" ||
+              (reasonRequired && !reason.trim())
+            }
             onClick={() => {
               onSign({
                 ...signer,
                 record,
-                meaning,
+                meaning: reasonRequired
+                  ? `${meaning} Reason: ${reason.trim()}`
+                  : meaning,
                 timestamp: new Date().toISOString(),
               });
               onOpenChange(false);
             }}
           >
-            Sign and approve
+            {actionLabel}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -14,7 +14,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RecordSection } from "@/components/record-workflow";
 import { downloadBlob, retainFile, retrieveFile } from "./file-storage";
-import { displayDate, displayTime, type DemoDocument } from "./mock-data";
+import {
+  displayDate,
+  displayTime,
+  isRetired,
+  type DemoDocument,
+} from "./mock-data";
 
 const supported = ".doc,.docx,.xls,.xlsx,.ppt,.pptx";
 const paragraphs = (doc: DemoDocument) => [
@@ -32,7 +37,8 @@ const paragraphs = (doc: DemoDocument) => [
 // PDF fixture renderer, not a DOCX/Office converter. Download stamping is intentionally separate.
 export function buildDemoPdf(doc: DemoDocument, stamp?: string) {
   const wrap = (line: string) => line.match(/.{1,76}(?:\s|$)/g) || [line];
-  const approved = doc.status === "Approved";
+  const approved =
+    doc.status === "Approved" && doc.category !== "Pre-approved / External";
   const body = paragraphs(doc).flatMap((line) => [...wrap(line), ""]);
   const pages = approved
     ? [
@@ -52,13 +58,20 @@ export function buildDemoPdf(doc: DemoDocument, stamp?: string) {
         [
           "APPROVAL RECORD",
           "",
-          ...doc.signatures.flatMap((s) => [
-            s.name,
-            s.role,
-            displayTime(s.timestamp),
-            ...wrap(s.meaning),
-            "",
-          ]),
+          ...doc.signatures
+            .filter(
+              (s) =>
+                !s.invalidatedAt &&
+                s.toStatus !== "Obsolete" &&
+                s.toStatus !== "Draft"
+            )
+            .flatMap((s) => [
+              s.name,
+              s.role,
+              displayTime(s.timestamp),
+              ...wrap(s.meaning),
+              "",
+            ]),
           `Record: ${doc.id} / ${doc.revision}`,
           "",
           "Prototype signatures - not production electronic signatures",
@@ -118,15 +131,16 @@ export function buildDemoPdf(doc: DemoDocument, stamp?: string) {
 
 function PdfPreview({ doc }: { doc: DemoDocument }) {
   const [page, setPage] = useState(1);
-  const approved = doc.status === "Approved";
+  const approved =
+    doc.status === "Approved" && doc.category !== "Pre-approved / External";
   const total = approved ? 3 : 1;
   return (
     <div
       className="overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-border-default)]"
-      aria-label="PDF preview (simulated)"
+      aria-label="PDF preview"
     >
       <div className="flex items-center justify-between gap-[var(--spacing-component-sm)] bg-[var(--color-surface-raised)] p-[var(--spacing-component-md)] text-xs text-[var(--color-text-secondary)]">
-        <span>PDF preview · simulated</span>
+        <span>PDF preview</span>
         <div className="flex items-center gap-[var(--spacing-component-sm)]">
           <Button
             size="icon-sm"
@@ -183,20 +197,27 @@ function PdfPreview({ doc }: { doc: DemoDocument }) {
         ) : approved && page === 3 ? (
           <>
             <h3 className="text-lg font-semibold">Approval record</h3>
-            {doc.signatures.map((s) => (
-              <div
-                className="space-y-[var(--spacing-component-xs)]"
-                key={s.role}
-              >
-                <p className="font-medium">
-                  {s.name} · {s.role}
-                </p>
-                <p className="text-xs text-[var(--color-text-secondary)]">
-                  {displayTime(s.timestamp)}
-                </p>
-                <p>{s.meaning}</p>
-              </div>
-            ))}
+            {doc.signatures
+              .filter(
+                (s) =>
+                  !s.invalidatedAt &&
+                  s.toStatus !== "Obsolete" &&
+                  s.toStatus !== "Draft"
+              )
+              .map((s) => (
+                <div
+                  className="space-y-[var(--spacing-component-xs)]"
+                  key={s.role}
+                >
+                  <p className="font-medium">
+                    {s.name} · {s.role}
+                  </p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">
+                    {displayTime(s.timestamp)}
+                  </p>
+                  <p>{s.meaning}</p>
+                </div>
+              ))}
           </>
         ) : (
           <>
@@ -242,8 +263,9 @@ export function DocumentFiles({
   update: (patch: Partial<DemoDocument>) => void;
 }) {
   const [busy, setBusy] = useState(false);
-  const draft = doc.status === "Draft";
-  const approved = doc.status === "Approved";
+  const draft = doc.status === "Draft" && !isRetired(doc);
+  const external = doc.category === "Pre-approved / External";
+  const approved = doc.status === "Approved" && !external;
   const original = async () => {
     if (doc.sample) {
       // A real Word-readable RTF fixture, identified as .doc rather than pretending it is DOCX.
@@ -277,9 +299,21 @@ export function DocumentFiles({
   };
   return (
     <RecordSection
-      title={draft ? "Document file" : approved ? "Approved PDF" : "Review PDF"}
-      description={
+      title={
         draft
+          ? "Document file"
+          : external
+          ? "External document"
+          : isRetired(doc)
+          ? "Historical document"
+          : approved
+          ? "Approved PDF"
+          : "Review PDF"
+      }
+      description={
+        external
+          ? "Pre-approved source retained. No Accura approval metadata pages are added."
+          : draft
           ? "Attach the original Word, Excel, or PowerPoint file. PDF conversion takes place on submission."
           : approved
           ? "Read-only PDF with header, footer, and first/last metadata pages."
@@ -310,11 +344,11 @@ export function DocumentFiles({
       </div>
       {draft && (
         <div className="space-y-[var(--spacing-component-sm)]">
-          <Label required htmlFor="document-upload">Document file</Label>
+          <Label htmlFor="document-upload">Document file *</Label>
           <Input
             id="document-upload"
             type="file"
-            accept={supported}
+            accept={external ? `${supported},.pdf` : supported}
             disabled={busy}
             onChange={(e) => void upload(e.target.files?.[0])}
           />
@@ -337,7 +371,9 @@ export function DocumentFiles({
             <p className="text-xs text-[var(--color-text-secondary)]">
               {busy
                 ? "Saving file locally…"
-                : "DOC/DOCX, XLS/XLSX, PPT/PPTX · Stored only in this browser"}
+                : `${
+                    external ? "PDF, " : ""
+                  }DOC/DOCX, XLS/XLSX, PPT/PPTX · Stored only in this browser`}
             </p>
           </div>
         </div>
@@ -347,9 +383,7 @@ export function DocumentFiles({
           <div className="space-y-[var(--spacing-component-lg)] border-t border-[var(--color-border-default)] pt-[var(--spacing-component-lg)]">
             <p className="text-xs text-[var(--color-text-secondary)]">
               Original-format preview ·{" "}
-              {doc.sample
-                ? "Word sample (simulated rendering)"
-                : "Office viewer not connected"}
+              {doc.sample ? "Word sample" : "Office viewer not connected"}
             </p>
             {doc.sample ? (
               <article
@@ -378,6 +412,8 @@ export function DocumentFiles({
                 : "Illustrative PDF fixture, not the converted content of your uploaded file."}{" "}
               {approved
                 ? "3 pages · metadata + content + approval record."
+                : external
+                ? "No Accura approval metadata added to external content."
                 : "No approval metadata or download stamp in the review copy."}
             </p>
             <PdfPreview key={doc.status} doc={doc} />
@@ -469,7 +505,7 @@ export function DocumentAttachments({
           No attachments added.
         </p>
       )}
-      {doc.status === "Draft" && (
+      {doc.status === "Draft" && !isRetired(doc) && (
         <div className="space-y-[var(--spacing-component-sm)]">
           <Label htmlFor="attachments-upload">
             Add pre-approved attachments
