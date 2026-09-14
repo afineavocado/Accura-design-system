@@ -24,6 +24,8 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 | `docs/tracking/` | Storybook and audit status. ⚠️ Reflects Agentic's status, not Accura's. |
 | `tokens/` | DTCG token JSONs + Style Dictionary build. ⚠️ Agentic's exported values — see `llms.txt`. |
 | **`accura-ui/`** | Component library + Storybook. Same components as `agentic-ui`, Accura tokens. |
+| **`flow/`** | Module specifications — what each prototype is, what the brief asked for, and the open questions. `training-module.md` (24 questions), `domain/training-module.md`, `capa-prototype-spec.md`. |
+| `docs/demo-design-contract.md` | Scope lock and shared-component rules for the demo build. |
 | `CHANGELOG.md` | Every Accura-specific change, breaking ones called out. |
 
 The repository is **self-contained** — no external vault, no absolute paths. A fresh agent can clone it and work.
@@ -36,8 +38,13 @@ The repository is **self-contained** — no external vault, no absolute paths. A
 cd accura-ui && npm install
 
 npm run storybook   # component library  → http://localhost:6007
-npm run dev         # CAPA prototype     → http://localhost:3001
+npm run dev         # prototypes         → http://localhost:3001
 ```
+
+> ⚠️ **If a route looks stale or "missing" after pulling, delete the build cache:**
+> `rm -rf .next && npm run dev`. Next.js caches compiled routes in `accura-ui/.next`, which is
+> gitignored — so a machine that has run this repo before can keep serving old pages while the
+> files on disk are correct. This reads exactly like "git didn't pull the latest". It is not git.
 
 > **The Next app lives in `accura-ui/`, not at the repo root.** Everything below assumes you are in that folder.
 > No `--legacy-peer-deps` flag needed — `accura-ui/.npmrc` sets it. Storybook 10 declares peers against React 18 while this app runs React 19 and Next 16, so a plain install would otherwise fail with `ERESOLVE`.
@@ -49,15 +56,34 @@ Storybook uses 6007 because Agentic's uses 6006, so both can run side by side.
 | | |
 |---|---|
 | **Every component** | Storybook, **:6007** — 36 stories. This is the design system. |
-| **The CAPA prototype** | **:3001** — `/` redirects to `/prototype/accura/capa` |
+| **The prototypes** | **:3001** — three modules, one app. `/` redirects to CAPA. |
 
-Prototype routes:
+**All three share one sidebar**, so you can click between them. Add a module to `platformNav`
+in `prototype/accura/app-sidebar.tsx`, never in a page.
 
 ```
-/prototype/accura/capa            CAPA listing
-/prototype/accura/capa/new        Create CAPA
-/prototype/accura/capa/CAPA-0005  CAPA detail (dynamic route)
+/prototype/accura/capa                     CAPA — listing, create, detail
+/prototype/accura/documents                Documents — listing, detail
+/prototype/accura/training                 Training — Users
+/prototype/accura/training/roles           Roles — list, detail, create, edit
+/prototype/accura/training/courses         Courses — list, detail, create, edit
+/prototype/accura/training/assessments     Assessments — list, detail
+/prototype/accura/training/review          Review queue — approve / reject with e-signature
 ```
+
+| Module | Spec | State |
+|---|---|---|
+| **CAPA** | `flow/capa-prototype-spec.md` | listing, create, detail |
+| **Training** | `flow/training-module.md` | five tabs built. Trainee screens and the workflow behind Review are not |
+| **Documents** | `accura-ui/src/app/prototype/accura/documents/README.md` | one happy path: Draft → In Review → In Approval → Approved |
+
+**Before extending any prototype, read
+[`docs/skills/accura-prototype-build/accura-prototype-build.md`](docs/skills/accura-prototype-build/accura-prototype-build.md).**
+It records the conventions all three follow — shared shell, clickable rows, `CardTitle`, tables
+versus lists — and two components that are knowingly hand-rolled, with the reason.
+
+> Documents persists to `localStorage` and `IndexedDB`, so it seeds fresh in a new browser and
+> keeps anything you create. Training and CAPA are mock data only, reset on reload.
 
 > There is **no home screen** beyond that redirect. The app exists to host the
 > prototype; the component library lives in Storybook. If `/` 404s, you are on a
@@ -78,9 +104,9 @@ is broken; it was never built.
 | Framework | Next.js (auto-detected once the root is right) |
 | Install / build | defaults — `.npmrc` handles the peer resolution |
 
-A deployment serves **the CAPA prototype only**. Storybook is a separate build
-(`npm run storybook`) and is not included; publishing the component library means a second
-deployment.
+A deployment serves **the prototypes** — CAPA, Documents and Training. Storybook is a separate
+build (`npm run storybook`) and is not included; publishing the component library means a
+second deployment.
 
 > The prototype runs on mock data and includes a simulated 21 CFR Part 11 e-signature screen.
 > It is a design artefact, not a working quality system — worth being deliberate about before
@@ -127,7 +153,11 @@ Green is intrinsically lighter than blue at the same ramp step, so `/500` can't 
 
 ## Open questions
 
-`accura-theme.md` logs 11 unresolved questions rather than silently resolving them. The load-bearing ones:
+Questions are logged rather than silently resolved. `accura-theme.md` holds 11 about the
+theme; `flow/training-module.md` holds 24 about the Training module. **Flag them — never "fix"
+one without being asked.**
+
+The load-bearing theme questions:
 
 - **Q8 — two Accura libraries have measurably drifted.** `[Accura One] WebApp` and `[Accura One] Website Design` consume *different* libraries whose shared token names now hold different values (sidebar background, button radius). One should be retired.
 - **Q11 — the focus ring may fail WCAG.** `color/ring` is `brand/500` at 2.50:1 against white, below the 3:1 floor for non-text indicators.
