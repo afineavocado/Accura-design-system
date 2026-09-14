@@ -75,12 +75,12 @@ này. Nếu `package.json` vừa thay đổi thì chạy thêm `npm install`.*
 
 **6. File dùng chung — nhắn nhau trước khi sửa.**
 
-| File | Vì sao |
-|---|---|
-| `prototype/accura/app-sidebar.tsx` | cả hai module nằm chung sidebar |
-| `accura-ui/src/app/tokens.css` | token dùng chung |
-| `accura-ui/src/components/ui/*` | design system dùng chung |
-| `CLAUDE.md` · `README.md` · `CHANGELOG.md` | tài liệu chung |
+| File                                       | Vì sao                          |
+| ------------------------------------------ | ------------------------------- |
+| `prototype/accura/app-sidebar.tsx`         | cả hai module nằm chung sidebar |
+| `accura-ui/src/app/tokens.css`             | token dùng chung                |
+| `accura-ui/src/components/ui/*`            | design system dùng chung        |
+| `CLAUDE.md` · `README.md` · `CHANGELOG.md` | tài liệu chung                  |
 
 **7. Commit nhỏ, thường xuyên.** Xong một việc là commit. Một commit sửa 40 file thì conflict
 gần như không gỡ được; năm commit nhỏ thì gỡ từng cái dễ hơn nhiều.
