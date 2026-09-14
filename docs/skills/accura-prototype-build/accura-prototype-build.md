@@ -88,6 +88,52 @@ hand-rolled. Follow them; if a screen needs to break one, say so out loud.
 | Module tabs | `Tabs` `variant="line"` with each `TabsTrigger asChild` around a `Link`, `value={pathname}`. Real navigation, design-system styling |
 | Unbuilt tabs / routes | Render an "not built in this prototype" notice, never a 404. A dead end reads as broken; a notice reads as scoped |
 
+### Page heading and title hierarchy
+
+**The module name lives in the app header bar, not in page content.** The bar is otherwise
+empty on the left, so the title costs no vertical space there; in page content it costs a whole
+row. Pass `title` to `ApplicationHeader` — all three modules do.
+
+| | Token | Size / weight | Font |
+|---|---|---|---|
+| Module name — header bar | `heading/md` | 18px / 600 | **Albert Sans** |
+| Record title — detail pages | `heading/lg` | 20px / 600 | **Albert Sans** |
+| Card title — `CardTitle` | `heading/sm` | 16px / 600 | Inter |
+
+**Why 18px and not 16px.** `accura-theme.md`: *"at or above 18px is display, below is sans."* A
+16px title is `heading/sm`, which is deliberately Inter — so it **cannot** be Albert Sans without
+breaking the rule. Moving the title to `heading/md` is what makes display type legitimate, and
+`<h1>` then inherits `font-heading` from the base rule with no font class at all.
+
+**Why not 20px.** Detail pages already use 20px/600 for the record title. A module name at the
+same size competes with the record name; 18px keeps the module below the record in hierarchy.
+
+> A module title briefly disappeared from CAPA and Training entirely — its `<h1>` was removed
+> from the header on the reasoning that titles belong in page content, without the page-content
+> heading ever being added. Check where the title actually lives before removing one.
+
+### Toolbar: search, filters, primary action
+
+**One row.** Search and filters group left; the primary action sits right.
+
+```tsx
+<div className="flex w-full flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
+  <div className="flex min-w-0 flex-1 flex-wrap items-center gap-[var(--spacing-component-sm)]">
+    {/* search, then filters */}
+  </div>
+  <Button asChild className="shrink-0">…</Button>
+</div>
+```
+
+- **Search flexes, filters are fixed.** `min-w-[240px] flex-1 sm:max-w-[380px]` on the search
+  wrapper; `w-[160px]` on each `SelectTrigger`. A search with a fixed `basis` cannot shrink, so a
+  single pixel of overflow wraps the whole row — that happened twice.
+- **The action is a sibling of the filter group, not a member of it.** As a member it wraps to
+  its own line the moment the filters overflow.
+- **`Create` belongs on the toolbar, not beside the heading.** It acts on the list, so it sits
+  with the other controls that act on the list.
+- Verified at 1500 / 1200 / 1000px: one row in all three modules.
+
 ### Cards and titles
 
 - **Every section card is `Card` / `CardHeader` / `CardTitle` / `CardContent`.** Do not hand-roll

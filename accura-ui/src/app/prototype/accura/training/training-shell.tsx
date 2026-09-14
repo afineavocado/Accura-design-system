@@ -54,6 +54,7 @@ export function TrainingShell({ children }: { children: React.ReactNode }) {
           {/* The shared header, same as Documents — notifications and account
               on the right. The module title lives in page content, not here. */}
           <ApplicationHeader
+            title="Training"
             user={{
               name: currentUser.name,
               role: currentUser.roleAtSignOff,

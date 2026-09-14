@@ -21,6 +21,7 @@ export function CapaHeader({
 
   return (
     <ApplicationHeader
+      title="CAPA"
       user={{ name: "Sarah Johnson", role: "QA Approver", initials: "SJ" }}
       initialNotifications={
         first

@@ -3,9 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import {
-  Search,
-} from "lucide-react"
+import { Plus, Search } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -112,9 +110,9 @@ export default function CapaListingPage() {
             )}
 
             <section className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-4 md:p-5 lg:p-6">
-              <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
-                <div className="grid flex-1 grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-[minmax(260px,1fr)_160px_160px]">
-                  <div className="relative sm:col-span-2 lg:col-span-1 lg:max-w-[380px]">
+              <div className="flex w-full flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
+                <div className="flex min-w-0 flex-1 flex-wrap items-center gap-[var(--spacing-component-sm)]">
+                  <div className="relative min-w-[240px] flex-1 sm:max-w-[380px]">
                     <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
                     <Input
                       type="search"
@@ -136,7 +134,7 @@ export default function CapaListingPage() {
                       setPage(1)
                     }}
                   >
-                    <SelectTrigger aria-label="Filter by status">
+                    <SelectTrigger className="w-[160px]" aria-label="Filter by status">
                       <SelectValue placeholder="Status: All" />
                     </SelectTrigger>
                     <SelectContent>
@@ -154,7 +152,7 @@ export default function CapaListingPage() {
                       setPage(1)
                     }}
                   >
-                    <SelectTrigger aria-label="Filter by source">
+                    <SelectTrigger className="w-[160px]" aria-label="Filter by source">
                       <SelectValue placeholder="Source: All" />
                     </SelectTrigger>
                     <SelectContent>
@@ -166,8 +164,11 @@ export default function CapaListingPage() {
                   </Select>
                 </div>
 
-                <Button asChild className="self-start xl:self-auto">
-                  <Link href="/prototype/accura/capa/new">Create CAPA</Link>
+                <Button asChild className="shrink-0">
+                  <Link href="/prototype/accura/capa/new">
+                    <Plus className="h-4 w-4" />
+                    Create CAPA
+                  </Link>
                 </Button>
               </div>
 

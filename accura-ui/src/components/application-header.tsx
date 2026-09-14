@@ -54,6 +54,9 @@ export type ApplicationUser = {
 }
 
 type ApplicationHeaderProps = {
+  /** Module name, shown on the left. The bar is otherwise empty there, so the
+      title costs no vertical space — in page content it costs a whole row. */
+  title?: string
   user: ApplicationUser
   initialNotifications: ApplicationNotification[]
   mobileNavigationOpen?: boolean
@@ -116,6 +119,7 @@ function NotificationContent({
 }
 
 export function ApplicationHeader({
+  title,
   user,
   initialNotifications,
   mobileNavigationOpen = false,
@@ -161,6 +165,14 @@ export function ApplicationHeader({
             <Menu className="h-4 w-4" />
           )}
         </Button>
+      )}
+
+      {title && (
+        // heading/md — 18px Semibold. At or above 18px is display type, so this
+        // inherits Albert Sans from the base h1-h3 rule; no font class needed.
+        <h1 className="text-lg font-semibold text-[var(--color-background-default-foreground)]">
+          {title}
+        </h1>
       )}
 
       <div className="ml-auto flex items-center gap-[var(--spacing-component-md)]">

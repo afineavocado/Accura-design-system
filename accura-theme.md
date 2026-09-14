@@ -215,6 +215,7 @@ heading text styles are bound to it. Figma and code agree on headings.
 | Page `h1` | `display/lg` `md` `sm` (48/36/30) | Albert Sans | `globals.css` base layer |
 | `h2`, `h3` | `heading/xl` `lg` (24/20) | Albert Sans | `globals.css` base layer |
 | `DialogTitle`, `AlertDialogTitle`, `SheetTitle`, `DrawerTitle` | `heading/md` (18) | Albert Sans | `font-heading` class per component |
+| Module title in the app header (prototypes) | `heading/md` (18) | Albert Sans | inherits from the base `h1`–`h3` rule |
 | `CardTitle`, `h4`–`h6` | `heading/sm` `xs` (16/14) | **Inter** | unchanged |
 | body, labels, inputs, buttons, table cells | `body/*` `label/*` | **Inter** | unchanged |
 

@@ -3,9 +3,6 @@
 import { createContext } from "react";
 export const DocumentActionHost = createContext<HTMLElement | null>(null);
 
-import Link from "next/link";
-import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Select,
@@ -15,7 +12,6 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import {
-  basePath,
   getUseStatus,
   workflowVariants,
   useStatusVariants,
@@ -23,26 +19,6 @@ import {
   type Stage,
 } from "./mock-data";
 
-export function PageHeading({ detail = false }: { detail?: boolean }) {
-  return (
-    <div className="mb-[var(--spacing-layout-sm)] flex flex-wrap items-start justify-between gap-[var(--spacing-component-lg)]">
-      <div>
-        <h1 className="text-xl font-semibold">Documents</h1>
-        <p className="mt-[var(--spacing-component-xs)] text-sm text-[var(--color-text-secondary)]">
-          {detail
-            ? "Manage this revision, its approval progress, and controlled use."
-            : "Find the right revision, see who acts next, and check whether a document is effective."}
-        </p>
-      </div>
-      <Button variant={detail ? "outline" : "default"} asChild>
-        <Link href={`${basePath}/new`}>
-          <Plus className="size-4" />
-          Create Document
-        </Link>
-      </Button>
-    </div>
-  );
-}
 export function WorkflowBadge({ status }: { status: Stage }) {
   return (
     <Badge
