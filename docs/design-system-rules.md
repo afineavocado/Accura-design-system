@@ -17,7 +17,7 @@
 > | Button radius `radius/xl` 12px / `radius/base` 8px | **`9999`** — Accura buttons are pills | theme §7 |
 > | Radius anchor `radius/base` = 8px, scale `4 · 6 · 8 · 12 · 14 · 18 · 21` | anchor is **12px**, scale **`8 · 10 · 12 · 16 · 20 · 24 · 28`** — Accura is a rounder system | theme §4 |
 > | `border/error` red/500, `border/success` green/700, `border/warning` yellow/700 | red/**300**, green/**400**, yellow/**300** | theme §7 |
-> | Font family Inter | Body: Figma **SF Pro**, code **Inter** — accepted mismatch. Headings (`h1`–`h3`, overlay titles): **Albert Sans**, code-only, no Figma token | theme §6 |
+> | Font family Inter | Body: **Inter** in Figma and code. Headings (`h1`–`h3`, overlay titles): **Albert Sans**, bound to `font-family/display` in both | theme §6 |
 > | Contrast reference table (light mode) | computed against Agentic blue — **not valid for Accura** | theme §1 |
 > | Component tokens must alias Semantics, never primitives | **Accura permits primitive aliases** where no semantic fits (`stepper/border`), and **fixed values** where the scale itself is wrong for the geometry (`checkbox/radius` = 4px — `radius/md` at 10px would clamp the 16×16 box into a circle identical to a radio) | theme §7 |
 >

@@ -24,7 +24,7 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 | Neutral · radius · spacing | identical to Agentic |
 | Sidebar | `#00393f` dark teal panel, light foreground |
 | Buttons | pills — `radius 9999` |
-| Font | Figma SF Pro · code Inter (accepted mismatch) |
+| Font | Body Inter · headings Albert Sans — Figma and code agree |
 
 ## Working on code
 

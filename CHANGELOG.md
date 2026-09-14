@@ -11,6 +11,28 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-14 — Body type is Inter; the SF Pro mismatch is retired
+
+**Changed**
+
+- **`font-family/sans` is `Inter` in Figma as well as code** — confirmed by the file owner.
+  `accura-theme.md` §6 had recorded Figma's primitive as `SF Pro` and the difference as a
+  *known, accepted mismatch* with an explicit "do not fix a component to close that gap".
+  **That instruction is withdrawn.** A body-type difference between Figma and Storybook is now a
+  defect to report, not an accepted state. With headings (Albert Sans, resolved 2026-09-08),
+  Accura's type now matches end to end.
+- Propagated to `README.md`, `CLAUDE.md`, `docs/design-system-rules.md` (override header),
+  `accura-ui/README.md` and `accura-ui/CLAUDE.md`, all of which described the mismatch as live.
+  Finding 4 in `accura-theme.md`'s table moves from *accepted* to *resolved*.
+
+⚠️ **`tokens/primitives.tokens.json` and `tokens/tokens.tokens.json` still carry `"SF Pro"`**
+(exported 2026-09-09, before the confirmation), as does the generated `tokens/output/css/*`.
+The runtime source of truth `accura-ui/src/app/tokens.css` is already `Inter`. Re-export to clear
+them — until then those files will reintroduce SF Pro to anyone who trusts them.
+
+*Not independently verified: figma-cli was not connected, so this rests on the owner's
+confirmation rather than a read of the Figma variable.*
+
 ### 2026-09-14 — `Label` implements its required marker
 
 **Added**

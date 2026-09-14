@@ -85,7 +85,7 @@ Everything lives in this repository — no external vault, no absolute paths.
 - **Brand anchors at `/800-base` (`#008852`), not `/500`.** Green can't clear the 3:1 contrast floor at `/500` (2.50:1). `/800` measures 4.59:1. This is the contrast rule applied correctly.
 - **The sidebar is dark teal** (`#00393f`) with light text — not Agentic's light zinc panel.
 - **Buttons are pills** (`radius 9999`), not 8/12px.
-- **Figma renders SF Pro; code renders Inter.** A known, accepted mismatch. Type will not match pixel-for-pixel between Figma and Storybook. Do not adjust components to close that gap.
+- **Body is Inter in Figma and code; headings are Albert Sans in both.** SF Pro is *not* part of Accura — older docs called it an accepted mismatch; that was retired 2026-09-14. A type difference between Figma and Storybook is now a defect worth reporting, not something to leave alone.
 
 **Two known risks, logged as open questions — flag, don't unilaterally change:**
 

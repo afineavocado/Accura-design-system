@@ -43,7 +43,7 @@ against Agentic and may be accidental. Regard the fork warning below as **live**
 | Sidebar background | `#fafafa` light | **`#00393f`** dark teal |
 | Button radius | `12px` / `8px` | **`9999px`** (pill) |
 | Status borders | 500/700 steps | 300/400 steps (paler) |
-| UI font | Inter | Inter *(Figma says SF Pro — known mismatch)* |
+| UI font | Inter | Inter *(headings Albert Sans)* |
 
 Full detail and rationale: **`../accura-theme.md`**.
 

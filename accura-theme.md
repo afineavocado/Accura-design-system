@@ -27,7 +27,7 @@ Primitives `VariableCollectionId:1:2` (mode: Value) · Semantics `1:129` (Light/
 | **Neutral** | Zinc `/50–/950` | Zinc `/50–/950` — identical hexes | — |
 | **Radius base** | `8px` | **`12px`** | ✅ **changed** |
 | **Spacing base** | `4px` linear | `4px` linear | — |
-| **Type** | Inter | Body — Figma: **SF Pro** · Code: **Inter** (mismatch)<br>Headings — **Albert Sans** in both | ⚠️ **body split — see §6** |
+| **Type** | Inter | Body — **Inter** in both<br>Headings — **Albert Sans** in both | — **matches, see §6** |
 
 Three of the five primitive levers moved. But the primitive layer is not the whole story — Accura also diverges at the **semantic and component tiers** (sidebar, status borders, button radius). Those are in §7 and are easy to miss, because a primitives-only comparison shows them as unchanged.
 
@@ -193,11 +193,11 @@ Base unit **4px** · half-steps `px(1) · 0-5(2) · 1-5(6) · 2-5(10) · 3-5(14)
 
 ---
 
-## 6. Typography — Figma and code deliberately differ
+## 6. Typography — Figma and code agree
 
 | Aspect | Figma primitive | Code (`accura-ui`) |
 |---|---|---|
-| **Sans (UI / body)** | `SF Pro` | **`Inter`** |
+| **Sans (UI / body)** | **`Inter`** | **`Inter`** ✅ match |
 | **Headings** | **`Albert Sans`** (`font-family/display`) | **`Albert Sans`** ✅ match |
 | **Mono** | `Roboto Mono` | `Roboto Mono` |
 | **Serif** | `Georgia` | `Georgia` |
@@ -229,9 +229,7 @@ Figma and code: styles at or above 18px are display, below are sans.**
 > afterwards. The theme requires all four axes (`fontFamily`, `fontWeight`, `fontSize`,
 > `letterSpacing`) bound — always re-verify all four after touching `fontName`.
 
-**Remaining type mismatch — body only.** Figma's `font-family/sans` is `SF Pro`; code loads
-`Inter`. A Figma mockup renders body copy in SF Pro, Storybook in Inter. Do not "fix" a
-component to close that gap. Headings are no longer part of this mismatch.
+**No type mismatch remains.** Headings are Albert Sans in both; body is Inter in both.
 
 **Loading.** Albert Sans is a Google Font, loaded twice because Storybook and Next are
 independent: `.storybook/preview-head.html` (Google Fonts `<link>`) and
@@ -242,14 +240,24 @@ Verified in-browser 2026-09-08 — computed `font-family`: `h1`/`h2`/`h3` Albert
 `h4`/`p`/`button` Inter; Dialog, AlertDialog, Sheet and Drawer titles Albert Sans with
 Inter descriptions in the same overlay.
 
-### Decision — body copy keeps Inter (resolved)
+### Decision — body copy is Inter, in Figma and in code (resolved 2026-09-14)
 
-Figma's `font-family/sans` resolves to **SF Pro**; `accura-ui` loads **Inter** via `preview-head.html`. **The decision is to keep Inter in code and leave the Figma primitive on SF Pro for now.**
+`font-family/sans` is **`Inter`** in Figma; `accura-ui` loads **Inter** via `preview-head.html`
+and `src/app/layout.tsx`. **There is no body-type mismatch, and SF Pro is not part of Accura.**
 
-This is a **known, accepted mismatch**, not an oversight:
-- Design mockups render in SF Pro; Storybook renders in Inter.
-- Any pixel-perfect Figma↔Storybook parity check on type will show differences in letterform and metrics. Do not "fix" a component to close that gap.
-- To retire the mismatch, change the Figma primitive `font-family/sans` → `Inter`. That re-themes all 17 text styles and every text node bound to them — a large, visible change to the design file. It has not been done.
+This supersedes the earlier "accepted mismatch" entry, which recorded Figma's primitive as
+`SF Pro` and instructed agents not to close the gap. That instruction is withdrawn: a Figma↔code
+type difference on body copy is now a **real defect**, not an accepted one, and should be
+reported.
+
+⚠️ **Two stale artefacts still say `SF Pro`** and will reintroduce it if used as a source:
+`tokens/primitives.tokens.json` and `tokens/tokens.tokens.json` (both exported 2026-09-09,
+before this was confirmed), along with the generated `tokens/output/css/*`. The runtime source of
+truth, `accura-ui/src/app/tokens.css`, is already correct (`--font-family-sans: Inter`). Re-export
+to clear them.
+
+*Confirmed by the file owner 2026-09-14. Not independently verified here — figma-cli was not
+connected, so this rests on that confirmation rather than a read of the variable.*
 
 ### Text styles — 17
 
@@ -414,21 +422,21 @@ Forked from `agentic-ui`; identical components, Accura tokens.
 
 ## Deviation summary
 
-| # | Deviation | Verdict |
-|---|---|---|
-| 1 | Brand hue green, anchor `/800-base` | ✅ **Correct** — required to clear the 3:1 contrast floor |
-| 2 | Sidebar dark teal `#00393f` + light foreground | ✅ Intentional brand identity |
-| 3 | Button radius `9999` (pill) | ✅ Intentional |
-| 4 | Figma SF Pro vs code Inter (body) | ✅ Accepted mismatch (§6) |
-| 4b | Headings Albert Sans — `font-family/display` in Figma + code | ✅ Resolved 2026-09-08, no longer a mismatch (§6) |
-| 5 | Status borders at 300/400 steps | ⚠️ Very pale for error signalling (Q10) |
-| 6 | `color/ring` = `brand/500`, 2.50:1 | ⚠️ Likely WCAG 1.4.11 failure (Q11) |
-| 7 | Brand ramp steps `25`, `150-lightshade`, `950-darkshade`, `975` | ⚠️ Naming breaks convention (Q1) |
-| 8 | `brand/975 = #0f172a` — slate, not green | ⚠️ Wrong family (Q2) |
-| 9 | Orange + Violet ramps unmapped | ⚠️ Undocumented (Q4) |
-| 10 | `motion/easing/standard` differs | ⚠️ Unexplained (Q5) |
-| 11 | `opacity/overlay` dark = 20 vs 50 | ⚠️ Unexplained |
-| 12 | Neutral · radius · spacing · status ramps · chart · type scale | ✅ Identical — no drift |
+| #   | Deviation                                                       | Verdict                                                  |
+| --- | --------------------------------------------------------------- | -------------------------------------------------------- |
+| 1   | Brand hue green, anchor `/800-base`                             | ✅ **Correct** — required to clear the 3:1 contrast floor |
+| 2   | Sidebar dark teal `#00393f` + light foreground                  | ✅ Intentional brand identity                             |
+| 3   | Button radius `9999` (pill)                                     | ✅ Intentional                                            |
+| 4   | Body type — Inter in Figma and code                             | ✅ Resolved 2026-09-14, no mismatch (§6)                  |
+| 4b  | Headings Albert Sans — `font-family/display` in Figma + code    | ✅ Resolved 2026-09-08, no longer a mismatch (§6)         |
+| 5   | Status borders at 300/400 steps                                 | ⚠️ Very pale for error signalling (Q10)                  |
+| 6   | `color/ring` = `brand/500`, 2.50:1                              | ⚠️ Likely WCAG 1.4.11 failure (Q11)                      |
+| 7   | Brand ramp steps `25`, `150-lightshade`, `950-darkshade`, `975` | ⚠️ Naming breaks convention (Q1)                         |
+| 8   | `brand/975 = #0f172a` — slate, not green                        | ⚠️ Wrong family (Q2)                                     |
+| 9   | Orange + Violet ramps unmapped                                  | ⚠️ Undocumented (Q4)                                     |
+| 10  | `motion/easing/standard` differs                                | ⚠️ Unexplained (Q5)                                      |
+| 11  | `opacity/overlay` dark = 20 vs 50                               | ⚠️ Unexplained                                           |
+| 12  | Neutral · radius · spacing · status ramps · chart · type scale  | ✅ Identical — no drift                                   |
 
 ---
 
