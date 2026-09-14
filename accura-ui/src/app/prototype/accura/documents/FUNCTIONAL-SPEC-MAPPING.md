@@ -1,6 +1,6 @@
 # Document functional specification mapping
 
-Updated 2026-09-14. Source: `accura-discovery/Documents Module Functional Specification.pdf` (six pages). Scope remains the Normal Document happy path in `docs/demo-design-contract.md`; this is not full production implementation.
+Updated 2026-09-14. Source: `accura-discovery/Documents Module Functional Specification.pdf` (six pages). Scope remains the Normal Document happy path in `docs/demo-scope.md`; this is not full production implementation.
 
 | Specification | Prototype behavior |
 | --- | --- |

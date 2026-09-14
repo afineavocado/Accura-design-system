@@ -5,7 +5,7 @@ Route: http://localhost:3001/prototype/accura/documents
 Training alignment: see [TRAINING-MAPPING.md](./TRAINING-MAPPING.md) for the 2026-09-12 update against remote main `c6f7868`, shared patterns adopted, and deliberate domain differences.
 
 This is the only active Document prototype, promoted from `documents-demo` on 2026-09-14 at the user's request. Develop only in this `documents` folder. Legacy routes were removed, not redirected.
-Read the repository `docs/demo-design-contract.md` before expanding scope.
+Read the repository `docs/demo-scope.md` before expanding scope.
 
 ## Walkthrough
 
@@ -26,7 +26,7 @@ Signature and activity history now share `src/components/record-audit-drawer.tsx
 
 - PhaseGateStepper: configurable stages, current assignee, no gate-skipping navigation; horizontal desktop / vertical mobile.
 - ElectronicSignatureModal: record + revision, signer/account/role, signature meaning, explicit intent, simulated authentication; emits a signature receipt.
-- RecordDetailLayout: fractional desktop columns after a 24px token gap, stacked on narrow screens. Ratio per `docs/demo-design-contract.md` (70/30).
+- RecordDetailLayout: fractional desktop columns after a 24px token gap, stacked on narrow screens. Ratio per the prototype-build skill · Record masters (70/30).
 - RecordSection: shared Card composition with heading and optional description.
 
 Existing primitives / stories: Stepper (Feedback/Stepper), Dialog (Overlay/Dialog), Card (Layout/Card), Button, Badge, Input, Select, Checkbox, Table, Sidebar, Toaster. ApplicationHeader reuses the existing notification panel and account identity. There is no standalone Popover component in this checkout, so the row action composition uses installed Radix Popover with Accura Button and semantic surface/border/radius tokens.

@@ -21,7 +21,7 @@ Updated 2026-09-12 against GitHub `afineavocado/Accura-design-system`, main comm
 - **Header:** Training currently puts “Training” in its global header. Document keeps notification/account and puts its module title + Create CTA in page content, per the user's explicit contract. Training's header was not rewritten.
 - **Sections/tabs:** Training has different entities (Users, Roles, Courses, Assessments, Review). Document stays one listing; no segmented views are introduced.
 - **Toolbar:** keep Document's 75–80% desktop-width constraint. Controls wrap instead of being stretched across the full table.
-- **Detail columns:** Training rails are fixed at 320px. Document retains its fractional layout after the gap, stacked on mobile — see `docs/demo-design-contract.md` for the current ratio.
+- **Detail columns:** Training rails are fixed at 320px. Document retains its fractional layout after the gap, stacked on mobile — see `docs/skills/accura-prototype-build/accura-prototype-build.md` · Record masters for the current ratio.
 - ~~**Card density:** Document retains explicit `spacing/component/xl` (24px).~~
   **Superseded 2026-09-14.** Document now uses the Card primitive's 16px default, matching
   Training and CAPA. The explicit overrides were removed. Note that `docs/component-specs/Card.md`
@@ -39,4 +39,4 @@ Updated 2026-09-12 against GitHub `afineavocado/Accura-design-system`, main comm
 
 ## Maintenance
 
-Read the current repo guide at `docs/skills/accura-prototype-build/accura-prototype-build.md` and `docs/demo-design-contract.md`. New shared navigation goes in `platformNav`, not a Document-local sidebar. Keep user exceptions above explicit; visual consistency is not a reason to change domain rules.
+Read the current repo guide at `docs/skills/accura-prototype-build/accura-prototype-build.md`, and `docs/demo-scope.md` for what is in scope. New shared navigation goes in `platformNav`, not a Document-local sidebar. Keep user exceptions above explicit; visual consistency is not a reason to change domain rules.

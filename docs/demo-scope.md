@@ -1,7 +1,13 @@
-# Accura — Demo design contract
+# Accura — Demo scope
 
 Confirmed by user: 2026-09-12.
-Status: approved scope and reusable component specification; not a claim that new Figma/code masters have been implemented.
+Status: approved scope. What this demo covers and what is deliberately deferred.
+
+> **The component specs that used to live here (§3–§7 — PhaseGateStepper,
+> ElectronicSignatureModal, RecordDetailLayout, shell and listing rules) moved to
+> `docs/skills/accura-prototype-build/accura-prototype-build.md` on 2026-09-14.** They are
+> patterns, and patterns outlive a demo; keeping them in a scope document meant they went stale
+> without anyone noticing. Some were superseded — the skill records which, and why.
 
 ## Canonical Document prototype — 2026-09-14
 
@@ -54,74 +60,3 @@ Document: listing → create/edit Draft → upload DOCX and metadata → assign 
 Approved and Effective remain separate. Use the QA-set Effective Date in the demo data and show the corresponding use status. No additional release action, timezone policy, or historical-version branch should be invented to complete the demo.
 
 For other modules, reuse their agreed demo path and stage labels. The Document stage list is not a universal workflow. If another module has no agreed script, finish the shared masters without inventing a new module state machine.
-
-## 3. Master: PhaseGateStepper
-
-Purpose: show progress, the current gate, and the person whose action moves the record forward.
-
-- Shared anatomy: stage label; completed/current/upcoming visual state; current assignee name and role; concise pending action.
-- For Document: Draft → In Review → In Approval → Approved.
-- Current-stage copy: `Waiting for Tom Bradley · Reviewer` or `Waiting for Dr. Sarah Chen · QA Approver`; if assigned to the signed-in user, `Your action: Review document`.
-- Completed stages show completion through an icon and text. Upcoming stages are visually quiet. Do not use color alone.
-- The user-facing term is `Waiting for` or `Assigned to`, not `Blocked by`: waiting for a normal approval is not an error.
-- A stage click must not change workflow state or bypass a gate. Only the prescribed successful action advances the demo.
-- Reuse the existing Stepper primitive, typography, icons, and tokens. Allow module-specific stage/assignee data rather than duplicating the composition.
-- Demo states needed: each happy-path stage current, and completed. Rejection/exception variants are deferred.
-
-## 4. Master: ElectronicSignatureModal
-
-Purpose: provide one consistent signing experience at each prescribed signing gate.
-
-Anatomy in order:
-
-1. Action-specific title: `Sign review approval` or `Sign final approval`.
-2. Record context: module, record ID, title, and revision being signed.
-3. Read-only signer name/account and role.
-4. Explicit meaning of the signature: review approval, final approval, or another meaning already defined by the module's demo path.
-5. The established authentication control for the product. Never present a typed display name or checkbox alone as identity authentication.
-6. A clear statement of signing intent; a checkbox is a product choice, not proof of regulatory compliance.
-7. Secondary `Cancel` and primary `Sign and approve`, with contextual wording for the gate.
-
-On success: show the resulting workflow state and append/display the signature in the shared Audit Trail drawer with signer, execution timestamp including timezone, meaning, and record/revision association. The signing timestamp is assigned on execution, not prefilled as an editable user value. Distinguish a prototype simulation from verified production signing behavior.
-
-For Document, Effective Date belongs to the QA final-approval step. Show it in the approval context/summary without adding a permanently visible date field to every module's signing modal.
-
-Reuse Dialog, Button, Input, and existing authentication/signature patterns. Preserve focus management and keyboard behavior. Design the happy-path signing state and successful result; do not expand into failed-authentication or rejection flows for this demo.
-
-Regulatory reference: 21 CFR 11.50 covers signer name, execution date/time, and signature meaning; 11.70 covers signature-to-record linkage; 11.200 covers signature components and controls. This master is a UI specification supporting those requirements, not a standalone Part 11 compliance certification. Production authentication, linkage, and record controls remain implementation responsibilities.
-
-Sources:
-- https://www.law.cornell.edu/cfr/text/21/11.50
-- https://www.law.cornell.edu/cfr/text/21/11.70
-- https://www.law.cornell.edu/cfr/text/21/11.200
-
-## 5. Master: RecordDetailLayout
-
-- Full-width shared application shell and page heading above the content.
-- PhaseGateStepper spans the detail content above the two columns.
-- Desktop columns: fractional tracks calculated from available space after the column gap, rather than two percentage widths plus an overflowing gap. **The current ratio is 70/30** — see the canonical section above; this line records the technique, not the numbers.
-- Main column card order: primary record content/file; supporting metadata; references/linked records. Use module-specific content slots in this shared structure.
-- Side rail contains the current gate/responsible person/next action and approval route. Signature records and activity history belong only in the Audit Trail drawer. Do not repeat the entire metadata form in the rail.
-- Primary task CTA appears once in the shared action area; do not create competing copies in several cards. The master should allow the module's agreed action and label.
-- Reuse Card and semantic spacing/typography tokens. Separate cards when they answer different user questions, not for every field.
-- At widths that cannot support readable columns, stack main content before the audit rail. Do not shrink both columns until names and controls become unreadable.
-
-## 6. Shared shell and listing rules
-
-- Global header always holds notification and account. Module-specific page titles belong in the content heading.
-- Page heading contains module name and create CTA in the same positions across modules. On detail screens, also show the current record title/ID and its contextual action without creating duplicate primary CTAs.
-- Desktop search/filter group occupies approximately 70–80% of the available content-column width, left aligned. Default target: 75%. Do not stretch it to the entire table width and do not interpret the rule as each individual input taking 75%.
-- On narrow screens controls may wrap and use the available width. Keep labels readable rather than forcing the desktop percentage.
-- The table can use the full content width. Keep search/filter logically grouped with the table, with consistent vertical spacing across modules.
-- Record name is always the primary detail link; support keyboard focus and normal link behavior. Hovering a row gives a subtle shared surface highlight, not a workflow change.
-- If the entire row is clickable in a module, its record link still exists; action-menu clicks must not trigger row navigation. Prefer the same row interaction policy across all modules.
-- Row actions use the same menu trigger, placement, and ordering convention. Expose only actions on the agreed demo path; no speculative menu items.
-- Preserve one shared listing for the current Document demo. Do not add Effective/My Work/All Records segmented views as part of this standardization.
-- Reuse existing Accura design-system components and tokens. Maintain one composition per master, configured with module data.
-
-## 7. Definition of done for future master implementation
-
-- One reusable master per pattern, with configurable labels/content/assignees rather than page-specific copies.
-- Demonstrate the masters using the existing Document happy path first.
-- Verify stage labels, current assignee, signing context/result, 70/30 layout, toolbar width, record link, menu, and row hover.
-- Keep non-demo questions out of the active implementation plan. Prototype validation covers the intended demo navigation and basic component accessibility, not an exhaustive exception matrix.
