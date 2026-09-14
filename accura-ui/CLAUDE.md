@@ -37,14 +37,15 @@ All 351 of them are in `src/app/tokens.css`. That file is the runtime source of 
 ```bash
 npm install         # no flag needed — .npmrc sets legacy-peer-deps
 npm run storybook   # component library → :6007   ← the design system lives here
-npm run dev         # CAPA prototype    → :3001
+npm run dev         # the prototypes    → :3001
 ```
 
 **Deploying:** the deploy platform's root directory must be `accura-ui`, not the repo root.
 The root has no `package.json`, so a platform pointed there builds nothing and every route 404s.
 
-`/` redirects to `/prototype/accura/capa`. **There is no home screen** — the app hosts three
-prototypes (CAPA, Documents, Training), reached from the shared sidebar in
+`/` redirects to `/prototype/accura/capa` — that is a default landing route, not a CAPA-only app.
+**There is no home screen**; the app hosts three prototypes (CAPA, Documents, Training), reached
+from the shared sidebar in
 `prototype/accura/app-sidebar.tsx`. Do not build a landing page.
 
 ---
@@ -60,7 +61,7 @@ That split matters:
 | **Rules** — naming, semantic layer, paired-surface rule, spacing scale, layout, dark mode | `../docs/design-system-rules.md` | **Inherited unchanged** |
 | **Values** — brand ramp, sidebar, radius usage, type | `../accura-theme.md` | **Accura-specific** |
 
-**Read `../accura-theme.md` before touching tokens.** It documents every deviation, the reasoning, and 11 open questions that must not be silently "fixed".
+**Read `../accura-theme.md` before touching tokens.** It documents every deviation, the reasoning, and 11 logged questions (numbered Q1–Q12; Q3 is unused) that must not be silently "fixed". **Q8, Q11 and Q12 now carry decisions** — read the entry before assuming one is open.
 
 Everything lives in this repository — no external vault, no absolute paths.
 
@@ -106,4 +107,10 @@ Two traps when regenerating (both were hit on the first build):
 
 ## ⚠️ Fork warning
 
-This is a **fork** of `agentic-ui` — all 36 components are duplicated. A component fix here does **not** reach `agentic-ui`, and vice versa. Apply changes in both, or they drift. Only tokens were intended to diverge.
+This is a **fork** of `agentic-ui` — the components are duplicated. A component fix here does **not** reach `agentic-ui`, and vice versa. Apply changes in both, or they drift.
+
+Only tokens were intended to diverge. **11 of 39 components already have** — `alert-dialog`, `badge`, `button`, `checkbox`, `dialog`, `drawer`, `item`, `label`, `sheet`, `sidebar`, `toast` — plus `stepper.tsx`, which exists here only. `label.tsx` is deliberate (the required-field asterisk); the rest are unaudited. Verify before assuming a component here matches Agentic's:
+
+```bash
+diff src/components/ui/button.tsx ../../Agentic-design-system/agentic-ui/src/components/ui/button.tsx
+```

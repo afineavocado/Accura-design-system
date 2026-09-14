@@ -24,7 +24,17 @@ npm run storybook
 
 ## What's different from `agentic-ui`
 
-Only `src/app/tokens.css`. Every component `.tsx` is identical.
+Tokens were the *intended* divergence. They are no longer the only one — 11 of 39 components in
+`src/components/ui/` have drifted, and `stepper.tsx` exists here only:
+
+```
+alert-dialog · badge · button · checkbox · dialog · drawer
+item · label · sheet · sidebar · toast        (+ stepper, Accura-only)
+```
+
+`label.tsx` is the deliberate case — it was rewritten here to implement the required-field
+asterisk from `Form-shared.md`, which `agentic-ui` never had. The rest have not been audited
+against Agentic and may be accidental. Regard the fork warning below as **live**, not theoretical.
 
 | | Agentic | Accura |
 |---|---|---|
@@ -66,6 +76,6 @@ Read `CLAUDE.md` first. Short version:
 
 ## ⚠️ This is a fork
 
-`accura-ui` duplicates all 36 components from `agentic-ui`. **Any component fix must be applied in both repos**, or they drift apart. Only the tokens were meant to diverge.
+`accura-ui` duplicates `agentic-ui`'s components. **Any component fix must be applied in both repos**, or they drift apart. Only the tokens were meant to diverge — 11 components already have (see above), so this has stopped being a warning about the future.
 
 If that becomes painful, the alternative is a shared component library with two token layers.
