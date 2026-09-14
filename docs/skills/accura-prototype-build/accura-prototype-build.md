@@ -75,24 +75,43 @@ For a detail screen reached from a listing:
 
 ## Established patterns — reuse, do not reinvent
 
-Decided while building the CAPA and Training prototypes. Each one replaced something
+Decided while building the CAPA, Documents and Training prototypes. Each replaced something
 hand-rolled. Follow them; if a screen needs to break one, say so out loud.
 
-### Layout
+### The mistake these mostly prevent
+
+**A component carries its own styling. Dropping it into a context that assumes inheritance
+silently overrides that context.** Three separate bugs, one cause:
+
+| Symptom | Cause |
+|---|---|
+| A required asterisk rendered **black** while every other module's was red | hand-rolled inside a `<Label>`, inheriting the label colour instead of using a token |
+| A 12px summary row became **36px tall**, its text full-strength instead of secondary | a ghost `Button` used as a text action — it brings its own colour and height |
+| `Workflow: In Approval` clipped to **`Workflow: In…`** with a gap before the chevron | a prefixed label doubled the string inside a fixed-width trigger that clips (`[&>span]:line-clamp-1`) |
+
+When something looks wrong in a shared context, check what the **child** is imposing before
+changing the parent.
+
+---
+
+### Page anatomy
+
+Top to bottom, every list screen is the same four bands.
+
+**1 · Shell and navigation**
 
 | Concern | Pattern |
 |---|---|
-| Sidebar + header + tabs | One shared shell per module (`training/training-shell.tsx`). **Never build the sidebar in a page** — CAPA did, four times, and Training was invisible from CAPA until it was extracted to `prototype/accura/app-sidebar.tsx` |
-| Nav items | One `platformNav` array in `app-sidebar.tsx`. Adding a module is one line, not one edit per page |
-| Active nav state | Matches the href **and everything under it**, so the module stays lit on detail routes |
-| Module tabs | `Tabs` `variant="line"` with each `TabsTrigger asChild` around a `Link`, `value={pathname}`. Real navigation, design-system styling |
-| Unbuilt tabs / routes | Render an "not built in this prototype" notice, never a 404. A dead end reads as broken; a notice reads as scoped |
+| Sidebar + header | One shared shell per module (`training/training-shell.tsx`, `documents/layout.tsx`). **Never build the sidebar in a page** — CAPA did, four times, and Training was invisible from CAPA until it moved to `prototype/accura/app-sidebar.tsx` |
+| Nav items | One `platformNav` array. Adding a module is one line, not one edit per page |
+| Active state | Matches the href **and everything under it**, so the module stays lit on detail routes |
+| Module tabs | `Tabs variant="line"`, each `TabsTrigger asChild` around a `Link`, `value={pathname}` — real navigation, design-system styling |
+| Unbuilt routes | A "not built in this prototype" notice, never a 404. A dead end reads as broken; a notice reads as scoped |
 
-### Page heading and title hierarchy
+**2 · Module title — in the app header bar**
 
-**The module name lives in the app header bar, not in page content.** The bar is otherwise
-empty on the left, so the title costs no vertical space there; in page content it costs a whole
-row. Pass `title` to `ApplicationHeader` — all three modules do.
+Pass `title` to `ApplicationHeader`. The bar's left side is otherwise empty, so the title costs
+no vertical space there; in page content it costs a whole row.
 
 | | Token | Size / weight | Font |
 |---|---|---|---|
@@ -100,21 +119,16 @@ row. Pass `title` to `ApplicationHeader` — all three modules do.
 | Record title — detail pages | `heading/lg` | 20px / 600 | **Albert Sans** |
 | Card title — `CardTitle` | `heading/sm` | 16px / 600 | Inter |
 
-**Why 18px and not 16px.** `accura-theme.md`: *"at or above 18px is display, below is sans."* A
-16px title is `heading/sm`, which is deliberately Inter — so it **cannot** be Albert Sans without
-breaking the rule. Moving the title to `heading/md` is what makes display type legitimate, and
-`<h1>` then inherits `font-heading` from the base rule with no font class at all.
+**Why 18 and not 16:** `accura-theme.md` — *"at or above 18px is display, below is sans."* A 16px
+title is `heading/sm`, deliberately Inter, so it **cannot** be Albert Sans. **Why not 20:** detail
+pages use 20px for the record title; the module name should sit below the record in hierarchy.
+`<h1>` then inherits `font-heading` from the base rule — no font class needed.
 
-**Why not 20px.** Detail pages already use 20px/600 for the record title. A module name at the
-same size competes with the record name; 18px keeps the module below the record in hierarchy.
+> A module title once vanished from CAPA and Training entirely: its `<h1>` was removed from the
+> header on the reasoning that titles belong in page content, without the page-content heading
+> ever being added. Check where a title actually lives before removing one.
 
-> A module title briefly disappeared from CAPA and Training entirely — its `<h1>` was removed
-> from the header on the reasoning that titles belong in page content, without the page-content
-> heading ever being added. Check where the title actually lives before removing one.
-
-### Toolbar: search, filters, primary action
-
-**One row.** Search and filters group left; the primary action sits right.
+**3 · Toolbar — search, filters, primary action, one row**
 
 ```tsx
 <div className="flex w-full flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
@@ -126,59 +140,46 @@ same size competes with the record name; 18px keeps the module below the record 
 ```
 
 - **Search flexes, filters are fixed.** `min-w-[240px] flex-1 sm:max-w-[380px]` on the search
-  wrapper; `w-[160px]` on each `SelectTrigger`. A search with a fixed `basis` cannot shrink, so a
-  single pixel of overflow wraps the whole row — that happened twice.
-- **The action is a sibling of the filter group, not a member of it.** As a member it wraps to
-  its own line the moment the filters overflow.
-- **`Create` belongs on the toolbar, not beside the heading.** It acts on the list, so it sits
+  wrapper; `w-[160px]` per `SelectTrigger`. A search on a fixed `basis` cannot shrink, so one
+  pixel of overflow wraps the whole row — that happened twice.
+- **The action is a sibling of the filter group, not a member.** As a member it drops to its own
+  line the moment the filters overflow.
+- **`Create` belongs on the toolbar**, not beside the heading — it acts on the list, so it sits
   with the other controls that act on the list.
-- Verified at 1500 / 1200 / 1000px: one row in all three modules.
+- **Filter copy names the set**: `All departments`, never `Department: All`. See the clipping
+  case above. `Choice` in Documents takes `allLabel` for this; the stored value stays `"All"`, so
+  filter logic is untouched and form selects omit it.
+- Verified one row at 1500 / 1200 / 1000px in all three modules.
 
-### The summary row, between toolbar and table
+**4 · Summary row — between toolbar and table**
 
-Every list carries one: `ListSummary` in `prototype/accura/list-summary.tsx`.
+`ListSummary` in `prototype/accura/list-summary.tsx`, on every list.
 
 ```tsx
 <ListSummary showing={visible.length} total={all.length} noun="training roles" onClear={…} />
 ```
 
-- **The copy states what is true.** Unfiltered it is a count — `8 courses`. Filtered it says how
-  many of how many — `1 of 8 courses`. Documents previously read `3 documents · All records`
-  while a filter was applied, which contradicts itself.
-- **`Clear filters` is a link-styled action**, 12px, `brand/primary` — not a Button. A ghost
-  `Button` brings its own colour and 36px height, so it overrode the row's `text-secondary` and
-  made a 12px row 36px tall. Only appears when something is actually filtered.
+- **The copy states what is true.** Unfiltered, a count — `8 courses`. Filtered, how many of how
+  many — `1 of 8 courses`. Documents once read `3 documents · All records` *while filtered*.
+- **`Clear filters` is link-styled** — 12px, `brand/primary` — not a Button, and only present
+  when something is filtered.
 - `aria-live="polite"` on the count, so filtering is announced.
-- Omit `onClear` on a list with no filters.
 
-### Filter copy: name the set, do not repeat the label
+---
 
-`All departments`, not `Department: All`.
+### Tables and lists
 
-- The trigger has a fixed width and the component clips long values
-  (`select.tsx` → `[&>span]:line-clamp-1`). Prefixing the label doubles the string, so
-  `Workflow: In Approval` clipped to `Workflow: In…` — and because the trigger is
-  `justify-between`, the ellipsis left a gap before the chevron that read as broken padding.
-- Naming the set keeps every value short enough to fit, and reads better: the label is already
-  visible as the filter's position in the row.
-- `Choice` in Documents takes `allLabel` for this; the stored value stays `"All"` so filter
-  logic is untouched.
+**Default to a table.** Cards earn their place only when the object has an image, a status
+needing colour, or a preview. A training role is name + description + two counts — tabular.
+Counts belong in **numeric columns**, not footer prose: they sort, they scan, and a `0` becomes
+visible. Roles and Courses were both converted from the product's card grid on that reasoning.
 
-### Cards and titles
+**But a table needs rows worth comparing.** Fixed, small, non-sortable sets are lists — two rows
+do not need a header. Course detail's `Assessment methods` and `Linked roles` are lists; its
+`Assessments` is a table, because rounds accumulate.
 
-- **Every section card is `Card` / `CardHeader` / `CardTitle` / `CardContent`.** Do not hand-roll
-  `<section className="rounded-… border …">`. A hand-rolled card used `surface/default` where
-  `Card` uses `surface/overlay` — identical in light mode, divergent in dark.
-- **`CardTitle` is the one section-title token.** `heading/sm` — 16px · 600 ·
-  `color/surface/overlay/foreground`. Used by CAPA `CAPA Details` / `Actions` and every Training
-  card. Do not introduce a second title size.
-- A table **inside** a card gets its own surface: `radius/md` + `border/default` on `CardContent`.
-  **One step below the parent's `radius/lg`** — a nested surface never matches its container.
-- A table **not** inside a card (a listing on the page background) takes `radius/lg`.
-
-### Clickable rows
-
-The row is a convenience target; **the first cell always carries the real control.**
+**Clickable rows** — the row is a convenience target; **the first cell always carries the real
+control.**
 
 ```tsx
 const onClick = useRowClick<HTMLTableRowElement>(() => router.push(href))
@@ -186,76 +187,92 @@ const onClick = useRowClick<HTMLTableRowElement>(() => router.push(href))
   <TableCell><Link href={href} className="font-medium text-[var(--color-brand-primary)] hover:underline">{name}</Link>
 ```
 
-- Helper: `prototype/accura/row-click.ts`. The guard is `closest("a, button")`, which stops a
-  click on the inner control firing twice.
-- **`<Link>` when it navigates. `<button>` when it opens a panel.** Training History rows open a
-  Sheet, so the course name is a button.
-- **Never** put `role="button"` / `tabIndex` / `onKeyDown` on a `TableRow`. That reimplements what
-  the inner control does natively and announces the whole row as a single target.
-- The control is `brand/primary`, weight 500, with the secondary line beneath in
-  `text/secondary` at `text-xs`.
+- Helper: `prototype/accura/row-click.ts`. The `closest("a, button")` guard stops a click on the
+  inner control firing twice.
+- **`<Link>` when it navigates, `<button>` when it opens a panel.**
+- **Never** `role="button"` / `tabIndex` / `onKeyDown` on a `TableRow` — that reimplements what
+  the inner control does natively and announces the whole row as one target.
 
-### Tables versus cards for a listing
+**Do not override `TableCell` or `TableHead` in markup.** CAPA did, and it hid three divergences
+at once: 6px vertical padding against the component's 16px, 12px text where the default is 14px,
+and uppercase headers where the others are sentence case. If a module genuinely needs denser
+rows, that is a `density` variant on the component — not markup in one module.
 
-Default to a **table**. Cards earn their place only when the object has an image, a status that
-needs colour, or a preview. A training role is name + description + two counts — tabular.
-Counts belong in **numeric columns**, not footer prose: they sort, they scan, and a `0` becomes
-visible. The Roles tab was converted from the product's card grid on exactly this reasoning.
+**Pagination**: `TablePagination` + `usePagination` from `prototype/accura/table-pagination.tsx`.
+The hook clamps `page` into range when a filtered set shrinks.
 
-### Status badges
+---
 
-`Badge variant={statusVariant[status]} shape="pill" size="md"`, where `statusVariant` is a
-`Record<Status, BadgeVariant>` in `mock-data.ts`. **Status colour is data, never markup.**
+### Cards
 
-### Mock data
+- **Every section card is `Card` / `CardHeader` / `CardTitle` / `CardContent`.** A hand-rolled
+  card used `surface/default` where `Card` uses `surface/overlay` — identical in light mode,
+  divergent in dark.
+- **`CardTitle` is the one section-title token** — `heading/sm`, 16px / 600. Do not introduce a
+  second title size.
+- **Card padding is 16px** (`spacing/component/lg`), the component default. ⚠️ `Card.md` said
+  24px; `card.tsx` and `card.meta.json` said 16px, and the outlier was a **vendored** spec. See
+  `accura-theme.md` **Q12** — not yet confirmed against Figma.
+- A table **inside** a card gets its own surface: `radius/md` + `border/default` on `CardContent`
+  — **one step below the parent's `radius/lg`**. A table on the page background takes `radius/lg`.
 
-- One `mock-data.ts` per module. Typed unions for every status set, plus the variant map.
-- **Derive, never re-type.** `assignedRoles` on the user rail is a `filter()` over
-  `trainingRoles`. Two hand-written copies of the same role drift — the same failure the token
-  docs keep hitting.
-- Comment *why* a row exists when it demonstrates something (a role with `0` users, a
-  self-signed record).
+---
+
+### Data
+
+- **One `mock-data.ts` per module.** Typed unions for every status set, plus a
+  `Record<Status, BadgeVariant>` map — **status colour is data, never markup.**
+- **Derive, never re-type.** `assignedRoles` is a `filter()` over `trainingRoles`. Two
+  hand-written copies of the same record drift.
+- **Store data, not display.** Timestamps as ISO; views format. A pre-formatted date string can
+  neither be sorted nor reformatted.
+- Comment *why* a row exists when it demonstrates something — a role with `0` users, a
+  self-signed record.
+
+---
 
 ### Known component gaps — hand-rolled, and why
 
-Two patterns the prototype needs that the design system cannot express. **Both are hand-rolled
-today.** Do not treat either as a licence to hand-roll anything else — they are logged so the next
-person finds a decision rather than a mystery.
+Two patterns the design system cannot express. **Both are hand-rolled.** Logged so the next
+person finds a decision rather than a mystery — not a licence to hand-roll anything else.
 
 **Segmented control** — *choose one of N, all options visible, and the choice changes the form.*
 
-- Built as `Button`s with `role="radio"` + `aria-checked`, styling swapped via `variant`
-  (`default` when selected, `outline` otherwise). See the Automatic Assessment Trigger card in
-  `training/courses/new/page.tsx`.
+- Built as `Button`s with `role="radio"` + `aria-checked`, `variant` swapped for state. See the
+  Automatic Assessment Trigger card in `training/courses/new/page.tsx`.
 - **Not `ButtonGroup`** — its spec says the actions it groups are *"mutually independent"*. It
-  groups actions, not choices.
-- **Not `RadioGroup`** — semantically right, but renders as radio circles, which read as too weak
-  for a control that restructures the form beneath it.
-- Right pattern for the job: few options, short labels, and the user must see the alternatives to
-  understand that picking one reveals different fields. A `Select` would hide two of three.
-- **If a second screen needs it, build it** as `ToggleGroup` — component + spec + meta.json +
-  story — rather than copying the markup a second time.
+  groups actions, not choices. **Not `RadioGroup`** — semantically right, but radio circles read
+  too weak for a control that restructures the form beneath it.
+- If a second screen needs it, build it as `ToggleGroup` — component + spec + meta.json + story.
 
 **Combobox option with a qualifier** — *`Amit Kothari · Quality Assurance` on one line.*
 
-- `ComboboxOption.label` is a plain `string`, rendered in both the list item and the chip, so the
-  name and its qualifier cannot take different weight.
-- Closing it means an optional `sublabel` on `ComboboxOption`: rendered beneath the label in the
-  list, omitted from the chip (which also shortens crowded chips), matched by the filter.
-  Raised and deferred 2026-09-10.
-- It is a general gap: any picker of people, documents or courses wants a qualifier.
+- `ComboboxOption.label` is a plain string, rendered in both the list item and the chip, so name
+  and qualifier cannot take different weight.
+- Closing it means an optional `sublabel`: beneath the label in the list, omitted from the chip,
+  matched by the filter. Raised and deferred 2026-09-14.
 
-**The rule this does not change:** everything with a design-system equivalent uses it. These two
-are documented exceptions with a named reason, not precedent.
+---
 
-### Type and spacing floors
+### Floors
 
 | Rule | Why |
 |---|---|
 | Nothing below **12px** | `label/sm` / `body/xs` is the floor. `text-[10px]` and `text-[11px]` were both found and removed |
-| Albert Sans starts at **18px** | Base layer applies `font-heading` to `h1`–`h3`. Any heading under 18px needs `font-sans`, or it silently violates the theme. `CardTitle` renders a `div` and so is safe by construction |
+| Albert Sans starts at **18px** | the base layer applies `font-heading` to `h1`–`h3`, so anything smaller needs `font-sans` or it silently violates the theme. `CardTitle` renders a `div` and is safe by construction |
 | Spacing on the 4px scale | `spacing/component/*` = 2·4·8·12·16·24·32. `px-2.5`, `p-5` and `p-10` were all found and removed |
-| No decorative strokes | There is no timeline component in Accura, and `border-l-2` already means *selected row* (`table.tsx:78`). Do not borrow it |
+| No decorative strokes | there is no timeline component in Accura, and `border-l-2` already means *selected row* (`table.tsx:78`) |
+
+### Shared prototype components
+
+Anything used twice lives in `prototype/accura/`, not in a page:
+
+`app-sidebar.tsx` · `row-click.ts` · `table-pagination.tsx` · `list-summary.tsx` ·
+`capa/capa-header.tsx`
+
+**A convention that lives only as a local helper cannot be reused; it gets reinvented.**
+`RequiredLabel` existed as six identical private helpers, invisible from outside — which is how
+Documents came to write its own and get the colour wrong. It is now a `required` prop on `Label`.
 
 ### Before claiming any of this is done
 
@@ -307,7 +324,7 @@ Normal clean restart:
 
 ```bash
 rm -rf .next
-npm run dev -- --webpack -p 3001
+npm run dev
 ```
 
 `.next` is generated build output, not prototype source. Confirm the exact working directory before removing it.
