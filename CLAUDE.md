@@ -45,7 +45,7 @@ Storybook does not reliably hot-reload `.tsx` or token changes. After editing, *
 
 ## Do not silently resolve open questions
 
-`accura-theme.md` logs 12 open questions (Q1–Q12) — the pale status borders, the focus-ring contrast, the two divergent Figma libraries, and others. These are deliberate, recorded decisions-in-waiting. Flag them; do not "fix" them without being asked.
+`accura-theme.md` logs 12 questions (Q1–Q12). **Q8, Q10, Q11 and Q12 now carry decisions** — read the entry before assuming one is open. These are deliberate, recorded decisions-in-waiting. Flag them; do not "fix" them without being asked.
 
 ## Known divergences from Figma
 

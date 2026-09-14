@@ -16,7 +16,7 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 |---|---|
 | **`llms.txt`** | **Agent entry point** — indexes every file and states the read order. |
 | **`CLAUDE.md`** | Agent instructions and the rules-vs-values precedence. |
-| **`accura-theme.md`** | The theme reference — every token value, every deviation from Agentic, the reasoning, and 12 open questions. |
+| **`accura-theme.md`** | The theme reference — every token value, every deviation from Agentic, the reasoning, and 12 logged questions — 4 now decided. |
 | **`docs/design-system-rules.md`** | The inherited ruleset, vendored from Agentic. **Contains Agentic's values — see its override header.** |
 | `docs/skills/` | 7 process skills — audit, build, token binding, documentation, Storybook, component implementation, prototype build. |
 | `docs/component-specs/` | 39 spec files — 37 components, plus `_template.md` and `Form-shared.md`. |
@@ -159,8 +159,8 @@ one without being asked.**
 
 The load-bearing theme questions:
 
-- **Q8 — two Accura libraries have measurably drifted.** `[Accura One] WebApp` and `[Accura One] Website Design` consume *different* libraries whose shared token names now hold different values (sidebar background, button radius). One should be retired.
-- **Q11 — the focus ring may fail WCAG.** `color/ring` is `brand/500` at 2.50:1 against white, below the 3:1 floor for non-text indicators.
+- ~~**Q8 — two Accura libraries have measurably drifted.**~~ **Resolved 2026-09-14: `[Accura One] WebApp` is canonical.** The `(beta) (Copy)` library it does not use is still live, so retiring it remains outstanding.
+- ~~**Q11 — the focus ring may fail WCAG.**~~ **Accepted 2026-09-14:** the ring stays at `brand/500`, 2.50:1, knowingly below the 3:1 floor.
 - **Q10 — status borders are very pale.** `border/error` is red/300 (`#fca5a5`).
 
 ---

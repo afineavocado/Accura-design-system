@@ -3,7 +3,7 @@
 > Self-contained design system for Accura. A **re-theme** of the Agentic Design System: the rules are inherited unchanged, the values are Accura's. Everything an agent needs is in this repository — no external vault or absolute paths.
 
 **Read order for any UI/token work:**
-1. `accura-theme.md` — Accura's values and the 12 open questions
+1. `accura-theme.md` — Accura's values and the 12 logged questions
 2. `docs/design-system-rules.md` — the inherited ruleset (**read its override header first**)
 3. the relevant `docs/component-specs/[Name].md` and `docs/machine-readable/artifacts/components/[name].meta.json`
 
@@ -23,7 +23,7 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 ## Rules and process
 
 - `docs/design-system-rules.md`: Token architecture, every semantic token name and rule, spacing system, layout grid, Figma ↔ Tailwind mapping, dark mode. **Inherited — do not edit the rules.**
-- `accura-theme.md`: Accura's theme — brand ramp, neutral, radius, spacing, type, plus the semantic/component deviations and 12 open questions. **The authority on values.**
+- `accura-theme.md`: Accura's theme — brand ramp, neutral, radius, spacing, type, plus the semantic/component deviations and 12 logged questions. **The authority on values.**
 - `docs/content-guidelines.md`: Voice-neutral UX writing — capitalisation, button labels, error messages, empty states.
 
 ## Skills — read before the matching task
@@ -120,7 +120,7 @@ Collections: Primitives `1:2` (Value) · Semantics `1:129` (Light/Dark) · Compo
 229 primitives · 115 semantics (Light + Dark) · 52 component tokens · 17 text styles
 (Published-library counts are lower — 190 / 113 — because some variables are hidden from publishing. `tokens/` is exported from the **local** file, which is complete.)
 
-**Known drift:** two Accura libraries exist. `[Accura One] WebApp` consumes `[Accura] Agentic Design System`; `[Accura One] Website Design` consumes `[Accura] Agentic Design System (beta) (Copy)`. They hold **different values for the same token names** (sidebar background, button radius). This repo documents the **non-Copy** library. See open question Q8 in `accura-theme.md`.
+**Known drift:** two Accura libraries exist. `[Accura One] WebApp` consumes `[Accura] Agentic Design System`; `[Accura One] Website Design` consumes `[Accura] Agentic Design System (beta) (Copy)`. They hold **different values for the same token names** (sidebar background, button radius). This repo documents the **non-Copy** library, which is **canonical as of 2026-09-14** (Q8). The `(beta) (Copy)` is not retired yet.
 
 Tooling: `figma-cli` — `cd ~/figma-cli && node src/index.js eval "..."`. Requires the FigCli plugin running in the target Figma file.
 

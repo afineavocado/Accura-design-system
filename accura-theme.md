@@ -451,7 +451,7 @@ Unresolved. Do not silently "fix" these — each needs a decision.
 
 **Q7 — Shadow duality.** Values live as both effect styles and string primitives. Two sources for one value drift apart. Which is authoritative?
 
-**Q8 — Two Accura libraries. NOW PROVEN, not theoretical.**
+**Q8 — RESOLVED 2026-09-14. Two Accura libraries, measurably drifted.**
 `[Accura One] WebApp` consumes `[Accura] Agentic Design System`; `[Accura One] Website Design` consumes `[Accura] Agentic Design System (beta) (Copy)`. They have **measurably drifted**:
 
 | Token | `[Accura] Agentic DS` | `(beta) (Copy)` |
@@ -459,13 +459,34 @@ Unresolved. Do not silently "fix" these — each needs a decision.
 | `color/sidebar/background` | `#00393f` dark teal | `#fafafa` light zinc |
 | button radius | `9999` pill | `radius/xl` 12px |
 
-Same token name, different values, feeding two different product files. **This file documents the non-Copy library.** Decide which is canonical and retire the other.
+Same token name, different values, feeding two different product files.
+
+> **Decision: `[Accura One] WebApp` is canonical**, consuming `[Accura] Agentic Design System` —
+> the library this file documents. `[Accura] Agentic Design System (beta) (Copy)` and the
+> `[Accura One] Website Design` file that consumes it are **not** the source of truth for
+> product values.
+>
+> **Not yet retired.** Until it is, the `(beta) (Copy)` library remains live and can be edited
+> by anyone who opens the website file, so the two can drift further. Retiring it is the
+> follow-up; naming the canonical one only stops *new* work going to the wrong place.
 
 **Q9 — `background/muted/foreground` has no primary-strength pair.** `background/muted` (`#f4f4f5`) pairs only with a muted `#71717a` foreground (4.4:1 — fails AA in light mode). The documented workaround is `background/default/foreground`, which contradicts the paired-surface rule. `background/accent` has identical fills with a primary-strength foreground, but is scoped to hover. Inherited from Agentic, not Accura-specific.
 
 **Q10 — Pale status borders.** `border/error` at red/300 (`#fca5a5`) is very light for an error indicator on white. Deliberate soft aesthetic, or should these track Agentic's 500/700 steps?
 
-**Q11 — Focus ring contrast.** `color/ring` = `brand/500` `#17bb77` = **2.50:1 vs white**, below the 3:1 WCAG 1.4.11 floor for non-text indicators. The `/800` anchor (`#008852`) passes at 4.59:1. Should the ring move to the anchor?
+**Q11 — ACCEPTED 2026-09-14. Focus ring contrast.** `color/ring` = `brand/500` `#17bb77` =
+**2.50:1 vs white**, below the 3:1 WCAG 1.4.11 floor for non-text indicators. The `/800` anchor
+(`#008852`) would pass at 4.59:1.
+
+> **Decision: the ring stays at `brand/500`.** Accepted knowingly.
+>
+> What this means in practice: the focus indicator does not meet 1.4.11, so keyboard focus is
+> harder to see for low-vision users, and an accessibility audit will raise it. Every component
+> that uses `focus-visible:ring-[var(--color-ring)]` is affected — it is one token, so reversing
+> the decision later is a one-line change.
+>
+> Note the ring is the **only** place `brand/500` is used as a standalone indicator; everywhere
+> else the brand anchors at `/800` precisely because `/500` fails the 3:1 floor (§brand).
 
 **Q12 — Card padding: the vendored spec disagreed with the code, and the code won.**
 `Card.md` specified `spacing/component/xl` (24px) for the root shell while `card.tsx` and
