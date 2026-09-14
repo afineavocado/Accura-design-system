@@ -36,7 +36,7 @@ import {
    navigation. Add a module here, not in a page. */
 export const platformNav = [
   { label: "Dashboard", icon: LayoutDashboard, href: "#" },
-  { label: "Documents", icon: FileText, href: "#" },
+  { label: "Documents", icon: FileText, href: "/prototype/accura/documents" },
   { label: "CAPA", icon: ClipboardCheck, href: "/prototype/accura/capa" },
   { label: "Change Control", icon: RefreshCw, href: "#" },
   { label: "Training", icon: GraduationCap, href: "/prototype/accura/training" },
