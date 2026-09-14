@@ -12,15 +12,19 @@ longer match Training and CAPA. Everything below is known, deliberate and not ye
 
 ## 1. Heading and toolbar — regressions to re-apply
 
+> **Heading fixed 2026-09-14** (items 1, 2, 5). All three modules now render the same
+> `<h1 class="text-lg font-semibold …">` in the white header bar, and Create sits on the search
+> row. **Toolbar copy and the summary row (items 3, 4, 6, 7) are still outstanding.**
+
 Each of these was implemented before and was overwritten by the adoption.
 
 | # | What reverted | Where | Original fix |
 |---|---|---|---|
-| 1 | `PageHeading` is back — its own `<h1>` + description inside page content | `documents/components.tsx` | `393016c` — title belongs in `ApplicationHeader` |
-| 2 | `title="Documents"` removed from the header bar | `documents/layout.tsx` | `393016c` |
+| ~~1~~ | ~~`PageHeading` is back~~ — **fixed 2026-09-14.** Component deleted, description dropped | `documents/components.tsx` | `393016c` |
+| ~~2~~ | ~~`title="Documents"` removed~~ — **fixed 2026-09-14.** Back in `ApplicationHeader`, heading/md like CAPA and Training | `documents/layout.tsx` | `393016c` |
 | 3 | `ListSummary` replaced by a hand-rolled summary row, copy `"N revision records · Filtered results"` | `documents/page.tsx` | `9f18d8b` |
 | 4 | Filter copy back to the `Label: value` prefix (`Workflow: In...` clipping) instead of `allLabel` | `documents/components.tsx`, `page.tsx` | `9f18d8b` |
-| 5 | `Create Document` button now lives inside `PageHeading` — removing #1 removes the button unless it is moved to the search row first | `documents/page.tsx` | `393016c` |
+| ~~5~~ | ~~`Create Document` inside `PageHeading`~~ — **fixed 2026-09-14.** Moved to the search row as a sibling of the filter group, matching CAPA | `documents/page.tsx` | `393016c` |
 | 6 | Card padding: 5 explicit `spacing/component/xl` (24px) overrides, vs the 16px primitive default agreed in Q12 | `documents/document-detail.tsx` | `bff58f4`, Q12 |
 | 7 | `Label` required-asterisk usage predates the shared `RequiredLabel` | `documents/*.tsx` | `1b927ca` |
 

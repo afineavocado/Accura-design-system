@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useRowClick } from "../row-click";
 import { TablePagination, usePagination } from "../table-pagination";
 import Link from "next/link";
-import { Search, ArrowDown, ArrowUp } from "lucide-react";
+import { Search, ArrowDown, ArrowUp, Plus } from "lucide-react";
 import {
   RecordRowAction,
   RecordRowActionHeading,
@@ -20,9 +20,10 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
-import { PageHeading, Choice, WorkflowBadge, UseBadge } from "./components";
+import { Choice, WorkflowBadge, UseBadge } from "./components";
 import {
   actors,
+  basePath,
   displayDate,
   nextAction,
   responsible,
@@ -86,12 +87,12 @@ export default function DocumentListing() {
     );
   return (
     <>
-      <PageHeading />
+      <div className="mb-[var(--spacing-layout-sm)] flex w-full flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
       <div
-        className="mb-[var(--spacing-layout-sm)] flex w-full flex-wrap gap-[var(--spacing-component-sm)] 2xl:w-3/4 xl:w-4/5"
+        className="flex min-w-0 flex-1 flex-wrap items-center gap-[var(--spacing-component-sm)]"
         aria-label="Document filters"
       >
-        <div className="relative min-w-52 flex-1 basis-full sm:basis-auto">
+        <div className="relative min-w-[240px] flex-1 sm:max-w-[380px]">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
           <Input
             type="search"
@@ -167,6 +168,15 @@ export default function DocumentListing() {
           </div>
         ))}
       </div>
+
+        <Button asChild className="shrink-0">
+          <Link href={`${basePath}/new`}>
+            <Plus className="size-4" />
+            Create Document
+          </Link>
+        </Button>
+      </div>
+
       <div className="mb-[var(--spacing-component-md)] flex min-h-8 items-center justify-between gap-[var(--spacing-component-sm)] text-xs text-[var(--color-text-secondary)]">
         <p aria-live="polite">
           {filtered.length} revision records ·{" "}

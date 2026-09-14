@@ -26,6 +26,7 @@ export default function DemoLayout({ children }: { children: ReactNode }) {
         <AppSidebar />
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
           <ApplicationHeader
+            title="Documents"
             user={user}
             initialNotifications={[
               {
