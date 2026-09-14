@@ -26,6 +26,7 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 | **`accura-ui/`** | Component library + Storybook. Same components as `agentic-ui`, Accura tokens. |
 | **`flow/`** | Module specifications — what each prototype is, what the brief asked for, and the open questions. `training-module.md` (24 questions), `domain/training-module.md`, `capa-prototype-spec.md`. |
 | `docs/demo-scope.md` | What the demo covers and what is deferred. Component patterns live in the prototype-build skill. |
+| `docs/handoff-followups.md` | ⚠️ Deferred work after adopting the Documents handoff — heading/toolbar regressions, four adopted-by-default design questions, what was not taken. |
 | `docs/team-workflow.md` | **(Tiếng Việt)** Branch + PR workflow for two people working on different modules. Daily routine, shared-file list, conflict handling. |
 | `CHANGELOG.md` | Every Accura-specific change, breaking ones called out. |
 

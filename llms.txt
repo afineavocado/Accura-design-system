@@ -25,6 +25,7 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 - `docs/design-system-rules.md`: Token architecture, every semantic token name and rule, spacing system, layout grid, Figma ↔ Tailwind mapping, dark mode. **Inherited — do not edit the rules.**
 - `accura-theme.md`: Accura's theme — brand ramp, neutral, radius, spacing, type, plus the semantic/component deviations and 12 logged questions. **The authority on values.**
 - `docs/content-guidelines.md`: Voice-neutral UX writing — capitalisation, button labels, error messages, empty states.
+- `docs/handoff-followups.md`: **Read before touching the Documents module.** The coworker's 14 Sep package was adopted wholesale, which reverted the heading, toolbar, summary row, filter copy and card padding to her conventions. Lists every regression with the commit that originally fixed it, plus four design questions adopted by default (revision in the URL, UseStatus absorbing lifecycle, inline style for Superseded, summary copy).
 - `docs/team-workflow.md`: **(Tiếng Việt)** How the two people working on this repo share it — branch per module, PR before merging to `main`, which files both touch, what to do on conflict. Process for humans, not a spec.
 
 ## Skills — read before the matching task

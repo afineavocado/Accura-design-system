@@ -11,6 +11,39 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-14 — Documents handoff v2 adopted wholesale
+
+**Changed**
+
+- **The `documents/` module is replaced by the coworker's 14 Sep package**, not merged.
+  Her base `c6f7868` was 13 commits old and both sides had edited the same files; merging by
+  hand risked breaking ~350 lines of new detail-screen logic to preserve UI edits that are small
+  and enumerable. Brings a revision model (`recordKey`, `documentHref`, `isRetired`,
+  `normalizeDocument`, lifecycle/category/returned/obsolete fields), atomic supersession on
+  approval, cross-tab store sync, and the new shared `record-row-action.tsx`.
+- **`button.tsx` and `table.tsx`** take her patch (applied cleanly — untouched on our side since
+  her base). `table.tsx` gains `useTableOverflow`, which `RecordRowAction` depends on.
+  ⚠️ Shared with CAPA and Training — their tables and buttons have **not** been re-checked visually.
+- **`record-workflow.tsx`** taken: her Documents module needs the added `SignatureReceipt` fields
+  and the `actionLabel` / `reasonRequired` props. Verified consumed only by Documents, so the
+  Training and CAPA signature flows are untouched.
+
+⚠️ **This reverts the Documents half of the cross-module alignment** — module heading, toolbar
+copy, `ListSummary` row, `Create Document` placement, 16px card padding and the shared
+`RequiredLabel`. Deliberate and deferred; every item is listed with its original commit in
+**`docs/handoff-followups.md`**, along with four design questions adopted by default (revision in
+the URL, `UseStatus` absorbing lifecycle, an inline `style` for Superseded, divergent summary copy).
+
+Not taken: her `application-header.tsx` (no `title` prop — would blank the heading in all three
+modules) and `docs/demo-design-contract.md` (split into `demo-scope.md` + the skill earlier the
+same day).
+
+**Added**
+
+- `flow/documents-discovery/` — the package's reference material, which existed nowhere in the
+  repo: the Documents Module functional specification PDF, product knowledge, session log,
+  post-demo backlog, and her handoff README. Preserved before the package folder was deleted.
+
 ### 2026-09-14 — Team workflow written down
 
 **Added**
