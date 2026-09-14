@@ -43,8 +43,9 @@ npm run dev         # CAPA prototype    → :3001
 **Deploying:** the deploy platform's root directory must be `accura-ui`, not the repo root.
 The root has no `package.json`, so a platform pointed there builds nothing and every route 404s.
 
-`/` redirects to `/prototype/accura/capa`. **There is no home screen** — the app exists to host
-the prototype. Do not build a landing page.
+`/` redirects to `/prototype/accura/capa`. **There is no home screen** — the app hosts three
+prototypes (CAPA, Documents, Training), reached from the shared sidebar in
+`prototype/accura/app-sidebar.tsx`. Do not build a landing page.
 
 ---
 

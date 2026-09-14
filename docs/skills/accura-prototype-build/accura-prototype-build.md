@@ -216,8 +216,8 @@ Avoid creating multiple development servers for the same checkout. Next.js uses 
 Before starting a server, check the intended port:
 
 ```bash
-lsof -nP -iTCP:3002 -sTCP:LISTEN
-curl -I --max-time 5 http://127.0.0.1:3002/prototype/accura/capa
+lsof -nP -iTCP:3001 -sTCP:LISTEN
+curl -I --max-time 5 http://127.0.0.1:3001/prototype/accura/capa
 ```
 
 - Reuse the server when it responds successfully.
@@ -231,7 +231,7 @@ Normal clean restart:
 
 ```bash
 rm -rf .next
-npm run dev -- --webpack -p 3002
+npm run dev -- --webpack -p 3001
 ```
 
 `.next` is generated build output, not prototype source. Confirm the exact working directory before removing it.

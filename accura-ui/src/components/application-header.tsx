@@ -6,6 +6,7 @@ import {
   Bell,
   ClipboardCheck,
   FileText,
+  GraduationCap,
   Menu,
   RefreshCcw,
   TriangleAlert,
@@ -31,6 +32,7 @@ export type NotificationModule =
   | "CAPA"
   | "Change Control"
   | "Deviation"
+  | "Training"
 
 export type ApplicationNotification = {
   id: string
@@ -63,6 +65,7 @@ const notificationIcons: Record<NotificationModule, React.ElementType> = {
   CAPA: ClipboardCheck,
   "Change Control": RefreshCcw,
   Deviation: TriangleAlert,
+  Training: GraduationCap,
 }
 
 function NotificationContent({

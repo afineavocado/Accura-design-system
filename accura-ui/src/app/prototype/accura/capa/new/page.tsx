@@ -4,7 +4,6 @@ import * as React from "react"
 import Link from "next/link"
 import {
   ChevronLeft,
-  Menu,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -24,6 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
+import { CapaHeader } from "./../capa-header"
 import { AppNavItems, AppSidebar } from "../../app-sidebar"
 import { SidebarProvider } from "@/components/ui/sidebar"
 
@@ -89,19 +89,10 @@ export default function CreateCapaPage() {
         <AppSidebar />
 
         <main className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <header className="flex h-14 shrink-0 items-center border-b border-[var(--color-border-default)] bg-[var(--color-background-default)] px-[var(--spacing-layout-xs)] md:px-[var(--spacing-layout-sm)]">
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              className="mr-[var(--spacing-component-sm)] lg:hidden"
-              aria-label="Toggle navigation"
-              aria-expanded={mobileNavOpen}
-              onClick={() => setMobileNavOpen((open) => !open)}
-            >
-              <Menu className="h-4 w-4" />
-            </Button>
-            <span className="text-base font-medium text-[var(--color-background-default-foreground)]">CAPA</span>
-          </header>
+          <CapaHeader
+            mobileNavigationOpen={mobileNavOpen}
+            onMobileNavigationToggle={() => setMobileNavOpen((open) => !open)}
+          />
 
           {mobileNavOpen && (
             <div className="border-b border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-background)] p-[var(--spacing-component-md)] lg:hidden">
@@ -109,7 +100,7 @@ export default function CreateCapaPage() {
             </div>
           )}
 
-          <div className="flex min-h-0 flex-1 overflow-y-auto px-[var(--spacing-layout-xs)] py-[var(--spacing-layout-sm)] md:px-[var(--spacing-layout-md)] lg:px-[var(--spacing-layout-lg)]">
+          <div className="flex min-h-0 flex-1 overflow-y-auto p-[var(--spacing-component-lg)] lg:p-[var(--spacing-component-xl)]">
             <div className="mx-auto flex w-full max-w-5xl flex-col gap-[var(--spacing-layout-sm)]">
               <div className="flex flex-col gap-[var(--spacing-component-sm)]">
                 <Button asChild variant="link" className="h-auto w-fit p-0 text-sm no-underline hover:no-underline">

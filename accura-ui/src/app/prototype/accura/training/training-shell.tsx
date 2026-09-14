@@ -3,13 +3,12 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu } from "lucide-react"
-
-import { Button } from "@/components/ui/button"
+import { ApplicationHeader } from "@/components/application-header"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { AppNavItems, AppSidebar } from "../app-sidebar"
+import { currentUser, reviewItems } from "./mock-data"
 
 /* Tabs from §1. Only Users is built; the rest render an unbuilt notice rather
    than dead links — a prototype that 404s reads as broken, not unfinished. */
@@ -52,22 +51,34 @@ export function TrainingShell({ children }: { children: React.ReactNode }) {
         <AppSidebar />
 
         <main className="flex min-h-0 min-w-0 flex-1 flex-col">
-          <header className="flex h-14 shrink-0 items-center border-b border-[var(--color-border-default)] bg-[var(--color-background-default)] px-4 md:px-6">
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              className="mr-2 lg:hidden"
-              aria-label="Toggle navigation"
-              aria-expanded={mobileNavOpen}
-              onClick={() => setMobileNavOpen((open) => !open)}
-            >
-              <Menu className="h-4 w-4" />
-            </Button>
-            <h1 className="font-sans text-base font-medium text-[var(--color-background-default-foreground)]">
-              Training
-            </h1>
-          </header>
-
+          {/* The shared header, same as Documents — notifications and account
+              on the right. The module title lives in page content, not here. */}
+          <ApplicationHeader
+            user={{
+              name: currentUser.name,
+              role: currentUser.roleAtSignOff,
+              initials: currentUser.name
+                .split(" ")
+                .map((part) => part[0])
+                .join(""),
+            }}
+            initialNotifications={[
+              {
+                id: "training-review-queue",
+                module: "Training",
+                recordId: `${reviewItems.length} records`,
+                title: "Awaiting your sign-off",
+                description:
+                  "Completed assessments are waiting for a Training Manager signature.",
+                timestamp: "Demo activity",
+                kind: "Action required",
+                unread: true,
+                href: "/prototype/accura/training/review",
+              },
+            ]}
+            mobileNavigationOpen={mobileNavOpen}
+            onMobileNavigationToggle={() => setMobileNavOpen((open) => !open)}
+          />
           {mobileNavOpen && (
             <div className="border-b border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-background)] p-3 lg:hidden">
               <AppNavItems />

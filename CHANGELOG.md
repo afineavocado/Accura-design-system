@@ -11,6 +11,83 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-14 — Documents module, cross-module alignment
+
+**Added**
+
+- **Documents module prototype** at `/prototype/accura/documents` — listing, detail, file upload
+  with simulated PDF generation, `localStorage` + IndexedDB persistence, six seed records.
+  Workflow `Draft → In Review → In Approval → Approved`, with Approved and Effective kept
+  separate. Delivered as a source handoff by a coworker and applied as given; its known issues
+  were not silently fixed.
+- **Three shared components** arrive with it: `application-header.tsx`,
+  `record-audit-drawer.tsx`, `record-workflow.tsx`. The audit drawer is intended as the single
+  history surface across modules.
+- **Training review queue** at `/prototype/accura/training/review` — selection-first, approve
+  requires opening the record, reject does not, and both decisions are signed. See
+  `flow/training-module.md` §5.7.
+- `docs/skills/accura-prototype-build/` gained the prototype conventions and two knowingly
+  hand-rolled components with the reason for each. **Skills: 7 → 8.**
+
+**Changed — cross-module alignment**
+
+All three prototypes were measured screen by screen and brought into line. Every number below
+is a computed value, not an estimate.
+
+| | Before | After |
+|---|---|---|
+| Content inset | 24px, except CAPA detail at 48px | **24px** everywhere |
+| Card padding | 16px, except Documents at 24px | **16px** everywhere |
+| Search width | 730px (CAPA) · 380px (Training) · 317px (Documents) | **380px** everywhere |
+| List `Create` action | 40px (CAPA, Documents) · 36px (Training) | **40px** everywhere |
+| Detail back link | 14px, except CAPA detail at 12px | **14px** everywhere |
+| Detail rail | 280px and 320px | **320px** |
+| Detail page width | full, except CAPA detail centred at 1152px | **full width** |
+| Audit trail trigger | `ScrollText` "View Audit Trail" · `Clock3` "View audit trail" | **`Clock3` "View audit trail"** |
+| Module header | Documents had the shared header; CAPA and Training had plain titles | **`ApplicationHeader`** in all three |
+
+- **`NotificationModule` gained `Training`** with a `GraduationCap` icon — additive, no existing
+  usage affected.
+- **`capa/capa-header.tsx`** extracted. CAPA had built its header three times, once per page —
+  the same duplication that once left Training invisible from CAPA's sidebar.
+- **Sidebar collapse chevron** now points the way the click goes, and its `aria-label` changes
+  with it.
+
+**Changed — `Card` root padding is 16px, and the spec was wrong**
+
+`Card.md` specified `spacing/component/xl` (24px) for the root shell. `card.tsx` and
+`card.meta.json` both implement `spacing/component/lg` (16px). Two of three artefacts agreed,
+and the outlier was a **vendored** spec — the file class that carries Agentic's values rather
+than Accura's. `Card.md` corrected to 16px; recorded as **Q12** in `accura-theme.md`.
+
+> ⚠️ **Not confirmed against Figma.** If the Figma card is 24px, this is wrong and the code is
+> what should change. One instance of the wider gap: Accura's tokens were hand-written to match
+> Figma and never verified by export.
+
+Image variants keep 24px — that padding is on the inner `card-content` frame, a different
+surface, and was never in dispute.
+
+**Fixed — documentation drift**
+
+- **Stale counts.** `README.md` claimed 7 skills (8), 38 specs (39), 36 `meta.json` (37) and 36
+  forked components (39). `llms.txt` claimed 351 CSS custom properties (355) and 456
+  declarations (460).
+- **`Q3` is missing from `accura-theme.md`** — the list runs Q1, Q2, Q4. Not referenced
+  anywhere. Left as a gap with a note, because renumbering would break every reference to
+  Q4–Q12.
+- **Three prototypes, not one.** `README.md`, `llms.txt` and `accura-ui/CLAUDE.md` all described
+  a CAPA-only app. `flow/` — the module specifications — was missing from the README contents
+  table entirely.
+- **The prototype skill quoted port 3002**; `package.json` uses 3001.
+- **Documents' own notes** said 65/35 where the design contract says 70/30, and asserted 24px
+  card padding. Both corrected, with the contract cited as the authority for the ratio.
+- **`accura-ui/AGENTS.md` still says 65/35** — inside the coworker's patch, and her own known
+  issue. Left for her.
+
+`sync-doc-values.mjs` reports 147 restated values already correct, 0 rewritten.
+`drift-check.mjs` passes all six checks, including 159 restated px values.
+
+
 ### Known issues
 - `chat-bubble.meta.json` references `ChatBubble.stories.tsx`, which was removed. Either drop the component and its spec, or restore the story. Surfaced by `validate-artifacts.mjs` (1 remaining error).
 - `docs/machine-readable/figma-ids.md` carries Agentic's node IDs. Spot-checks suggest IDs survived the file duplication (`sidebar` at `95:18202` is correct in both), but this has not been verified across all 32 entries.

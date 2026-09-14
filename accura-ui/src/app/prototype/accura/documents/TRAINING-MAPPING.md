@@ -21,8 +21,12 @@ Updated 2026-09-12 against GitHub `afineavocado/Accura-design-system`, main comm
 - **Header:** Training currently puts “Training” in its global header. Document keeps notification/account and puts its module title + Create CTA in page content, per the user's explicit contract. Training's header was not rewritten.
 - **Sections/tabs:** Training has different entities (Users, Roles, Courses, Assessments, Review). Document stays one listing; no segmented views are introduced.
 - **Toolbar:** keep Document's 75–80% desktop-width constraint. Controls wrap instead of being stretched across the full table.
-- **Detail columns:** Training's course rail is fixed at 320px. Document retains the agreed 65:35 fractional layout after the gap, stacked on mobile.
-- **Card density:** Training currently relies on the primitive's 16px default. Document retains explicit `spacing/component/xl` (24px) to match the Card specification and existing detail contract; do not change the base Card to force parity.
+- **Detail columns:** Training rails are fixed at 320px. Document retains its fractional layout after the gap, stacked on mobile — see `docs/demo-design-contract.md` for the current ratio.
+- ~~**Card density:** Document retains explicit `spacing/component/xl` (24px).~~
+  **Superseded 2026-09-14.** Document now uses the Card primitive's 16px default, matching
+  Training and CAPA. The explicit overrides were removed. Note that `docs/component-specs/Card.md`
+  still specifies 24px while `card.tsx` implements 16px — a design-system gap, logged for the
+  Figma ↔ code reconciliation pass, not resolved here.
 - **Domain:** preserve Draft → In Review → In Approval → Approved; Approved is not Effective; QA sets Effective Date. No Training due dates, scores, assessments, rejection or extra workflows were added.
 - **Unbuilt navigation:** the shared sidebar's other `#` placeholders are inherited, not new implemented modules. No logout or settings behavior is implied.
 

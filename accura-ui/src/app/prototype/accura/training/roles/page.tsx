@@ -92,7 +92,7 @@ export default function TrainingRolesPage() {
             className="pl-9"
           />
         </div>
-        <Button asChild size="sm">
+        <Button asChild>
           <Link href="/prototype/accura/training/roles/new">
             <Plus className="h-4 w-4" />
             Create Role

@@ -164,7 +164,7 @@ export default function ReviewQueuePage() {
       <TrainingTabs />
 
       <div className="flex flex-col gap-[var(--spacing-component-sm)] sm:flex-row">
-        <div className="relative flex-1 sm:max-w-[340px]">
+        <div className="relative flex-1 sm:max-w-[380px]">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
           <Input
             type="search"

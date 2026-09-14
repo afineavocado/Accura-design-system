@@ -4,7 +4,6 @@ import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import {
-  Menu,
   Search,
 } from "lucide-react"
 
@@ -27,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { CapaHeader } from "././capa-header"
 import { AppNavItems, AppSidebar } from "../app-sidebar"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import {
@@ -100,21 +100,10 @@ export default function CapaListingPage() {
           <AppSidebar />
 
           <main className="flex min-h-0 min-w-0 flex-1 flex-col">
-            <header className="flex h-14 shrink-0 items-center border-b border-[var(--color-border-default)] bg-[var(--color-background-default)] px-4 md:px-6">
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                className="mr-2 lg:hidden"
-                aria-label="Toggle navigation"
-                aria-expanded={mobileNavOpen}
-                onClick={() => setMobileNavOpen((open) => !open)}
-              >
-                <Menu className="h-4 w-4" />
-              </Button>
-              <h1 className="font-sans text-base font-medium text-[var(--color-background-default-foreground)]">
-                CAPA
-              </h1>
-            </header>
+            <CapaHeader
+              mobileNavigationOpen={mobileNavOpen}
+              onMobileNavigationToggle={() => setMobileNavOpen((open) => !open)}
+            />
 
             {mobileNavOpen && (
               <div className="border-b border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-background)] p-3 lg:hidden">
@@ -125,7 +114,7 @@ export default function CapaListingPage() {
             <section className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-4 md:p-5 lg:p-6">
               <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
                 <div className="grid flex-1 grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-[minmax(260px,1fr)_160px_160px]">
-                  <div className="relative sm:col-span-2 lg:col-span-1">
+                  <div className="relative sm:col-span-2 lg:col-span-1 lg:max-w-[380px]">
                     <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
                     <Input
                       type="search"
@@ -187,13 +176,13 @@ export default function CapaListingPage() {
                   <Table className="min-w-[960px]">
                     <TableHeader>
                       <TableRow className="hover:bg-transparent">
-                        <TableHead className="h-10 px-3 uppercase tracking-wide">CAPA ID</TableHead>
-                        <TableHead className="h-10 px-3 uppercase tracking-wide">Title</TableHead>
-                        <TableHead className="h-10 px-3 uppercase tracking-wide">Status</TableHead>
-                        <TableHead className="h-10 px-3 uppercase tracking-wide">Due date</TableHead>
-                        <TableHead className="h-10 px-3 uppercase tracking-wide">Owner</TableHead>
-                        <TableHead className="h-10 px-3 uppercase tracking-wide">QA approver</TableHead>
-                        <TableHead className="h-10 px-3 uppercase tracking-wide">Source</TableHead>
+                        <TableHead>CAPA ID</TableHead>
+                        <TableHead>Title</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Due date</TableHead>
+                        <TableHead>Owner</TableHead>
+                        <TableHead>QA approver</TableHead>
+                        <TableHead>Source</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -209,7 +198,7 @@ export default function CapaListingPage() {
                             router.push(`/prototype/accura/capa/${record.id}`)
                           }}
                         >
-                          <TableCell className="px-3 py-1.5">
+                          <TableCell>
                             {detailAvailable ? (
                               <Button asChild variant="ghost" size="sm" className="h-auto p-0 text-xs font-medium text-[var(--color-brand-primary)] hover:bg-transparent hover:underline">
                                 <Link href={`/prototype/accura/capa/${record.id}`}>{record.id}</Link>
@@ -220,22 +209,22 @@ export default function CapaListingPage() {
                               </span>
                             )}
                           </TableCell>
-                          <TableCell className="px-3 py-1.5 text-xs">{record.title}</TableCell>
-                          <TableCell className="px-3 py-1.5"><StatusBadge record={record} /></TableCell>
-                          <TableCell className="whitespace-nowrap px-3 py-1.5 text-xs text-[var(--color-text-secondary)]">{record.dueDate}</TableCell>
-                          <TableCell className="px-3 py-1.5">
+                          <TableCell>{record.title}</TableCell>
+                          <TableCell><StatusBadge record={record} /></TableCell>
+                          <TableCell className="whitespace-nowrap text-[var(--color-text-secondary)]">{record.dueDate}</TableCell>
+                          <TableCell>
                             <div className="flex flex-col text-xs leading-4">
                               <span>{record.owner}</span>
                               <span className="text-[var(--color-text-secondary)]">{record.ownerTeam}</span>
                             </div>
                           </TableCell>
-                          <TableCell className="px-3 py-1.5">
+                          <TableCell>
                             <div className="flex flex-col text-xs leading-4">
                               <span>{record.approver}</span>
                               <span className="text-[var(--color-text-secondary)]">{record.approverTeam}</span>
                             </div>
                           </TableCell>
-                          <TableCell className="px-3 py-1.5">
+                          <TableCell>
                             <div className="flex flex-col text-xs leading-4">
                               <span>{record.source}</span>
                               <span className="text-xs font-normal text-[var(--color-text-link)] underline underline-offset-2">

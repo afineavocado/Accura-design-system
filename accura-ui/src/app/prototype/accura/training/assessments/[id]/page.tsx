@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { notFound, useParams, useRouter } from "next/navigation"
-import { ChevronLeft, Download, FileText, ScrollText } from "lucide-react"
+import { ChevronLeft, Clock3, Download, FileText } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -139,8 +139,8 @@ export default function AssessmentDetailPage() {
               size="sm"
               onClick={() => setTrailOpen(true)}
             >
-              <ScrollText className="h-4 w-4" />
-              View Audit Trail
+              <Clock3 className="h-4 w-4" />
+              View audit trail
             </Button>
             <Button variant="outline" size="sm">
               <Download className="h-4 w-4" />

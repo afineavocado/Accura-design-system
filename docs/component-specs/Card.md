@@ -58,7 +58,7 @@ A structured container that presents an independent, self-contained block of het
 card                            — V AUTO-LAYOUT, fill: color/surface/overlay
                                   stroke: color/border/default 1px INSIDE
                                   radius: radius/lg (12px)
-                                  padding (all sides): spacing/component/xl (24px)
+                                  padding (all sides): spacing/component/lg (16px)
                                   gap between sections: spacing/component/lg (16px)
 ```
 
@@ -113,7 +113,7 @@ Free-composition frames for content that doesn't fit the standard header/content
 | Stroke | `color/border/default` | Standard border (all except Border variant) |
 | Stroke | `color/border/strong` | Emphasis border (`Property 1=Border` only) |
 | Radius (all 4 corners) | `radius/lg` | 12px |
-| Padding (all sides) | `spacing/component/xl` | 24px |
+| Padding (all sides) | `spacing/component/lg` | 16px |
 | Gap between sections | `spacing/component/lg` | 16px |
 
 ### `card-header`
@@ -170,7 +170,7 @@ import {
 
 The card is a **shell** — it owns:
 - The surface (`fill`, `border`, `radius`)
-- The outer padding (24px all sides)
+- The outer padding (16px all sides)
 - The vertical rhythm between sections (16px gap)
 
 Everything inside the shell is independently composed. `CardHeader`, `CardContent`, and `CardFooter` are thin wrappers with their own padding and gap. Mix and match — not all sections are required in every card.

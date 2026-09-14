@@ -16,11 +16,11 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 |---|---|
 | **`llms.txt`** | **Agent entry point** — indexes every file and states the read order. |
 | **`CLAUDE.md`** | Agent instructions and the rules-vs-values precedence. |
-| **`accura-theme.md`** | The theme reference — every token value, every deviation from Agentic, the reasoning, and 11 open questions. |
+| **`accura-theme.md`** | The theme reference — every token value, every deviation from Agentic, the reasoning, and 12 open questions. |
 | **`docs/design-system-rules.md`** | The inherited ruleset, vendored from Agentic. **Contains Agentic's values — see its override header.** |
-| `docs/skills/` | 7 process skills — audit, build, token binding, documentation, Storybook, theming. |
-| `docs/component-specs/` | 38 component spec files (36 components + template + shared form parts). |
-| `docs/machine-readable/` | 36 `meta.json` artifacts, component directory, quick reference, validation scripts. |
+| `docs/skills/` | 8 process skills — audit, build, token binding, documentation, Storybook, theming, prototype build. |
+| `docs/component-specs/` | 39 spec files — 37 components, plus `_template.md` and `Form-shared.md`. |
+| `docs/machine-readable/` | 37 `meta.json` artifacts, component directory, quick reference, validation scripts. |
 | `docs/tracking/` | Storybook and audit status. ⚠️ Reflects Agentic's status, not Accura's. |
 | `tokens/` | DTCG token JSONs + Style Dictionary build. ⚠️ Agentic's exported values — see `llms.txt`. |
 | **`accura-ui/`** | Component library + Storybook. Same components as `agentic-ui`, Accura tokens. |
@@ -145,7 +145,7 @@ Green is intrinsically lighter than blue at the same ramp step, so `/500` can't 
 
 ## Two things to know before contributing
 
-**1. `accura-ui` is a fork.** All 36 components are duplicated from `agentic-ui`. A component fix here does not reach Agentic, and vice versa. Only tokens were meant to diverge.
+**1. `accura-ui` is a fork.** All 39 components are duplicated from `agentic-ui`. A component fix here does not reach Agentic, and vice versa. Only tokens were meant to diverge.
 
 **2. `tokens.css` is generated, not hand-written.** It comes from the Figma variables in `[Accura] Agentic Design System`. Edit the Figma variable and regenerate; hand edits get overwritten.
 

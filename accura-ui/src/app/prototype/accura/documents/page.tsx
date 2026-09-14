@@ -83,7 +83,7 @@ export default function DocumentListing() {
         className="mb-[var(--spacing-layout-sm)] flex w-full flex-wrap gap-[var(--spacing-component-sm)] 2xl:w-3/4 xl:w-4/5"
         aria-label="Document filters"
       >
-        <div className="relative min-w-52 flex-1 basis-full sm:basis-auto">
+        <div className="relative min-w-52 flex-1 basis-full sm:max-w-[380px] sm:basis-[380px]">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
           <Input
             type="search"

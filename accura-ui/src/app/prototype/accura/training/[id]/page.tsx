@@ -87,7 +87,7 @@ export default function TrainingUserDetailPage() {
 
       {/* Read-only. No approve, reject, checkboxes or bulk bar — actions live
           in Review and on Participant Progress. See §15. */}
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_280px] xl:items-start">
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px] xl:items-start">
         <div className="flex min-w-0 flex-col gap-4">
           <Panel title="Assigned Assessments">
             <Table>

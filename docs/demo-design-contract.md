@@ -99,7 +99,7 @@ Sources:
 
 - Full-width shared application shell and page heading above the content.
 - PhaseGateStepper spans the detail content above the two columns.
-- Desktop columns: 65% main information and 35% audit rail, calculated from available space after the column gap. Use 65:35 fractional tracks rather than two percentage widths plus an overflowing gap.
+- Desktop columns: fractional tracks calculated from available space after the column gap, rather than two percentage widths plus an overflowing gap. **The current ratio is 70/30** — see the canonical section above; this line records the technique, not the numbers.
 - Main column card order: primary record content/file; supporting metadata; references/linked records. Use module-specific content slots in this shared structure.
 - Side rail contains the current gate/responsible person/next action and approval route. Signature records and activity history belong only in the Audit Trail drawer. Do not repeat the entire metadata form in the rail.
 - Primary task CTA appears once in the shared action area; do not create competing copies in several cards. The master should allow the module's agreed action and label.
@@ -123,5 +123,5 @@ Sources:
 
 - One reusable master per pattern, with configurable labels/content/assignees rather than page-specific copies.
 - Demonstrate the masters using the existing Document happy path first.
-- Verify stage labels, current assignee, signing context/result, 65/35 layout, 75% toolbar, record link, menu, and row hover.
+- Verify stage labels, current assignee, signing context/result, 70/30 layout, toolbar width, record link, menu, and row hover.
 - Keep non-demo questions out of the active implementation plan. Prototype validation covers the intended demo navigation and basic component accessibility, not an exhaustive exception matrix.

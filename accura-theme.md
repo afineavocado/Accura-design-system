@@ -407,7 +407,7 @@ Forked from `agentic-ui`; identical components, Accura tokens.
 1. **Component tokens have no Dark mode.** They alias semantics, which do — so resolve *through* the alias with the wanted mode. Falling back to the Light value writes light colours into `.dark` (white outline buttons, non-inverting tooltips).
 2. **Figma names may contain spaces and mixed case** (`button/size/Button radius 1`). CSS custom properties allow neither. Normalise to lowercase-kebab, or PostCSS throws `Unknown word` and **discards the entire stylesheet** — the page loads with no CSS at all.
 
-> ⚠️ **Fork cost.** `accura-ui` duplicates all 36 components. Any component fix must be applied in both `agentic-ui` and `accura-ui`, or they drift.
+> ⚠️ **Fork cost.** `accura-ui` duplicates all 39 components. Any component fix must be applied in both `agentic-ui` and `accura-ui`, or they drift.
 
 ---
 
@@ -439,6 +439,9 @@ Unresolved. Do not silently "fix" these — each needs a decision.
 
 **Q2 — `brand/975 = #0f172a`.** Slate, not green — it does not belong to this ramp. It is actively used as a text colour in `[Accura One] Website Design`, which binds headings to `Brand/975`. Move it to the neutral family, or replace those usages with `color/background/default/foreground`?
 
+> **Q3 is not in use.** The number is skipped — it was removed at some point without
+> renumbering. Left as a gap deliberately: renumbering would break every reference to Q4–Q12.
+
 **Q4 — Orange and Violet.** Full ramps mapped to no semantic token. Intended for a status/category use not yet built, or leftovers from an Untitled UI import?
 
 **Q5 — `motion/easing/standard`.** `cubic-bezier(0.2, 0, 0, 1)` vs Agentic's `cubic-bezier(0.4, 0, 0.2, 1)`. Deliberate feel change, or a typo?
@@ -462,6 +465,21 @@ Same token name, different values, feeding two different product files. **This f
 **Q10 — Pale status borders.** `border/error` at red/300 (`#fca5a5`) is very light for an error indicator on white. Deliberate soft aesthetic, or should these track Agentic's 500/700 steps?
 
 **Q11 — Focus ring contrast.** `color/ring` = `brand/500` `#17bb77` = **2.50:1 vs white**, below the 3:1 WCAG 1.4.11 floor for non-text indicators. The `/800` anchor (`#008852`) passes at 4.59:1. Should the ring move to the anchor?
+
+**Q12 — Card padding: the vendored spec disagreed with the code, and the code won.**
+`Card.md` specified `spacing/component/xl` (24px) for the root shell while `card.tsx` and
+`card.meta.json` both implement `spacing/component/lg` (16px). Two of three artefacts agreed on
+16px, and the outlier was a **vendored** spec — the file class that carries Agentic's values,
+not Accura's. `Card.md` was corrected to 16px on 2026-09-14 and all three prototypes now use the
+default.
+
+> ⚠️ **Not confirmed against Figma.** This is one instance of the wider gap: Accura's tokens were
+> hand-written to match Figma and never verified by export. If the Figma card is 24px, this
+> decision is wrong and the code is the thing to change. Settle it during the Figma ↔ code
+> reconciliation pass.
+
+Image variants are unaffected — their 24px sits on the inner `card-content` frame, which is a
+different surface and was never in dispute.
 
 ---
 
