@@ -50,6 +50,22 @@ label                       — H AUTO-LAYOUT, gap: spacing/component/xs
 - `label-required` is only visible when the field is marked required — toggle visibility via the parent's boolean prop
 - Never override `label-text` or `label-required` fills directly on the instance — change the `label state` prop instead
 
+### In code
+
+```tsx
+<Label htmlFor="document-name" required>Document name</Label>
+<Label htmlFor="reviewer" required state="invalid">Reviewer</Label>
+```
+
+`required` renders `label-required`; `state` maps to `label state`. The asterisk is `aria-hidden`
+with an `sr-only` "(required)" beside it — set `required`/`aria-required` on the **field** too,
+since the label does not carry it to the accessibility tree.
+
+> **Implemented 2026-09-14.** `label.tsx` had been a bare Radix wrapper with no asterisk and no
+> states, so every consumer wrote its own marker — six copies across the prototypes, and one that
+> rendered black because it inherited the label colour. **Not yet verified against Figma
+> `150:569`.**
+
 ---
 
 ## `menu-dropdown-item`

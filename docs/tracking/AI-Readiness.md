@@ -39,7 +39,7 @@ values.
 | 8 | Composition explicit | ✅ | Structure + slot sections in every spec. |
 | 9 | DTCG tokens | ✅ | 390 tokens across 3 DTCG files, Style Dictionary v5 → CSS + Tailwind v4 + ES module. |
 | 10 | Figma Code Connect | ✖ | Not applicable — needs a published npm package linked to the Figma file. Same as Agentic. |
-| 11 | Programmatically accessible examples | 🟡 | 36 stories build and run, but **only 3 verified against Accura's values**. The other 33 carry Agentic's verification, which does not transfer — the brand ramp, sidebar, button radius, status borders and now the radius scale and heading font all changed. |
+| 11 | Programmatically accessible examples | 🟡 | 37 stories build and run, but **only 4 verified against Accura's values**. The other 33 carry Agentic's verification, which does not transfer — the brand ramp, sidebar, button radius, status borders and now the radius scale and heading font all changed. |
 | 12 | Accessibility structured | ✅ | Accessibility sections in every spec. |
 | 13 | Usage tracking | 🟡 | **Now unblocked.** Agentic marked this ❌ "requires code repo"; Accura has one (public GitHub). Not built. |
 | 14 | Source of truth hierarchy | ✅ | `CLAUDE.md` + `llms.txt` + the override table at the top of `docs/design-system-rules.md`. |

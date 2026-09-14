@@ -29,7 +29,7 @@ Tracks the Storybook pipeline per component **for Accura**. Update after complet
 
 ---
 
-## Status — 36 stories
+## Status — 37 stories
 
 | Component | .tsx tokens | Figma parity | Story written | Story verified |
 |---|---|---|---|---|
@@ -94,7 +94,10 @@ Accura's deviations are concentrated in a few places. Verify these before the re
 
 - **ChatBubble** — story removed by decision. `chat-bubble.tsx` and its spec still exist; `chat-bubble.meta.json` still references the deleted story and fails `validate-artifacts.mjs`.
 - **`button.figma.tsx`** — a Code Connect stub, not a component. No story expected.
-- **`label`** — a shared sub-component documented in `docs/component-specs/Form-shared.md`. No story expected.
+- ~~**`label`** — a shared sub-component documented in `Form-shared.md`. No story expected.~~
+  **Superseded 2026-09-14.** `Label` now implements `required` and the three `label state`
+  variants, and has `Label.stories.tsx` + `label.meta.json`. Verified in-browser against the
+  spec's token bindings; **not yet audited R1–R8 against Figma `150:569`**.
 - **27 TypeScript errors** across story files, inherited from the fork (Storybook 10 made `args` required on `Story`). Excluded from the Next.js build; not yet fixed at source.
 
 ---

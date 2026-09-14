@@ -502,7 +502,11 @@ export default function ReviewQueuePage() {
 
           <fieldset className="flex flex-col gap-[var(--spacing-component-sm)]">
             <legend className="mb-[var(--spacing-component-sm)] text-sm font-medium text-[var(--color-background-default-foreground)]">
-              Reason <span className="text-[var(--color-text-invalid)]">*</span>
+              Reason{" "}
+              <span aria-hidden="true" className="text-[var(--color-text-invalid)]">
+                *
+              </span>
+              <span className="sr-only">(required)</span>
             </legend>
             <RadioGroup value={reason} onValueChange={setReason}>
               {rejectionReasons.map((v) => (
@@ -576,9 +580,8 @@ export default function ReviewQueuePage() {
           <SignerIdentity signedAt={signedAt} />
 
           <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-            <Label htmlFor="signature-password">
-              Re-enter password{" "}
-              <span className="text-[var(--color-text-invalid)]">*</span>
+            <Label required htmlFor="signature-password">
+              Re-enter password
             </Label>
             <Input
               id="signature-password"

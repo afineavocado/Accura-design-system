@@ -16,6 +16,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ComboboxField } from "@/components/ui/combobox"
 import { DatePicker } from "@/components/ui/date-picker"
@@ -41,22 +42,6 @@ import {
   type TriggerMode,
 } from "../../../mock-data"
 
-function RequiredLabel({
-  htmlFor,
-  children,
-}: {
-  htmlFor: string
-  children: React.ReactNode
-}) {
-  return (
-    <label
-      htmlFor={htmlFor}
-      className="text-sm font-medium text-[var(--color-background-default-foreground)]"
-    >
-      {children} <span className="text-[var(--color-text-invalid)]">*</span>
-    </label>
-  )
-}
 
 type MethodBlock = { key: string; method: string; documents: string[] }
 type Pending =
@@ -146,13 +131,13 @@ export default function EditCoursePage() {
           </CardHeader>
           <CardContent className="gap-[var(--spacing-component-lg)]">
             <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-              <RequiredLabel htmlFor="course-name">Course name</RequiredLabel>
+              <Label required htmlFor="course-name">Course name</Label>
               <Input id="course-name" defaultValue={course.name} />
             </div>
             <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-              <RequiredLabel htmlFor="course-description">
+              <Label required htmlFor="course-description">
                 Description
-              </RequiredLabel>
+              </Label>
               <Textarea
                 id="course-description"
                 rows={3}
@@ -303,7 +288,7 @@ export default function EditCoursePage() {
 
             {trigger === "Specific date" && (
               <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-                <RequiredLabel htmlFor="trigger-date">Trigger date</RequiredLabel>
+                <Label required htmlFor="trigger-date">Trigger date</Label>
                 {/* Same width as the recurring-period select beside it —
                     two forms of one control should not change size. */}
                 <DatePicker
@@ -317,9 +302,9 @@ export default function EditCoursePage() {
 
             {trigger === "Recurring period" && (
               <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-                <RequiredLabel htmlFor="trigger-period">
+                <Label required htmlFor="trigger-period">
                   Repeat every
-                </RequiredLabel>
+                </Label>
                 <Select defaultValue="12">
                   <SelectTrigger id="trigger-period" className="sm:w-[220px]">
                     <SelectValue />

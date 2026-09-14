@@ -11,6 +11,56 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-14 — `Label` implements its required marker
+
+**Added**
+
+- **`Label` gains `required` and `state`**, implementing `label` from `Form-shared.md`. The spec
+  had always defined `label-text` + `label-required` with three states; `label.tsx` was a bare
+  Radix wrapper with neither. Token bindings now match the spec:
+
+  | `label state` | `label-text` | `label-required` |
+  |---|---|---|
+  | Default | `color/background/default/foreground` | `color/status/danger` |
+  | Disabled | `color/text/disabled` | `color/text/disabled` |
+  | Invalid | `color/text/invalid` | `color/text/invalid` |
+
+- `Label.stories.tsx` — 6 stories including all three states beside real fields.
+- `label.meta.json` — the component had **no artifact at all**, being documented inside
+  `Form-shared.md` rather than as a standalone spec. **Artifacts: 37 → 38.**
+
+**Why it existed**
+
+Because the component could not express "required", **every consumer invented it in markup** —
+six identical local `RequiredLabel` helpers across the prototypes, plus one inline version in
+Documents whose asterisk inherited the label colour and **rendered black** while the others were
+red. The spec's own rule — *"never override `label-text` or `label-required` fills directly"* —
+was unenforceable, because there was nothing to override.
+
+This is the same shape as the other drift found today: **a convention that lives only in markup
+gets reinvented, and one copy gets it wrong.** The difference is that this one had a spec all
+along.
+
+**Removed**
+
+- `prototype/accura/required-label.tsx` — a workaround at the wrong layer, extracted earlier the
+  same day and obsolete once the prop existed. 18 call sites across all three modules now use
+  `<Label required>`.
+
+**Fixed**
+
+- The asterisk was **decorative but unlabelled** in all seven hand-rolled copies. It is now
+  `aria-hidden` with an `sr-only` "(required)". Verified present on all 18 required fields.
+- The prototypes had been using `color/text/invalid` for the Default asterisk where the spec says
+  `color/status/danger`. Both resolve to `#ef4444` today, so nothing looked wrong — the kind of
+  divergence that only surfaces when one token moves.
+
+> ⚠️ **Not verified against Figma `150:569`.** The implementation follows `Form-shared.md`, which
+> is a **vendored** spec. Same caveat as Q12: confirm during the Figma ↔ code pass.
+
+Adding the story tripped `drift-check` check 5 — *every story is owned by a meta.json* — which is
+what surfaced the missing artifact. The gate did its job.
+
 ### 2026-09-14 — Documents module, cross-module alignment
 
 **Added**

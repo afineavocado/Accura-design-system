@@ -16,6 +16,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ComboboxField } from "@/components/ui/combobox"
 import { Input } from "@/components/ui/input"
@@ -29,22 +30,6 @@ import {
   type RoleMember,
 } from "../../../mock-data"
 
-function RequiredLabel({
-  htmlFor,
-  children,
-}: {
-  htmlFor: string
-  children: React.ReactNode
-}) {
-  return (
-    <label
-      htmlFor={htmlFor}
-      className="text-sm font-medium text-[var(--color-background-default-foreground)]"
-    >
-      {children} <span className="text-[var(--color-text-invalid)]">*</span>
-    </label>
-  )
-}
 
 /* One sentence per affected group, in the order that matters: what is lost,
    then what is kept. Zero counts are omitted rather than printed as "0". */
@@ -120,14 +105,14 @@ export default function EditTrainingRolePage() {
           </CardHeader>
           <CardContent className="gap-[var(--spacing-component-lg)]">
             <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-              <RequiredLabel htmlFor="role-name">Role name</RequiredLabel>
+              <Label required htmlFor="role-name">Role name</Label>
               <Input id="role-name" defaultValue={role.name} />
             </div>
 
             <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-              <RequiredLabel htmlFor="role-description">
+              <Label required htmlFor="role-description">
                 Description
-              </RequiredLabel>
+              </Label>
               <Textarea
                 id="role-description"
                 rows={3}

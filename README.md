@@ -20,7 +20,7 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 | **`docs/design-system-rules.md`** | The inherited ruleset, vendored from Agentic. **Contains Agentic's values — see its override header.** |
 | `docs/skills/` | 8 process skills — audit, build, token binding, documentation, Storybook, theming, prototype build. |
 | `docs/component-specs/` | 39 spec files — 37 components, plus `_template.md` and `Form-shared.md`. |
-| `docs/machine-readable/` | 37 `meta.json` artifacts, component directory, quick reference, validation scripts. |
+| `docs/machine-readable/` | 38 `meta.json` artifacts, component directory, quick reference, validation scripts. |
 | `docs/tracking/` | Storybook and audit status. ⚠️ Reflects Agentic's status, not Accura's. |
 | `tokens/` | DTCG token JSONs + Style Dictionary build. ⚠️ Agentic's exported values — see `llms.txt`. |
 | **`accura-ui/`** | Component library + Storybook. Same components as `agentic-ui`, Accura tokens. |
@@ -55,7 +55,7 @@ Storybook uses 6007 because Agentic's uses 6006, so both can run side by side.
 
 | | |
 |---|---|
-| **Every component** | Storybook, **:6007** — 36 stories. This is the design system. |
+| **Every component** | Storybook, **:6007** — 37 stories. This is the design system. |
 | **The prototypes** | **:3001** — three modules, one app. `/` redirects to CAPA. |
 
 **All three share one sidebar**, so you can click between them. Add a module to `platformNav`

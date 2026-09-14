@@ -6,6 +6,7 @@ import { notFound, useParams } from "next/navigation"
 import { ChevronLeft } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ComboboxField } from "@/components/ui/combobox"
 import { DatePicker } from "@/components/ui/date-picker"
@@ -19,22 +20,6 @@ import {
   userOptions,
 } from "../../../../mock-data"
 
-function RequiredLabel({
-  htmlFor,
-  children,
-}: {
-  htmlFor: string
-  children: React.ReactNode
-}) {
-  return (
-    <label
-      htmlFor={htmlFor}
-      className="text-sm font-medium text-[var(--color-background-default-foreground)]"
-    >
-      {children} <span className="text-[var(--color-text-invalid)]">*</span>
-    </label>
-  )
-}
 
 export default function CreateAssessmentPage() {
   const params = useParams<{ id: string }>()
@@ -97,9 +82,9 @@ export default function CreateAssessmentPage() {
           </CardHeader>
           <CardContent className="gap-[var(--spacing-component-lg)]">
             <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-              <RequiredLabel htmlFor="assessment-name">
+              <Label required htmlFor="assessment-name">
                 Assessment name
-              </RequiredLabel>
+              </Label>
               <Input
                 id="assessment-name"
                 defaultValue={`${course.name} - Assessment`}
@@ -107,7 +92,7 @@ export default function CreateAssessmentPage() {
             </div>
 
             <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-              <RequiredLabel htmlFor="assessment-due">Due date</RequiredLabel>
+              <Label required htmlFor="assessment-due">Due date</Label>
               <DatePicker
                 id="assessment-due"
                 type="input"

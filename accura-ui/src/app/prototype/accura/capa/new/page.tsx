@@ -7,6 +7,7 @@ import {
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
 import {
   Card,
   CardContent,
@@ -27,13 +28,6 @@ import { CapaHeader } from "./../capa-header"
 import { AppNavItems, AppSidebar } from "../../app-sidebar"
 import { SidebarProvider } from "@/components/ui/sidebar"
 
-function RequiredLabel({ htmlFor, children }: { htmlFor: string; children: React.ReactNode }) {
-  return (
-    <label htmlFor={htmlFor} className="text-sm font-medium text-[var(--color-background-default-foreground)]">
-      {children} <span className="text-[var(--color-text-invalid)]">*</span>
-    </label>
-  )
-}
 
 
 function SelectField({
@@ -57,7 +51,7 @@ function SelectField({
 }) {
   return (
     <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-      <RequiredLabel htmlFor={id}>{label}</RequiredLabel>
+      <Label required htmlFor={id}>{label}</Label>
       <Select defaultValue={defaultValue} value={value} onValueChange={onValueChange} disabled={disabled}>
         <SelectTrigger id={id} aria-label={label}>
           <SelectValue placeholder={placeholder} />
@@ -121,7 +115,7 @@ export default function CreateCapaPage() {
                 <Separator />
                 <CardContent className="grid grid-cols-1 gap-[var(--spacing-component-lg)] md:grid-cols-2">
                   <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-                    <RequiredLabel htmlFor="capa-title">Title</RequiredLabel>
+                    <Label required htmlFor="capa-title">Title</Label>
                     <Input id="capa-title" placeholder="Enter title" />
                   </div>
 
@@ -195,7 +189,7 @@ export default function CreateCapaPage() {
                   />
 
                   <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-                    <RequiredLabel htmlFor="due-date">Due Date</RequiredLabel>
+                    <Label required htmlFor="due-date">Due Date</Label>
                     <DatePicker id="due-date" type="input" placeholder="Select due date" />
                   </div>
                 </CardContent>

@@ -284,7 +284,7 @@ function DetailEditor({
               {draft ? (
                 <>
                   <div className={gap}>
-                    <Label htmlFor="document-name">Document name *</Label>
+                    <Label required htmlFor="document-name">Document name</Label>
                     <Input
                       id="document-name"
                       value={doc.name}
@@ -295,7 +295,7 @@ function DetailEditor({
                   </div>
                   <div className="grid gap-[var(--spacing-component-lg)]">
                     <div className={gap}>
-                      <Label>Document type *</Label>
+                      <Label required>Document type</Label>
                       {isNew ? (
                         <Choice
                           label="Document type"
@@ -327,7 +327,7 @@ function DetailEditor({
                       </p>
                     </div>
                     <div className={gap}>
-                      <Label>Department *</Label>
+                      <Label required>Department</Label>
                       <Choice
                         label="Department"
                         value={doc.department}
@@ -394,7 +394,7 @@ function DetailEditor({
               {draft && (
                 <div className="space-y-[var(--spacing-component-lg)]">
                   <div className={gap}>
-                    <Label>Reviewer *</Label>
+                    <Label required>Reviewer</Label>
                     <Choice
                       label="Reviewer"
                       value={reviewer.name}
@@ -403,7 +403,7 @@ function DetailEditor({
                     />
                   </div>
                   <div className={gap}>
-                    <Label>QA approver *</Label>
+                    <Label required>QA approver</Label>
                     <Choice
                       label="QA approver"
                       value={qa.name}

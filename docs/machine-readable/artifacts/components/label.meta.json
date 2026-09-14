@@ -1,0 +1,88 @@
+{
+  "name": "label",
+  "figmaNodeId": "150:569",
+  "description": "Field label with an optional required marker. Consumed by input-field, select-field and combobox-field; the parent field owns the state.",
+  "category": "forms",
+  "shadcnBase": "label",
+  "componentSets": {
+    "label": {
+      "figmaNodeId": "150:569",
+      "purpose": "Label text plus the required asterisk, in a horizontal auto-layout."
+    }
+  },
+  "variants": {
+    "label state": {
+      "type": "enum",
+      "values": ["Default", "Disabled", "Invalid"],
+      "default": "Default"
+    }
+  },
+  "componentProperties": {
+    "required": {
+      "type": "boolean",
+      "default": false,
+      "description": "Shows label-required (the asterisk). Announced as \"(required)\"; the glyph itself is aria-hidden."
+    }
+  },
+  "tokens": {
+    "gap": "spacing/component/xs",
+    "typography": "text-sm font-medium leading-none",
+    "label state=Default": {
+      "label-text": "color/background/default/foreground",
+      "label-required": "color/status/danger"
+    },
+    "label state=Disabled": {
+      "label-text": "color/text/disabled",
+      "label-required": "color/text/disabled"
+    },
+    "label state=Invalid": {
+      "label-text": "color/text/invalid",
+      "label-required": "color/text/invalid"
+    }
+  },
+  "composition": [
+    "label-text — TEXT",
+    "label-required — TEXT, hidden unless required"
+  ],
+  "accessibility": {
+    "htmlFor": "Always point at the field's id.",
+    "required": "The asterisk is aria-hidden; an sr-only \"(required)\" carries the meaning. Set required or aria-required on the field itself as well — the label does not convey it to the accessibility tree.",
+    "state": "state is presentational. Pair Invalid with aria-invalid on the field, Disabled with the field's disabled attribute."
+  },
+  "constraints": [
+    "The parent field owns label state — never set it by hand on an instance.",
+    "Never recolour label-text or label-required on the instance; change state instead.",
+    "Do not hand-roll an asterisk in markup. Pass required.",
+    "label-required follows the field state in Disabled and Invalid; only in Default does it diverge (status/danger)."
+  ],
+  "bestPractice": [
+    "Required fields should be the exception. If most fields carry an asterisk, mark the optional ones instead.",
+    "Keep label text short — it is read before every field by screen readers."
+  ],
+  "meta": {
+    "sourceMarkdown": "docs/component-specs/Form-shared.md",
+    "storyFile": "src/stories/Label.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": "2026-09-14",
+    "auditRules": "not yet audited R1–R8 against Accura's Figma",
+    "version": "1.0",
+    "openQuestions": [
+      "Figma specified label-required from the start; the code shipped a bare Radix wrapper with no asterisk and no states. Every consumer invented its own marker — six copies in the prototypes, one of which rendered black. Implemented 2026-09-14; not yet verified against Figma 150:569.",
+      "Form-shared.md binds the Default asterisk to color/status/danger. The prototypes had been using color/text/invalid, which resolves to the same #ef4444 today. The spec token is now used; confirm both are intended to stay equal."
+    ]
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/label.tsx",
+    "packageDeps": ["@radix-ui/react-label"],
+    "exports": ["Label", "labelVariants"],
+    "notes": [
+      "state and required are separate: required controls whether the asterisk renders, state controls the colour of both parts.",
+      "Adding an explicit label-text colour is a no-op in light mode — labels already computed to #18181b by inheritance — but it makes the binding explicit and correct in dark mode."
+    ]
+  },
+  "storybook": {
+    "file": "src/stories/Label.stories.tsx",
+    "title": "Forms/Label",
+    "stories": ["Default", "Required", "Disabled", "Invalid", "AllStates", "WithField"]
+  }
+}
