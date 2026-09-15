@@ -11,11 +11,19 @@ Accura is a **re-theme of the Agentic Design System**, not a fork of its rules.
 
 Because the semantic and component tiers **alias** primitives, editing the primitive layer re-themes everything downstream with no semantic edits.
 
-**Figma source:** `[Accura] Agentic Design System`
-Primitives `VariableCollectionId:1:2` (mode: Value) · Semantics `1:129` (Light/Dark) · Components `17:4484` (Light)
-229 primitives · 115 semantics (Light + Dark) · 52 component tokens · 17 text styles — all exported to `tokens/`
+## What this file is for, and what it is not
 
-**Code:** `accura-ui/` — Storybook on **port 6007** (Agentic's runs on 6006, so both can run side by side).
+**It is not where values come from.** `accura-ui/src/app/tokens.css` is what ships; `tokens/*.json`
+is the export, checkable with `node tokens/token-parity.mjs`. This file explains the *decisions* —
+why the brand anchors where it does, what deviates from Agentic and why, and what is still open.
+
+**The ramp tables are verified, not restated by hand.** `drift-check` rule 3 checks every
+`| step | hex |` row against that step's own primitive, so a hex that is real but attached to the
+wrong step now fails. Do not hand-edit a hex here to match something you saw; fix the primitive,
+or say why the doc is right.
+
+Counts, for orientation: 229 primitives · 115 semantics (light + dark) · 52 component tokens ·
+17 text styles. Code lives in `accura-ui/`, Storybook on **port 6007**.
 
 ---
 
