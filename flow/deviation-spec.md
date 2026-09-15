@@ -555,6 +555,7 @@ Two details worth carrying over:
 
 | | Decision |
 |---|---|
+| Overdue | **Not a status.** Rendered as red `Overdue` text beneath the due date — on the field that causes it — never as a badge in the Status column and never as an option in the Status filter. A badge sitting beside the status reads as a seventh state, which is the exact thing brief §6 says it is not. |
 | Cancel on `In Review` | **Build it.** The one place it is honest — a duplicate or out-of-scope report caught at triage genuinely should not exist, and Business Flow §5 Step 2 treats it as a real decision there rather than a fallback. Reason required. |
 | Cancel on `In Approval`, `CAPA Pending`, `Investigation In Progress` | **Do not build.** Not a design statement — scope. A signatory who will not sign does nothing in a happy-path demo, which is accurate. |
 | `Cancelled` as a record state | **Displayable.** One seeded record, a badge, a read-only detail screen. `Cancelled` is already an option in the live Status filter (§8.13), so it will be clicked. Showing a state is cheap; building the transition into it is not. |

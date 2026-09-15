@@ -69,20 +69,13 @@ function DeviationRow({ record }: { record: DeviationRecord }) {
         </p>
       </TableCell>
       <TableCell>
-        <div className="flex flex-wrap items-center gap-[var(--spacing-component-xs)]">
-          <Badge
-            shape="pill"
-            variant={statusVariants[record.status]}
-            className="whitespace-nowrap"
-          >
-            {record.status}
-          </Badge>
-          {overdue && (
-            <Badge shape="pill" variant="error" className="whitespace-nowrap">
-              Overdue
-            </Badge>
-          )}
-        </div>
+        <Badge
+          shape="pill"
+          variant={statusVariants[record.status]}
+          className="whitespace-nowrap"
+        >
+          {record.status}
+        </Badge>
       </TableCell>
       <TableCell>
         <p className="whitespace-nowrap">{record.owner.name}</p>
@@ -92,11 +85,14 @@ function DeviationRow({ record }: { record: DeviationRecord }) {
       </TableCell>
       <TableCell>{record.category}</TableCell>
       <TableCell>{record.severity}</TableCell>
+      {/* Overdue is a flag, not a status (brief §6) — so it is rendered on the
+          field that causes it, not in the Status column, which would read as a
+          seventh state. */}
       <TableCell className="whitespace-nowrap">
         {displayDate(record.dueDate)}
         {overdue && (
-          <span className="block text-xs text-[var(--color-text-invalid)]">
-            Past due
+          <span className="block text-xs font-medium text-[var(--color-text-invalid)]">
+            Overdue
           </span>
         )}
       </TableCell>
