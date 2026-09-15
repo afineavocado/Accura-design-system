@@ -5,7 +5,7 @@ Status: approved scope. What this demo covers and what is deliberately deferred.
 
 > **The component specs that used to live here (§3–§7 — PhaseGateStepper,
 > ElectronicSignatureModal, RecordDetailLayout, shell and listing rules) moved to
-> `docs/skills/accura-prototype-build/accura-prototype-build.md` on 2026-09-14.** They are
+> `docs/skills/accura-prototype-build/accura-design-patterns.md` on 2026-09-14.** They are
 > patterns, and patterns outlive a demo; keeping them in a scope document meant they went stale
 > without anyone noticing. Some were superseded — the skill records which, and why.
 

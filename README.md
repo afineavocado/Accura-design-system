@@ -78,10 +78,14 @@ in `prototype/accura/app-sidebar.tsx`, never in a page.
 | **Training** | `flow/training-module.md` | five tabs built. Trainee screens and the workflow behind Review are not |
 | **Documents** | `accura-ui/src/app/prototype/accura/documents/README.md` | one happy path: Draft → In Review → In Approval → Approved |
 
-**Before extending any prototype, read
-[`docs/skills/accura-prototype-build/accura-prototype-build.md`](docs/skills/accura-prototype-build/accura-prototype-build.md).**
-It records the conventions all three follow — shared shell, clickable rows, `CardTitle`, tables
-versus lists — and two components that are knowingly hand-rolled, with the reason.
+**Before extending any prototype, read both skill files in
+[`docs/skills/accura-prototype-build/`](docs/skills/accura-prototype-build/):
+[`accura-design-patterns.md`](docs/skills/accura-prototype-build/accura-design-patterns.md) for
+what to build, and
+[`accura-prototype-build.md`](docs/skills/accura-prototype-build/accura-prototype-build.md) for
+how to work.** The patterns file records the conventions every module follows — shared shell,
+clickable rows, `CardTitle`, create-screen shape, tables versus lists — and the components that
+are knowingly hand-rolled, with the reason.
 
 > Documents persists to `localStorage` and `IndexedDB`, so it seeds fresh in a new browser and
 > keeps anything you create. Training and CAPA are mock data only, reset on reload.

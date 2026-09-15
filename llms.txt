@@ -32,11 +32,11 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 | Task | Read |
 |---|---|
 | Audit a component | `docs/skills/Component Audit Skill.md` + `docs/tracking/Audit Status.md` |
-| Build a Figma component | `docs/skills/Build component skill.md` |
 | Bind or fix tokens | `docs/skills/Token Binding Skill.md` |
 | Write component docs | `docs/skills/Component Documentation Skill.md` |
 | Any Storybook work | `docs/skills/Storybook Build Process.md` |
-| Build or extend a prototype | `docs/skills/accura-prototype-build/accura-prototype-build.md` |
+| Build or extend a prototype — what to build | `docs/skills/accura-prototype-build/accura-design-patterns.md` |
+| Build or extend a prototype — how to work | `docs/skills/accura-prototype-build/accura-prototype-build.md` |
 | Implement a component in code | `docs/skills/Component implementation process.md` |
 
 ## Component documentation
