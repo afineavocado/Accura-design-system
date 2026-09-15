@@ -13,31 +13,7 @@ module. Viết bằng tiếng Việt vì đây là quy trình cho người, khô
 > **Git không tự đồng bộ.** Không có cơ chế nào đẩy code từ máy người này sang máy người kia.
 > Phải chủ động `pull`. Thứ duy nhất tự động được là *thông báo*, không phải bản thân code.
 
----
-
-## Phần 0 — Cài đặt một lần
-
-**Chủ repo:**
-
-1. Đồng nghiệp tạo tài khoản GitHub miễn phí → gửi **username**
-2. Repo → **Settings** → **Collaborators** → **Add people** → nhập username → gửi lời mời
-3. **Settings** → **General** → mục **Pull Requests** → tick **Automatically delete head branches**
-4. Cân nhắc chuyển sang **private** nếu prototype có dữ liệu thật hoặc nội dung nội bộ Accura.
-   Collaborator không giới hạn và vẫn miễn phí.
-
-**Đồng nghiệp:**
-
-5. Mở email mời → **Accept invitation**
-6. Cài **GitHub Desktop**, đăng nhập tài khoản *của mình*
-7. **File** → **Clone repository** → chọn `Accura-design-system`
-8. Chạy thử: `cd accura-ui && npm install && npm run dev` → mở `localhost:3001`
-
-> ⚠️ **Mỗi người một tài khoản.** Dùng chung một tài khoản thì mọi commit mang cùng một tên —
-> mất hoàn toàn khả năng trả lời "ai sửa cái này, sao lại mất". Với repo mà hai agent cùng sửa
-> thì đó là công cụ chẩn đoán quan trọng nhất. Ngoài ra 2FA sẽ nằm trên điện thoại một người.
-> Tài khoản cá nhân và private repo đều miễn phí — dùng chung không tiết kiệm được gì.
-
----
+--- 
 
 ## Phần 1 — Mỗi sáng, trước khi mở agent
 
