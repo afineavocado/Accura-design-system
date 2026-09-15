@@ -414,6 +414,15 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
     .filter((block) => block.node !== workspace)
     .map((block) => <Fragment key={block.key}>{block.node}</Fragment>)
 
+  const actionBar = closed ? null : (
+    <div className="flex flex-wrap items-center justify-end gap-[var(--spacing-component-sm)]">
+      {record.status === "In Review" && (
+        <Button variant="outline">Cancel as invalid or duplicate</Button>
+      )}
+      <Button>{primaryAction(record)}</Button>
+    </div>
+  )
+
   /* No workspace means the page is a dossier, so two equal columns rather than
      a 35% rail with nothing to sit beside.
 
@@ -518,18 +527,18 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
               {column.map((block) => (
                 <Fragment key={block.key}>{block.node}</Fragment>
               ))}
+              {i === 1 && actionBar}
             </div>
           ))}
         </div>
       )}
 
-      {!closed && (
-        <div className="mt-[var(--spacing-layout-sm)] flex flex-wrap items-center justify-end gap-[var(--spacing-component-sm)]">
-          {record.status === "In Review" && (
-            <Button variant="outline">Cancel as invalid or duplicate</Button>
-          )}
-          <Button>{primaryAction(record)}</Button>
-        </div>
+      {/* In the dossier layout the action belongs to the Signatures block it
+          acts on, so it sits at the foot of that column. Left where it was, it
+          hung 181px below the card because the grid is as tall as its tallest
+          column. */}
+      {workspace && !closed && (
+        <div className="mt-[var(--spacing-layout-sm)]">{actionBar}</div>
       )}
     </>
   )
