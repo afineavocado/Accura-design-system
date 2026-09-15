@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { Item } from "@/components/ui/item"
 import { Label } from "@/components/ui/label"
 import { Stepper } from "@/components/ui/stepper"
 import { Textarea } from "@/components/ui/textarea"
@@ -396,25 +397,32 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
             title="Signatures"
             description="Every signature carries the signer, the time, and what the signature means."
           >
-            <ol className="flex flex-col gap-[var(--spacing-component-lg)]">
+            <ol className="flex flex-col gap-[var(--spacing-component-sm)]">
               {captured.map((signature) => (
                 <li key={signature.role + signature.timestamp}>
-                  <p className="text-sm font-medium text-[var(--color-surface-default-foreground)]">
-                    {signature.role}
-                  </p>
-                  <p className="text-xs text-[var(--color-text-secondary)]">
-                    {display(signature.by)} ·{" "}
-                    {new Date(signature.timestamp).toLocaleString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                      hour: "numeric",
-                      minute: "2-digit",
-                    })}
-                  </p>
-                  <p className="mt-[var(--spacing-component-xs)] text-sm text-[var(--color-text-secondary)]">
-                    {signature.statement}
-                  </p>
+                  <Item
+                    variant="outline"
+                    type="avatar"
+                    avatarFallback={signature.by.initials}
+                    title={signature.role}
+                    description={
+                      <>
+                        <span className="block text-xs">
+                          {display(signature.by)} ·{" "}
+                          {new Date(signature.timestamp).toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                            hour: "numeric",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                        <span className="mt-[var(--spacing-component-xs)] block">
+                          {signature.statement}
+                        </span>
+                      </>
+                    }
+                  />
                 </li>
               ))}
             </ol>
