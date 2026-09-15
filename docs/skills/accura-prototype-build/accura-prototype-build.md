@@ -167,6 +167,57 @@ pages use 20px for the record title; the module name should sit below the record
 
 ---
 
+### Create and edit screens
+
+Not previously written down, which is how Create Deviation drifted from CAPA and Training before
+being pulled back. All three now agree:
+
+```tsx
+<div className="mx-auto flex w-full max-w-5xl flex-col gap-[var(--spacing-layout-sm)]">
+  <div className="flex flex-col gap-[var(--spacing-component-sm)]">
+    <Button asChild variant="link" className="h-auto w-fit p-0 text-sm no-underline hover:no-underline">
+      <Link href={basePath}><ChevronLeft className="size-4" />Back to X</Link>
+    </Button>
+    <h1 className="text-2xl font-semibold text-[var(--color-background-default-foreground)]">
+      Create New X
+    </h1>
+  </div>
+
+  <Card>
+    <CardHeader><CardTitle className="text-xl">Section</CardTitle></CardHeader>
+    <CardContent className="gap-[var(--spacing-component-lg)]">
+      <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+        <Label required htmlFor="x">Label</Label>
+        <Input id="x" placeholder="…" />
+      </div>
+    </CardContent>
+  </Card>
+
+  <div className="flex flex-wrap items-center justify-end gap-[var(--spacing-component-sm)] pb-[var(--spacing-layout-md)]">
+    <Button variant="ghost">Cancel</Button>
+    <Button variant="outline">Save as Draft</Button>
+    <Button>Submit</Button>
+  </div>
+</div>
+```
+
+| Concern | Rule |
+|---|---|
+| Width | `max-w-5xl`, centred. A form at full page width has unreadable line lengths |
+| Rhythm | `spacing/layout/sm` between the title group, each card, and the footer |
+| Title | `text-2xl` in page content — **not** the header bar, which carries the module name. The only screens with two headings |
+| Back link | `Button variant="link"` stripped to `h-auto w-fit p-0`, grouped with the title at `spacing/component/sm` |
+| Card title | `CardTitle className="text-xl"`. Do not nest your own heading inside `CardTitle` |
+| Field | `flex flex-col gap-[var(--spacing-component-xs)]` — label and control are one unit at 4px, not 8px |
+| Footer | Right-aligned, outside the card, `Cancel` ghost → `Save as Draft` outline → primary |
+| Draft vs submit | `Save as Draft` skips validation; the primary runs it. Two buttons because they are two contracts |
+
+⚠️ **One unresolved difference.** CAPA puts a `<Separator />` between `CardHeader` and
+`CardContent`; Training and Deviation do not. `RecordSection` does not either, so the majority is
+no separator — but CAPA has not been changed.
+
+---
+
 ### Tables and lists
 
 **Default to a table.** Cards earn their place only when the object has an image, a status

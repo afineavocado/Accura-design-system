@@ -1,6 +1,7 @@
 "use client"
 
 import { Fragment, useState } from "react"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import {
   Ban,
@@ -8,7 +9,6 @@ import {
   ClipboardCheck,
   Clock3,
   Plus,
-  Search,
   X,
 } from "lucide-react"
 
@@ -18,6 +18,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { ComboboxField } from "@/components/ui/combobox"
 import { Input } from "@/components/ui/input"
 import { Item } from "@/components/ui/item"
 import { Label } from "@/components/ui/label"
@@ -160,10 +161,18 @@ function ImpactedProductList({
   )
 }
 
-/* Associate a CAPA — a filtered list rather than a free-text box, so the value
-   is always a real record. Creating a new CAPA is the last result when nothing
-   matches, which is how Jira, Linear and GitHub handle the same job, and it
-   removes the separate button that had nowhere good to sit. */
+/* Associate a CAPA.
+ *
+ * ComboboxField type="search", not a hand-rolled input plus a result list.
+ * The system already ships search-and-filter here; the first version of this
+ * block rebuilt it, which is how the focus/blur race got invented in the
+ * first place.
+ *
+ * Creating a new CAPA stays the last option rather than a separate button —
+ * the pattern Jira, Linear and GitHub use — carried as a sentinel value the
+ * handler routes on. */
+const CREATE_NEW = "__create__"
+
 function CapaSearch({
   linked,
   onAdd,
@@ -171,85 +180,37 @@ function CapaSearch({
   linked: CapaLink[]
   onAdd: (capa: CapaLink) => void
 }) {
-  const [query, setQuery] = useState("")
-  const [open, setOpen] = useState(false)
-
+  const router = useRouter()
   const linkedIds = new Set(linked.map((capa) => capa.id))
-  const matches = capaCatalogue.filter(
-    (capa) =>
-      !linkedIds.has(capa.id) &&
-      (capa.id + " " + capa.title).toLowerCase().includes(query.toLowerCase())
-  )
+
+  const options = [
+    ...capaCatalogue
+      .filter((capa) => !linkedIds.has(capa.id))
+      .map((capa) => ({ value: capa.id, label: `${capa.id} · ${capa.title}` })),
+    { value: CREATE_NEW, label: "Create new CAPA" },
+  ]
 
   return (
-    /* Close on focus leaving the whole control, not on the input blurring.
-       A blur timeout races the click: the list unmounts between mousedown and
-       click, and the option is gone before the browser can activate it. */
-    <div
-      className="space-y-[var(--spacing-component-sm)]"
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node))
-          setOpen(false)
+    <ComboboxField
+      id="capa-search"
+      label="Associate a CAPA"
+      type="search"
+      options={options}
+      value=""
+      placeholder="Search CAPAs to add..."
+      description="Selecting a CAPA associates it immediately."
+      onValueChange={(next) => {
+        if (next === CREATE_NEW) {
+          router.push("/prototype/accura/capa/new")
+          return
+        }
+        const capa = capaCatalogue.find((entry) => entry.id === next)
+        if (capa) onAdd(capa)
       }}
-    >
-      <Label htmlFor="capa-search">Associate a CAPA</Label>
-      <div className="relative">
-        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
-        <Input
-          id="capa-search"
-          value={query}
-          onChange={(event) => {
-            setQuery(event.target.value)
-            setOpen(true)
-          }}
-          onFocus={() => setOpen(true)}
-          placeholder="Search CAPAs to add..."
-          className="pl-9"
-          role="combobox"
-          aria-expanded={open}
-          aria-controls="capa-results"
-        />
-      </div>
-      {open && (
-        <ul
-          id="capa-results"
-          className="overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-surface-overlay)]"
-        >
-          {matches.slice(0, 4).map((capa) => (
-            <li key={capa.id}>
-              <button
-                type="button"
-                onClick={() => {
-                  onAdd(capa)
-                  setQuery("")
-                  setOpen(false)
-                }}
-                className="flex w-full flex-wrap items-center gap-[var(--spacing-component-sm)] border-b border-[var(--color-border-default)] p-[var(--spacing-component-md)] text-left text-sm hover:bg-[var(--color-background-accent)]"
-              >
-                <span className="text-[var(--color-brand-primary)]">{capa.id}</span>
-                <span className="min-w-0 flex-1">{capa.title}</span>
-              </button>
-            </li>
-          ))}
-          <li>
-            {/* Straight to the CAPA module's create screen, not its listing —
-                the user has already decided to create one. */}
-            <Link
-              href="/prototype/accura/capa/new"
-              className="flex items-center gap-[var(--spacing-component-sm)] p-[var(--spacing-component-md)] text-sm font-medium text-[var(--color-brand-primary)] hover:bg-[var(--color-background-accent)]"
-            >
-              <Plus className="size-4" />
-              {query ? `Create new CAPA “${query}”` : "Create new CAPA"}
-            </Link>
-          </li>
-        </ul>
-      )}
-      <p className="text-xs text-[var(--color-text-secondary)]">
-        Selecting a CAPA associates it immediately.
-      </p>
-    </div>
+    />
   )
 }
+
 
 export function DeviationDetail({ record }: { record: DeviationRecord }) {
   const blocks = visibleBlocks(record)

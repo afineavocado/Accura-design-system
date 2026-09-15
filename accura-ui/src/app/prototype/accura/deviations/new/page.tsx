@@ -57,30 +57,31 @@ export default function CreateDeviationPage() {
   const [productImpacted, setProductImpacted] = useState("No")
 
   return (
-    <>
-      <Button
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-[var(--spacing-layout-sm)]">
+      {/* Back link and title as one group, then cards, then the footer —
+          the shape CAPA and Training create screens already use. */}
+      <div className="flex flex-col gap-[var(--spacing-component-sm)]">
+        <Button
         asChild
         variant="link"
         className="h-auto w-fit p-0 text-sm no-underline hover:no-underline"
       >
-        <Link href={basePath}>
-          <ChevronLeft className="size-4" />
-          Back to Deviations
-        </Link>
-      </Button>
-
-      <h1 className="mb-[var(--spacing-layout-sm)] mt-[var(--spacing-component-md)] text-2xl font-semibold text-[var(--color-background-default-foreground)]">
-        Create New Deviation
-      </h1>
+          <Link href={basePath}>
+            <ChevronLeft className="size-4" />
+            Back to Deviations
+          </Link>
+        </Button>
+        <h1 className="text-2xl font-semibold text-[var(--color-background-default-foreground)]">
+          Create New Deviation
+        </h1>
+      </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>
-            <h2 className="font-sans">Incident Details</h2>
-          </CardTitle>
+          <CardTitle className="text-xl">Incident Details</CardTitle>
         </CardHeader>
         <CardContent className="space-y-[var(--spacing-component-lg)]">
-          <div className="space-y-[var(--spacing-component-sm)]">
+          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
             <Label required htmlFor="title">
               Title / short description
             </Label>
@@ -88,7 +89,7 @@ export default function CreateDeviationPage() {
           </div>
 
           <div className="grid gap-[var(--spacing-component-lg)] md:grid-cols-2">
-            <div className="space-y-[var(--spacing-component-sm)]">
+            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
               <Label required htmlFor="department">
                 Department
               </Label>
@@ -105,7 +106,7 @@ export default function CreateDeviationPage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-[var(--spacing-component-sm)]">
+            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
               <Label required htmlFor="owner">
                 Deviation owner
               </Label>
@@ -125,7 +126,7 @@ export default function CreateDeviationPage() {
           />
 
           <div className="grid gap-[var(--spacing-component-lg)] md:grid-cols-2">
-            <div className="space-y-[var(--spacing-component-sm)]">
+            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
               <Label required id="classification-label">
                 Classification
               </Label>
@@ -137,7 +138,7 @@ export default function CreateDeviationPage() {
                 onValueChange={setClassification}
               />
             </div>
-            <div className="space-y-[var(--spacing-component-sm)]">
+            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
               <Label required id="category-label">
                 Category
               </Label>
@@ -152,7 +153,7 @@ export default function CreateDeviationPage() {
           </div>
 
           <div className="grid gap-[var(--spacing-component-lg)] md:grid-cols-2">
-            <div className="space-y-[var(--spacing-component-sm)]">
+            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
               <Label required id="severity-label">
                 Severity
               </Label>
@@ -164,7 +165,7 @@ export default function CreateDeviationPage() {
                 onValueChange={setSeverity}
               />
             </div>
-            <div className="space-y-[var(--spacing-component-sm)]">
+            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
               <Label required htmlFor="incident-type">
                 Incident type
               </Label>
@@ -183,7 +184,7 @@ export default function CreateDeviationPage() {
             </div>
           </div>
 
-          <div className="space-y-[var(--spacing-component-sm)]">
+          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
             <Label id="product-impacted-label">Product impacted?</Label>
             <ToggleGroup
               label="Product impacted"
@@ -194,7 +195,7 @@ export default function CreateDeviationPage() {
             />
           </div>
 
-          <div className="space-y-[var(--spacing-component-sm)]">
+          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
             <Label required htmlFor="details">
               Incident details
             </Label>
@@ -205,7 +206,7 @@ export default function CreateDeviationPage() {
             />
           </div>
 
-          <div className="space-y-[var(--spacing-component-sm)]">
+          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
             <Label>Attachments</Label>
             <div>
               <Button variant="outline" size="sm">
@@ -217,13 +218,13 @@ export default function CreateDeviationPage() {
         </CardContent>
       </Card>
 
-      <div className="mt-[var(--spacing-layout-sm)] flex flex-wrap items-center justify-end gap-[var(--spacing-component-sm)]">
+      <div className="flex flex-wrap items-center justify-end gap-[var(--spacing-component-sm)] pb-[var(--spacing-layout-md)]">
         <Button variant="ghost" asChild>
           <Link href={basePath}>Cancel</Link>
         </Button>
         <Button variant="outline">Save as Draft</Button>
         <Button>Submit for Review</Button>
       </div>
-    </>
+    </div>
   )
 }
