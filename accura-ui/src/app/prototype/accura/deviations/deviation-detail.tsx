@@ -2,7 +2,7 @@
 
 import { Fragment, useState } from "react"
 import Link from "next/link"
-import { Ban, ChevronLeft, Clock3, Plus, X } from "lucide-react"
+import { Ban, ChevronLeft, ClipboardCheck, Clock3, Plus, X } from "lucide-react"
 
 import { RecordAuditDrawer } from "@/components/record-audit-drawer"
 import { RecordSection } from "@/components/record-workflow"
@@ -356,41 +356,54 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
     >
       <div className="space-y-[var(--spacing-component-lg)]">
         {record.capaRef && (
-          <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-md)] rounded-[var(--radius-md)] bg-[var(--color-background-muted)] p-[var(--spacing-component-md)]">
-            <div className="min-w-0">
-              <Link
-                href="/prototype/accura/capa"
-                className="text-sm font-medium text-[var(--color-brand-primary)] hover:underline"
-              >
-                {record.capaRef.id}
-              </Link>
-              <p className="text-sm">{record.capaRef.title}</p>
-              <p className="text-xs text-[var(--color-text-secondary)]">Associated</p>
-            </div>
-            <div className="flex shrink-0 items-center gap-[var(--spacing-component-sm)]">
-              <Badge
-                shape="pill"
-                variant={record.capaRef.status === "Completed" ? "success" : "warning"}
-                className="whitespace-nowrap"
-              >
-                {record.capaRef.status}
-              </Badge>
-              {capaEditable && record.capaRef.status !== "Completed" && (
-                <Button variant="ghost" size="sm">
-                  Mark completed
-                </Button>
-              )}
-              {capaEditable && (
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label={`Remove ${record.capaRef.id}`}
+          /* Item rather than a hand-built row: the border, padding, gap and
+             muted-foreground treatment come from the system. type="icon" also
+             top-aligns, so the actions line up with the title instead of
+             floating against the middle of a three-line block. */
+          <Item
+            variant="outline"
+            type="icon"
+            icon={<ClipboardCheck className="size-4" />}
+            title={
+              <span className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
+                {record.capaRef.title}
+                {/* Neutral, not warning: In progress is the expected state of
+                    a CAPA that was just linked, not a caution. */}
+                <Badge shape="pill" variant="outline" className="whitespace-nowrap">
+                  {record.capaRef.status}
+                </Badge>
+              </span>
+            }
+            description={
+              <span>
+                <Link
+                  href="/prototype/accura/capa"
+                  className="text-[var(--color-brand-primary)] hover:underline"
                 >
-                  <X className="size-4" />
-                </Button>
-              )}
-            </div>
-          </div>
+                  {record.capaRef.id}
+                </Link>
+                {" · Associated"}
+              </span>
+            }
+            action={
+              capaEditable ? (
+                <span className="flex items-center gap-[var(--spacing-component-sm)]">
+                  {record.capaRef.status !== "Completed" && (
+                    <Button variant="outline" size="sm">
+                      Mark completed
+                    </Button>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label={`Remove ${record.capaRef.id}`}
+                  >
+                    <X className="size-4" />
+                  </Button>
+                </span>
+              ) : undefined
+            }
+          />
         )}
         {capaEditable && (
           <div className="space-y-[var(--spacing-component-sm)]">
