@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Combobox } from "@base-ui/react/combobox";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { ChevronDown, Search, X } from "lucide-react";
 
@@ -21,6 +22,8 @@ export interface ComboboxFieldProps {
   type?: "basic" | "search" | "tag-input";
   state?: "default" | "open" | "filled" | "filled-chips" | "invalid" | "disabled";
   multiple?: boolean;
+  /** Renders label-required — the asterisk. */
+  required?: boolean;
   defaultValue?: string | string[];
   value?: string | string[];
   onValueChange?: (value: string | string[] | null) => void;
@@ -124,26 +127,26 @@ function FieldLabel({
   htmlFor,
   invalid,
   disabled,
+  required,
   children,
 }: {
   htmlFor: string;
   invalid: boolean;
   disabled: boolean;
+  required?: boolean;
   children: React.ReactNode;
 }) {
+  /* The Label component owns label-text and label-required and their per-state
+     tokens (Form-shared.md). This used to be a hand-rolled <label> with its own
+     copy of the colours and no way to mark a field required. */
   return (
-    <label
+    <Label
       htmlFor={htmlFor}
-      className={cn(
-        "text-sm font-medium",
-        invalid
-          ? "text-[var(--color-text-invalid)]"
-          : "text-[var(--color-background-default-foreground)]",
-        disabled && "text-[var(--color-text-disabled)]"
-      )}
+      required={required}
+      state={invalid ? "invalid" : disabled ? "disabled" : "default"}
     >
       {children}
-    </label>
+    </Label>
   );
 }
 
@@ -186,6 +189,7 @@ interface TagInputFieldProps {
   options?: ComboboxOption[];
   invalid: boolean;
   disabled: boolean;
+  required?: boolean;
   className?: string;
 }
 
@@ -197,6 +201,7 @@ function TagInputField({
   options,
   invalid,
   disabled,
+  required,
   className,
 }: TagInputFieldProps) {
   const [tags, setTags] = React.useState<string[]>([]);
@@ -261,7 +266,7 @@ function TagInputField({
 
   return (
     <div className={cn("flex flex-col gap-[var(--spacing-component-sm)]", className)} ref={containerRef}>
-      <FieldLabel htmlFor={id} invalid={invalid} disabled={disabled}>
+      <FieldLabel htmlFor={id} invalid={invalid} disabled={disabled} required={required}>
         {label}
       </FieldLabel>
 
@@ -392,6 +397,7 @@ export function ComboboxField({
   type = "basic",
   state = "default",
   multiple = false,
+  required,
   defaultValue,
   value,
   onValueChange,
@@ -419,6 +425,7 @@ export function ComboboxField({
         options={options}
         invalid={invalid}
         disabled={disabled}
+        required={required}
         className={className}
       />
     );
@@ -443,7 +450,7 @@ export function ComboboxField({
 
     return (
       <div className={cn("flex flex-col gap-[var(--spacing-component-sm)]", className)}>
-        <FieldLabel htmlFor={id} invalid={invalid} disabled={disabled}>
+        <FieldLabel htmlFor={id} invalid={invalid} disabled={disabled} required={required}>
           {label}
         </FieldLabel>
 
@@ -529,7 +536,7 @@ export function ComboboxField({
   // ── Single select ────────────────────────────────────────────────────────────
   return (
     <div className={cn("flex flex-col gap-[var(--spacing-component-sm)]", className)}>
-      <FieldLabel htmlFor={id} invalid={invalid} disabled={disabled}>
+      <FieldLabel htmlFor={id} invalid={invalid} disabled={disabled} required={required}>
         {label}
       </FieldLabel>
 

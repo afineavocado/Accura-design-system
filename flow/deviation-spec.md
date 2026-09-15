@@ -106,6 +106,7 @@ after the label.
 | Department | select, half width | ✱ | placeholder `Select department` |
 | Deviation owner | text input, half width | ✱ | pre-filled `amit@accura.one` |
 | Reviewers | search input, full width | — | placeholder `Search reviewers to add...`; helper text below: *Add zero or more reviewers. Selecting a name adds it immediately.* |
+| QA reviewer | search input, full width | ✱ | placeholder `Search QA personnel...`; helper: *The QA reviewer signs the final approval alongside the deviation owner.* **Not present in the first capture of this screen, only the third.** Separate from Reviewers, and required |
 | Classification | pill group | ✱ | `Planned` · `Unplanned` — none selected |
 | Category | pill group | ✱ | `Major` · `Minor` · `Critical` — none selected |
 | Severity | pill group | ✱ | `High` · `Medium` · `Low` — none selected |
@@ -458,6 +459,14 @@ violated, or this is a cross-module write the briefs do not describe.
 **25. The primary action is `Done` at every open state,** not a state-specific verb. The briefs
 specify `Approve & sign — advance to investigation` at `In Review` (§13.9) — so either the label
 changed, or it differs per state and `Done` covers the middle three.
+
+**27. `Classification` options are ordered `Unplanned`, `Planned`** on screen; brief §13.2 lists
+`Planned`, `Unplanned`. Unplanned first is the sensible default — most deviations are unplanned —
+but the brief is the vocabulary source, so the order is left as the brief has it and logged here.
+
+**28. `QA reviewer` was absent from the first capture of Create** and present in the third. Either
+the screen changed between captures or the field was cut off. It is required, so it is not a
+detail: a prototype built from the first capture alone would omit a mandatory field.
 
 **26. Three investigation fields are required** — `Risk analysis`, `Impact analysis`,
 `Root cause analysis` all carry the red asterisk. Neither brief marks any of them required.

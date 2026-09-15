@@ -50,6 +50,11 @@ const reviewerOptions = Object.values(people).map((person) => ({
   label: display(person),
 }))
 
+/* QA only — this is the final-approval signature, not a general reviewer. */
+const qaReviewerOptions = Object.values(people)
+  .filter((person) => person.role.startsWith("QA"))
+  .map((person) => ({ value: person.name, label: display(person) }))
+
 function Choice({
   id,
   label,
@@ -177,6 +182,19 @@ export default function CreateDeviationPage() {
             options={reviewerOptions}
             placeholder="Search reviewers to add..."
             description="Add zero or more reviewers. Selecting a name adds it immediately."
+          />
+
+          {/* Missed on the first build — it is not in the earlier capture of
+              this screen, only in the later one. Required, and separate from
+              Reviewers: this person signs the final approval. */}
+          <ComboboxField
+            id="qa-reviewer"
+            label="QA reviewer"
+            type="search"
+            required
+            options={qaReviewerOptions}
+            placeholder="Search QA personnel..."
+            description="The QA reviewer signs the final approval alongside the deviation owner."
           />
 
           <Choice
