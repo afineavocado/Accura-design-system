@@ -2,7 +2,15 @@
 
 import { Fragment, useState } from "react"
 import Link from "next/link"
-import { Ban, ChevronLeft, ClipboardCheck, Clock3, Plus, X } from "lucide-react"
+import {
+  Ban,
+  ChevronLeft,
+  ClipboardCheck,
+  Clock3,
+  Plus,
+  Search,
+  X,
+} from "lucide-react"
 
 import { RecordAuditDrawer } from "@/components/record-audit-drawer"
 import { RecordSection } from "@/components/record-workflow"
@@ -19,6 +27,7 @@ import { Textarea } from "@/components/ui/textarea"
 import {
   auditEvents,
   basePath,
+  capaCatalogue,
   display,
   displayDate,
   displayId,
@@ -28,6 +37,7 @@ import {
   statusVariants,
   stepIndex,
   visibleBlocks,
+  type CapaLink,
   type DeviationRecord,
   type ImpactedProduct,
 } from "./mock-data"
@@ -150,6 +160,88 @@ function ImpactedProductList({
   )
 }
 
+/* Associate a CAPA — a filtered list rather than a free-text box, so the value
+   is always a real record. Creating a new CAPA is the last result when nothing
+   matches, which is how Jira, Linear and GitHub handle the same job, and it
+   removes the separate button that had nowhere good to sit. */
+function CapaSearch({
+  linked,
+  onAdd,
+}: {
+  linked: CapaLink[]
+  onAdd: (capa: CapaLink) => void
+}) {
+  const [query, setQuery] = useState("")
+  const [open, setOpen] = useState(false)
+
+  const linkedIds = new Set(linked.map((capa) => capa.id))
+  const matches = capaCatalogue.filter(
+    (capa) =>
+      !linkedIds.has(capa.id) &&
+      (capa.id + " " + capa.title).toLowerCase().includes(query.toLowerCase())
+  )
+
+  return (
+    <div className="space-y-[var(--spacing-component-sm)]">
+      <Label htmlFor="capa-search">Associate a CAPA</Label>
+      <div className="relative">
+        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
+        <Input
+          id="capa-search"
+          value={query}
+          onChange={(event) => {
+            setQuery(event.target.value)
+            setOpen(true)
+          }}
+          onFocus={() => setOpen(true)}
+          onBlur={() => window.setTimeout(() => setOpen(false), 150)}
+          placeholder="Search CAPAs to add..."
+          className="pl-9"
+          role="combobox"
+          aria-expanded={open}
+          aria-controls="capa-results"
+        />
+      </div>
+      {open && (
+        <ul
+          id="capa-results"
+          className="overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-surface-overlay)]"
+        >
+          {matches.slice(0, 4).map((capa) => (
+            <li key={capa.id}>
+              <button
+                type="button"
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => {
+                  onAdd(capa)
+                  setQuery("")
+                  setOpen(false)
+                }}
+                className="flex w-full flex-wrap items-center gap-[var(--spacing-component-sm)] border-b border-[var(--color-border-default)] p-[var(--spacing-component-md)] text-left text-sm hover:bg-[var(--color-background-accent)]"
+              >
+                <span className="text-[var(--color-brand-primary)]">{capa.id}</span>
+                <span className="min-w-0 flex-1">{capa.title}</span>
+              </button>
+            </li>
+          ))}
+          <li>
+            <Link
+              href="/prototype/accura/capa"
+              className="flex items-center gap-[var(--spacing-component-sm)] p-[var(--spacing-component-md)] text-sm font-medium text-[var(--color-brand-primary)] hover:bg-[var(--color-background-accent)]"
+            >
+              <Plus className="size-4" />
+              {query ? `Create new CAPA “${query}”` : "Create new CAPA"}
+            </Link>
+          </li>
+        </ul>
+      )}
+      <p className="text-xs text-[var(--color-text-secondary)]">
+        Selecting a CAPA associates it immediately.
+      </p>
+    </div>
+  )
+}
+
 export function DeviationDetail({ record }: { record: DeviationRecord }) {
   const blocks = visibleBlocks(record)
   const { captured, pending } = signatures(record)
@@ -160,6 +252,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
     record.immediateAction ?? ""
   )
   const [products, setProducts] = useState(record.impactedProducts)
+  const [capaLinks, setCapaLinks] = useState<CapaLink[]>(record.capaRefs ?? [])
 
   const editingReview = blocks.editable === "In Review"
   const editingInvestigation = blocks.editable === "Investigation In Progress"
@@ -349,54 +442,77 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
       defaultOpen={!hasWorkspace}
       title="Associated CAPAs"
       description={
-        record.capaRef
+        capaLinks.length
           ? undefined
           : "No CAPAs associated yet. Search and select a CAPA (or create a new one) to move this deviation to CAPA Pending."
       }
     >
-      <div className="space-y-[var(--spacing-component-lg)]">
-        {record.capaRef && (
-          /* Item rather than a hand-built row: the border, padding, gap and
-             muted-foreground treatment come from the system. type="icon" also
-             top-aligns, so the actions line up with the title instead of
-             floating against the middle of a three-line block. */
+      <div className="space-y-[var(--spacing-component-md)]">
+        {/* The search leads: at Investigation In Progress, linking a CAPA IS
+            the transition, so it is the block's work rather than a secondary
+            action tucked under the list. Creating a new CAPA is the last
+            result rather than a separate button. */}
+        {capaEditable && (
+          <CapaSearch
+            linked={capaLinks}
+            onAdd={(capa) => setCapaLinks((current) => [...current, capa])}
+          />
+        )}
+
+        {capaLinks.map((capa) => (
           <Item
+            key={capa.id}
             variant="outline"
             type="icon"
             icon={<ClipboardCheck className="size-4" />}
-            title={
-              <span className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
-                {record.capaRef.title}
-                {/* Neutral, not warning: In progress is the expected state of
-                    a CAPA that was just linked, not a caution. */}
-                <Badge shape="pill" variant="outline" className="whitespace-nowrap">
-                  {record.capaRef.status}
-                </Badge>
-              </span>
-            }
+            title={capa.title}
             description={
-              <span>
+              <span className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
                 <Link
                   href="/prototype/accura/capa"
                   className="text-[var(--color-brand-primary)] hover:underline"
                 >
-                  {record.capaRef.id}
+                  {capa.id}
                 </Link>
-                {" · Associated"}
+                <span>· Associated</span>
+                <Badge
+                  shape="pill"
+                  variant={capa.status === "Completed" ? "success" : "warning"}
+                  className="whitespace-nowrap"
+                >
+                  {capa.status}
+                </Badge>
               </span>
             }
             action={
               capaEditable ? (
                 <span className="flex items-center gap-[var(--spacing-component-sm)]">
-                  {record.capaRef.status !== "Completed" && (
-                    <Button variant="outline" size="sm">
+                  {capa.status !== "Completed" && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        setCapaLinks((current) =>
+                          current.map((entry) =>
+                            entry.id === capa.id
+                              ? { ...entry, status: "Completed" }
+                              : entry
+                          )
+                        )
+                      }
+                    >
                       Mark completed
                     </Button>
                   )}
                   <Button
                     variant="ghost"
                     size="icon-sm"
-                    aria-label={`Remove ${record.capaRef.id}`}
+                    aria-label={`Remove ${capa.id}`}
+                    onClick={() =>
+                      setCapaLinks((current) =>
+                        current.filter((entry) => entry.id !== capa.id)
+                      )
+                    }
                   >
                     <X className="size-4" />
                   </Button>
@@ -404,24 +520,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
               ) : undefined
             }
           />
-        )}
-        {capaEditable && (
-          <div className="space-y-[var(--spacing-component-sm)]">
-            <Label htmlFor="capa-search">Associate a CAPA</Label>
-            <Input id="capa-search" placeholder="Search CAPAs to add..." />
-            <p className="text-xs text-[var(--color-text-secondary)]">
-              Selecting a CAPA associates it immediately.
-            </p>
-            {/* Outline, not ghost: this leaves the module and creates a
-                record. Ghost is for actions that sit inside a row. */}
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/prototype/accura/capa">
-                <Plus className="size-4" />
-                Create new CAPA
-              </Link>
-            </Button>
-          </div>
-        )}
+        ))}
       </div>
     </RecordSection>
   )

@@ -110,6 +110,58 @@ export function display(person: Person) {
 
 // ─── Record shape ───────────────────────────────────────────────────────────
 
+export type CapaStatus = "In progress" | "Completed"
+
+export type CapaLink = {
+  id: string
+  title: string
+  status: CapaStatus
+}
+
+/* Searchable CAPA list for the Associate a CAPA combobox.
+ *
+ * ⚠️ Seeded here, in the deviation module's own mock data, and NOT reconciled
+ * with the CAPA prototype: deviations reference `ACME/CAPA/2026/000019` while
+ * accura/capa/mock-data.ts uses `CAPA-0003` (spec §10.12). Linking across the
+ * two modules needs one ID format first. */
+export const capaCatalogue: CapaLink[] = [
+  {
+    id: "ACME/CAPA/2026/000017",
+    title: "Re-label sampling ports across vessel fleet",
+    status: "Completed",
+  },
+  {
+    id: "ACME/CAPA/2026/000019",
+    title: "Goods-in check for supplier CoA completeness",
+    status: "In progress",
+  },
+  {
+    id: "ACME/CAPA/2026/000021",
+    title: "Goods-in sampling frequency review",
+    status: "In progress",
+  },
+  {
+    id: "ACME/CAPA/2026/000024",
+    title: "Goods-in training refresh for warehouse operators",
+    status: "In progress",
+  },
+  {
+    id: "ACME/CAPA/2026/000016",
+    title: "Revise maintenance window estimates",
+    status: "Completed",
+  },
+  {
+    id: "ACME/CAPA/2026/000012",
+    title: "Label waste recording at line clearance",
+    status: "Completed",
+  },
+  {
+    id: "ACME/CAPA/2026/000028",
+    title: "Autoclave door-seal preventive maintenance",
+    status: "In progress",
+  },
+]
+
 export type ImpactedProduct = {
   product: string
   batch: string
@@ -148,7 +200,8 @@ export type DeviationRecord = {
   riskAnalysis?: string
   rootCauseAnalysis?: string
   impactAnalysis?: string
-  capaRef?: { id: string; title: string; status: "In progress" | "Completed" }
+  /** More than one CAPA can be linked; the block appends. */
+  capaRefs?: CapaLink[]
   /** Set when the record was cancelled; reason is required at that point.
    *  `from` is the state it was cancelled out of — the stepper shows that
    *  step, because Cancelled itself has no position (spec §9). */
@@ -307,11 +360,13 @@ export const seeds: DeviationRecord[] = [
       "Supplier template updated without notification; missing fields not caught at goods-in.",
     impactAnalysis: "No product released. One lot on hold.",
     qaReviewer: people.maria,
-    capaRef: {
-      id: "ACME/CAPA/2026/000019",
-      title: "Goods-in check for supplier CoA completeness",
-      status: "In progress",
-    },
+    capaRefs: [
+      {
+        id: "ACME/CAPA/2026/000019",
+        title: "Goods-in check for supplier CoA completeness",
+        status: "In progress",
+      },
+    ],
   },
   {
     id: "ACME/DEV/2026/000006",
@@ -337,11 +392,13 @@ export const seeds: DeviationRecord[] = [
     riskAnalysis: "Low. The re-swab fell within the same clean hold window.",
     rootCauseAnalysis: "Port labelling on the vessel had faded.",
     impactAnalysis: "No impact to released product.",
-    capaRef: {
-      id: "ACME/CAPA/2026/000017",
-      title: "Re-label sampling ports across vessel fleet",
-      status: "Completed",
-    },
+    capaRefs: [
+      {
+        id: "ACME/CAPA/2026/000017",
+        title: "Re-label sampling ports across vessel fleet",
+        status: "Completed",
+      },
+    ],
   },
   {
     id: "ACME/DEV/2026/000007",
@@ -366,11 +423,13 @@ export const seeds: DeviationRecord[] = [
     riskAnalysis: "None. There was no product exposure.",
     rootCauseAnalysis: "Service scope underestimated at planning.",
     impactAnalysis: "Schedule only.",
-    capaRef: {
-      id: "ACME/CAPA/2026/000016",
-      title: "Revise maintenance window estimates",
-      status: "Completed",
-    },
+    capaRefs: [
+      {
+        id: "ACME/CAPA/2026/000016",
+        title: "Revise maintenance window estimates",
+        status: "Completed",
+      },
+    ],
   },
   {
     id: "ACME/DEV/2026/000008",
@@ -397,11 +456,13 @@ export const seeds: DeviationRecord[] = [
     riskAnalysis: "High, because of the potential for mislabelling.",
     rootCauseAnalysis: "Damaged labels discarded without recording.",
     impactAnalysis: "All labels accounted for after review of waste records.",
-    capaRef: {
-      id: "ACME/CAPA/2026/000012",
-      title: "Label waste recording at line clearance",
-      status: "Completed",
-    },
+    capaRefs: [
+      {
+        id: "ACME/CAPA/2026/000012",
+        title: "Label waste recording at line clearance",
+        status: "Completed",
+      },
+    ],
   },
   {
     id: "ACME/DEV/2026/000009",
