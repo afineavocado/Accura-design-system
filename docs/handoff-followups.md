@@ -16,8 +16,9 @@ longer match Training and CAPA. Everything below is known, deliberate and not ye
 > `<h1 class="text-lg font-semibold …">` in the white header bar, and Create sits on the search
 > row. **Toolbar copy and summary row fixed 2026-09-14** (items 3, 4) — filters read
 > `All categories` / `All types` / `All departments` / `All workflows` / `All use statuses`, and
-> the triggers size to their content so no value clips. **Card padding and `RequiredLabel`
-> (items 6, 7) are still outstanding.**
+> the triggers size to their content so no value clips. **Card padding fixed 2026-09-15**
+> (item 6) — every card in all three modules now measures 16px. **`RequiredLabel` (item 7) is
+> still outstanding.**
 
 Each of these was implemented before and was overwritten by the adoption.
 
@@ -28,7 +29,7 @@ Each of these was implemented before and was overwritten by the adoption.
 | ~~3~~ | ~~hand-rolled summary row~~ — **fixed 2026-09-14.** `ListSummary`, link-styled `Clear filters`, `1 of 10 revision records` | `documents/page.tsx` | `9f18d8b` |
 | ~~4~~ | ~~`Label: value` prefix clipping~~ — **fixed 2026-09-14.** `allLabel` copy + auto-width triggers | `documents/components.tsx`, `page.tsx` | `9f18d8b` |
 | ~~5~~ | ~~`Create Document` inside `PageHeading`~~ — **fixed 2026-09-14.** Moved to the search row as a sibling of the filter group, matching CAPA | `documents/page.tsx` | `393016c` |
-| 6 | Card padding: 5 explicit `spacing/component/xl` (24px) overrides, vs the 16px primitive default agreed in Q12 | `documents/document-detail.tsx` | `bff58f4`, Q12 |
+| ~~6~~ | ~~Card padding 24px~~ — **fixed 2026-09-15.** Two overrides in `document-detail.tsx`, plus one in shared `RecordSection` that `bff58f4` had missed | `documents/document-detail.tsx`, `components/record-workflow.tsx` | `bff58f4`, Q12 |
 | 7 | `Label` required-asterisk usage predates the shared `RequiredLabel` | `documents/*.tsx` | `1b927ca` |
 
 Also reverted: the three module `.md` files that recorded the 16px decision

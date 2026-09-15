@@ -6,7 +6,7 @@ undecided.
 **Captured** 2026-09-10 from the running product, with design work from the same day.
 **Prototype:** `accura-ui/src/app/prototype/accura/training/` — mock data lives in
 `mock-data.ts` and is the single source for screen content. It is not restated here.
-**Domain reference:** [`domain/training-module.md`](domain/training-module.md) — what a training
+**Domain reference:** [`domain/training-module.md`](Accura/flow/brief/training-module.md) — what a training
 module is for, the regulatory basis, and the workflow the brief describes.
 
 Open questions are collected in §9 and referenced inline as **Q1–Q24**.

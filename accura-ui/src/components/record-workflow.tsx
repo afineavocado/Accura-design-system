@@ -33,7 +33,7 @@ export function RecordSection({
   children: ReactNode;
 }) {
   return (
-    <Card className="p-[var(--spacing-component-xl)] text-[var(--color-surface-overlay-foreground)]">
+    <Card className="text-[var(--color-surface-overlay-foreground)]">
       <CardHeader>
         <CardTitle>
           <h2 className="font-sans">{title}</h2>

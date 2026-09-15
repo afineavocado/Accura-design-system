@@ -61,7 +61,7 @@ function InfoSection({
   children: ReactNode;
 }) {
   return (
-    <Card className="p-[var(--spacing-component-xl)] text-[var(--color-surface-overlay-foreground)]">
+    <Card className="text-[var(--color-surface-overlay-foreground)]">
       <CardHeader className="border-b border-[var(--color-border-default)] pb-[var(--spacing-component-lg)]">
         <CardTitle>
           <h2 className="font-sans">{title}</h2>
@@ -544,7 +544,7 @@ function DetailEditor({
         ratio="70/30"
         progress={
           !retired && (
-            <Card className="p-[var(--spacing-component-xl)]">
+            <Card>
               <CardContent>
                 <div className="hidden md:block">
                   <Stepper
