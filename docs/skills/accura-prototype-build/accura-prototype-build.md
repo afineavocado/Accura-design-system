@@ -227,7 +227,8 @@ being pulled back. All three now agree:
 | Title | `text-2xl` in page content — **not** the header bar, which carries the module name. The only screens with two headings |
 | Back link | `Button variant="link"` stripped to `h-auto w-fit p-0`, grouped with the title at `spacing/component/sm` |
 | Card title | `CardTitle className="text-xl"`. Do not nest your own heading inside `CardTitle` |
-| Field | `flex flex-col gap-[var(--spacing-component-xs)]` — label and control are one unit at 4px, not 8px |
+| Field | `flex flex-col gap-[var(--spacing-component-xs)]` — label and control are one unit at 4px, not 8px. `Input.md` §Structure: `input-field` gap is `spacing/component/xs` |
+| Between fields | **Nothing on `CardContent`.** It already lays out as a column at `spacing/component/lg`. `space-y-*` there stacks margins on top of that gap and silently doubles it to 32px |
 | Footer | Right-aligned, outside the card, `Cancel` ghost → `Save as Draft` outline → primary |
 | Draft vs submit | `Save as Draft` skips validation; the primary runs it. Two buttons because they are two contracts |
 

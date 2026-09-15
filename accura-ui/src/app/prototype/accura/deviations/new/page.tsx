@@ -122,7 +122,10 @@ export default function CreateDeviationPage() {
         <CardHeader>
           <CardTitle className="text-xl">Incident Details</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-[var(--spacing-component-lg)]">
+        {/* No spacing class: CardContent already lays out as a column at
+            spacing/component/lg. Adding space-y stacked margins on top and
+            doubled every gap to 32px. */}
+        <CardContent>
           <div className="flex flex-col gap-[var(--spacing-component-xs)]">
             <Label required htmlFor="title">
               Title / short description
