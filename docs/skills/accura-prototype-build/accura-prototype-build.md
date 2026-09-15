@@ -169,6 +169,11 @@ custom text block and layout override, not only imported components.
 
 - **Measure, do not look.** Read computed values out of the browser and report the numbers. "It
   looks right" has been wrong every time it mattered.
+- **Enumerate, do not sample.** `node accura-ui/audit-styles.mjs <url> <url>` lists every text
+  style actually rendered on each page side by side and flags any that exists on only one. An
+  audit of the properties you thought to check can only confirm the things you thought of: a
+  hand-written one passed the deviation listing while its description column rendered at weight
+  500 against every sibling's 400, because font-weight was never on the list.
 - **Compare against the sibling screen that already does this job.** Another create screen,
   another listing, another detail. A value that differs from its sibling is either a bug or a
   decision you owe an explanation for.
