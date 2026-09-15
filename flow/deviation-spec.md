@@ -10,6 +10,10 @@
 > the briefs disagree, both are recorded here and the conflict is listed in §7 — **unresolved, not
 > reconciled.**
 >
+> **Structure.** §1–9 are **as-built** — observation only. §10–11 are **assessment**: how the flow
+> compares to other eQMS products, and a proposal for the one gap that is a correctness problem.
+> They are clearly separated so the record stays usable even if the assessment is rejected.
+>
 > **Coverage.** Five of nine screens, plus both registry filter menus. Captures supplied
 > 2026-09-15 in two batches. The four unobserved states are named in §7 so the gap is visible
 > rather than assumed.
@@ -354,3 +358,164 @@ Genuinely new: the dynamic **Impacted Products** list with independent save, and
 The Impacted Products list is now fully specified by §4.2 — per-row `Product (id or name)`,
 `Batch number`, `Description`, a `✕` per row, `+ Add Impacted Product`, and a save that does not
 advance status. It is the only block in the module with no existing equivalent in our prototype.
+
+
+---
+
+## 10. Assessment — how this compares to other eQMS products
+
+> Not observation. This section compares the documented flow against common practice in
+> MasterControl, Veeva Vault QMS, TrackWise, ETQ Reliance and similar, and against ICH Q9/Q10 and
+> 21 CFR 211.192.
+
+### 10.1 What is conventional and correct
+
+- The `Deviation → investigation → CAPA → approval → closed` chain is the industry-standard shape.
+- **Referencing the CAPA by ID with a live status echo, never duplicating its state** (Business
+  Flow §7, invariant §9.6) is the correct integration pattern. Systems that copy CAPA status into
+  the parent record drift; this one does not.
+- Signatures as a **visible lifetime ledger with per-role meaning statements** is good Part 11
+  practice — better than burying signature meaning in a modal nobody re-reads.
+- One accumulating page rather than tabbed stages keeps prior context visible during sign-off.
+
+### 10.2 Gap A — there is no way to send a record back *(correctness)*
+
+Business Flow §5 Step 5: *"A signatory refusing to sign may return the record via a cancellation
+action → `Cancelled`."*
+
+So a QA manager at `In Approval` who judges the root-cause analysis inadequate has one option:
+**cancel the deviation.** But a deviation records an event that actually happened. `Cancelled` means
+*this report was invalid or duplicate* — not *this investigation was sloppy*. The two are being
+collapsed into one terminal state.
+
+Consequences, both bad:
+
+- The record is wrongly cancelled, and a real quality event disappears from the system — an
+  inspection finding waiting to happen; or
+- Reviewers sign inadequate work, because the alternative is destructive.
+
+Every mature eQMS separates **reject/return for rework** from **cancel/void**. Return moves the
+record to an earlier state with a mandatory reason and a signature; cancel ends it.
+
+**Accura already solves this elsewhere.** The Documents module has a `returned` annotation that
+sends a record back to `Draft` carrying `reason`, `name`, `timestamp` and `fromStatus`, renders a
+destructive `Alert` — *"Returned to Draft by …"* — sets the next action to `Revise and resubmit`,
+marks prior signatures historical, and writes `Rejection signed — returned to Draft` to the audit
+trail. Training's review queue likewise keeps Reject distinct from Cancel. **Deviation is the odd
+one out inside Accura's own product.** Proposal in §11.
+
+### 10.3 Gap B — classification is captured but never used *(product decision)*
+
+The form collects `Category` (Minor / Major / Critical) and `Severity` (High / Medium / Low), and
+**nothing branches on either.** A Minor/Low planned deviation walks the same six states, full RCA,
+CAPA gate and multi-signature approval as a Critical/High one.
+
+Risk-proportionate handling is what ICH Q9 expects and what peer systems implement: minor
+deviations typically close on QA review alone, with no formal investigation and no CAPA. Forcing
+the full path on everything has a predictable failure mode — **people stop logging minor
+deviations**, and the system loses the data it exists to collect.
+
+Related framing problem: state 4 is named **`CAPA Pending`**, which presents a CAPA as the default
+outcome. The brief does allow an explicit *"no CAPA required"* decision, but it sits inside a state
+named after the thing being declined. Regulators cite over-CAPA-ing as well as under-CAPA-ing; a
+justified no-CAPA decision should be an equal first-class outcome.
+
+This one changes the state machine, so it is a product decision, not a prototype fix.
+
+### 10.4 Gap C — impacted products are free text *(traceability)*
+
+`Product (id or name)` and `Batch number` are plain text inputs (§4.2). The system therefore cannot
+reliably answer *"show me every deviation affecting batch B-123"* — the question an inspector asks
+and the question that matters during a recall. Peer systems bind these to actual batch/lot records.
+
+The captured data already shows the cost: `PRODUCT IMPACTED: No` sits a few lines above
+`IMPACTED PRODUCTS (1)` on the same screen (§8.15).
+
+### 10.5 Three smaller divergences
+
+**No due-date management.** The date drives the entire Overdue rule but has no field on Create
+(§8.2), no extension-with-justification flow, and no escalation beyond a badge. In peer systems an
+extension is itself an auditable, approved event.
+
+**No links between quality events.** *Duplicate* is a listed cancellation reason, but nothing can
+point at the original — nor at a related complaint, change control, or prior deviation. That
+linkage is how repeat-offender trends are found.
+
+**No periodic review of long-running records.** A deviation sitting in Investigation for 90 days
+only accumulates an Overdue badge; there is no check-in obligation.
+
+---
+
+## 11. Proposal — the return transition (Gap A)
+
+Modelled on the Documents `returned` pattern so the two modules behave alike.
+
+### 11.1 It is not a seventh state
+
+`Returned` is **an annotation plus a backward transition**, not a new lifecycle state. The stepper
+keeps six steps. This matters: adding a seventh box would break invariant §9.2 ("no skipping")
+and imply a state records can sit in.
+
+```ts
+returned?: {
+  reason: string        // mandatory, free text
+  name: string          // who returned it
+  role: string
+  timestamp: string
+  fromStatus: Status    // the state it was returned FROM
+}
+```
+
+The record's `status` moves to the target state; `returned` describes how it got there.
+
+### 11.2 Where it is allowed
+
+| From | Returns to | Why |
+|---|---|---|
+| `In Approval` | `Investigation In Progress` | RCA or impact analysis inadequate |
+| `In Approval` | `CAPA Pending` | investigation sound, corrective plan insufficient |
+| `CAPA Pending` | `Investigation In Progress` | CAPA cannot be framed on the evidence given |
+| `Investigation In Progress` | `In Review` | triage was wrong — wrong owner, wrong scope |
+
+`In Review` keeps **no** return path. It is the entry gate: an invalid or duplicate report there is
+genuinely `Cancelled`, which is what that state is for. Giving one state both actions is what
+created the confusion in the first place.
+
+### 11.3 Rules
+
+1. **Reason is mandatory.** The signature dialog already supports this — `reasonRequired` on
+   `RecordSignatureDialog` (`record-workflow.tsx`), built for exactly this case.
+2. **Return is signed.** It is a decision on a regulated record, and Documents signs its rejection.
+   Statement: *"I am returning this deviation for further work. It has not been approved."*
+3. **Prior signatures become historical.** They stay visible in the ledger — an append-only trail
+   must not lose them — but are marked superseded and do not count toward the next approval. The
+   record must be re-signed on its way back up. This is Documents' rule verbatim.
+4. **Steps after the new current step revert to *Not started*.** The stepper shows honest present
+   state; the round trip lives in the audit trail, not in the stepper.
+5. **Audit entry names both ends**, e.g. `Returned to Investigation In Progress from In Approval —
+   Sarah Johnson (QA)`, with the reason.
+6. **`Cancelled` narrows** to invalid, duplicate, or out-of-scope reports only. Update Business
+   Flow §5 Step 5, which currently routes a refusal to sign into cancellation.
+
+### 11.4 On screen
+
+- A destructive `Alert` at the top of the detail page while `returned` is set and the record has
+  not advanced past that state: **"Returned from In Approval by Sarah Johnson (QA)"**, with
+  timestamp and reason, and the note that prior signatures are historical.
+- The block the return targets is editable again; everything before it stays locked.
+- Next action reads **`Revise and resubmit`**, matching Documents.
+- Registry: `Returned` shown as a **badge beside the status**, not as a status value — the record
+  genuinely *is* in `Investigation In Progress`. This also avoids repeating §8.13, where `Overdue`
+  and `Cancelled` were folded into the Status filter.
+
+### 11.5 Cost
+
+Small. `RecordSignatureDialog` already has `reasonRequired`; `Alert` exists; the annotation shape
+is copied from `DemoDocument`. The real work is the four transition rules and deciding whether
+`In Approval` returns to a fixed target or lets the signatory choose.
+
+### 11.6 Open question for the brief's author
+
+**Was the cancel-as-rejection wording deliberate, or shorthand?** If a real reviewer today cancels
+deviations to send them back, the production data may contain cancelled records that were never
+invalid — which would matter for any trend analysis built on that field.
