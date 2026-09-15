@@ -17,8 +17,10 @@ longer match Training and CAPA. Everything below is known, deliberate and not ye
 > row. **Toolbar copy and summary row fixed 2026-09-14** (items 3, 4) — filters read
 > `All categories` / `All types` / `All departments` / `All workflows` / `All use statuses`, and
 > the triggers size to their content so no value clips. **Card padding fixed 2026-09-15**
-> (item 6) — every card in all three modules now measures 16px. **`RequiredLabel` (item 7) is
-> still outstanding.**
+> (item 6) — every card in all three modules now measures 16px. **Required labels fixed
+> 2026-09-15** (item 7). **All seven heading/toolbar regressions are now closed.** What remains
+> in this document is §2 (four design questions adopted by default), §3 (her interim
+> assumptions) and §5 (the red `drift-check`).
 
 Each of these was implemented before and was overwritten by the adoption.
 
@@ -30,7 +32,7 @@ Each of these was implemented before and was overwritten by the adoption.
 | ~~4~~ | ~~`Label: value` prefix clipping~~ — **fixed 2026-09-14.** `allLabel` copy + auto-width triggers | `documents/components.tsx`, `page.tsx` | `9f18d8b` |
 | ~~5~~ | ~~`Create Document` inside `PageHeading`~~ — **fixed 2026-09-14.** Moved to the search row as a sibling of the filter group, matching CAPA | `documents/page.tsx` | `393016c` |
 | ~~6~~ | ~~Card padding 24px~~ — **fixed 2026-09-15.** Two overrides in `document-detail.tsx`, plus one in shared `RecordSection` that `bff58f4` had missed | `documents/document-detail.tsx`, `components/record-workflow.tsx` | `bff58f4`, Q12 |
-| 7 | `Label` required-asterisk usage predates the shared `RequiredLabel` | `documents/*.tsx` | `1b927ca` |
+| ~~7~~ | ~~hand-typed `*` in label text~~ — **fixed 2026-09-15.** Seven labels moved to `<Label required>`; the marker is now `status/danger` with an sr-only "(required)" | `documents/document-detail.tsx`, `document-files.tsx`, `components/record-workflow.tsx` | `1b927ca` |
 
 Also reverted: the three module `.md` files that recorded the 16px decision
 (`README.md`, `TRAINING-MAPPING.md`, `FUNCTIONAL-SPEC-MAPPING.md`).

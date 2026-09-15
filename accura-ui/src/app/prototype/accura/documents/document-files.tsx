@@ -344,7 +344,7 @@ export function DocumentFiles({
       </div>
       {draft && (
         <div className="space-y-[var(--spacing-component-sm)]">
-          <Label htmlFor="document-upload">Document file *</Label>
+          <Label required htmlFor="document-upload">Document file</Label>
           <Input
             id="document-upload"
             type="file"

@@ -206,7 +206,7 @@ export function ElectronicSignatureModal({
         </dl>
         {reasonRequired && (
           <div className="space-y-[var(--spacing-component-sm)]">
-            <Label htmlFor="decision-reason">Reason *</Label>
+            <Label required htmlFor="decision-reason">Reason</Label>
             <Input
               id="decision-reason"
               value={reason}
