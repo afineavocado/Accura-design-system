@@ -64,9 +64,11 @@ function DeviationRow({ record }: { record: DeviationRecord }) {
       </TableCell>
       <TableCell>
         <p className="font-medium">{record.title}</p>
-        <p className="text-xs text-[var(--color-text-secondary)]">
-          {nextAction(record)}
-        </p>
+        {nextAction(record) && (
+          <p className="text-xs text-[var(--color-text-secondary)]">
+            {nextAction(record)}
+          </p>
+        )}
       </TableCell>
       <TableCell>
         <Badge

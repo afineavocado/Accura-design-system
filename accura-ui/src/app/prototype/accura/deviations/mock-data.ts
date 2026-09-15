@@ -412,8 +412,10 @@ export function isOverdue(record: DeviationRecord, asOf: string = today) {
   return asOf > record.dueDate
 }
 
-/** Whose move it is. Drives the registry's secondary line and, later, the CTA. */
-export function nextAction(record: DeviationRecord) {
+/** Whose move it is. Drives the registry's secondary line and, later, the CTA.
+ *  Returns null for the two terminal states — a closed record has no next move,
+ *  and a placeholder dash is noise, not information. */
+export function nextAction(record: DeviationRecord): string | null {
   switch (record.status) {
     case "Draft":
       return "Submit for review"
@@ -427,7 +429,7 @@ export function nextAction(record: DeviationRecord) {
       return "Awaiting signatures"
     case "Approved":
     case "Cancelled":
-      return "—"
+      return null
   }
 }
 
