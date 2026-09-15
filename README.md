@@ -24,7 +24,7 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 | `docs/tracking/` | Storybook and audit status. ⚠️ Reflects Agentic's status, not Accura's. |
 | `tokens/` | DTCG token JSONs + Style Dictionary build. ⚠️ Agentic's exported values — see `llms.txt`. |
 | **`accura-ui/`** | Component library + Storybook. Same components as `agentic-ui`, Accura tokens. |
-| **`flow/`** | Module specifications — what each prototype is, what the brief asked for, and the open questions. `training-module.md` (24 questions), `domain/training-module.md`, `capa-prototype-spec.md`. |
+| **`flow/`** | Module specifications — what each prototype is, what the brief asked for, and the open questions. `training-module.md` (24 questions), `domain/training-module.md`, `capa-prototype-spec.md`, `deviation-spec.md` (as-built record of the live Deviation screens) and the source briefs in `flow/brief/`. |
 | `docs/demo-scope.md` | What the demo covers and what is deferred. Component patterns live in the prototype-build skill. |
 | `docs/team-workflow.md` | **(Tiếng Việt)** Branch + PR workflow for two people working on different modules. Daily routine, shared-file list, conflict handling. |
 | `CHANGELOG.md` | Every Accura-specific change, breaking ones called out. |
