@@ -65,7 +65,7 @@ function DeviationRow({ record }: { record: DeviationRecord }) {
       <TableCell>
         <p className="font-medium">{record.title}</p>
         {nextAction(record) && (
-          <p className="text-xs text-[var(--color-text-secondary)]">
+          <p className="mt-[var(--spacing-component-xs)] text-xs text-[var(--color-text-secondary)]">
             {nextAction(record)}
           </p>
         )}
@@ -81,7 +81,7 @@ function DeviationRow({ record }: { record: DeviationRecord }) {
       </TableCell>
       <TableCell>
         <p className="whitespace-nowrap">{record.owner.name}</p>
-        <p className="text-xs text-[var(--color-text-secondary)]">
+        <p className="mt-[var(--spacing-component-xs)] text-xs text-[var(--color-text-secondary)]">
           {record.owner.role}
         </p>
       </TableCell>
@@ -93,7 +93,7 @@ function DeviationRow({ record }: { record: DeviationRecord }) {
       <TableCell className="whitespace-nowrap">
         {displayDate(record.dueDate)}
         {overdue && (
-          <span className="block text-xs font-medium text-[var(--color-text-invalid)]">
+          <span className="mt-[var(--spacing-component-xs)] block text-xs font-medium text-[var(--color-text-invalid)]">
             Overdue
           </span>
         )}
