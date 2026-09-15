@@ -143,8 +143,15 @@ export type DeviationRecord = {
   rootCauseAnalysis?: string
   impactAnalysis?: string
   capaRef?: { id: string; title: string; status: string }
-  /** Set when the record was cancelled; reason is required at that point. */
-  cancelled?: { reason: string; by: Person; timestamp: string }
+  /** Set when the record was cancelled; reason is required at that point.
+   *  `from` is the state it was cancelled out of — the stepper shows that
+   *  step, because Cancelled itself has no position (spec §9). */
+  cancelled?: {
+    reason: string
+    by: Person
+    timestamp: string
+    from: LifecycleStatus
+  }
 }
 
 // ─── Seed set ───────────────────────────────────────────────────────────────
@@ -397,6 +404,7 @@ export const seeds: DeviationRecord[] = [
       reason: "Duplicate of the chilled room 3 excursion already under review.",
       by: people.sarah,
       timestamp: "2026-09-12T09:20:00Z",
+      from: "In Review",
     },
   },
 ]
@@ -443,4 +451,181 @@ export function displayDate(date: string) {
 /** A Draft has no Deviation ID until Submit mints one. */
 export function displayId(record: DeviationRecord) {
   return record.id ?? "Not assigned"
+}
+
+// ─── Signatures ─────────────────────────────────────────────────────────────
+
+/* Statements are verbatim from brief §13.7 — legal commitment copy is not
+   paraphrased. */
+export const statements = {
+  department: "I approve this deviation and authorise advancing it to investigation.",
+  owner: "As deviation owner, I approve the investigation and its outcome.",
+  reviewer: (person: Person) =>
+    `As reviewer (${display(person)}), I approve this deviation.`,
+}
+
+export type Signature = {
+  role: string
+  by: Person
+  timestamp: string
+  statement: string
+}
+
+/* Which signatures exist is a function of how far the record has travelled,
+   not a stored list — so the two can never disagree.
+ *
+ *   In Review  → Investigation   department owner signs
+ *   CAPA Pending → In Approval   deviation owner signs
+ *   In Approval  → Approved      every named reviewer signs
+ *
+ * Note the department owner's statement is captured at step 2 but only
+ * surfaces in the Signatures block, which is a lifetime ledger rather than a
+ * list of approval-stage signatures (spec §8.10). */
+export function signatures(record: DeviationRecord): {
+  captured: Signature[]
+  pending: Person[]
+} {
+  const reached = (status: LifecycleStatus) => {
+    const at = record.cancelled?.from ?? (record.status as LifecycleStatus)
+    const i = lifecycle.indexOf(at)
+    return i >= lifecycle.indexOf(status)
+  }
+
+  const captured: Signature[] = []
+  const stamp = (offsetDays: number) =>
+    new Date(Date.parse(record.dateRaised + "T09:00:00Z") + offsetDays * 864e5).toISOString()
+
+  if (reached("Investigation In Progress")) {
+    captured.push({
+      role: "Department owner approval",
+      by: record.owner,
+      timestamp: stamp(1),
+      statement: statements.department,
+    })
+  }
+  if (reached("In Approval")) {
+    captured.push({
+      role: "Deviation owner approval",
+      by: record.owner,
+      timestamp: stamp(3),
+      statement: statements.owner,
+    })
+  }
+  if (record.status === "Approved") {
+    record.reviewers.forEach((person, i) =>
+      captured.push({
+        role: `Reviewer — ${display(person)}`,
+        by: person,
+        timestamp: stamp(4 + i),
+        statement: statements.reviewer(person),
+      })
+    )
+    return { captured, pending: [] }
+  }
+
+  return {
+    captured,
+    pending: record.status === "In Approval" ? record.reviewers : [],
+  }
+}
+
+// ─── Audit trail ────────────────────────────────────────────────────────────
+
+export type AuditEvent = {
+  id: string
+  timestamp: string
+  name: string
+  role?: string
+  action: string
+  record: string
+  meaning?: string
+  fromStatus?: string
+  toStatus?: string
+}
+
+/* Derived from how far the record has travelled, for the same reason as
+   signatures: a hand-written trail drifts from the record it describes.
+ *
+ * The live product's trail shows each transition twice at an identical
+ * timestamp (spec §8.5). That is a defect under an append-only policy, so it
+ * is not reproduced here. */
+export function auditEvents(record: DeviationRecord): AuditEvent[] {
+  const events: AuditEvent[] = []
+  const at = record.cancelled?.from ?? (record.status as LifecycleStatus)
+  const travelled = lifecycle.slice(0, lifecycle.indexOf(at) + 1)
+  const id = record.id ?? "Draft"
+  const stamp = (offsetDays: number) =>
+    new Date(Date.parse(record.dateRaised + "T09:00:00Z") + offsetDays * 864e5).toISOString()
+
+  events.push({
+    id: `${record.key}-created`,
+    timestamp: stamp(0),
+    name: record.raisedBy.name,
+    role: record.raisedBy.role,
+    action: "Deviation created",
+    record: id,
+  })
+
+  travelled.slice(1).forEach((status, i) => {
+    events.push({
+      id: `${record.key}-to-${i}`,
+      timestamp: stamp(i + 1),
+      name: record.owner.name,
+      role: record.owner.role,
+      action: "Status changed",
+      record: id,
+      fromStatus: lifecycle[i],
+      toStatus: status,
+    })
+  })
+
+  signatures(record).captured.forEach((signature, i) =>
+    events.push({
+      id: `${record.key}-sig-${i}`,
+      timestamp: signature.timestamp,
+      name: signature.by.name,
+      role: signature.by.role,
+      action: `Signed — ${signature.role}`,
+      record: id,
+      meaning: signature.statement,
+    })
+  )
+
+  if (record.cancelled) {
+    events.push({
+      id: `${record.key}-cancelled`,
+      timestamp: record.cancelled.timestamp,
+      name: record.cancelled.by.name,
+      role: record.cancelled.by.role,
+      action: "Cancelled",
+      record: id,
+      meaning: record.cancelled.reason,
+      fromStatus: record.cancelled.from,
+      toStatus: "Cancelled",
+    })
+  }
+
+  return events
+}
+
+// ─── Block visibility ───────────────────────────────────────────────────────
+
+/* Which blocks a given status shows. The detail page is one accumulating page,
+   not six layouts (spec §10 preamble): each state locks what came before and
+   reveals one more block. */
+export function visibleBlocks(record: DeviationRecord) {
+  const at = record.cancelled?.from ?? (record.status as LifecycleStatus)
+  const i = lifecycle.indexOf(at)
+  const closed = record.status === "Approved" || record.status === "Cancelled"
+  return {
+    review: i >= lifecycle.indexOf("In Review"),
+    investigation: i >= lifecycle.indexOf("Investigation In Progress"),
+    capa: i >= lifecycle.indexOf("CAPA Pending"),
+    /* Shown as soon as a signature exists, rather than only from In Approval.
+       The live product hides earlier signatures until step 5; showing them is
+       more honest and costs nothing. */
+    signatures: signatures(record).captured.length > 0,
+    /** Only the current state's own block is editable, and never once closed. */
+    editable: closed ? null : (record.status as LifecycleStatus),
+  }
 }
