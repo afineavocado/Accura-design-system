@@ -74,12 +74,16 @@ function Choice({
         aria-labelledby={`${id}-label`}
         value={value}
         onValueChange={onValueChange}
-        className="flex flex-wrap gap-[var(--spacing-component-lg)]"
+        /* Between options, wider than the 12px inside one: at equal gaps a
+           label and the next option's indicator group by proximity. */
+        className="flex flex-wrap gap-[var(--spacing-component-xl)]"
       >
         {options.map((option) => (
           <div
             key={option}
-            className="flex items-center gap-[var(--spacing-component-sm)]"
+            /* Radio.md §Structure: radio-item is horizontal at
+               spacing/component/md between the indicator and its label. */
+            className="flex items-center gap-[var(--spacing-component-md)]"
           >
             <RadioGroupItem id={`${id}-${option}`} value={option} />
             <Label htmlFor={`${id}-${option}`} className="font-normal">
