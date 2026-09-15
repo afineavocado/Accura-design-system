@@ -317,14 +317,18 @@ Sources:
 Two patterns the design system cannot express. **Both are hand-rolled.** Logged so the next
 person finds a decision rather than a mystery — not a licence to hand-roll anything else.
 
-**Segmented control** — *choose one of N, all options visible, and the choice changes the form.*
+**Segmented control** — ~~hand-rolled~~ **now `ToggleGroup`, built 2026-09-15.**
 
-- Built as `Button`s with `role="radio"` + `aria-checked`, `variant` swapped for state. See the
-  Automatic Assessment Trigger card in `training/courses/new/page.tsx`.
+- `src/components/ui/toggle-group.tsx`. `role="radiogroup"` with `role="radio"` children, arrow
+  keys moving and selecting, one tab stop. Used four times on Create Deviation.
 - **Not `ButtonGroup`** — its spec says the actions it groups are *"mutually independent"*. It
   groups actions, not choices. **Not `RadioGroup`** — semantically right, but radio circles read
   too weak for a control that restructures the form beneath it.
-- If a second screen needs it, build it as `ToggleGroup` — component + spec + meta.json + story.
+- ⚠️ **Code-first, and incomplete.** There is no Figma node, no `docs/component-specs/` entry and
+  no `meta.json`, so it deliberately has **no Storybook story** — a story without a meta.json is
+  what `drift-check` rule 5 exists to catch. Close the loop before calling it a system component.
+- `training/courses/new/page.tsx` still carries the old hand-rolled version. Migrate it when that
+  screen is next touched.
 
 **Combobox option with a qualifier** — *`Amit Kothari · Quality Assurance` on one line.*
 
