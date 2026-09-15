@@ -28,11 +28,30 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
   and the `actionLabel` / `reasonRequired` props. Verified consumed only by Documents, so the
   Training and CAPA signature flows are untouched.
 
-⚠️ **This reverts the Documents half of the cross-module alignment** — module heading, toolbar
+⚠️ **This reverted the Documents half of the cross-module alignment** — module heading, toolbar
 copy, `ListSummary` row, `Create Document` placement, 16px card padding and the shared
-`RequiredLabel`. Deliberate and deferred; every item is listed with its original commit in
-**`docs/handoff-followups.md`**, along with four design questions adopted by default (revision in
-the URL, `UseStatus` absorbing lifecycle, an inline `style` for Superseded, divergent summary copy).
+`RequiredLabel`. All seven were re-applied on 2026-09-14/15 (see the entries below).
+
+**Adopted by default, never agreed** — taken as-is to keep the integration moving:
+
+- **Revision is in the URL.** `documentHref` produces `/documents/SOP-001--v1.0` and
+  `/documents/ACME~WI~2026~000001--v1.0`. Old `/documents/SOP-001` links no longer resolve.
+- **`UseStatus` absorbs lifecycle.** It gained `External record`, `Superseded` and `Obsolete`
+  alongside the three effectiveness values, so the Use status filter now answers two questions.
+  Training keeps these apart.
+- **Superseded styling uses an inline `style` attribute** (`opacity` + `line-through`) — the only
+  styling in the prototype that bypasses className tokens.
+- **The summary noun is `revision records`, not `documents`** — deliberate: Documents lists
+  revisions, so `SOP-001 v1.0` and `v2.0` are two rows.
+
+**Her interim assumptions, carried over unexamined:** Normal replacement approval supersedes the
+previous revision immediately, and new effectiveness defaults to approval + 14 days with QA
+override — **which can leave no effective revision during the gap**. External new-version routing
+and Author/Owner mock equivalence are also labelled assumptions.
+
+`RecordRowAction.stories.tsx` has no `meta.json`, so `drift-check` rule 5 fails. `src/stories/` is
+reserved for design-system components; this one is prototype-only. Promote or demote it — deferred
+until the modules are finished.
 
 Not taken: her `application-header.tsx` (no `title` prop — would blank the heading in all three
 modules) and `docs/demo-design-contract.md` (split into `demo-scope.md` + the skill earlier the

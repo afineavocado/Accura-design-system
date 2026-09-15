@@ -3,10 +3,10 @@
 Tài liệu này dành cho **hai người cùng làm prototype Accura bằng AI agent**, mỗi người một
 module. Viết bằng tiếng Việt vì đây là quy trình cho người, không phải spec kỹ thuật.
 
-| | Module | Thư mục |
-|---|---|---|
-| Lam | Training | `accura-ui/src/app/prototype/accura/training/` |
-| Đồng nghiệp | Documents | `accura-ui/src/app/prototype/accura/documents/` |
+|      | Module    | Thư mục                                         |
+| ---- | --------- | ----------------------------------------------- |
+| Diệp | Training  | `accura-ui/src/app/prototype/accura/training/`  |
+| Chi  | Documents | `accura-ui/src/app/prototype/accura/documents/` |
 
 **Repo:** `github.com/afineavocado/Accura-design-system` · nhánh chính: `main`
 
