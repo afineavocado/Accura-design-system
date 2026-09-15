@@ -134,8 +134,13 @@ export default function DeviationsPage() {
   }
 
   return (
-    <>
-      <div className="mb-[var(--spacing-layout-sm)] flex w-full flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
+    /* One vertical rhythm for the whole listing rather than a margin on
+       whichever child happened to need one. CAPA and Training already do this
+       with gap-3 on their scroll container; this page sits in a plain <main>,
+       so it owns the rule. Without it the summary row sat flush against the
+       table — 9px, all of it ListSummary's own min-height. */
+    <div className="flex flex-col gap-[var(--spacing-component-md)]">
+      <div className="flex w-full flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
         <div className="flex min-w-0 flex-1 flex-wrap items-center gap-[var(--spacing-component-sm)]">
           <div className="relative min-w-[240px] flex-1 sm:max-w-[380px]">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
@@ -235,6 +240,6 @@ export default function DeviationsPage() {
       </div>
 
       <TablePagination {...paged} noun="deviations" />
-    </>
+    </div>
   )
 }
