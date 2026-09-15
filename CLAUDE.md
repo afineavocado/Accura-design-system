@@ -20,7 +20,7 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 | | |
 |---|---|
 | Brand primary | `#008852` — anchored at `/800-base`, **not** `/500` |
-| Why not /500 | green measures 2.50:1 vs white, below the 3:1 floor; `/800` is 4.59:1 |
+| Why not /500 | green measures 2.50:1 vs white, below the 3:1 floor; `/800` is 4.52:1 |
 | Neutral · radius · spacing | identical to Agentic |
 | Sidebar | `#00393f` dark teal panel, light foreground |
 | Buttons | pills — `radius 9999` |

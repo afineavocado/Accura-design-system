@@ -1,31 +1,22 @@
-> # ⚠️ READ THIS FIRST — Accura overrides the values below
+> # Accura design rules
 >
-> This is the **inherited ruleset**, vendored unchanged from the Agentic Design System.
-> Accura follows every **rule** here — naming, semantic layer, paired-surface rule, spacing
-> scale, layout, dark-mode architecture. **Do not change them.**
+> The ruleset, with **Accura's values inline**. It began as a vendored copy of the Agentic Design
+> System's and has been corrected in place: the brand anchor rule, the radius scale, the contrast
+> reference and the AI-handoff summary all now state what Accura actually does.
 >
-> But this document also contains Agentic's **values**, and Accura's are different.
-> **Where the two disagree, [`../accura-theme.md`](../accura-theme.md) wins.**
+> It is no longer vendored, and that is deliberate. Across five commits it was never once
+> re-synced from upstream — only patched locally — so "unchanged copy" had become a fiction that
+> cost a twelve-row table of *"this file says X, Accura uses Y"* and a banner telling readers
+> that half the numbers were wrong. One true file beats two files and a disclaimer.
 >
-> | This file says | Accura actually uses | Where |
-> |---|---|---|
-> | Brand primary is always `/500` | anchor is **`/800-base`** (`#008852`) — green fails the 3:1 floor at `/500` | theme §1 |
-> | Brand blue `#2b7fff` | brand green **`#008852`** | theme §1 |
-> | `color/ring` → blue/500 | **`#17bb77`** (brand/500) | theme §7 |
-> | Sidebar background zinc/50 `#fafafa` | **`#00393f`** dark teal, light foreground | theme §7 |
-> | Sidebar accent zinc/100 | **`#175e41`** (brand/900) + white foreground | theme §7 |
-> | Button radius `radius/xl` 12px / `radius/base` 8px | **`9999`** — Accura buttons are pills | theme §7 |
-> | Radius anchor `radius/base` = 8px, scale `4 · 6 · 8 · 12 · 14 · 18 · 21` | anchor is **12px**, scale **`8 · 10 · 12 · 16 · 20 · 24 · 28`** — Accura is a rounder system | theme §4 |
-> | `border/error` red/500, `border/success` green/700, `border/warning` yellow/700 | red/**300**, green/**400**, yellow/**300** | theme §7 |
-> | Font family Inter | Body: **Inter** in Figma and code. Headings (`h1`–`h3`, overlay titles): **Albert Sans**, bound to `font-family/display` in both | theme §6 |
-> | Contrast reference table (light mode) | computed against Agentic blue — **not valid for Accura** | theme §1 |
-> | Component tokens must alias Semantics, never primitives | **Accura permits primitive aliases** where no semantic fits (`stepper/border`), and **fixed values** where the scale itself is wrong for the geometry (`checkbox/radius` = 4px — `radius/md` at 10px would clamp the 16×16 box into a circle identical to a radio) | theme §7 |
+> **Rules live here. Reasoning lives in [`../accura-theme.md`](../accura-theme.md)** — why the
+> anchor moved, every deviation, and the open questions. Values ship from
+> `accura-ui/src/app/tokens.css`; `node tokens/token-parity.mjs` says whether the export still
+> agrees.
 >
-> The "Contrast Reference" section near the end of this file is Agentic-specific and must not
-> be used to justify an Accura colour decision. Re-measure against Accura's values instead.
->
-> Sync source: `Agentic-design-system/agentic-design-system.md` (github.com/afineavocado/agentic-design-system-main).
-> If that upstream file changes, re-vendor this copy and re-check the table above.
+> Originally vendored from `agentic-design-system.md`
+> (github.com/afineavocado/agentic-design-system-main). Upstream changes are no longer merged
+> here; port anything worth having by hand.
 
 ---
 
@@ -82,25 +73,39 @@ color/yellow/50 → yellow/950
 
 #### Brand / Custom Colors
 
-**Rule 1 — primary brand color is always `/500`.** The main brand color (buttons, links, CTAs) anchors at /500.
+**Rule 1 — the brand anchors at the lightest step that clears 3:1 against white.** For blue that
+is `/500`; for Accura's green it is **`/800-base` (`#008852`, 4.52:1)**, because green is
+intrinsically lighter and `/500` measures only 2.50:1.
+
 ```
-color/blue/500  →  brand primary blue (e.g. #2B7FFF)
+color/brand/800-base  →  #008852   ← Accura's anchor
 ```
 
-**Rule 2 — build scale outward from /500 using perceptual lightness:**
+The acceptance test, applied to any candidate:
+
+| vs white | Verdict |
+|---|---|
+| ≥ 4.5:1 | ✅ fill *and* small text |
+| 3:1 – 4.5:1 | ⚠️ fill only — bump darker for text and icons |
+| < 3:1 | ❌ reject |
+
+Anchoring away from `/500` is **this rule applied correctly, not broken.** Reasoning and the
+measured candidates: `accura-theme.md` §1.
+
+**Rule 2 — build the scale outward from the anchor using perceptual lightness:**
 ```
-/50  → ~95% lightness    /600 → ~46% (hover on light bg)
+/50  → ~95% lightness    /600 → ~46%
 /100 → ~90%              /700 → ~37%
-/200 → ~80%              /800 → ~27%
+/200 → ~80%              /800 → ~27%  ← Accura anchors here
 /300 → ~70%              /900 → ~18%
-/400 → ~62% (hover dark) /950 → ~12%
-/500 → ~55% ← anchor
+/400 → ~62%              /950 → ~12%
+/500 → ~55%
 ```
 
-**Rule 3 — hover derived from adjacent step, never hardcoded:**
-- `/400` = hover on dark bg · `/600` = hover on light bg
+**Rule 3 — hover derived from an adjacent step, never hardcoded.** One step lighter on dark
+backgrounds, one step darker on light.
 
-❌ Never name brand primary anything other than `/500`. ❌ Never hardcode hover hex values.
+❌ Never hardcode hover hex values. ❌ Never pick an anchor that fails the 3:1 floor.
 
 #### Chart Colors
 ```
@@ -197,17 +202,22 @@ Tailwind: `z-0 z-10 z-20 z-30 z-40 z-50 z-[60]`. Toasts need custom config entry
 
 ### Border Radius
 
-Single base value drives the full scale.
+Single base value drives the full scale. **Accura anchors at 12px**, a rounder system than the
+8px this ruleset was written against.
+
 ```
-radius/base → 8px  (anchor — change to retheme all corners)
+radius/base → 12px  (anchor — change to retheme all corners)
 radius/none → 0px
-radius/sm   → ≈5px  (×0.6)    radius/xl  → 12px (×1.5)
-radius/md   → ≈6px  (×0.8)    radius/2xl → ≈14px (×1.8)
-radius/lg   → 8px   (= base)  radius/3xl → ≈18px (×2.2)
-                               radius/4xl → ≈21px (×2.6)
-                               radius/full → 9999px
+radius/sm   → 8px   (base − 4)   radius/xl  → 16px (base + 4)
+radius/md   → 10px  (base − 2)   radius/2xl → 20px
+radius/lg   → 12px  (= base)     radius/3xl → 24px
+                                 radius/4xl → 28px
+                                 radius/full → 9999px
 ```
-In Figma: set `radius/base` as Number variable. Other steps reference it as multiples.
+
+The shadcn offsets (±2, ±4 around the anchor) are preserved, so components expecting
+`sm/md/lg/xl` to sit around the base still behave. **Buttons are the exception — Accura buttons
+are pills at `9999`.** See `accura-theme.md` §4.
 
 ---
 
@@ -1368,7 +1378,7 @@ icon/text-size    → two letter A's at different sizes · font size controls
 ### Radius · Layout · Z-Index
 | Tailwind | Figma | Value |
 |---|---|---|
-| `rounded-lg` | `radius/lg` | 8px |
+| `rounded-lg` | `radius/lg` | 12px |
 | `rounded-full` | `radius/full` | 9999px |
 | `container mx-auto` | `layout/container/max-width` | 1400px |
 | `grid grid-cols-12` | `Grid/Desktop` | 12 col · 24px gutter · 80px margin |
@@ -1420,6 +1430,9 @@ Exception: Destructive button uses `focus/destructive` effect style, not the rin
 
 WCAG thresholds: AA text 4.5:1 · AA large/UI 3:1 · AAA 7:1
 
+> Recomputed against **Accura's** tokens on 2026-09-15. Regenerate rather than hand-edit:
+> `cd tokens && node validate-contrast.mjs`.
+
 | Token pair | Hex (bg/fg) | Ratio | AA text | UI/Large | AAA |
 |---|---|---|---|---|---|
 | `background/default → default/foreground` | #fff/#18181b | 17.7 | ✅ | ✅ | ✅ |
@@ -1429,8 +1442,8 @@ WCAG thresholds: AA text 4.5:1 · AA large/UI 3:1 · AAA 7:1
 | `surface/default → default/foreground` | #fff/#18181b | 17.7 | ✅ | ✅ | ✅ |
 | `surface/raised → raised/foreground` | #fafafa/#18181b | 17.0 | ✅ | ✅ | ✅ |
 | `surface/overlay → overlay/foreground` | #fff/#18181b | 17.7 | ✅ | ✅ | ✅ |
-| `brand/primary → primary/foreground` | #2b7fff/#fff | **3.8** | ❌ | ✅ | ❌ |
-| `brand/secondary → secondary/foreground` | #dbeafe/#1447e6 | 5.6 | ✅ | ✅ | ❌ |
+| `brand/primary → primary/foreground` | #008852/#fff | 4.52 | ✅ | ✅ | ❌ |
+| `brand/secondary → secondary/foreground` | #b5e5d1/#175e41 | 11.9 | ✅ | ✅ | ✅ |
 | `brand/destructive → destructive/foreground` | #ef4444/#fff | **3.8** | ❌ | ✅ | ❌ |
 | `status/success → success/foreground` | #22c55e/#18181b | 7.8 | ✅ | ✅ | ✅ |
 | `status/warning → warning/foreground` | #eab308/#18181b | 9.2 | ✅ | ✅ | ✅ |
@@ -1440,15 +1453,15 @@ WCAG thresholds: AA text 4.5:1 · AA large/UI 3:1 · AAA 7:1
 | `status/warning-subtle → subtle/foreground` | #fefce8/#a16207 | 4.8 | ✅ | ✅ | ❌ |
 | `status/danger-subtle → subtle/foreground` | #fef2f2/#b91c1c | 5.9 | ✅ | ✅ | ❌ |
 | `status/info-subtle → subtle/foreground` | #eef6ff/#1447e6 | 6.3 | ✅ | ✅ | ❌ |
-| `sidebar/background → sidebar/foreground` | #fafafa/#3f3f46 | 10.0 | ✅ | ✅ | ✅ |
-| `sidebar/accent → accent/foreground` | #f4f4f5/#18181b | 16.1 | ✅ | ✅ | ✅ |
+| `sidebar/background → sidebar/foreground` | #00393f/#fafafa | 12.6 | ✅ | ✅ | ✅ |
+| `sidebar/accent → accent/foreground` | #175e41/#fff | 7.74 | ✅ | ✅ | ✅ |
 | `background/default + text/secondary` | #fff/#52525b | 7.7 | ✅ | ✅ | ✅ |
 | `background/default + text/disabled` | #fff/#a1a1aa | 2.6 | — | — | — |
 
 **Known failures — accepted constraints:**
 
 - **`background/muted/foreground` (4.4:1)** — misses AA by 0.1. Use only for supporting text at 16px+. Avoid for body copy.
-- **`brand/primary`, `brand/destructive` (3.8:1)** — pass UI component threshold (3:1). Button label text at 14px technically needs 4.5:1. Accepted as brand palette constraint — do not use these fills for small body text outside buttons.
+- **`brand/destructive` (3.76:1)** — passes the UI component threshold (3:1). Button label text at 14px technically needs 4.5:1. Accepted as a palette constraint — do not use this fill for small body text outside buttons. **`brand/primary` is not in this list for Accura**: anchoring at `/800-base` rather than `/500` puts it at 4.52:1, safe as fill *and* small text.
 - **`status/danger`, `status/info` (3.8:1)** — pass for UI components. For text content, use the `*-subtle` pair.
 - **`color/icon/success`, `color/icon/warning`** — remapped to green/700 and yellow/700. Standalone status icons on light bg now pass AA (5.0:1 and 4.9:1). Solid fill tokens remain at /500 for badge/alert backgrounds.
 - **`text/disabled` (2.6:1)** — intentionally non-compliant. Disabled elements are exempt from WCAG 1.4.3.
@@ -1461,5 +1474,5 @@ Include:
 1. This file as `design-system-rules.md`
 2. Exported variables JSON from Figma
 3. Icon descriptions file (visual + do-not-use per icon)
-4. Note: _"All spacing uses Tailwind's 4px base unit. Semantic tokens always reference primitives — never hardcode hex. Brand primary is always /500. Every surface token has a /foreground pair (exception: color/background/subtle is a tint, no foreground). Radius scale is relative to radius/base. Line-height variables are CSS reference only — text styles use direct px values. Standalone icons use color/icon/*; icons in filled containers use the container's /foreground. color/brand/destructive ≠ color/status/danger. color/ring is the root focus color (blue/500) — color/border/focus and button/outline/border/focus are direct aliases. Chart, sidebar, opacity tokens are scoped. Font-family values must be clean names (Inter, not a full CSS stack). Deprecated tokens are marked — always check. Flex for component layout, Grid for page layout. 1440px Figma = xl: in Tailwind. 80px Figma margin = visual guide, not CSS. z-index always uses named tokens."_
+4. Note: _"All spacing uses Tailwind's 4px base unit. Semantic tokens always reference primitives — never hardcode hex. Brand primary anchors at the lightest step clearing 3:1 — /800-base in Accura. Every surface token has a /foreground pair (exception: color/background/subtle is a tint, no foreground). Radius scale is relative to radius/base. Line-height variables are CSS reference only — text styles use direct px values. Standalone icons use color/icon/*; icons in filled containers use the container's /foreground. color/brand/destructive ≠ color/status/danger. color/ring is the root focus color (brand/500 in Accura) — color/border/focus and button/outline/border/focus are direct aliases. Chart, sidebar, opacity tokens are scoped. Font-family values must be clean names (Inter, not a full CSS stack). Deprecated tokens are marked — always check. Flex for component layout, Grid for page layout. 1440px Figma = xl: in Tailwind. 80px Figma margin = visual guide, not CSS. z-index always uses named tokens."_
 5. Ensure `tailwind.config.js` has exact custom hex values from the Primitive layer.

@@ -327,5 +327,5 @@ surface, and was never in dispute.
 - **`hypertokens-system-bundles.md`** — vendored by category without being read. It contradicted the theme in six places with no override header: `brand.primary` as blue/500, `border.error` at red/500 where Accura uses red/300, and a typography table whose `heading/lg` matched neither system. Every pairing in it was already specified authoritatively elsewhere.
 
 ### Notes
-- **Brand anchors at `/800-base` (`#008852`), not `/500`.** This is the contrast rule applied correctly, not a violation — green measures 2.50:1 against white at `/500`, below the 3:1 floor, while `/800` reaches 4.59:1 and is safe as fill *and* small text.
+- **Brand anchors at `/800-base` (`#008852`), not `/500`.** This is the contrast rule applied correctly, not a violation — green measures 2.50:1 against white at `/500`, below the 3:1 floor, while `/800` reaches 4.52:1 and is safe as fill *and* small text. (Written as 4.59:1 until 2026-09-15; recomputed and corrected. The conclusion is unchanged — it still clears 4.5:1.)
 - **Figma uses SF Pro; code uses Inter.** A recorded, accepted mismatch — not an oversight.

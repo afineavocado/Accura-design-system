@@ -74,7 +74,7 @@ Agentic's theme doc defines the acceptance test for a brand anchor — restated 
 |---|---|---|---|
 | `brand/500` | `#17bb77` | **2.50:1** | ❌ **reject** — below the 3:1 hard floor |
 | `brand/700` | `#00995e` | **3.67:1** | ⚠️ fill only |
-| **`brand/800-base`** | **`#008852`** | **4.59:1** | ✅ **perfect — fill + small text** |
+| **`brand/800-base`** | **`#008852`** | **4.52:1** | ✅ **perfect — fill + small text** |
 | `brand/900` | `#175e41` | **7.74:1** | ✅ AAA |
 
 Green is intrinsically lighter than blue at the same ramp step, so `/500` cannot clear the floor. Anchoring at `/800` is **the rule being applied correctly, not broken.**
@@ -492,7 +492,7 @@ Same token name, different values, feeding two different product files.
 
 **Q11 — ACCEPTED 2026-09-14. Focus ring contrast.** `color/ring` = `brand/500` `#17bb77` =
 **2.50:1 vs white**, below the 3:1 WCAG 1.4.11 floor for non-text indicators. The `/800` anchor
-(`#008852`) would pass at 4.59:1.
+(`#008852`) would pass at 4.52:1.
 
 > **Decision: the ring stays at `brand/500`.** Accepted knowingly.
 >

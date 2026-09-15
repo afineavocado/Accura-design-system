@@ -17,7 +17,7 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 | **`llms.txt`** | **Agent entry point** — indexes every file and states the read order. |
 | **`CLAUDE.md`** | Agent instructions and the rules-vs-values precedence. |
 | **`accura-theme.md`** | The theme reference — every token value, every deviation from Agentic, the reasoning, and 12 logged questions — 4 now decided. |
-| **`docs/design-system-rules.md`** | The inherited ruleset, vendored from Agentic. **Contains Agentic's values — see its override header.** |
+| **`docs/design-system-rules.md`** | The design rules, with Accura's values inline. Reasoning and open questions live in `accura-theme.md`. |
 | `docs/skills/` | 7 process skills — audit, build, token binding, documentation, Storybook, component implementation, prototype build. |
 | `docs/component-specs/` | 39 spec files — 37 components, plus `_template.md` and `Form-shared.md`. |
 | `docs/machine-readable/` | 38 `meta.json` artifacts, component directory, quick reference, validation scripts. |
@@ -142,7 +142,7 @@ The inherited theme rule requires a brand anchor to clear **3:1 against white** 
 | Candidate | Hex | vs white | Verdict |
 |---|---|---|---|
 | `brand/500` | `#17bb77` | **2.50:1** | ❌ rejected — below the floor |
-| `brand/800-base` | `#008852` | **4.59:1** | ✅ fill **and** small text |
+| `brand/800-base` | `#008852` | **4.52:1** | ✅ fill **and** small text |
 
 Green is intrinsically lighter than blue at the same ramp step, so `/500` can't clear the floor. Moving the anchor is the rule working as designed — and it makes Accura's brand *more* accessible than Agentic's blue (3.8:1, fill-only).
 
@@ -170,6 +170,6 @@ The load-bearing theme questions:
 
 ---
 
-*Design system rules: [`docs/design-system-rules.md`](docs/design-system-rules.md) — vendored from Agentic, values overridden by `accura-theme.md`
+*Design system rules: [`docs/design-system-rules.md`](docs/design-system-rules.md) — Accura's values inline; reasoning in `accura-theme.md`
 Agent entry point: [`llms.txt`](llms.txt) · [`CLAUDE.md`](CLAUDE.md)
 Values source of truth: Figma `[Accura] Agentic Design System`*
