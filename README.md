@@ -15,14 +15,14 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 | Path | What it is |
 |---|---|
 | **`llms.txt`** | **Agent entry point** — indexes every file and states the read order. |
-| **`CLAUDE.md`** | Agent instructions and the rules-vs-values precedence. |
+| **`CLAUDE.md`** | Agent instructions — where values come from, how to verify, what not to touch. Deliberately does not repeat this file. |
 | **`accura-theme.md`** | The theme reference — every token value, every deviation from Agentic, the reasoning, and 12 logged questions — 4 now decided. |
 | **`docs/design-system-rules.md`** | The design rules, with Accura's values inline. Reasoning and open questions live in `accura-theme.md`. |
 | `docs/skills/` | 7 process skills — audit, build, token binding, documentation, Storybook, component implementation, prototype build. |
 | `docs/component-specs/` | 39 spec files — 37 components, plus `_template.md` and `Form-shared.md`. |
 | `docs/machine-readable/` | 38 `meta.json` artifacts, component directory, quick reference, validation scripts. |
 | `docs/tracking/` | Storybook and audit status. ⚠️ Reflects Agentic's status, not Accura's. |
-| `tokens/` | DTCG token JSONs + Style Dictionary build. ⚠️ Agentic's exported values — see `llms.txt`. |
+| `tokens/` | DTCG export of Accura's tokens, plus `token-parity.mjs` — the check that says whether it still matches what ships. See `tokens/README.md`. |
 | **`accura-ui/`** | Component library + Storybook. Same components as `agentic-ui`, Accura tokens. |
 | **`flow/`** | Module specifications — what each prototype is, what the brief asked for, and the open questions. `training-module.md` (24 questions), `domain/training-module.md`, `capa-prototype-spec.md`, `deviation-spec.md` (as-built record of the live Deviation screens) and the source briefs in `flow/brief/`. |
 | `docs/demo-scope.md` | What the demo covers and what is deferred. Component patterns live in the prototype-build skill. |
@@ -150,9 +150,12 @@ Green is intrinsically lighter than blue at the same ramp step, so `/500` can't 
 
 ## Two things to know before contributing
 
-**1. `accura-ui` is a fork.** All 39 components are duplicated from `agentic-ui`. A component fix here does not reach Agentic, and vice versa. Only tokens were meant to diverge.
+**1. `accura-ui` is a fork.** All 39 components are duplicated from `agentic-ui`, and 11 of them have already diverged. A fix here does not reach Agentic, and vice versa. Only tokens were meant to differ — see `accura-ui/README.md` for which components drifted.
 
-**2. `tokens.css` is generated, not hand-written.** It comes from the Figma variables in `[Accura] Agentic Design System`. Edit the Figma variable and regenerate; hand edits get overwritten.
+**2. `accura-ui/src/app/tokens.css` is what ships.** It was originally generated from a Figma
+file, but that is provenance rather than process — nothing here requires opening Figma. The DTCG
+export in `tokens/` is a snapshot; `node tokens/token-parity.mjs` says whether it still agrees
+with what ships, and names every difference that has no recorded reason.
 
 ---
 
@@ -172,4 +175,4 @@ The load-bearing theme questions:
 
 *Design system rules: [`docs/design-system-rules.md`](docs/design-system-rules.md) — Accura's values inline; reasoning in `accura-theme.md`
 Agent entry point: [`llms.txt`](llms.txt) · [`CLAUDE.md`](CLAUDE.md)
-Values source of truth: Figma `[Accura] Agentic Design System`*
+Values source of truth: `accura-ui/src/app/tokens.css` — check the export with `node tokens/token-parity.mjs`*
