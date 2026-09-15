@@ -45,7 +45,11 @@ export const platformNav = [
 ] as const
 
 const footerNav = [
-  { label: "Knowledge Hub", icon: BookOpen, href: "#" },
+  {
+    label: "Knowledge Hub",
+    icon: BookOpen,
+    href: "/prototype/accura/knowledge-hub",
+  },
   { label: "Setting", icon: Settings, href: "#" },
   { label: "Log Out", icon: LogOut, href: "#" },
 ] as const
