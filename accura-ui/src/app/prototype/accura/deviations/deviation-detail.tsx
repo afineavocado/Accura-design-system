@@ -171,6 +171,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
     blocks.editable === "Investigation In Progress" ||
     blocks.editable === "CAPA Pending"
 
+
   const incidentBlock = (
     <RecordSection title="Incident Details">
       <div
@@ -203,7 +204,11 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
                       : null
                   }
                 />
-                <Field label="Details" value={record.details} />
+                <Field
+              label="QA reviewer"
+              value={record.qaReviewer ? display(record.qaReviewer) : null}
+            />
+            <Field label="Details" value={record.details} />
               </div>
             </RecordSection>
   )
@@ -272,11 +277,11 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
             >
                   {editingInvestigation ? (
                     <div className="space-y-[var(--spacing-component-sm)]">
-                      <Label htmlFor="risk">Risk analysis</Label>
+                      <Label required htmlFor="risk">Risk analysis</Label>
                       <Textarea
                         id="risk"
                         defaultValue={record.riskAnalysis ?? ""}
-                        placeholder="Assess the risk this deviation presents..."
+                        placeholder="Assess the risk arising from this deviation..."
                       />
                     </div>
                   ) : (
@@ -292,20 +297,36 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
                   {editingInvestigation ? (
                     <div className="space-y-[var(--spacing-component-lg)]">
                       <div className="space-y-[var(--spacing-component-sm)]">
-                        <Label htmlFor="rca">Root cause analysis</Label>
+                        <Label required htmlFor="rca">Root cause analysis</Label>
                         <Textarea
                           id="rca"
                           defaultValue={record.rootCauseAnalysis ?? ""}
-                          placeholder="5-Why, Fishbone, or narrative..."
+                          placeholder="Document the root cause analysis..."
                         />
                       </div>
                       <div className="space-y-[var(--spacing-component-sm)]">
-                        <Label htmlFor="impact">Impact analysis</Label>
+                        <Label required htmlFor="impact">Impact analysis</Label>
                         <Textarea
                           id="impact"
                           defaultValue={record.impactAnalysis ?? ""}
-                          placeholder="Effect on product lots, records and related systems..."
+                          placeholder="Analyse the impact of the deviation..."
                         />
+                      </div>
+                      <div className="space-y-[var(--spacing-component-sm)]">
+                        <Label>Supporting files</Label>
+                        <div>
+                          <Button variant="outline" size="sm">
+                            <Plus className="size-4" />
+                            Attach files
+                          </Button>
+                        </div>
+                      </div>
+                      {/* Persists the block without advancing the lifecycle —
+                          the same contract as Save impacted products. */}
+                      <div>
+                        <Button variant="ghost" size="sm">
+                          Save investigation report
+                        </Button>
                       </div>
                     </div>
                   ) : (
@@ -318,38 +339,77 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
               </>
   )
 
+  const capaEditable =
+    blocks.editable === "Investigation In Progress" ||
+    blocks.editable === "CAPA Pending"
+
   const capaBlock = (
     <RecordSection
-                title="Associated CAPAs"
-                description={
-                  record.capaRef
-                    ? undefined
-                    : "No CAPA linked yet. A justified no-CAPA decision is an equally valid outcome."
-                }
+      collapsible={hasWorkspace && !capaEditable}
+      defaultOpen={!hasWorkspace}
+      title="Associated CAPAs"
+      description={
+        record.capaRef
+          ? undefined
+          : "No CAPAs associated yet. Search and select a CAPA (or create a new one) to move this deviation to CAPA Pending."
+      }
+    >
+      <div className="space-y-[var(--spacing-component-lg)]">
+        {record.capaRef && (
+          <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-md)] rounded-[var(--radius-md)] bg-[var(--color-background-muted)] p-[var(--spacing-component-md)]">
+            <div className="min-w-0">
+              <Link
+                href="/prototype/accura/capa"
+                className="text-sm font-medium text-[var(--color-brand-primary)] hover:underline"
               >
-                {record.capaRef ? (
-                  <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-md)] rounded-[var(--radius-md)] bg-[var(--color-background-muted)] p-[var(--spacing-component-md)]">
-                    <div className="min-w-0">
-                      <Link
-                        href="/prototype/accura/capa"
-                        className="text-sm font-medium text-[var(--color-brand-primary)] hover:underline"
-                      >
-                        {record.capaRef.id}
-                      </Link>
-                      <p className="text-sm">{record.capaRef.title}</p>
-                    </div>
-                    <Badge shape="pill" variant="success" className="whitespace-nowrap">
-                      {record.capaRef.status}
-                    </Badge>
-                  </div>
-                ) : (
-                  <Button variant="outline" size="sm" asChild>
-                    <Link href="/prototype/accura/capa">Link to CAPA module</Link>
-                  </Button>
-                )}
-              </RecordSection>
+                {record.capaRef.id}
+              </Link>
+              <p className="text-sm">{record.capaRef.title}</p>
+              <p className="text-xs text-[var(--color-text-secondary)]">Associated</p>
+            </div>
+            <div className="flex shrink-0 items-center gap-[var(--spacing-component-sm)]">
+              <Badge
+                shape="pill"
+                variant={record.capaRef.status === "Completed" ? "success" : "warning"}
+                className="whitespace-nowrap"
+              >
+                {record.capaRef.status}
+              </Badge>
+              {capaEditable && record.capaRef.status !== "Completed" && (
+                <Button variant="ghost" size="sm">
+                  Mark completed
+                </Button>
+              )}
+              {capaEditable && (
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={`Remove ${record.capaRef.id}`}
+                >
+                  <X className="size-4" />
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
+        {capaEditable && (
+          <div className="space-y-[var(--spacing-component-sm)]">
+            <Label htmlFor="capa-search">Associate a CAPA</Label>
+            <Input id="capa-search" placeholder="Search CAPAs to add..." />
+            <p className="text-xs text-[var(--color-text-secondary)]">
+              Selecting a CAPA associates it immediately.
+            </p>
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/prototype/accura/capa">
+                <Plus className="size-4" />
+                Create new CAPA
+              </Link>
+            </Button>
+          </div>
+        )}
+      </div>
+    </RecordSection>
   )
-
   const signaturesBlock = (
     <RecordSection collapsible defaultOpen={!hasWorkspace} title="Signatures">
                 <ol className="flex flex-col gap-[var(--spacing-component-sm)]">
@@ -392,13 +452,22 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
   /* The block the current state asks the user to fill in. Draft has none in
      this prototype — the create form is its own screen — and the two closed
      states have none by definition. */
-  const workspace = !hasWorkspace
-    ? null
-    : blocks.editable === "In Review"
-    ? reviewBlock
-    : blocks.editable === "Investigation In Progress"
-    ? investigationBlock
-    : capaBlock
+  const workspace = !hasWorkspace ? null : (
+    <>
+      {blocks.editable === "In Review" && reviewBlock}
+      {blocks.editable === "Investigation In Progress" && investigationBlock}
+      {capaEditable && capaBlock}
+    </>
+  )
+
+  /* Whatever the workspace already renders must not repeat in the rail. */
+  const inWorkspace = new Set(
+    [
+      blocks.editable === "In Review" ? "review" : null,
+      blocks.editable === "Investigation In Progress" ? "investigation" : null,
+      capaEditable ? "capa" : null,
+    ].filter(Boolean) as string[]
+  )
 
   /* Every block the record shows, in lifecycle order. Both layouts read from
      this one list so neither can drift from the other. */
@@ -411,14 +480,27 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
   ].filter((block) => block.shown)
 
   const reference = present
-    .filter((block) => block.node !== workspace)
+    .filter((block) => !inWorkspace.has(block.key))
     .map((block) => <Fragment key={block.key}>{block.node}</Fragment>)
 
+  /* Copy and placement follow the product: two text-style actions on the
+     left, the primary on the right (spec §5.7). Reject is a real transition
+     there — sending a record back one stage — not a route to Cancelled, which
+     is what the briefs describe (spec §12.2). */
   const actionBar = closed ? null : (
-    <div className="flex flex-wrap items-center justify-end gap-[var(--spacing-component-sm)]">
-      {record.status === "In Review" && (
-        <Button variant="outline">Cancel as invalid or duplicate</Button>
-      )}
+    <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
+      <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
+        {record.status !== "Draft" && (
+          <>
+            <Button variant="ghost" size="sm">
+              Reject — send back one stage
+            </Button>
+            <Button variant="ghost" size="sm">
+              Cancel deviation
+            </Button>
+          </>
+        )}
+      </div>
       <Button>{primaryAction(record)}</Button>
     </div>
   )
@@ -564,9 +646,10 @@ function primaryAction(record: DeviationRecord): string {
     case "In Review":
       return "Approve & sign — advance to investigation"
     case "Investigation In Progress":
-      return "Complete investigation"
     case "CAPA Pending":
-      return "Advance to approval"
+      /* The product labels both of these "Done" rather than naming the
+         transition (spec §10.25). */
+      return "Done"
     case "In Approval":
       return `Sign as ${display(signatures(record).pending[0] ?? record.owner)}`
     default:

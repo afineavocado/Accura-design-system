@@ -140,12 +140,15 @@ export type DeviationRecord = {
   productImpacted: boolean
   details: string
   reviewers: Person[]
+  /** Separate from `reviewers`; renders "—" when unset, which is how the
+   *  product shows it (spec §10.21). */
+  qaReviewer?: Person
   impactedProducts: ImpactedProduct[]
   immediateAction?: string
   riskAnalysis?: string
   rootCauseAnalysis?: string
   impactAnalysis?: string
-  capaRef?: { id: string; title: string; status: string }
+  capaRef?: { id: string; title: string; status: "In progress" | "Completed" }
   /** Set when the record was cancelled; reason is required at that point.
    *  `from` is the state it was cancelled out of — the stepper shows that
    *  step, because Cancelled itself has no position (spec §9). */
@@ -303,6 +306,12 @@ export const seeds: DeviationRecord[] = [
     rootCauseAnalysis:
       "Supplier template updated without notification; missing fields not caught at goods-in.",
     impactAnalysis: "No product released. One lot on hold.",
+    qaReviewer: people.maria,
+    capaRef: {
+      id: "ACME/CAPA/2026/000019",
+      title: "Goods-in check for supplier CoA completeness",
+      status: "In progress",
+    },
   },
   {
     id: "ACME/DEV/2026/000006",
@@ -633,7 +642,9 @@ export function visibleBlocks(record: DeviationRecord) {
   return {
     review: i >= lifecycle.indexOf("In Review"),
     investigation: i >= lifecycle.indexOf("Investigation In Progress"),
-    capa: i >= lifecycle.indexOf("CAPA Pending"),
+    /* Opens one state earlier than either brief implies: linking a CAPA is
+       what advances the record to CAPA Pending (spec §5.5). */
+    capa: i >= lifecycle.indexOf("Investigation In Progress"),
     /* Shown as soon as a signature exists, rather than only from In Approval.
        The live product hides earlier signatures until step 5; showing them is
        more honest and costs nothing. */
