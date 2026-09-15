@@ -63,7 +63,10 @@ function DeviationRow({ record }: { record: DeviationRecord }) {
         </Link>
       </TableCell>
       <TableCell>
-        <p className="font-medium">{record.title}</p>
+        {/* Regular weight, like every other listing's second column. The row
+            already has one medium-weight element — the ID in column 1, which
+            is the link. Two competing emphases is one too many. */}
+        <p>{record.title}</p>
         {nextAction(record) && (
           <p className="mt-[var(--spacing-component-xs)] text-xs text-[var(--color-text-secondary)]">
             {nextAction(record)}
