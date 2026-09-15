@@ -320,14 +320,17 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
                   <div className="space-y-[var(--spacing-component-lg)]">
                     {/* Both through Field, so the label markup lives in one
                         place — this block used to hand-copy Field's own label
-                        classes for Impacted products. Two columns at full
-                        width because on a closed record both values are
-                        usually a single line; one column in the rail. */}
+                        classes for Impacted products.
+
+                        Same column definition as Incident Details, so the two
+                        cards share one set of column edges: Impacted products
+                        starts where Raised by, Category and Due date start
+                        rather than at the halfway point of its own grid. */}
                     <div
                       className={
                         hasWorkspace
                           ? "grid gap-[var(--spacing-component-lg)]"
-                          : "grid gap-[var(--spacing-component-lg)] sm:grid-cols-2"
+                          : "grid gap-[var(--spacing-component-lg)] sm:grid-cols-2 lg:grid-cols-4"
                       }
                     >
                       <Field
