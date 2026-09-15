@@ -66,7 +66,7 @@ function Choice({
   required?: boolean
 }) {
   return (
-    <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+    <div className="flex flex-col gap-[var(--spacing-component-sm)]">
       <Label required={required} id={`${id}-label`}>
         {label}
       </Label>
@@ -74,19 +74,24 @@ function Choice({
         aria-labelledby={`${id}-label`}
         value={value}
         onValueChange={onValueChange}
-        /* Between options, wider than the 12px inside one: at equal gaps a
-           label and the next option's indicator group by proximity. */
+        /* Horizontal because these are 2–3 short options in a dense form; the
+           row composition below is Storybook's radio-item verbatim. */
         className="flex flex-wrap gap-[var(--spacing-component-xl)]"
       >
         {options.map((option) => (
+          /* RadioGroup.stories.tsx §Basic: row is flex items-center at
+             spacing/component/md, min-h-[44px] for the touch target because
+             the indicator is only 16px, label is label/md on
+             color/surface/default/foreground. */
           <div
             key={option}
-            /* Radio.md §Structure: radio-item is horizontal at
-               spacing/component/md between the indicator and its label. */
-            className="flex items-center gap-[var(--spacing-component-md)]"
+            className="flex min-h-[44px] items-center gap-[var(--spacing-component-md)]"
           >
             <RadioGroupItem id={`${id}-${option}`} value={option} />
-            <Label htmlFor={`${id}-${option}`} className="font-normal">
+            <Label
+              htmlFor={`${id}-${option}`}
+              className="cursor-pointer text-sm font-medium text-[var(--color-surface-default-foreground)]"
+            >
               {option}
             </Label>
           </div>
@@ -130,7 +135,7 @@ export default function CreateDeviationPage() {
             spacing/component/lg. Adding space-y stacked margins on top and
             doubled every gap to 32px. */}
         <CardContent>
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label required htmlFor="title">
               Title / short description
             </Label>
@@ -138,7 +143,7 @@ export default function CreateDeviationPage() {
           </div>
 
           <div className="grid gap-[var(--spacing-component-lg)] md:grid-cols-2">
-            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+            <div className="flex flex-col gap-[var(--spacing-component-sm)]">
               <Label required htmlFor="department">
                 Department
               </Label>
@@ -155,7 +160,7 @@ export default function CreateDeviationPage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+            <div className="flex flex-col gap-[var(--spacing-component-sm)]">
               <Label required htmlFor="owner">
                 Deviation owner
               </Label>
@@ -198,7 +203,7 @@ export default function CreateDeviationPage() {
             onValueChange={setSeverity}
           />
 
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label required htmlFor="incident-type">
               Incident type
             </Label>
@@ -225,7 +230,7 @@ export default function CreateDeviationPage() {
             required={false}
           />
 
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label required htmlFor="details">
               Incident details
             </Label>
@@ -236,7 +241,7 @@ export default function CreateDeviationPage() {
             />
           </div>
 
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label>Attachments</Label>
             <div>
               <Button variant="outline" size="sm">

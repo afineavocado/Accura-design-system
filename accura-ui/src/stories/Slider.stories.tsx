@@ -59,7 +59,7 @@ export const Horizontal: Story = {
 
 export const Disabled: Story = {
   render: () => (
-    <div className="flex flex-col gap-[var(--spacing-component-xs)] w-72">
+    <div className="flex flex-col gap-[var(--spacing-component-sm)] w-72">
       <Label className="text-sm font-medium text-[var(--color-text-disabled)]">
         Volume (locked)
       </Label>

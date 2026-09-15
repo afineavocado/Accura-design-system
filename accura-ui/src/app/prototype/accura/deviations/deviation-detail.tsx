@@ -120,7 +120,7 @@ function ImpactedProductList({
             </Button>
           </div>
           <div className="grid gap-[var(--spacing-component-md)] md:grid-cols-2">
-            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+            <div className="flex flex-col gap-[var(--spacing-component-sm)]">
               <Label htmlFor={`product-${i}`}>Product (id or name)</Label>
               <Input
                 id={`product-${i}`}
@@ -128,7 +128,7 @@ function ImpactedProductList({
                 onChange={(e) => set(i, { product: e.target.value })}
               />
             </div>
-            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+            <div className="flex flex-col gap-[var(--spacing-component-sm)]">
               <Label htmlFor={`batch-${i}`}>Batch number</Label>
               <Input
                 id={`batch-${i}`}
@@ -137,7 +137,7 @@ function ImpactedProductList({
               />
             </div>
           </div>
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label htmlFor={`desc-${i}`}>Description</Label>
             <Textarea
               id={`desc-${i}`}
@@ -287,7 +287,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
               >
                 {editingReview ? (
                   <div className="space-y-[var(--spacing-component-lg)]">
-                    <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+                    <div className="flex flex-col gap-[var(--spacing-component-sm)]">
                       <Label htmlFor="immediate-action">Immediate action taken</Label>
                       <Textarea
                         id="immediate-action"
@@ -339,7 +339,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
               title="Risk Analysis"
             >
                   {editingInvestigation ? (
-                    <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+                    <div className="flex flex-col gap-[var(--spacing-component-sm)]">
                       <Label required htmlFor="risk">Risk analysis</Label>
                       <Textarea
                         id="risk"
@@ -359,7 +359,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
             >
                   {editingInvestigation ? (
                     <div className="space-y-[var(--spacing-component-lg)]">
-                      <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+                      <div className="flex flex-col gap-[var(--spacing-component-sm)]">
                         <Label required htmlFor="rca">Root cause analysis</Label>
                         <Textarea
                           id="rca"
@@ -367,7 +367,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
                           placeholder="Document the root cause analysis..."
                         />
                       </div>
-                      <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+                      <div className="flex flex-col gap-[var(--spacing-component-sm)]">
                         <Label required htmlFor="impact">Impact analysis</Label>
                         <Textarea
                           id="impact"
@@ -375,7 +375,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
                           placeholder="Analyse the impact of the deviation..."
                         />
                       </div>
-                      <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+                      <div className="flex flex-col gap-[var(--spacing-component-sm)]">
                         <Label>Supporting files</Label>
                         <div>
                           <Button variant="outline" size="sm">

@@ -590,7 +590,7 @@ export default function ReviewQueuePage() {
 
           <SignerIdentity signedAt={signedAt} />
 
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label required htmlFor="signature-password">
               Re-enter password
             </Label>

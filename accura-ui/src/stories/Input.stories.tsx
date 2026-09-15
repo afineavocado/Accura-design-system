@@ -7,7 +7,7 @@ import { CircleCheck, Search } from 'lucide-react';
 // Source: input.meta.json (category, variants, tokens)
 // Patterns: input.examples.tsx
 // Note: shadcn has no InputField wrapper — the input-field pattern is composed:
-//   Label + Input + <p> description in a flex-col gap-[spacing/component/xs] div.
+//   Label + Input + <p> description in a flex-col gap-[spacing/component/sm] div.
 
 const meta = {
   title: 'Forms/Input',
@@ -71,11 +71,11 @@ export const Password: Story = {
 
 // ─── Input-field composition — label + input + description ────────────────────
 // Correct pattern for any form field — wraps Label, Input, and description <p>.
-// gap: spacing/component/xs (4px) between label, input, and description.
+// gap: spacing/component/sm (8px) between label, input, and description.
 
 export const WithField: Story = {
   render: () => (
-    <div className="flex flex-col gap-[var(--spacing-component-xs)] w-[280px]">
+    <div className="flex flex-col gap-[var(--spacing-component-sm)] w-[280px]">
       <Label htmlFor="email-story">Email</Label>
       <Input id="email-story" type="email" placeholder="name@example.com" />
       <p className="text-sm text-[var(--color-text-secondary)]">Use your work email.</p>
@@ -87,7 +87,7 @@ export const WithField: Story = {
 
 export const WithFieldInvalid: Story = {
   render: () => (
-    <div className="flex flex-col gap-[var(--spacing-component-xs)] w-[280px]">
+    <div className="flex flex-col gap-[var(--spacing-component-sm)] w-[280px]">
       <Label htmlFor="invalid-story">Email</Label>
       <Input
         id="invalid-story"
@@ -104,7 +104,7 @@ export const WithFieldInvalid: Story = {
 
 export const WithFieldDisabled: Story = {
   render: () => (
-    <div className="flex flex-col gap-[var(--spacing-component-xs)] w-[280px]">
+    <div className="flex flex-col gap-[var(--spacing-component-sm)] w-[280px]">
       <Label htmlFor="disabled-story">Domain</Label>
       <Input id="disabled-story" defaultValue="agentic.design" disabled />
       <p className="text-sm text-[var(--color-text-disabled)]">

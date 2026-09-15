@@ -53,7 +53,8 @@ select-trigger              — H AUTO-LAYOUT, fill: color/input/bg
 ### `select-field`
 
 ```
-select-field                — V AUTO-LAYOUT, gap: spacing/component/xs
+select-field                — V AUTO-LAYOUT, gap: spacing/component/sm
+  (was spacing/component/xs — 4px read as the label touching its control; changed 2026-09-15)
   ├─ label                  — INSTANCE (label component — see _Form-shared.md)
   ├─ select-trigger         — INSTANCE
   └─ description            — TEXT  (hidden in Open state — dropdown replaces it visually)

@@ -260,7 +260,7 @@ function TagInputField({
   }, []);
 
   return (
-    <div className={cn("flex flex-col gap-[var(--spacing-component-xs)]", className)} ref={containerRef}>
+    <div className={cn("flex flex-col gap-[var(--spacing-component-sm)]", className)} ref={containerRef}>
       <FieldLabel htmlFor={id} invalid={invalid} disabled={disabled}>
         {label}
       </FieldLabel>
@@ -442,7 +442,7 @@ export function ComboboxField({
     };
 
     return (
-      <div className={cn("flex flex-col gap-[var(--spacing-component-xs)]", className)}>
+      <div className={cn("flex flex-col gap-[var(--spacing-component-sm)]", className)}>
         <FieldLabel htmlFor={id} invalid={invalid} disabled={disabled}>
           {label}
         </FieldLabel>
@@ -528,7 +528,7 @@ export function ComboboxField({
 
   // ── Single select ────────────────────────────────────────────────────────────
   return (
-    <div className={cn("flex flex-col gap-[var(--spacing-component-xs)]", className)}>
+    <div className={cn("flex flex-col gap-[var(--spacing-component-sm)]", className)}>
       <FieldLabel htmlFor={id} invalid={invalid} disabled={disabled}>
         {label}
       </FieldLabel>
