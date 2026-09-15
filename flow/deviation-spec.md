@@ -15,9 +15,14 @@
 > §12 is the **scope decision** for the prototype. They are clearly separated so the record stays
 > usable even if the assessment is rejected.
 >
-> **Coverage.** Five of nine screens, plus both registry filter menus. Captures supplied
-> 2026-09-15 in two batches. The four unobserved states are named in §7 so the gap is visible
+> **Coverage.** Seven of nine screens, plus both registry filter menus. Captures supplied
+> 2026-09-15 in three batches. The two unobserved states are named in §7 so the gap is visible
 > rather than assumed.
+>
+> ⚠️ **Read §10.14 and §10.2 before trusting anything written here about rejection.** The third
+> batch of captures overturned a finding and an entire assessment section that the first two had
+> supported. Both are struck through rather than deleted, because the reasoning that produced
+> them was the reasoning available at the time and will recur.
 
 ---
 
@@ -60,7 +65,7 @@ leading `+`.
 **`Severity` menu — four options:** `Severity: All` · `High` · `Medium` · `Low`
 
 > ⚠️ `Overdue` and `Cancelled` sit in the same list as the six lifecycle states, so one control
-> filters two different things — see §8.13.
+> filters two different things — see §10.13.
 
 **Table columns**, in order: `DEVIATION ID` · `SHORT DESCRIPTION` · `STATUS` · `OWNER` ·
 `CATEGORY` · `SEVERITY` · `DUE DATE`. Headers are uppercase.
@@ -165,13 +170,101 @@ less-prominent of the two.
 
 **Primary, bottom-right:** `Approve & sign — advance to investigation` — solid green pill.
 
-**No cancel or reject control appears anywhere on this screen** — see §8.14.
+**No cancel or reject control appears anywhere on this screen** — see §10.14.
 
 No inline audit-trail block; history is reached only through `View audit trail` in the header.
 
 ---
 
-## 5. Screen — Deviation detail · `In Approval`
+## 5. Screen — Deviation detail · `Investigation In Progress`
+
+Sample record `ACME-DEV-2026-0001`, title `desc`. Single column, every block full width and
+open. Stepper on step 3.
+
+### 5.1 `Incident Details` — read-only
+
+As §4.1, plus one field not present in any earlier capture: **`QA REVIEWER`**, rendering `—`
+when unset. Note that the same screen renders unset values elsewhere as italic *Not provided*
+(§8.21).
+
+`IMPACTED PRODUCTS (1)` carries forward as the same read-only inset card.
+
+### 5.2 `Review Details` — now locked
+
+`IMMEDIATE ACTION TAKEN` → *Not provided*. The block is read-only from this state on.
+
+### 5.3 `Risk Analysis` — editable, rich text
+
+Label `Risk analysis` with a **red required asterisk**. The control is a **rich-text editor**,
+not a textarea: a toolbar of bold, italic, underline, bulleted list, numbered list, insert
+table, and clear formatting sits above the input. Placeholder: *"Assess the risk arising from
+this deviation. You can add tables or paste one from Word..."*
+
+The Word reference is the tell — investigators paste formatted risk tables out of existing
+documents, so the field has to survive that.
+
+### 5.4 `Investigation Report` — editable
+
+| Element | Control | Observed |
+|---|---|---|
+| `Impact analysis` ✱ | textarea | placeholder `Analyse the impact of the deviation...` |
+| `Root cause analysis` ✱ | textarea | placeholder `Document the root cause analysis...` |
+| `Supporting files` | `+ Attach files` | text-style action |
+| `Save investigation report` | text-style action | saves without changing status |
+
+The independent save mirrors `Save impacted products` at `In Review` (§4.2): a block can be
+persisted without advancing the lifecycle.
+
+### 5.5 `Associated CAPAs` — present already, and interactive
+
+Appears at **this** state, one earlier than either brief implies. Count `0 CAPAs` right-aligned.
+
+Description: *"No CAPAs associated yet. Search and select a CAPA (or create a new one) to move
+this deviation to CAPA Pending."* — so **linking a CAPA is what advances the state**, not a
+separate Next button.
+
+Controls: `Associate a CAPA` search field, placeholder `Search CAPAs to add...`, helper
+*"Selecting a CAPA associates it immediately."*, and `+ Create new CAPA`.
+
+### 5.6 `Signatures`
+
+Present from this state, carrying the department owner's signature captured at the `In Review`
+gate. Rendered as a tinted card with a coloured left border.
+
+### 5.7 Actions
+
+Bottom bar, left to right: **`Reject — send back one stage`** (text style) · **`Cancel
+deviation`** (text style) · **`Done`** (solid green, right-aligned).
+
+`Done` is the same label at both captured states, rather than a state-specific verb.
+
+---
+
+## 6. Screen — Deviation detail · `CAPA Pending`
+
+Same record, stepper on step 4. Identical single-column layout; every prior block now read-only,
+including Risk Analysis and Investigation Report, both showing *Not provided*.
+
+`Associated CAPAs` becomes the working block. Count `1 CAPA`. The linked row shows:
+
+- CAPA reference `ACME/CAPA/2026/000019` as a link, title `Test`, relationship `Associated`
+- an amber **`In progress`** status badge, echoed from the CAPA module
+- a **`Mark completed`** text action
+- an **`✕`** to remove the association
+
+The `Associate a CAPA` search and `+ Create new CAPA` remain below, so more than one CAPA can
+be linked.
+
+Actions unchanged: `Reject — send back one stage` · `Cancel deviation` · `Done`.
+
+> ⚠️ `Mark completed` sets the status of a **CAPA** from inside a deviation. Business Flow
+> invariant §9.6 says the deviation stores the reference and never duplicates CAPA state. A
+> control that writes CAPA status from the deviation screen is either a violation of that
+> invariant or a cross-module action the briefs do not describe.
+
+---
+
+## 7. Screen — Deviation detail · `In Approval`
 
 Sample record `ACME/DEV/2026/000006`.
 
@@ -227,7 +320,7 @@ reviewer:` followed by the button `Sign as Sarah Johnson (QA)` (white, outlined,
 
 ---
 
-## 6. Screen — Deviation Audit Trail (drawer)
+## 8. Screen — Deviation Audit Trail (drawer)
 
 Opens as a **right-side overlay** covering roughly a third of the viewport; the page behind dims
 and stays in place. Header: title `Deviation Audit Trail`, subtitle `ACME/DEV/2026/000006`, close
@@ -247,16 +340,15 @@ Entries are separated by hairline rules and ordered newest first.
 
 ---
 
-## 7. Screens not supplied
+## 9. Screens not supplied
 
 No capture exists for these, and nothing here should be assumed about them:
 
-`Draft` · `Investigation In Progress` · `CAPA Pending` · `Approved` (closed) · `Cancelled` · the
-Overdue treatment on a record that is actually overdue.
+`Draft` · `Cancelled` · the Overdue treatment on a record that is actually overdue.
 
 ---
 
-## 8. Findings — screens vs briefs
+## 10. Findings — screens vs briefs
 
 Recorded, not resolved.
 
@@ -307,11 +399,22 @@ states. The control answers two questions at once: *where is this record in its 
 it late / void*. A record that is both `In Review` and overdue can only be found under one of them.
 Same shape as `UseStatus` absorbing `Superseded`/`Obsolete` in Documents.
 
-**14. `In Review` has no cancel or reject control.** Business Flow §5 Step 2 makes rejection one of
-the two decisions at this gate — *"Invalid / duplicate / non-applicable → transition to
-`Cancelled`"* — and §3 draws the arrow. Metadata §4.4 names a "Cancel / Reject path". The screen
-shows only `Approve & sign`. Either the path is somewhere not captured, or **`Cancelled` is
-unreachable from the state the brief says owns it**, which would make that filter option dead.
+**14. ~~`In Review` has no cancel or reject control.~~ — RETRACTED 2026-09-15.**
+~~Both briefs make rejection one of the two decisions at this gate; the screen shows only
+`Approve & sign`, so either the path is somewhere not captured, or `Cancelled` is unreachable from
+the state that owns it.~~
+
+The `Investigation In Progress` and `CAPA Pending` captures show **`Reject — send back one stage`**
+and **`Cancel deviation`** side by side in the action bar. Both controls exist and they are
+distinct actions.
+
+**What the mistake was:** treating a control missing from one capture as a missing capability,
+then building on it, rather than marking it unverified. Both controls are text-style and
+bottom-left — exactly where a crop loses them.
+
+**What survives** is a finding about the *brief*, not the product: neither brief mentions a reject
+or send-back transition anywhere, and Business Flow §5 Step 5 routes a refusing signatory into
+cancellation. The product is ahead of its own documentation.
 
 **15. `PRODUCT IMPACTED` is `No` while `IMPACTED PRODUCTS (1)` lists a product** — both on the same
 screen, a few lines apart. Either the flag and the list are independent by design, or the flag is
@@ -335,6 +438,30 @@ drawer behind `View audit trail`.
 **20. Filters are native OS selects.** Both menus render with macOS system chrome and the prefix
 repeated on every option (`Status: Draft`, `Status: In Review`). Not design-system components.
 
+**21. Empty values render two different ways on one screen.** `QA REVIEWER` shows `—` while
+`IMMEDIATE ACTION TAKEN` shows italic *Not provided*, a few hundred pixels apart.
+
+**22. `Risk analysis` is a rich-text field, not a textarea.** Bold, italic, underline, lists,
+insert table, clear formatting — and the placeholder says *"You can add tables or paste one from
+Word"*. No other field in the module has formatting. Investigators evidently paste risk tables out
+of existing documents, which is a content requirement, not a nicety.
+
+**23. `Associated CAPAs` appears at `Investigation In Progress`,** one state earlier than either
+brief implies, and linking a CAPA is what advances the record: *"Search and select a CAPA (or
+create a new one) to move this deviation to CAPA Pending."* There is no separate advance button
+for that transition.
+
+**24. `Mark completed` sets CAPA status from inside the deviation.** Business Flow invariant §9.6
+says the deviation stores the reference and never duplicates CAPA state. Either the invariant is
+violated, or this is a cross-module write the briefs do not describe.
+
+**25. The primary action is `Done` at every open state,** not a state-specific verb. The briefs
+specify `Approve & sign — advance to investigation` at `In Review` (§13.9) — so either the label
+changed, or it differs per state and `Done` covers the middle three.
+
+**26. Three investigation fields are required** — `Risk analysis`, `Impact analysis`,
+`Root cause analysis` all carry the red asterisk. Neither brief marks any of them required.
+
 **11. `Risk Analysis` is its own top-level block,** separate from `Investigation Report`, although
 the brief groups both under the investigation stage.
 
@@ -343,7 +470,7 @@ the brief groups both under the investigation stage.
 
 ---
 
-## 9. Reusable in our prototype
+## 11. Reusable in our prototype
 
 | Need | Existing |
 |---|---|
@@ -363,13 +490,13 @@ advance status. It is the only block in the module with no existing equivalent i
 
 ---
 
-## 10. Assessment — how this compares to other eQMS products
+## 12. Assessment — how this compares to other eQMS products
 
 > Not observation. This section compares the documented flow against common practice in
 > MasterControl, Veeva Vault QMS, TrackWise, ETQ Reliance and similar, and against ICH Q9/Q10 and
 > 21 CFR 211.192.
 
-### 10.1 What is conventional and correct
+### 12.1 What is conventional and correct
 
 - The `Deviation → investigation → CAPA → approval → closed` chain is the industry-standard shape.
 - **Referencing the CAPA by ID with a live status echo, never duplicating its state** (Business
@@ -379,33 +506,32 @@ advance status. It is the only block in the module with no existing equivalent i
   practice — better than burying signature meaning in a modal nobody re-reads.
 - One accumulating page rather than tabbed stages keeps prior context visible during sign-off.
 
-### 10.2 Gap A — there is no way to send a record back *(correctness)*
+### 12.2 ~~Gap A — there is no way to send a record back~~ — RETRACTED 2026-09-15
 
-Business Flow §5 Step 5: *"A signatory refusing to sign may return the record via a cancellation
-action → `Cancelled`."*
+~~A signatory who judges the root-cause analysis inadequate has one option: cancel the deviation.
+Every mature eQMS separates reject-for-rework from cancel/void. Accura already solves this in
+Documents; Deviation is the odd one out.~~
 
-So a QA manager at `In Approval` who judges the root-cause analysis inadequate has one option:
-**cancel the deviation.** But a deviation records an event that actually happened. `Cancelled` means
-*this report was invalid or duplicate* — not *this investigation was sloppy*. The two are being
-collapsed into one terminal state.
+**Wrong.** The product has both, in the same action bar, at every state captured:
+`Reject — send back one stage` and `Cancel deviation`. The two-verb split this section called
+missing is implemented.
 
-Consequences, both bad:
+The reasoning was sound; the evidence was not. It rested on one sentence of the brief and one
+screenshot where the controls were not visible, and I treated two weak signals pointing the same
+way as confirmation.
 
-- The record is wrongly cancelled, and a real quality event disappears from the system — an
-  inspection finding waiting to happen; or
-- Reviewers sign inadequate work, because the alternative is destructive.
+**What remains true, and is worth raising with the brief's author:**
 
-Every mature eQMS separates **reject/return for rework** from **cancel/void**. Return moves the
-record to an earlier state with a mandatory reason and a signature; cancel ends it.
+- Neither brief documents the reject transition. Anyone building from the briefs alone would not
+  implement it.
+- Business Flow §5 Step 5 actively describes the wrong behaviour.
+- `Reject` moves exactly **one** stage. Whether a signatory at `In Approval` can return a record
+  to `Investigation In Progress` — two stages back, where the fault usually is — is not visible
+  from these captures.
 
-**Accura already solves this elsewhere.** The Documents module has a `returned` annotation that
-sends a record back to `Draft` carrying `reason`, `name`, `timestamp` and `fromStatus`, renders a
-destructive `Alert` — *"Returned to Draft by …"* — sets the next action to `Revise and resubmit`,
-marks prior signatures historical, and writes `Rejection signed — returned to Draft` to the audit
-trail. Training's review queue likewise keeps Reject distinct from Cancel. **Deviation is the odd
-one out inside Accura's own product.** Proposal in §11.
+§13 was the design proposal for this gap. Retained as a record of the reasoning; not to be built.
 
-### 10.3 Gap B — classification is captured but never used *(product decision)*
+### 12.3 Gap B — classification is captured but never used *(product decision)*
 
 The form collects `Category` (Minor / Major / Critical) and `Severity` (High / Medium / Low), and
 **nothing branches on either.** A Minor/Low planned deviation walks the same six states, full RCA,
@@ -423,16 +549,16 @@ justified no-CAPA decision should be an equal first-class outcome.
 
 This one changes the state machine, so it is a product decision, not a prototype fix.
 
-### 10.4 Gap C — impacted products are free text *(traceability)*
+### 12.4 Gap C — impacted products are free text *(traceability)*
 
 `Product (id or name)` and `Batch number` are plain text inputs (§4.2). The system therefore cannot
 reliably answer *"show me every deviation affecting batch B-123"* — the question an inspector asks
 and the question that matters during a recall. Peer systems bind these to actual batch/lot records.
 
 The captured data already shows the cost: `PRODUCT IMPACTED: No` sits a few lines above
-`IMPACTED PRODUCTS (1)` on the same screen (§8.15).
+`IMPACTED PRODUCTS (1)` on the same screen (§10.15).
 
-### 10.5 Three smaller divergences
+### 12.5 Three smaller divergences
 
 **No due-date management.** The date drives the entire Overdue rule but has no field on Create
 (§8.2), no extension-with-justification flow, and no escalation beyond a badge. In peer systems an
@@ -447,11 +573,16 @@ only accumulates an Overdue badge; there is no check-in obligation.
 
 ---
 
-## 11. Proposal — the return transition (Gap A)
+## 13. ~~Proposal — the return transition (Gap A)~~ — SUPERSEDED 2026-09-15
+
+> ⚠️ **Do not build this.** The product already has `Reject — send back one stage` (§5.7). This
+> section solved a gap that does not exist — see §12.2. It is kept because the questions it raises
+> still need answering against the real control: where a return is allowed from, whether prior
+> signatures survive it, and what the stepper shows afterwards.
 
 Modelled on the Documents `returned` pattern so the two modules behave alike.
 
-### 11.1 It is not a seventh state
+### 13.1 It is not a seventh state
 
 `Returned` is **an annotation plus a backward transition**, not a new lifecycle state. The stepper
 keeps six steps. This matters: adding a seventh box would break invariant §9.2 ("no skipping")
@@ -469,7 +600,7 @@ returned?: {
 
 The record's `status` moves to the target state; `returned` describes how it got there.
 
-### 11.2 Where it is allowed
+### 13.2 Where it is allowed
 
 | From | Returns to | Why |
 |---|---|---|
@@ -482,7 +613,7 @@ The record's `status` moves to the target state; `returned` describes how it got
 genuinely `Cancelled`, which is what that state is for. Giving one state both actions is what
 created the confusion in the first place.
 
-### 11.3 Rules
+### 13.3 Rules
 
 1. **Reason is mandatory.** The signature dialog already supports this — `reasonRequired` on
    `RecordSignatureDialog` (`record-workflow.tsx`), built for exactly this case.
@@ -498,7 +629,7 @@ created the confusion in the first place.
 6. **`Cancelled` narrows** to invalid, duplicate, or out-of-scope reports only. Update Business
    Flow §5 Step 5, which currently routes a refusal to sign into cancellation.
 
-### 11.4 On screen
+### 13.4 On screen
 
 - A destructive `Alert` at the top of the detail page while `returned` is set and the record has
   not advanced past that state: **"Returned from In Approval by Sarah Johnson (QA)"**, with
@@ -506,16 +637,16 @@ created the confusion in the first place.
 - The block the return targets is editable again; everything before it stays locked.
 - Next action reads **`Revise and resubmit`**, matching Documents.
 - Registry: `Returned` shown as a **badge beside the status**, not as a status value — the record
-  genuinely *is* in `Investigation In Progress`. This also avoids repeating §8.13, where `Overdue`
+  genuinely *is* in `Investigation In Progress`. This also avoids repeating §10.13, where `Overdue`
   and `Cancelled` were folded into the Status filter.
 
-### 11.5 Cost
+### 13.5 Cost
 
 Small. `RecordSignatureDialog` already has `reasonRequired`; `Alert` exists; the annotation shape
 is copied from `DemoDocument`. The real work is the four transition rules and deciding whether
 `In Approval` returns to a fixed target or lets the signatory choose.
 
-### 11.6 Open question for the brief's author
+### 13.6 Open question for the brief's author
 
 **Was the cancel-as-rejection wording deliberate, or shorthand?** If a real reviewer today cancels
 deviations to send them back, the production data may contain cancelled records that were never
@@ -524,12 +655,12 @@ invalid — which would matter for any trend analysis built on that field.
 
 ---
 
-## 12. Scope decision — cancel and return in the prototype
+## 14. Scope decision — cancel and return in the prototype
 
 **Decided 2026-09-15.** The PO wants the happy path. Neither cancel nor return is a happy path, so
 the question is not which to build but **what not to lock in while building neither.**
 
-### 12.1 What peer products do
+### 14.1 What peer products do
 
 Across MasterControl, Veeva Vault QMS, TrackWise and ETQ Reliance these are **two distinct verbs**,
 not two labels for one action:
@@ -551,27 +682,31 @@ Two details worth carrying over:
   corrected, not voided. The brief offering cancellation through `In Approval` (§6) is the
   unusual part.
 
-### 12.2 What the prototype does
+### 14.2 What the prototype does — REVISED 2026-09-15
+
+The original decision scoped cancel to `In Review` only, believing it was the only state offering
+it. §5.7 shows `Cancel deviation` at `Investigation In Progress` and `CAPA Pending` too, beside
+`Reject — send back one stage`.
 
 | | Decision |
 |---|---|
-| Overdue | **Not a status.** Rendered as red `Overdue` text beneath the due date — on the field that causes it — never as a badge in the Status column and never as an option in the Status filter. A badge sitting beside the status reads as a seventh state, which is the exact thing brief §6 says it is not. |
-| Cancel on `In Review` | **Build it.** The one place it is honest — a duplicate or out-of-scope report caught at triage genuinely should not exist, and Business Flow §5 Step 2 treats it as a real decision there rather than a fallback. Reason required. |
-| Cancel on `In Approval`, `CAPA Pending`, `Investigation In Progress` | **Do not build.** Not a design statement — scope. A signatory who will not sign does nothing in a happy-path demo, which is accurate. |
-| `Cancelled` as a record state | **Displayable.** One seeded record, a badge, a read-only detail screen. `Cancelled` is already an option in the live Status filter (§8.13), so it will be clicked. Showing a state is cheap; building the transition into it is not. |
-| Return / send back (§11) | **Deferred.** Designed, not built. |
+| Overdue | **Not a status.** Red `Overdue` text beneath the due date, on the field that causes it; never a badge in the Status column, never an option in the Status filter. A badge beside the status reads as a seventh state, which brief §6 says it is not. |
+| `Cancel deviation` | **Build, on every open state.** Matches the product, and takes the product's own label rather than the invented `Cancel as invalid or duplicate`. |
+| `Reject — send back one stage` | **Build.** It exists; omitting it would misrepresent the flow. Inert until the logic phase, like the other actions. |
+| `Cancelled` as a record state | **Displayable.** One seeded record, a badge, a read-only detail screen. |
+| The return design in §13 | **Do not build.** Superseded by the real control. |
 
-**Button copy: `Cancel — invalid or duplicate`,** not bare `Cancel`. The label carries the meaning
-at zero cost and stops the control reading as "reject this work" — the same move as `All statuses`
-over `Status: All`.
+**Superseded reasoning:** the original §14.3 argued that omitting cancel from `In Approval` cost
+nothing and avoided encoding "refuse to sign destroys the record". That held only while rejection
+was believed absent. With `Reject` present, cancel is no longer the only exit.
 
-### 12.3 Why `In Approval` gets no cancel button
+### 14.3 ~~Why `In Approval` gets no cancel button~~ — superseded by §14.2
 
 Adding it costs one button and encodes *refuse to sign = destroy the record* into the artefact the
 development team will copy. Omitting it costs nothing the demo needs. If the flow is later built
 properly, §11 is the design; nothing here forecloses it.
 
-### 12.4 Still open regardless of scope
+### 14.4 Still open regardless of scope
 
 **§11.6 stands and is not a design question.** If reviewers today cancel deviations in order to
 send them back, production `Cancelled` records include records that were never invalid — and any
