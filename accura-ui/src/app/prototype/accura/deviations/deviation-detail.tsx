@@ -237,43 +237,48 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
 
   const incidentBlock = (
     <RecordSection title="Incident Details">
+      {/* Two zones. Twelve short scalars fill an even grid; only Details gets
+          the full width, because it is the only field that needs it. A single
+          uniform grid left Product impacted alone on a row and gave two-word
+          values a row of their own. In the rail the grid is one column, so the
+          separation costs nothing there. */}
       <div
         className={
           hasWorkspace
             ? "grid gap-[var(--spacing-component-md)]"
-            : "grid gap-[var(--spacing-component-lg)] sm:grid-cols-2 lg:grid-cols-3"
+            : "grid gap-[var(--spacing-component-lg)] sm:grid-cols-2 lg:grid-cols-4"
         }
       >
-                <Field label="Date raised" value={displayDate(record.dateRaised)} />
-                <Field label="Raised by" value={display(record.raisedBy)} />
-                <Field label="Due date" value={displayDate(record.dueDate)} />
-                <Field label="Department" value={record.department} />
-                <Field label="Owner" value={display(record.owner)} />
-                <Field label="Classification" value={record.classification} />
-                <Field label="Category" value={record.category} />
-                <Field label="Severity" value={record.severity} />
-                <Field label="Incident type" value={record.incidentType} />
-                <Field
-                  label="Product impacted"
-                  value={record.productImpacted ? "Yes" : "No"}
-                />
-              </div>
-              <div className="mt-[var(--spacing-component-lg)] grid gap-[var(--spacing-component-lg)]">
-                <Field
-                  label="Reviewers"
-                  value={
-                    record.reviewers.length
-                      ? record.reviewers.map(display).join(", ")
-                      : null
-                  }
-                />
-                <Field
-              label="QA reviewer"
-              value={record.qaReviewer ? display(record.qaReviewer) : null}
-            />
-            <Field label="Details" value={record.details} />
-              </div>
-            </RecordSection>
+        <Field label="Date raised" value={displayDate(record.dateRaised)} />
+        <Field label="Due date" value={displayDate(record.dueDate)} />
+        <Field label="Department" value={record.department} />
+        <Field label="Classification" value={record.classification} />
+        <Field label="Category" value={record.category} />
+        <Field label="Severity" value={record.severity} />
+        <Field label="Incident type" value={record.incidentType} />
+        <Field
+          label="Product impacted"
+          value={record.productImpacted ? "Yes" : "No"}
+        />
+        <Field label="Raised by" value={display(record.raisedBy)} />
+        <Field label="Owner" value={display(record.owner)} />
+        <Field
+          label="Reviewers"
+          value={
+            record.reviewers.length
+              ? record.reviewers.map(display).join(", ")
+              : null
+          }
+        />
+        <Field
+          label="QA reviewer"
+          value={record.qaReviewer ? display(record.qaReviewer) : null}
+        />
+      </div>
+      <div className="mt-[var(--spacing-component-lg)] border-t border-[var(--color-border-default)] pt-[var(--spacing-component-lg)]">
+        <Field label="Details" value={record.details} />
+      </div>
+    </RecordSection>
   )
 
   const reviewBlock = (
