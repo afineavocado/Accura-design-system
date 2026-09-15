@@ -648,6 +648,8 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
     ],
   ].map((column) => column.filter((block) => block.shown))
 
+  const twoColumn = !workspace && dossierColumns[1].length > 0
+
   const steps = lifecycle.map((label) => ({ label }))
   const current =
     stepIndex(record.cancelled?.from ?? record.status) ?? lifecycle.length
@@ -737,7 +739,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
             {reference}
           </aside>
         </div>
-      ) : (
+      ) : twoColumn ? (
         <div className="grid gap-[var(--spacing-layout-sm)] lg:grid-cols-2 lg:items-start">
           {dossierColumns.map((column, i) => (
             <div key={i} className="space-y-[var(--spacing-layout-sm)]">
@@ -747,6 +749,13 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
               {i === 1 && actionBar}
             </div>
           ))}
+        </div>
+      ) : (
+        <div className="space-y-[var(--spacing-layout-sm)]">
+          {present.map((block) => (
+            <Fragment key={block.key}>{block.node}</Fragment>
+          ))}
+          {actionBar}
         </div>
       )}
 
