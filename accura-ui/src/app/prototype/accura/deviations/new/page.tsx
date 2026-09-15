@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { ToggleGroup } from "@/components/ui/toggle-group"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 import {
   basePath,
@@ -49,6 +49,48 @@ const reviewerOptions = Object.values(people).map((person) => ({
   value: person.name,
   label: display(person),
 }))
+
+function Choice({
+  id,
+  label,
+  options,
+  value,
+  onValueChange,
+  required = true,
+}: {
+  id: string
+  label: string
+  options: readonly string[]
+  value: string
+  onValueChange: (value: string) => void
+  required?: boolean
+}) {
+  return (
+    <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+      <Label required={required} id={`${id}-label`}>
+        {label}
+      </Label>
+      <RadioGroup
+        aria-labelledby={`${id}-label`}
+        value={value}
+        onValueChange={onValueChange}
+        className="flex flex-wrap gap-[var(--spacing-component-lg)]"
+      >
+        {options.map((option) => (
+          <div
+            key={option}
+            className="flex items-center gap-[var(--spacing-component-sm)]"
+          >
+            <RadioGroupItem id={`${id}-${option}`} value={option} />
+            <Label htmlFor={`${id}-${option}`} className="font-normal">
+              {option}
+            </Label>
+          </div>
+        ))}
+      </RadioGroup>
+    </div>
+  )
+}
 
 export default function CreateDeviationPage() {
   const [classification, setClassification] = useState("")
@@ -125,75 +167,56 @@ export default function CreateDeviationPage() {
             description="Add zero or more reviewers. Selecting a name adds it immediately."
           />
 
-          <div className="grid gap-[var(--spacing-component-lg)] md:grid-cols-2">
-            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-              <Label required id="classification-label">
-                Classification
-              </Label>
-              <ToggleGroup
-                label="Classification"
-                aria-labelledby="classification-label"
-                options={classifications}
-                value={classification}
-                onValueChange={setClassification}
-              />
-            </div>
-            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-              <Label required id="category-label">
-                Category
-              </Label>
-              <ToggleGroup
-                label="Category"
-                aria-labelledby="category-label"
-                options={categories}
-                value={category}
-                onValueChange={setCategory}
-              />
-            </div>
-          </div>
+          <Choice
+            id="classification"
+            label="Classification"
+            options={classifications}
+            value={classification}
+            onValueChange={setClassification}
+          />
 
-          <div className="grid gap-[var(--spacing-component-lg)] md:grid-cols-2">
-            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-              <Label required id="severity-label">
-                Severity
-              </Label>
-              <ToggleGroup
-                label="Severity"
-                aria-labelledby="severity-label"
-                options={severities}
-                value={severity}
-                onValueChange={setSeverity}
-              />
-            </div>
-            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-              <Label required htmlFor="incident-type">
-                Incident type
-              </Label>
-              <Select>
-                <SelectTrigger id="incident-type" className="w-full">
-                  <SelectValue placeholder="Select incident type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {incidentTypes.map((option) => (
-                    <SelectItem key={option} value={option}>
-                      {option}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+          <Choice
+            id="category"
+            label="Category"
+            options={categories}
+            value={category}
+            onValueChange={setCategory}
+          />
+
+          <Choice
+            id="severity"
+            label="Severity"
+            options={severities}
+            value={severity}
+            onValueChange={setSeverity}
+          />
 
           <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-            <Label id="product-impacted-label">Product impacted?</Label>
-            <ToggleGroup
-              label="Product impacted"
-              aria-labelledby="product-impacted-label"
-              options={["Yes", "No"] as const}
-              value={productImpacted}
-              onValueChange={setProductImpacted}
-            />
+            <Label required htmlFor="incident-type">
+              Incident type
+            </Label>
+            <Select>
+              <SelectTrigger id="incident-type" className="w-full">
+                <SelectValue placeholder="Select incident type" />
+              </SelectTrigger>
+              <SelectContent>
+                {incidentTypes.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
+
+          <Choice
+            id="product-impacted"
+            label="Product impacted?"
+            options={["Yes", "No"] as const}
+            value={productImpacted}
+            onValueChange={setProductImpacted}
+            required={false}
+          />
 
           <div className="flex flex-col gap-[var(--spacing-component-xs)]">
             <Label required htmlFor="details">
