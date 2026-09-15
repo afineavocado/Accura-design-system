@@ -182,7 +182,16 @@ function CapaSearch({
   )
 
   return (
-    <div className="space-y-[var(--spacing-component-sm)]">
+    /* Close on focus leaving the whole control, not on the input blurring.
+       A blur timeout races the click: the list unmounts between mousedown and
+       click, and the option is gone before the browser can activate it. */
+    <div
+      className="space-y-[var(--spacing-component-sm)]"
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node))
+          setOpen(false)
+      }}
+    >
       <Label htmlFor="capa-search">Associate a CAPA</Label>
       <div className="relative">
         <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
@@ -194,7 +203,6 @@ function CapaSearch({
             setOpen(true)
           }}
           onFocus={() => setOpen(true)}
-          onBlur={() => window.setTimeout(() => setOpen(false), 150)}
           placeholder="Search CAPAs to add..."
           className="pl-9"
           role="combobox"
@@ -211,7 +219,6 @@ function CapaSearch({
             <li key={capa.id}>
               <button
                 type="button"
-                onMouseDown={(event) => event.preventDefault()}
                 onClick={() => {
                   onAdd(capa)
                   setQuery("")
@@ -225,8 +232,10 @@ function CapaSearch({
             </li>
           ))}
           <li>
+            {/* Straight to the CAPA module's create screen, not its listing —
+                the user has already decided to create one. */}
             <Link
-              href="/prototype/accura/capa"
+              href="/prototype/accura/capa/new"
               className="flex items-center gap-[var(--spacing-component-sm)] p-[var(--spacing-component-md)] text-sm font-medium text-[var(--color-brand-primary)] hover:bg-[var(--color-background-accent)]"
             >
               <Plus className="size-4" />
