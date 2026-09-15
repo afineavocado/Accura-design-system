@@ -318,18 +318,32 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
                   </div>
                 ) : (
                   <div className="space-y-[var(--spacing-component-lg)]">
-                    <Field label="Immediate action taken" value={record.immediateAction} />
-                    <div>
-                      <p className="text-xs uppercase tracking-wide text-[var(--color-text-secondary)]">
-                        Impacted products
-                      </p>
-                      <div className="mt-[var(--spacing-component-sm)]">
-                        <ImpactedProductList
-                          rows={record.impactedProducts}
-                          editable={false}
-                          onChange={() => {}}
-                        />
-                      </div>
+                    {/* Both through Field, so the label markup lives in one
+                        place — this block used to hand-copy Field's own label
+                        classes for Impacted products. Two columns at full
+                        width because on a closed record both values are
+                        usually a single line; one column in the rail. */}
+                    <div
+                      className={
+                        hasWorkspace
+                          ? "grid gap-[var(--spacing-component-lg)]"
+                          : "grid gap-[var(--spacing-component-lg)] sm:grid-cols-2"
+                      }
+                    >
+                      <Field
+                        label="Immediate action taken"
+                        value={record.immediateAction}
+                      />
+                      <Field
+                        label="Impacted products"
+                        value={
+                          <ImpactedProductList
+                            rows={record.impactedProducts}
+                            editable={false}
+                            onChange={() => {}}
+                          />
+                        }
+                      />
                     </div>
                   </div>
                 )}
