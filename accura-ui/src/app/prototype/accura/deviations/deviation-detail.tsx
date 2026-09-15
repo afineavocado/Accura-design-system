@@ -164,6 +164,247 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
   const editingReview = blocks.editable === "In Review"
   const editingInvestigation = blocks.editable === "Investigation In Progress"
 
+  /* Which state, if any, has something to fill in. Drives the layout, and is
+     read by blocks defined below `workspace`, so it must be its own value. */
+  const hasWorkspace =
+    blocks.editable === "In Review" ||
+    blocks.editable === "Investigation In Progress" ||
+    blocks.editable === "CAPA Pending"
+
+  const incidentBlock = (
+    <RecordSection title="Incident Details">
+      <div
+        className={
+          hasWorkspace
+            ? "grid gap-[var(--spacing-component-md)]"
+            : "grid gap-[var(--spacing-component-lg)] sm:grid-cols-2 lg:grid-cols-3"
+        }
+      >
+                <Field label="Date raised" value={displayDate(record.dateRaised)} />
+                <Field label="Raised by" value={display(record.raisedBy)} />
+                <Field label="Due date" value={displayDate(record.dueDate)} />
+                <Field label="Department" value={record.department} />
+                <Field label="Owner" value={display(record.owner)} />
+                <Field label="Classification" value={record.classification} />
+                <Field label="Category" value={record.category} />
+                <Field label="Severity" value={record.severity} />
+                <Field label="Incident type" value={record.incidentType} />
+                <Field
+                  label="Product impacted"
+                  value={record.productImpacted ? "Yes" : "No"}
+                />
+              </div>
+              <div className="mt-[var(--spacing-component-lg)] grid gap-[var(--spacing-component-lg)]">
+                <Field
+                  label="Reviewers"
+                  value={
+                    record.reviewers.length
+                      ? record.reviewers.map(display).join(", ")
+                      : null
+                  }
+                />
+                <Field label="Details" value={record.details} />
+              </div>
+            </RecordSection>
+  )
+
+  const reviewBlock = (
+    <RecordSection
+                title="Review Details"
+                description={
+                  editingReview
+                    ? "Triage and containment. Record what was done at the time of detection."
+                    : undefined
+                }
+              >
+                {editingReview ? (
+                  <div className="space-y-[var(--spacing-component-lg)]">
+                    <div className="space-y-[var(--spacing-component-sm)]">
+                      <Label htmlFor="immediate-action">Immediate action taken</Label>
+                      <Textarea
+                        id="immediate-action"
+                        value={immediateAction}
+                        onChange={(e) => setImmediateAction(e.target.value)}
+                        placeholder="Describe any immediate containment / correction taken..."
+                      />
+                    </div>
+                    <div className="space-y-[var(--spacing-component-sm)]">
+                      <div className="flex items-center justify-between">
+                        <Label>Impacted products</Label>
+                        <span className="text-xs text-[var(--color-text-secondary)]">
+                          {products.length}{" "}
+                          {products.length === 1 ? "product" : "products"}
+                        </span>
+                      </div>
+                      <ImpactedProductList
+                        rows={products}
+                        editable
+                        onChange={setProducts}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-[var(--spacing-component-lg)]">
+                    <Field label="Immediate action taken" value={record.immediateAction} />
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-[var(--color-text-secondary)]">
+                        Impacted products
+                      </p>
+                      <div className="mt-[var(--spacing-component-sm)]">
+                        <ImpactedProductList
+                          rows={record.impactedProducts}
+                          editable={false}
+                          onChange={() => {}}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </RecordSection>
+  )
+
+  const investigationBlock = (
+    <>
+                <RecordSection title="Risk Analysis">
+                  {editingInvestigation ? (
+                    <div className="space-y-[var(--spacing-component-sm)]">
+                      <Label htmlFor="risk">Risk analysis</Label>
+                      <Textarea
+                        id="risk"
+                        defaultValue={record.riskAnalysis ?? ""}
+                        placeholder="Assess the risk this deviation presents..."
+                      />
+                    </div>
+                  ) : (
+                    <Field label="Risk analysis" value={record.riskAnalysis} />
+                  )}
+                </RecordSection>
+
+                <RecordSection title="Investigation Report">
+                  {editingInvestigation ? (
+                    <div className="space-y-[var(--spacing-component-lg)]">
+                      <div className="space-y-[var(--spacing-component-sm)]">
+                        <Label htmlFor="rca">Root cause analysis</Label>
+                        <Textarea
+                          id="rca"
+                          defaultValue={record.rootCauseAnalysis ?? ""}
+                          placeholder="5-Why, Fishbone, or narrative..."
+                        />
+                      </div>
+                      <div className="space-y-[var(--spacing-component-sm)]">
+                        <Label htmlFor="impact">Impact analysis</Label>
+                        <Textarea
+                          id="impact"
+                          defaultValue={record.impactAnalysis ?? ""}
+                          placeholder="Effect on product lots, records and related systems..."
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-[var(--spacing-component-lg)]">
+                      <Field label="Root cause analysis" value={record.rootCauseAnalysis} />
+                      <Field label="Impact analysis" value={record.impactAnalysis} />
+                    </div>
+                  )}
+                </RecordSection>
+              </>
+  )
+
+  const capaBlock = (
+    <RecordSection
+                title="Associated CAPAs"
+                description={
+                  record.capaRef
+                    ? undefined
+                    : "No CAPA linked yet. A justified no-CAPA decision is an equally valid outcome."
+                }
+              >
+                {record.capaRef ? (
+                  <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-md)] rounded-[var(--radius-md)] bg-[var(--color-background-muted)] p-[var(--spacing-component-md)]">
+                    <div className="min-w-0">
+                      <Link
+                        href="/prototype/accura/capa"
+                        className="text-sm font-medium text-[var(--color-brand-primary)] hover:underline"
+                      >
+                        {record.capaRef.id}
+                      </Link>
+                      <p className="text-sm">{record.capaRef.title}</p>
+                    </div>
+                    <Badge shape="pill" variant="success" className="whitespace-nowrap">
+                      {record.capaRef.status}
+                    </Badge>
+                  </div>
+                ) : (
+                  <Button variant="outline" size="sm" asChild>
+                    <Link href="/prototype/accura/capa">Link to CAPA module</Link>
+                  </Button>
+                )}
+              </RecordSection>
+  )
+
+  const signaturesBlock = (
+    <RecordSection title="Signatures">
+                <ol className="flex flex-col gap-[var(--spacing-component-sm)]">
+                  {captured.map((signature) => (
+                    <li key={signature.role + signature.timestamp}>
+                      <Item
+                        variant="outline"
+                        type="avatar"
+                        avatarFallback={signature.by.initials}
+                        title={signature.role}
+                        description={
+                          <>
+                            <span className="block text-xs">
+                              {display(signature.by)} ·{" "}
+                              {new Date(signature.timestamp).toLocaleString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                                hour: "numeric",
+                                minute: "2-digit",
+                              })}
+                            </span>
+                            <span className="mt-[var(--spacing-component-xs)] block">
+                              {signature.statement}
+                            </span>
+                          </>
+                        }
+                      />
+                    </li>
+                  ))}
+                </ol>
+                {pending.length > 0 && (
+                  <p className="mt-[var(--spacing-component-lg)] text-sm text-[var(--color-text-secondary)]">
+                    Owner signed. Awaiting {pending.map(display).join(", ")}.
+                  </p>
+                )}
+              </RecordSection>
+  )
+
+  /* The block the current state asks the user to fill in. Draft has none in
+     this prototype — the create form is its own screen — and the two closed
+     states have none by definition. */
+  const workspace = !hasWorkspace
+    ? null
+    : blocks.editable === "In Review"
+    ? reviewBlock
+    : blocks.editable === "Investigation In Progress"
+    ? investigationBlock
+    : capaBlock
+
+  /* Everything else, in lifecycle order, as reference beside the workspace. */
+  const reference = workspace ? (
+    <>
+      {incidentBlock}
+      {blocks.review && blocks.editable !== "In Review" && reviewBlock}
+      {blocks.investigation &&
+        blocks.editable !== "Investigation In Progress" &&
+        investigationBlock}
+      {blocks.capa && blocks.editable !== "CAPA Pending" && capaBlock}
+      {blocks.signatures && signaturesBlock}
+    </>
+  ) : null
+
   const steps = lifecycle.map((label) => ({ label }))
   const current =
     stepIndex(record.cancelled?.from ?? record.status) ?? lifecycle.length
@@ -228,209 +469,27 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
         />
       </div>
 
-      <div className="space-y-[var(--spacing-layout-sm)]">
-        <RecordSection title="Incident Details">
-          <div className="grid gap-[var(--spacing-component-lg)] md:grid-cols-2 lg:grid-cols-4">
-            <Field label="Date raised" value={displayDate(record.dateRaised)} />
-            <Field label="Raised by" value={display(record.raisedBy)} />
-            <Field label="Due date" value={displayDate(record.dueDate)} />
-            <Field label="Department" value={record.department} />
-            <Field label="Owner" value={display(record.owner)} />
-            <Field label="Classification" value={record.classification} />
-            <Field label="Category" value={record.category} />
-            <Field label="Severity" value={record.severity} />
-            <Field label="Incident type" value={record.incidentType} />
-            <Field
-              label="Product impacted"
-              value={record.productImpacted ? "Yes" : "No"}
-            />
-          </div>
-          <div className="mt-[var(--spacing-component-lg)] grid gap-[var(--spacing-component-lg)]">
-            <Field
-              label="Reviewers"
-              value={
-                record.reviewers.length
-                  ? record.reviewers.map(display).join(", ")
-                  : null
-              }
-            />
-            <Field label="Details" value={record.details} />
-          </div>
-        </RecordSection>
-
-        {blocks.review && (
-          <RecordSection
-            title="Review Details"
-            description={
-              editingReview
-                ? "Triage and containment. Record what was done at the time of detection."
-                : undefined
-            }
-          >
-            {editingReview ? (
-              <div className="space-y-[var(--spacing-component-lg)]">
-                <div className="space-y-[var(--spacing-component-sm)]">
-                  <Label htmlFor="immediate-action">Immediate action taken</Label>
-                  <Textarea
-                    id="immediate-action"
-                    value={immediateAction}
-                    onChange={(e) => setImmediateAction(e.target.value)}
-                    placeholder="Describe any immediate containment / correction taken..."
-                  />
-                </div>
-                <div className="space-y-[var(--spacing-component-sm)]">
-                  <div className="flex items-center justify-between">
-                    <Label>Impacted products</Label>
-                    <span className="text-xs text-[var(--color-text-secondary)]">
-                      {products.length}{" "}
-                      {products.length === 1 ? "product" : "products"}
-                    </span>
-                  </div>
-                  <ImpactedProductList
-                    rows={products}
-                    editable
-                    onChange={setProducts}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-[var(--spacing-component-lg)]">
-                <Field label="Immediate action taken" value={record.immediateAction} />
-                <div>
-                  <p className="text-xs uppercase tracking-wide text-[var(--color-text-secondary)]">
-                    Impacted products
-                  </p>
-                  <div className="mt-[var(--spacing-component-sm)]">
-                    <ImpactedProductList
-                      rows={record.impactedProducts}
-                      editable={false}
-                      onChange={() => {}}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-          </RecordSection>
-        )}
-
-        {blocks.investigation && (
-          <>
-            <RecordSection title="Risk Analysis">
-              {editingInvestigation ? (
-                <div className="space-y-[var(--spacing-component-sm)]">
-                  <Label htmlFor="risk">Risk analysis</Label>
-                  <Textarea
-                    id="risk"
-                    defaultValue={record.riskAnalysis ?? ""}
-                    placeholder="Assess the risk this deviation presents..."
-                  />
-                </div>
-              ) : (
-                <Field label="Risk analysis" value={record.riskAnalysis} />
-              )}
-            </RecordSection>
-
-            <RecordSection title="Investigation Report">
-              {editingInvestigation ? (
-                <div className="space-y-[var(--spacing-component-lg)]">
-                  <div className="space-y-[var(--spacing-component-sm)]">
-                    <Label htmlFor="rca">Root cause analysis</Label>
-                    <Textarea
-                      id="rca"
-                      defaultValue={record.rootCauseAnalysis ?? ""}
-                      placeholder="5-Why, Fishbone, or narrative..."
-                    />
-                  </div>
-                  <div className="space-y-[var(--spacing-component-sm)]">
-                    <Label htmlFor="impact">Impact analysis</Label>
-                    <Textarea
-                      id="impact"
-                      defaultValue={record.impactAnalysis ?? ""}
-                      placeholder="Effect on product lots, records and related systems..."
-                    />
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-[var(--spacing-component-lg)]">
-                  <Field label="Root cause analysis" value={record.rootCauseAnalysis} />
-                  <Field label="Impact analysis" value={record.impactAnalysis} />
-                </div>
-              )}
-            </RecordSection>
-          </>
-        )}
-
-        {blocks.capa && (
-          <RecordSection
-            title="Associated CAPAs"
-            description={
-              record.capaRef
-                ? undefined
-                : "No CAPA linked yet. A justified no-CAPA decision is an equally valid outcome."
-            }
-          >
-            {record.capaRef ? (
-              <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-md)] rounded-[var(--radius-md)] bg-[var(--color-background-muted)] p-[var(--spacing-component-md)]">
-                <div className="min-w-0">
-                  <Link
-                    href="/prototype/accura/capa"
-                    className="text-sm font-medium text-[var(--color-brand-primary)] hover:underline"
-                  >
-                    {record.capaRef.id}
-                  </Link>
-                  <p className="text-sm">{record.capaRef.title}</p>
-                </div>
-                <Badge shape="pill" variant="success" className="whitespace-nowrap">
-                  {record.capaRef.status}
-                </Badge>
-              </div>
-            ) : (
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/prototype/accura/capa">Link to CAPA module</Link>
-              </Button>
-            )}
-          </RecordSection>
-        )}
-
-        {blocks.signatures && (
-          <RecordSection title="Signatures">
-            <ol className="flex flex-col gap-[var(--spacing-component-sm)]">
-              {captured.map((signature) => (
-                <li key={signature.role + signature.timestamp}>
-                  <Item
-                    variant="outline"
-                    type="avatar"
-                    avatarFallback={signature.by.initials}
-                    title={signature.role}
-                    description={
-                      <>
-                        <span className="block text-xs">
-                          {display(signature.by)} ·{" "}
-                          {new Date(signature.timestamp).toLocaleString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                            hour: "numeric",
-                            minute: "2-digit",
-                          })}
-                        </span>
-                        <span className="mt-[var(--spacing-component-xs)] block">
-                          {signature.statement}
-                        </span>
-                      </>
-                    }
-                  />
-                </li>
-              ))}
-            </ol>
-            {pending.length > 0 && (
-              <p className="mt-[var(--spacing-component-lg)] text-sm text-[var(--color-text-secondary)]">
-                Owner signed. Awaiting {pending.map(display).join(", ")}.
-              </p>
-            )}
-          </RecordSection>
-        )}
-      </div>
+      {/* Layout follows the work, not the record shape. While a state has
+          something to fill in, that block takes the main column and everything
+          already locked moves to a reference rail beside it — the 65/35 split
+          Documents already uses. Once the record is read-only there is no
+          workspace, so the blocks stack full width. */}
+      {workspace ? (
+        <div className="grid gap-[var(--spacing-layout-sm)] lg:grid-cols-[minmax(0,65fr)_minmax(0,35fr)] lg:items-start">
+          <div className="space-y-[var(--spacing-layout-sm)]">{workspace}</div>
+          <aside className="space-y-[var(--spacing-layout-sm)] lg:sticky lg:top-0">
+            {reference}
+          </aside>
+        </div>
+      ) : (
+        <div className="space-y-[var(--spacing-layout-sm)]">
+          {incidentBlock}
+          {blocks.review && reviewBlock}
+          {blocks.investigation && investigationBlock}
+          {blocks.capa && capaBlock}
+          {blocks.signatures && signaturesBlock}
+        </div>
+      )}
 
       {!closed && (
         <div className="mt-[var(--spacing-layout-sm)] flex flex-wrap items-center justify-end gap-[var(--spacing-component-sm)]">
