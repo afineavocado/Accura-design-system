@@ -167,6 +167,25 @@ pages use 20px for the record title; the module name should sit below the record
 
 ---
 
+### Before measuring anything — and before building
+
+`rm -rf .next` and restart the dev server before trusting what the browser shows. The server
+serves old pages while the file on disk is correct; this has repeatedly made a working fix look
+broken.
+
+⚠️ **`npm run build` and `npm run dev` share `.next`.** Running a production build while the dev
+server is up deletes `.next/dev` underneath it. The server stays alive and every route then 500s
+with `ENOENT … routes-manifest.json`, which reads like a code error and is not. Kill dev first:
+
+```bash
+pkill -f "next dev"; sleep 2; rm -rf .next && npm run build
+```
+
+Then restart dev. Hit three times on 2026-09-15 alone, each time reported as "the prototype
+dropped".
+
+---
+
 ### Create and edit screens
 
 Not previously written down, which is how Create Deviation drifted from CAPA and Training before
