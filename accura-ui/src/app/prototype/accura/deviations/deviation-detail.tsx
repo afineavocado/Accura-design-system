@@ -318,21 +318,17 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
                   </div>
                 ) : (
                   <div className="space-y-[var(--spacing-component-lg)]">
-                    {/* Both through Field, so the label markup lives in one
-                        place — this block used to hand-copy Field's own label
-                        classes for Impacted products.
+                    {/* Full width, stacked. Tried at two and then four
+                        columns to share Incident Details' column edges; at a
+                        quarter width a containment note wraps to three lines
+                        and a product card to four, which is worse than the
+                        empty space it saved. These two fields hold prose and a
+                        list, not scalars.
 
-                        Same column definition as Incident Details, so the two
-                        cards share one set of column edges: Impacted products
-                        starts where Raised by, Category and Due date start
-                        rather than at the halfway point of its own grid. */}
-                    <div
-                      className={
-                        hasWorkspace
-                          ? "grid gap-[var(--spacing-component-lg)]"
-                          : "grid gap-[var(--spacing-component-lg)] sm:grid-cols-2 lg:grid-cols-4"
-                      }
-                    >
+                        Both still go through Field — the block used to
+                        hand-copy Field's own label classes for Impacted
+                        products, and that part is worth keeping. */}
+                    <div className="space-y-[var(--spacing-component-lg)]">
                       <Field
                         label="Immediate action taken"
                         value={record.immediateAction}
