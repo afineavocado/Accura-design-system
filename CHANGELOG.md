@@ -11,6 +11,25 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-15 — The rules moved into the repo, and say when to update what
+
+**Changed**
+
+- **`CLAUDE.md` now carries the durable rules**, and `/accura` — the personal session file, which
+  is **not in git** — shrank to what is genuinely session-specific: where the work is, who owns
+  which module, and how to run it. Ten of twelve topics used to appear in both, with the durable
+  half living in the file that does not travel: Chi's agent and anyone cloning the repo had never
+  seen a word of it, and when the two drifted, one session was right and every other was wrong.
+- **New in `CLAUDE.md`: "When you change something, what else has to change."** A table mapping
+  each kind of change to the files that go stale with it and the command that checks — token
+  values, components, prototype screens, patterns, file names, decisions on open questions, scope.
+  Every row is something that has gone stale here before.
+- **And when to write a changelog entry:** when the change affects someone who did not make it —
+  a token value, a component's API, a rule, a decision, a file moving. Not for prototype screens
+  or copy tweaks. Say what it was before, because that is the part that turns out to matter. Never
+  rewrite a past entry; append the correction and date it.
+- The recurring-failure log and the known-debt list moved in too, so they travel with the clone.
+
 ### 2026-09-14 — Documents handoff v2 adopted wholesale
 
 **Changed**
