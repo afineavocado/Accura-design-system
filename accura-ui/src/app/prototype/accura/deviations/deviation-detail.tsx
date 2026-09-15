@@ -324,7 +324,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
                       {/* Persists the block without advancing the lifecycle —
                           the same contract as Save impacted products. */}
                       <div>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="outline" size="sm">
                           Save investigation report
                         </Button>
                       </div>
@@ -399,7 +399,9 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
             <p className="text-xs text-[var(--color-text-secondary)]">
               Selecting a CAPA associates it immediately.
             </p>
-            <Button variant="ghost" size="sm" asChild>
+            {/* Outline, not ghost: this leaves the module and creates a
+                record. Ghost is for actions that sit inside a row. */}
+            <Button variant="outline" size="sm" asChild>
               <Link href="/prototype/accura/capa">
                 <Plus className="size-4" />
                 Create new CAPA
