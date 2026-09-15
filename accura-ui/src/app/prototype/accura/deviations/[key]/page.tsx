@@ -18,7 +18,7 @@ export default function DeviationDetailPage({
     return (
       <Unbuilt
         name="That deviation"
-        detail="— no seeded record matches this address. The registry lists every record in the prototype."
+        detail="but no seeded record matches this address. The registry lists every record in the prototype."
       />
     )
 

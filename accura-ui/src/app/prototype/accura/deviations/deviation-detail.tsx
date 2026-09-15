@@ -214,8 +214,8 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
         <Alert className="mb-[var(--spacing-layout-sm)]">
           <AlertTitle>Overdue</AlertTitle>
           <AlertDescription>
-            Due {displayDate(record.dueDate)}. The lifecycle status is unchanged
-            — this is an escalation flag only.
+            Due {displayDate(record.dueDate)}. The lifecycle status is
+            unchanged; this is an escalation flag only.
           </AlertDescription>
         </Alert>
       )}
@@ -393,10 +393,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
         )}
 
         {blocks.signatures && (
-          <RecordSection
-            title="Signatures"
-            description="Every signature carries the signer, the time, and what the signature means."
-          >
+          <RecordSection title="Signatures">
             <ol className="flex flex-col gap-[var(--spacing-component-sm)]">
               {captured.map((signature) => (
                 <li key={signature.role + signature.timestamp}>
@@ -438,7 +435,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
       {!closed && (
         <div className="mt-[var(--spacing-layout-sm)] flex flex-wrap items-center justify-end gap-[var(--spacing-component-sm)]">
           {record.status === "In Review" && (
-            <Button variant="outline">Cancel — invalid or duplicate</Button>
+            <Button variant="outline">Cancel as invalid or duplicate</Button>
           )}
           <Button>{primaryAction(record)}</Button>
         </div>
@@ -448,7 +445,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
 }
 
 /* Button copy is verbatim from brief §13.9 where it specifies one. */
-function primaryAction(record: DeviationRecord) {
+function primaryAction(record: DeviationRecord): string {
   switch (record.status) {
     case "Draft":
       return "Submit for Review"
@@ -461,6 +458,7 @@ function primaryAction(record: DeviationRecord) {
     case "In Approval":
       return `Sign as ${display(signatures(record).pending[0] ?? record.owner)}`
     default:
-      return "—"
+      /* Unreachable: the action bar renders only for open records. */
+      return "Open record"
   }
 }

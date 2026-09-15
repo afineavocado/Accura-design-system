@@ -299,7 +299,7 @@ export const seeds: DeviationRecord[] = [
     reviewers: [people.sarah],
     impactedProducts: [],
     immediateAction: "Lot placed on hold, supplier contacted.",
-    riskAnalysis: "Low — material not yet released to production.",
+    riskAnalysis: "Low. The material has not been released to production.",
     rootCauseAnalysis:
       "Supplier template updated without notification; missing fields not caught at goods-in.",
     impactAnalysis: "No product released. One lot on hold.",
@@ -325,7 +325,7 @@ export const seeds: DeviationRecord[] = [
     reviewers: [people.sarah],
     impactedProducts: [],
     immediateAction: "Re-swab performed from the specified port.",
-    riskAnalysis: "Low — re-swab within the same clean hold window.",
+    riskAnalysis: "Low. The re-swab fell within the same clean hold window.",
     rootCauseAnalysis: "Port labelling on the vessel had faded.",
     impactAnalysis: "No impact to released product.",
     capaRef: {
@@ -354,7 +354,7 @@ export const seeds: DeviationRecord[] = [
     reviewers: [people.sarah, people.lisa],
     impactedProducts: [],
     immediateAction: "Line start rescheduled; no product at risk.",
-    riskAnalysis: "None — no product exposure.",
+    riskAnalysis: "None. There was no product exposure.",
     rootCauseAnalysis: "Service scope underestimated at planning.",
     impactAnalysis: "Schedule only.",
     capaRef: {
@@ -385,7 +385,7 @@ export const seeds: DeviationRecord[] = [
       { product: "PRD-301", batch: "B-402", description: "Batch held, then released" },
     ],
     immediateAction: "Line cleared and reconciled; batch held.",
-    riskAnalysis: "High — potential mislabelling.",
+    riskAnalysis: "High, because of the potential for mislabelling.",
     rootCauseAnalysis: "Damaged labels discarded without recording.",
     impactAnalysis: "All labels accounted for after review of waste records.",
     capaRef: {
@@ -598,7 +598,7 @@ export function auditEvents(record: DeviationRecord): AuditEvent[] {
       timestamp: signature.timestamp,
       name: signature.by.name,
       role: signature.by.role,
-      action: `Signed — ${signature.role}`,
+      action: `${signature.role} signed`,
       record: id,
       meaning: signature.statement,
     })
