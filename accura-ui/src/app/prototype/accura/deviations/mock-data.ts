@@ -129,6 +129,9 @@ export type DeviationRecord = {
    *  record has one and Overdue depends on it. Seeded. See spec §8.2. */
   dueDate: string
   department: Department
+  /** Head of the originating department — signs the triage gate. Distinct
+   *  from `owner`, who runs the record and signs the investigation. */
+  departmentOwner: Person
   owner: Person
   classification: Classification
   category: Category
@@ -173,6 +176,7 @@ export const seeds: DeviationRecord[] = [
     raisedBy: people.amit,
     dueDate: "2026-10-15",
     department: "Cold Chain Storage",
+    departmentOwner: people.john,
     owner: people.amit,
     classification: "Unplanned",
     category: "Major",
@@ -193,6 +197,7 @@ export const seeds: DeviationRecord[] = [
     raisedBy: people.amit,
     dueDate: "2026-10-08",
     department: "Quality Control",
+    departmentOwner: people.maria,
     owner: people.amit,
     classification: "Unplanned",
     category: "Minor",
@@ -215,6 +220,7 @@ export const seeds: DeviationRecord[] = [
     raisedBy: people.amit,
     dueDate: "2026-09-03", // overdue against `today`
     department: "Packaging",
+    departmentOwner: people.john,
     owner: people.john,
     classification: "Unplanned",
     category: "Major",
@@ -237,6 +243,7 @@ export const seeds: DeviationRecord[] = [
     raisedBy: people.amit,
     dueDate: "2026-10-10",
     department: "Manufacturing",
+    departmentOwner: people.john,
     owner: people.amit,
     classification: "Unplanned",
     category: "Critical",
@@ -257,6 +264,7 @@ export const seeds: DeviationRecord[] = [
     raisedBy: people.lisa,
     dueDate: "2026-08-27", // overdue against `today`
     department: "Engineering",
+    departmentOwner: people.john,
     owner: people.lisa,
     classification: "Unplanned",
     category: "Major",
@@ -280,6 +288,7 @@ export const seeds: DeviationRecord[] = [
     raisedBy: people.sarah,
     dueDate: "2026-09-19",
     department: "Supply Chain",
+    departmentOwner: people.john,
     owner: people.john,
     classification: "Unplanned",
     category: "Minor",
@@ -304,6 +313,7 @@ export const seeds: DeviationRecord[] = [
     raisedBy: people.amit,
     dueDate: "2026-10-11",
     department: "Manufacturing",
+    departmentOwner: people.john,
     owner: people.amit,
     classification: "Unplanned",
     category: "Minor",
@@ -333,7 +343,8 @@ export const seeds: DeviationRecord[] = [
     raisedBy: people.john,
     dueDate: "2026-08-01",
     department: "Engineering",
-    owner: people.john,
+    departmentOwner: people.john,
+    owner: people.amit,
     classification: "Planned",
     category: "Minor",
     severity: "Low",
@@ -361,6 +372,7 @@ export const seeds: DeviationRecord[] = [
     raisedBy: people.amit,
     dueDate: "2026-07-15",
     department: "Packaging",
+    departmentOwner: people.john,
     owner: people.lisa,
     classification: "Unplanned",
     category: "Critical",
@@ -391,6 +403,7 @@ export const seeds: DeviationRecord[] = [
     raisedBy: people.lisa,
     dueDate: "2026-10-12",
     department: "Cold Chain Storage",
+    departmentOwner: people.john,
     owner: people.lisa,
     classification: "Unplanned",
     category: "Major",
@@ -498,7 +511,7 @@ export function signatures(record: DeviationRecord): {
   if (reached("Investigation In Progress")) {
     captured.push({
       role: "Department owner approval",
-      by: record.owner,
+      by: record.departmentOwner,
       timestamp: stamp(1),
       statement: statements.department,
     })
@@ -514,7 +527,7 @@ export function signatures(record: DeviationRecord): {
   if (record.status === "Approved") {
     record.reviewers.forEach((person, i) =>
       captured.push({
-        role: `Reviewer — ${display(person)}`,
+        role: "Reviewer approval",
         by: person,
         timestamp: stamp(4 + i),
         statement: statements.reviewer(person),

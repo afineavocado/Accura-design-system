@@ -396,13 +396,12 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
             title="Signatures"
             description="Every signature carries the signer, the time, and what the signature means."
           >
-            <div className="space-y-[var(--spacing-component-md)]">
+            <ol className="flex flex-col gap-[var(--spacing-component-lg)]">
               {captured.map((signature) => (
-                <div
-                  key={signature.role}
-                  className="rounded-[var(--radius-md)] border-l-2 border-[var(--color-status-success)] bg-[var(--color-status-success-subtle)] p-[var(--spacing-component-md)]"
-                >
-                  <p className="text-sm font-medium">{signature.role}</p>
+                <li key={signature.role + signature.timestamp}>
+                  <p className="text-sm font-medium text-[var(--color-surface-default-foreground)]">
+                    {signature.role}
+                  </p>
                   <p className="text-xs text-[var(--color-text-secondary)]">
                     {display(signature.by)} ·{" "}
                     {new Date(signature.timestamp).toLocaleString("en-US", {
@@ -413,18 +412,17 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
                       minute: "2-digit",
                     })}
                   </p>
-                  <p className="mt-[var(--spacing-component-xs)] text-sm italic">
-                    “{signature.statement}”
+                  <p className="mt-[var(--spacing-component-xs)] text-sm text-[var(--color-text-secondary)]">
+                    {signature.statement}
                   </p>
-                </div>
+                </li>
               ))}
-              {pending.length > 0 && (
-                <p className="text-sm text-[var(--color-text-secondary)]">
-                  Owner signed. Awaiting{" "}
-                  {pending.map(display).join(", ")}.
-                </p>
-              )}
-            </div>
+            </ol>
+            {pending.length > 0 && (
+              <p className="mt-[var(--spacing-component-lg)] text-sm text-[var(--color-text-secondary)]">
+                Owner signed. Awaiting {pending.map(display).join(", ")}.
+              </p>
+            )}
           </RecordSection>
         )}
       </div>
