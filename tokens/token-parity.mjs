@@ -29,6 +29,8 @@ const KNOWN = {
   "tooltip.fg": "As tooltip.bg.",
   "breadcrumb.breadcrumb":
     "Unit formatting only: 4px in the export, unitless 4 in tokens.css.",
+  "color.sidebar.border":
+    "Accepted 2026-09-15. The export's brand/900 would read as a subtle division on the dark teal panel; the shipped zinc/200 renders as a visible light line down the right edge and above the sidebar footer. Left as built: the Sidebar was built in Storybook with this value and the prototype does not ship dark mode, so it is the sidebar as designed rather than an un-rethemed leftover.",
 };
 
 const flat = (o, trail = [], out = new Map()) => {
