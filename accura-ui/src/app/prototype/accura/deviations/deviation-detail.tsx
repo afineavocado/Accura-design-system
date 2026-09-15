@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { Fragment, useState } from "react"
 import Link from "next/link"
 import { ChevronLeft, Plus, X } from "lucide-react"
 
@@ -265,7 +265,11 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
 
   const investigationBlock = (
     <>
-                <RecordSection title="Risk Analysis">
+                <RecordSection
+              collapsible={blocks.editable !== "Investigation In Progress"}
+              defaultOpen={!hasWorkspace}
+              title="Risk Analysis"
+            >
                   {editingInvestigation ? (
                     <div className="space-y-[var(--spacing-component-sm)]">
                       <Label htmlFor="risk">Risk analysis</Label>
@@ -280,7 +284,11 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
                   )}
                 </RecordSection>
 
-                <RecordSection title="Investigation Report">
+                <RecordSection
+              collapsible={blocks.editable !== "Investigation In Progress"}
+              defaultOpen={!hasWorkspace}
+              title="Investigation Report"
+            >
                   {editingInvestigation ? (
                     <div className="space-y-[var(--spacing-component-lg)]">
                       <div className="space-y-[var(--spacing-component-sm)]">
@@ -343,7 +351,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
   )
 
   const signaturesBlock = (
-    <RecordSection title="Signatures">
+    <RecordSection collapsible defaultOpen={!hasWorkspace} title="Signatures">
                 <ol className="flex flex-col gap-[var(--spacing-component-sm)]">
                   {captured.map((signature) => (
                     <li key={signature.role + signature.timestamp}>
@@ -392,18 +400,26 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
     ? investigationBlock
     : capaBlock
 
-  /* Everything else, in lifecycle order, as reference beside the workspace. */
-  const reference = workspace ? (
-    <>
-      {incidentBlock}
-      {blocks.review && blocks.editable !== "In Review" && reviewBlock}
-      {blocks.investigation &&
-        blocks.editable !== "Investigation In Progress" &&
-        investigationBlock}
-      {blocks.capa && blocks.editable !== "CAPA Pending" && capaBlock}
-      {blocks.signatures && signaturesBlock}
-    </>
-  ) : null
+  /* Every block the record shows, in lifecycle order. Both layouts read from
+     this one list so neither can drift from the other. */
+  const present = [
+    { key: "incident", node: incidentBlock, shown: true },
+    { key: "review", node: reviewBlock, shown: blocks.review },
+    { key: "investigation", node: investigationBlock, shown: blocks.investigation },
+    { key: "capa", node: capaBlock, shown: blocks.capa },
+    { key: "signatures", node: signaturesBlock, shown: blocks.signatures },
+  ].filter((block) => block.shown)
+
+  const reference = present
+    .filter((block) => block.node !== workspace)
+    .map((block) => <Fragment key={block.key}>{block.node}</Fragment>)
+
+  /* No workspace means the page is a dossier, so two equal columns rather than
+     a 35% rail with nothing to sit beside. Split by position, not by height:
+     reading down the left column then down the right still follows the
+     lifecycle, which height-balancing would scramble. */
+  const half = Math.ceil(present.length / 2)
+  const columns = [present.slice(0, half), present.slice(half)]
 
   const steps = lifecycle.map((label) => ({ label }))
   const current =
@@ -471,9 +487,10 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
 
       {/* Layout follows the work, not the record shape. While a state has
           something to fill in, that block takes the main column and everything
-          already locked moves to a reference rail beside it — the 65/35 split
-          Documents already uses. Once the record is read-only there is no
-          workspace, so the blocks stack full width. */}
+          already locked sits in a reference rail beside it. Once the record is
+          read-only there is no workspace, so the blocks run down two equal
+          columns instead — a 35% rail with nothing to flank is just a narrow
+          column of dossier. */}
       {workspace ? (
         <div className="grid gap-[var(--spacing-layout-sm)] lg:grid-cols-[minmax(0,65fr)_minmax(0,35fr)] lg:items-start">
           <div className="space-y-[var(--spacing-layout-sm)]">{workspace}</div>
@@ -482,12 +499,14 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
           </aside>
         </div>
       ) : (
-        <div className="space-y-[var(--spacing-layout-sm)]">
-          {incidentBlock}
-          {blocks.review && reviewBlock}
-          {blocks.investigation && investigationBlock}
-          {blocks.capa && capaBlock}
-          {blocks.signatures && signaturesBlock}
+        <div className="grid gap-[var(--spacing-layout-sm)] lg:grid-cols-2 lg:items-start">
+          {columns.map((column, i) => (
+            <div key={i} className="space-y-[var(--spacing-layout-sm)]">
+              {column.map((block) => (
+                <Fragment key={block.key}>{block.node}</Fragment>
+              ))}
+            </div>
+          ))}
         </div>
       )}
 
