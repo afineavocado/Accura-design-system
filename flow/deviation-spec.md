@@ -10,8 +10,9 @@
 > the briefs disagree, both are recorded here and the conflict is listed in §7 — **unresolved, not
 > reconciled.**
 >
-> **Coverage.** Four of nine screens were supplied. The five unobserved states are named in §6 so
-> the gap is visible rather than assumed.
+> **Coverage.** Five of nine screens, plus both registry filter menus. Captures supplied
+> 2026-09-15 in two batches. The four unobserved states are named in §7 so the gap is visible
+> rather than assumed.
 
 ---
 
@@ -39,9 +40,22 @@ badge (`8` in the supplied captures). No account chip is visible in these screen
 select · `Severity: All` select · `Create Deviation` button, right-aligned, solid green with a
 leading `+`.
 
-- Filter copy uses the **`Label: value` prefix** form.
+- Filter copy uses the **`Label: value` prefix** form, and the prefix repeats on **every option
+  inside the menu**, not just the trigger — `Status: All`, `Status: Draft`, `Status: In Review`…
+- Both menus render as **native OS selects** (macOS chrome, system highlight colour, a checkmark
+  on the current value), not as styled design-system components.
 - **Only two filters.** The brief's `Category` and `Department` are not present.
 - No summary/count row between the toolbar and the table.
+
+**`Status` menu — nine options, in order:**
+
+`Status: All` · `Draft` · `In Review` · `Investigation In Progress` · `CAPA Pending` ·
+`In Approval` · `Approved` · `Cancelled` · **`Overdue`**
+
+**`Severity` menu — four options:** `Severity: All` · `High` · `Medium` · `Low`
+
+> ⚠️ `Overdue` and `Cancelled` sit in the same list as the six lifecycle states, so one control
+> filters two different things — see §8.13.
 
 **Table columns**, in order: `DEVIATION ID` · `SHORT DESCRIPTION` · `STATUS` · `OWNER` ·
 `CATEGORY` · `SEVERITY` · `DUE DATE`. Headers are uppercase.
@@ -100,7 +114,59 @@ Severity/Incident type side by side.
 
 ---
 
-## 4. Screen — Deviation detail · `In Approval`
+## 4. Screen — Deviation detail · `In Review`
+
+Sample record `ACME-DEV-2026-0001`, title `desc`.
+
+**Header row:** `< Back to Deviations`, record title with an amber `In Review` badge beside it.
+Right-aligned: Deviation ID as muted text, then `View audit trail` (outlined, leading clock icon).
+
+**Stepper:** step 1 `Draft` green filled with a checkmark; step 2 `In Review` green outlined with
+the numeral `2` — current; steps 3–6 grey with numerals. Only the connector between 1 and 2 is
+solid green; the rest are grey.
+
+### 4.1 `Incident Details` — read-only
+
+Same grid as every other state — uppercase micro-cap labels above values. `DATE RAISED`
+`2026-09-09` · `RAISED BY` `auth0|6a7d4c2ce723991a0afec0c9` · `DUE DATE` `2026-10-08` ·
+`DEPARTMENT` `Quality Control` · `OWNER` `amit@accura.one` · `CLASSIFICATION` `Unplanned` ·
+`CATEGORY` `Minor` · `SEVERITY` `Medium` · `INCIDENT TYPE` `Process` · `PRODUCT IMPACTED` `No` ·
+`REVIEWERS` `Sarah Johnson (QA)` · `DETAILS` `desc`.
+
+**New here:** a final full-width row `IMPACTED PRODUCTS (1)` — count in the label — holding an
+inset card on a muted ground: `ID` · `Batch B-123` on one line, `desc` beneath. A **read-only
+preview of the list that is edited further down the same page.**
+
+### 4.2 `Review Details` — editable
+
+The first editable block in the lifecycle. Labels here are **sentence case at body size**, not the
+uppercase micro-caps used by read-only grids.
+
+| Element | Type | Observed |
+|---|---|---|
+| `Immediate action taken` | textarea, full width, resizable | placeholder `Describe any immediate containment / correction taken...` |
+| `Impacted products` | list header | count `1 product` right-aligned on the same line |
+| Product row | inset card on muted ground | heading `Product 1`, `✕` remove icon top-right |
+| ↳ `Product (id or name)` | text input, half width | `ID` |
+| ↳ `Batch number` | text input, half width | `B-123` |
+| ↳ `Description` | textarea, full width, resizable | `desc` |
+| `+ Add Impacted Product` | text-style action | bottom-left, below the card |
+| `Save impacted products` | text-style action | beside it, muted — persists the list without changing status |
+
+Both list actions render as plain text, not buttons — `Save impacted products` reads as the
+less-prominent of the two.
+
+### 4.3 Actions
+
+**Primary, bottom-right:** `Approve & sign — advance to investigation` — solid green pill.
+
+**No cancel or reject control appears anywhere on this screen** — see §8.14.
+
+No inline audit-trail block; history is reached only through `View audit trail` in the header.
+
+---
+
+## 5. Screen — Deviation detail · `In Approval`
 
 Sample record `ACME/DEV/2026/000006`.
 
@@ -156,7 +222,7 @@ reviewer:` followed by the button `Sign as Sarah Johnson (QA)` (white, outlined,
 
 ---
 
-## 5. Screen — Deviation Audit Trail (drawer)
+## 6. Screen — Deviation Audit Trail (drawer)
 
 Opens as a **right-side overlay** covering roughly a third of the viewport; the page behind dims
 and stays in place. Header: title `Deviation Audit Trail`, subtitle `ACME/DEV/2026/000006`, close
@@ -176,17 +242,16 @@ Entries are separated by hairline rules and ordered newest first.
 
 ---
 
-## 6. Screens not supplied
+## 7. Screens not supplied
 
 No capture exists for these, and nothing here should be assumed about them:
 
-`Draft` · `In Review` (the Triage workspace, incl. the dynamic Impacted Products list) ·
-`Investigation In Progress` · `CAPA Pending` · `Approved` (closed) · `Cancelled` · the Overdue
-treatment on a genuinely overdue record.
+`Draft` · `Investigation In Progress` · `CAPA Pending` · `Approved` (closed) · `Cancelled` · the
+Overdue treatment on a record that is actually overdue.
 
 ---
 
-## 7. Findings — screens vs briefs
+## 8. Findings — screens vs briefs
 
 Recorded, not resolved.
 
@@ -232,6 +297,39 @@ advancing it to investigation"* — belongs to the `In Review` gate. So a signat
 is displayed inside the step-5 Signatures block. Consistent with the brief, but it means Signatures
 is a lifetime ledger, not a list of approval-stage signatures.
 
+**13. `Overdue` and `Cancelled` are options in the `Status` filter,** alongside the six lifecycle
+states. The control answers two questions at once: *where is this record in its lifecycle* and *is
+it late / void*. A record that is both `In Review` and overdue can only be found under one of them.
+Same shape as `UseStatus` absorbing `Superseded`/`Obsolete` in Documents.
+
+**14. `In Review` has no cancel or reject control.** Business Flow §5 Step 2 makes rejection one of
+the two decisions at this gate — *"Invalid / duplicate / non-applicable → transition to
+`Cancelled`"* — and §3 draws the arrow. Metadata §4.4 names a "Cancel / Reject path". The screen
+shows only `Approve & sign`. Either the path is somewhere not captured, or **`Cancelled` is
+unreachable from the state the brief says owns it**, which would make that filter option dead.
+
+**15. `PRODUCT IMPACTED` is `No` while `IMPACTED PRODUCTS (1)` lists a product** — both on the same
+screen, a few lines apart. Either the flag and the list are independent by design, or the flag is
+stale; as shown, the record contradicts itself.
+
+**16. Impacted products render twice on one page** — read-only inside `Incident Details`, editable
+inside `Review Details`. Defensible (locked context above, workspace below), but it doubles the
+block's vertical cost and the two can visibly disagree until `Save impacted products` is pressed.
+
+**17. `Save impacted products` is a text-style action.** A control that writes to a regulated record
+reads as less prominent than `+ Add Impacted Product` beside it, and gives no indication of whether
+unsaved edits exist.
+
+**18. Label casing splits by editability** — read-only grids use uppercase micro-caps, editable
+blocks use sentence-case body labels. Consistent across every capture, so it appears deliberate.
+
+**19. The brief's inline audit block does not exist.** Metadata §4.4 places a `Deviation Audit
+Trail` block with `Export Audit Report` on the `In Review` screen. Live, history is only in the
+drawer behind `View audit trail`.
+
+**20. Filters are native OS selects.** Both menus render with macOS system chrome and the prefix
+repeated on every option (`Status: Draft`, `Status: In Review`). Not design-system components.
+
 **11. `Risk Analysis` is its own top-level block,** separate from `Investigation Report`, although
 the brief groups both under the investigation stage.
 
@@ -240,7 +338,7 @@ the brief groups both under the investigation stage.
 
 ---
 
-## 8. Reusable in our prototype
+## 9. Reusable in our prototype
 
 | Need | Existing |
 |---|---|
@@ -252,3 +350,7 @@ the brief groups both under the investigation stage.
 
 Genuinely new: the dynamic **Impacted Products** list with independent save, and the
 **Associated CAPAs** row with a live status echo.
+
+The Impacted Products list is now fully specified by §4.2 — per-row `Product (id or name)`,
+`Batch number`, `Description`, a `✕` per row, `+ Add Impacted Product`, and a save that does not
+advance status. It is the only block in the module with no existing equivalent in our prototype.
