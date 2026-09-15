@@ -415,11 +415,24 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
     .map((block) => <Fragment key={block.key}>{block.node}</Fragment>)
 
   /* No workspace means the page is a dossier, so two equal columns rather than
-     a 35% rail with nothing to sit beside. Split by position, not by height:
-     reading down the left column then down the right still follows the
-     lifecycle, which height-balancing would scramble. */
-  const half = Math.ceil(present.length / 2)
-  const columns = [present.slice(0, half), present.slice(half)]
+     a 35% rail with nothing to sit beside.
+
+     Membership is assigned, not computed. The left column carries what the
+     record IS — the incident, what was done about it, and the CAPA it
+     produced — and stays open. The right carries the supporting analysis and
+     the signature ledger, which fold. Splitting by height instead would put
+     blocks wherever the arithmetic landed them. */
+  const dossierColumns = [
+    [
+      { key: "incident", node: incidentBlock, shown: true },
+      { key: "review", node: reviewBlock, shown: blocks.review },
+      { key: "capa", node: capaBlock, shown: blocks.capa },
+    ],
+    [
+      { key: "investigation", node: investigationBlock, shown: blocks.investigation },
+      { key: "signatures", node: signaturesBlock, shown: blocks.signatures },
+    ],
+  ].map((column) => column.filter((block) => block.shown))
 
   const steps = lifecycle.map((label) => ({ label }))
   const current =
@@ -500,7 +513,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
         </div>
       ) : (
         <div className="grid gap-[var(--spacing-layout-sm)] lg:grid-cols-2 lg:items-start">
-          {columns.map((column, i) => (
+          {dossierColumns.map((column, i) => (
             <div key={i} className="space-y-[var(--spacing-layout-sm)]">
               {column.map((block) => (
                 <Fragment key={block.key}>{block.node}</Fragment>
