@@ -12,7 +12,8 @@
 >
 > **Structure.** §1–9 are **as-built** — observation only. §10–11 are **assessment**: how the flow
 > compares to other eQMS products, and a proposal for the one gap that is a correctness problem.
-> They are clearly separated so the record stays usable even if the assessment is rejected.
+> §12 is the **scope decision** for the prototype. They are clearly separated so the record stays
+> usable even if the assessment is rejected.
 >
 > **Coverage.** Five of nine screens, plus both registry filter menus. Captures supplied
 > 2026-09-15 in two batches. The four unobserved states are named in §7 so the gap is visible
@@ -519,3 +520,58 @@ is copied from `DemoDocument`. The real work is the four transition rules and de
 **Was the cancel-as-rejection wording deliberate, or shorthand?** If a real reviewer today cancels
 deviations to send them back, the production data may contain cancelled records that were never
 invalid — which would matter for any trend analysis built on that field.
+
+
+---
+
+## 12. Scope decision — cancel and return in the prototype
+
+**Decided 2026-09-15.** The PO wants the happy path. Neither cancel nor return is a happy path, so
+the question is not which to build but **what not to lock in while building neither.**
+
+### 12.1 What peer products do
+
+Across MasterControl, Veeva Vault QMS, TrackWise and ETQ Reliance these are **two distinct verbs**,
+not two labels for one action:
+
+| | Reject / Send back | Cancel / Void |
+|---|---|---|
+| Means | the work is not good enough | the record should not exist |
+| Who | any approver, as a workflow verdict | usually QA or admin only |
+| Where | any review or approval gate | typically early states only |
+| Result | returns to an earlier state | terminal |
+| Requires | a reason | a reason, often a coded one |
+
+Two details worth carrying over:
+
+- **Cancel is permission-gated; reject is not.** Rejecting is a normal part of an approver's job.
+  Voiding a quality record is an administrative act, and in most systems an ordinary reviewer
+  cannot perform it.
+- **Cancel is usually unavailable late in the flow.** A record deep in approval is finished or
+  corrected, not voided. The brief offering cancellation through `In Approval` (§6) is the
+  unusual part.
+
+### 12.2 What the prototype does
+
+| | Decision |
+|---|---|
+| Cancel on `In Review` | **Build it.** The one place it is honest — a duplicate or out-of-scope report caught at triage genuinely should not exist, and Business Flow §5 Step 2 treats it as a real decision there rather than a fallback. Reason required. |
+| Cancel on `In Approval`, `CAPA Pending`, `Investigation In Progress` | **Do not build.** Not a design statement — scope. A signatory who will not sign does nothing in a happy-path demo, which is accurate. |
+| `Cancelled` as a record state | **Displayable.** One seeded record, a badge, a read-only detail screen. `Cancelled` is already an option in the live Status filter (§8.13), so it will be clicked. Showing a state is cheap; building the transition into it is not. |
+| Return / send back (§11) | **Deferred.** Designed, not built. |
+
+**Button copy: `Cancel — invalid or duplicate`,** not bare `Cancel`. The label carries the meaning
+at zero cost and stops the control reading as "reject this work" — the same move as `All statuses`
+over `Status: All`.
+
+### 12.3 Why `In Approval` gets no cancel button
+
+Adding it costs one button and encodes *refuse to sign = destroy the record* into the artefact the
+development team will copy. Omitting it costs nothing the demo needs. If the flow is later built
+properly, §11 is the design; nothing here forecloses it.
+
+### 12.4 Still open regardless of scope
+
+**§11.6 stands and is not a design question.** If reviewers today cancel deviations in order to
+send them back, production `Cancelled` records include records that were never invalid — and any
+trend analysis on that field is wrong. For the brief's author, whatever the prototype does.
