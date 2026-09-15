@@ -49,6 +49,7 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 - `docs/machine-readable/generation-rules.md` — when to regenerate a meta.json.
 - `docs/machine-readable/figma-ids.md` — Figma node, effect-style and text-style IDs. ⚠️ IDs are Agentic's; Accura's Figma file is different — verify before use.
 - `docs/machine-readable/sync-doc-values.mjs` — **rewrites restated px values from `tokens/*.json`.** Docs name a token then restate its value (`spacing/component/lg (16px)`). The name is right forever; the number is a hand-typed snapshot that goes stale the moment a primitive changes — one re-theme edit invalidates ~150 of them at once. This makes them derived, not authored. Dry-run by default; `--write` applies. **Run after any token value change, before committing.** Excludes `docs/design-system-rules.md` (vendored body + override table), any line marked `<!-- sync-doc-values:ignore -->`, and changelogs (historical by nature).
+- `tokens/token-parity.mjs` — **the check that says whether `tokens/*.json` still matches what ships.** Resolves every alias and diffs against `tokens.css`; four known differences are explained in the script, anything else fails. The export is not the source of truth — `accura-ui/src/app/tokens.css` is. See `tokens/README.md`.
 - `docs/machine-readable/validate-artifacts.mjs` · `drift-check.mjs` — validation scripts. `drift-check` check 6 verifies every restated px against its token across specs, skills, tracking and the ruleset — it exits 1 on drift and names the fix command.
 
 ## Code — `accura-ui/`

@@ -786,7 +786,7 @@
   },
   "font-family": {
     "sans": {
-      "$value": "SF Pro",
+      "$value": "Inter",
       "$type": "string",
       "$description": "Intent: Primary UI typeface for all interface text.\nUse when: Body copy, labels, buttons, inputs, headings — everything that is not code or editorial serif.\nDo not use: For code blocks or monospace content.\nUse instead: font-family/mono for code; font-family/serif for editorial contexts.\nStatus: Stable"
     },
