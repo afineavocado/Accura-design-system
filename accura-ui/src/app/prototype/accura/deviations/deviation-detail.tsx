@@ -2,7 +2,7 @@
 
 import { Fragment, useState } from "react"
 import Link from "next/link"
-import { ChevronLeft, Plus, X } from "lucide-react"
+import { Ban, ChevronLeft, Clock3, Plus, X } from "lucide-react"
 
 import { RecordAuditDrawer } from "@/components/record-audit-drawer"
 import { RecordSection } from "@/components/record-workflow"
@@ -480,22 +480,34 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
       </div>
 
       {record.cancelled && (
-        <Alert variant="destructive" className="mb-[var(--spacing-layout-sm)]">
-          <AlertTitle>Cancelled by {display(record.cancelled.by)}</AlertTitle>
-          <AlertDescription>
-            {record.cancelled.reason} Cancelled from {record.cancelled.from}. The
-            record stays searchable and read-only; it cannot be reopened.
-          </AlertDescription>
+        <Alert
+          variant="destructive"
+          className="mb-[var(--spacing-layout-sm)] flex-row items-start gap-[var(--spacing-component-md)]"
+        >
+          <Ban className="mt-px size-4 shrink-0" aria-hidden="true" />
+          <div className="flex flex-col gap-[var(--spacing-component-xxs)]">
+            <AlertTitle>Cancelled by {display(record.cancelled.by)}</AlertTitle>
+            <AlertDescription>
+              {record.cancelled.reason} Cancelled from {record.cancelled.from}.
+              The record stays searchable and read-only; it cannot be reopened.
+            </AlertDescription>
+          </div>
         </Alert>
       )}
 
       {overdue && (
-        <Alert className="mb-[var(--spacing-layout-sm)]">
-          <AlertTitle>Overdue</AlertTitle>
-          <AlertDescription>
-            Due {displayDate(record.dueDate)}. The lifecycle status is
-            unchanged; this is an escalation flag only.
-          </AlertDescription>
+        <Alert
+          variant="warning"
+          className="mb-[var(--spacing-layout-sm)] flex-row items-start gap-[var(--spacing-component-md)]"
+        >
+          <Clock3 className="mt-px size-4 shrink-0" aria-hidden="true" />
+          <div className="flex flex-col gap-[var(--spacing-component-xxs)]">
+            <AlertTitle>Overdue</AlertTitle>
+            <AlertDescription>
+              Due {displayDate(record.dueDate)}. The lifecycle status is
+              unchanged; this is an escalation flag only.
+            </AlertDescription>
+          </div>
         </Alert>
       )}
 
