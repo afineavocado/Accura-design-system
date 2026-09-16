@@ -40,6 +40,16 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
   have reviewed this revision" — and appeared above a deviation ID.
 - **The audit trail entry is now written down**, in `docs/skills/accura-prototype-build/accura-design-patterns.md` §4b.
 
+**Correction, 2026-09-16** — this entry, and the guardrail it shipped in
+`accura-prototype-build.md`, said a Combobox description had been overridden to `text-sm` from a
+prototype page. That did not happen: no page passes a class to `ComboboxField`, and the fix was
+made in the component (`d2a3d41`). What actually went wrong with that field was two different
+things — `type="tag-input"` and `multiple` were used together, which are different controls and
+the component silently prefers `type`; and the multi-select input inside `combobox.tsx` was
+`text-xs` while the single-select branch of the same component was `text-sm`. The guardrail about
+not styling a component's slots from the page still stands on its own; its example has been
+replaced with the real one.
+
 ### 2026-09-15 — The rules moved into the repo, and say when to update what
 
 **Changed**

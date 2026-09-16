@@ -33,10 +33,21 @@ and say the map out loud, before the first line of JSX. The gate below is that m
 first and checking later is how screens end up with values that look plausible and match nothing.
 
 > **Never pass a `text-*`, colour or weight class into a component's own slot.** A component's
-> description, label and helper text are already styled; overriding them from the page is how a
-> Combobox description ended up at `text-sm` when the component emits `text-xs`. If the type
-> looks wrong, it is wrong in the component or the spec — fix it there, or raise it. The page
-> does not get a vote on a component's internal typography.
+> label, description and helper text are already styled. If the type looks wrong, it is wrong in
+> the component or the spec — fix it there, or raise it. The page does not get a vote on a
+> component's internal typography.
+>
+> **And read the story before choosing a variant, not just the props list.** Reviewers on Create
+> Deviation was built with `type="tag-input"` and `multiple` together — free-form entry and
+> pick-many-from-a-list are different controls, the component silently prefers `type`, and the
+> field became an ill-fitting free-text box. The props list allowed it; the story would have shown
+> what each variant is for in one glance.
+>
+> Its sibling failure is worth knowing too: the multi-select input inside `combobox.tsx` was
+> `text-xs` while every other input in the same component — the single-select branch included —
+> was `text-sm`. A component can be inconsistent with itself, and no spec records either number,
+> so there was nothing to check against. Fixed in the component (`d2a3d41`), which is the right
+> layer.
 
 **3. Audit your own work, against the rendered page.** Not against your intent, and not against
 the code you just wrote. Open it, measure it, compare it to the sibling screens that already do
