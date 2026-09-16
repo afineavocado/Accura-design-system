@@ -174,13 +174,17 @@ export default function CreateDeviationPage() {
           </div>
 
           {/* Optional, 0..n, added as chips the moment one is picked. */}
+          {/* `multiple`, not `type="tag-input"`. Combobox.stories.tsx keeps
+              them apart: tag-input is free-form — "choose from suggestions or
+              type your own" — and holds its list back until you type, because
+              typing is the point. A reviewer cannot be invented, so this is a
+              fixed list shown as chips, and MultiSelect opens on focus. */}
           <ComboboxField
             id="reviewers"
             label="Reviewers"
-            type="tag-input"
             multiple
             options={reviewerOptions}
-            placeholder="Search reviewers to add..."
+            placeholder="Add reviewers"
             description="Add zero or more reviewers. Selecting a name adds it immediately."
           />
 
