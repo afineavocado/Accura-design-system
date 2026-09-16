@@ -202,6 +202,8 @@ export type DeviationRecord = {
   impactAnalysis?: string
   /** More than one CAPA can be linked; the block appends. */
   capaRefs?: CapaLink[]
+  /** Appended by every transition — see Transitions at the end of this file. */
+  activity?: ActivityEntry[]
   /** Set when the record was cancelled; reason is required at that point.
    *  `from` is the state it was cancelled out of — the stepper shows that
    *  step, because Cancelled itself has no position (spec §9). */
@@ -649,7 +651,14 @@ export function auditEvents(record: DeviationRecord): AuditEvent[] {
     record: id,
   })
 
+  /* A transition the session actually performed is in `activity` with its real
+     actor and timestamp, so deriving it again would log it twice — the exact
+     defect recorded against the live product in spec §10.5. Derive only the
+     seeded history the record arrived with. */
+  const recorded = new Set((record.activity ?? []).map((entry) => entry.toStatus))
+
   travelled.slice(1).forEach((status, i) => {
+    if (recorded.has(status)) return
     events.push({
       id: `${record.key}-to-${i}`,
       timestamp: stamp(i + 1),
@@ -671,6 +680,21 @@ export function auditEvents(record: DeviationRecord): AuditEvent[] {
       action: `${signature.role} signed`,
       record: id,
       meaning: signature.statement,
+    })
+  )
+
+  /* Anything the session actually did, on top of the derived history. */
+  ;(record.activity ?? []).forEach((entry) =>
+    events.push({
+      id: entry.id,
+      timestamp: entry.timestamp,
+      name: entry.by.name,
+      role: entry.by.role,
+      action: entry.action,
+      record: id,
+      meaning: entry.reason,
+      fromStatus: entry.fromStatus,
+      toStatus: entry.toStatus,
     })
   )
 
@@ -713,4 +737,112 @@ export function visibleBlocks(record: DeviationRecord) {
     /** Only the current state's own block is editable, and never once closed. */
     editable: closed ? null : (record.status as LifecycleStatus),
   }
+}
+
+// ─── Transitions ────────────────────────────────────────────────────────────
+
+/* The lifecycle rules, kept beside the lifecycle array rather than in the
+ * screen, so what a button does can be read without opening a component.
+ *
+ * Every transition appends to `activity`, which auditEvents() folds in with
+ * the derived history — an append-only trail is the one thing brief §9.7 is
+ * unambiguous about. */
+
+export type ActivityEntry = {
+  id: string
+  timestamp: string
+  by: Person
+  action: string
+  reason?: string
+  fromStatus?: string
+  toStatus?: string
+}
+
+const stamp = () => new Date().toISOString()
+
+const log = (
+  record: DeviationRecord,
+  entry: Omit<ActivityEntry, "id" | "timestamp">
+): DeviationRecord => ({
+  ...record,
+  activity: [
+    ...(record.activity ?? []),
+    { id: `${record.key}-${Date.now()}`, timestamp: stamp(), ...entry },
+  ],
+})
+
+/** The next state, or null at the end of the lifecycle. */
+export function nextStatus(status: DeviationStatus): LifecycleStatus | null {
+  const i = lifecycle.indexOf(status as LifecycleStatus)
+  return i === -1 || i === lifecycle.length - 1 ? null : lifecycle[i + 1]
+}
+
+/** One stage back, or null at Draft. "Send back one stage" — brief §5.7. */
+export function previousStatus(status: DeviationStatus): LifecycleStatus | null {
+  const i = lifecycle.indexOf(status as LifecycleStatus)
+  return i <= 0 ? null : lifecycle[i - 1]
+}
+
+/* Submit mints the Deviation ID — brief §5 Step 1 is explicit that Save as
+   Draft does not. The number continues the seeded sequence. */
+export function mintId(existing: DeviationRecord[]) {
+  const used = existing
+    .map((r) => r.id)
+    .filter((id): id is string => Boolean(id))
+    .map((id) => Number(id.split("/").pop()))
+    .filter((n) => !Number.isNaN(n))
+  return `ACME/DEV/2026/${String(Math.max(0, ...used) + 1).padStart(6, "0")}`
+}
+
+export function advance(
+  record: DeviationRecord,
+  by: Person,
+  all: DeviationRecord[] = []
+): DeviationRecord {
+  const to = nextStatus(record.status)
+  if (!to) return record
+  const id = record.id ?? mintId(all)
+  return log({ ...record, id, status: to }, {
+    by,
+    action: record.status === "Draft" ? "Submitted for review" : "Status changed",
+    fromStatus: record.status,
+    toStatus: to,
+  })
+}
+
+export function reject(
+  record: DeviationRecord,
+  by: Person,
+  reason?: string
+): DeviationRecord {
+  const to = previousStatus(record.status)
+  if (!to) return record
+  return log({ ...record, status: to }, {
+    by,
+    action: "Rejected — sent back one stage",
+    reason,
+    fromStatus: record.status,
+    toStatus: to,
+  })
+}
+
+export function cancelRecord(
+  record: DeviationRecord,
+  by: Person,
+  reason: string
+): DeviationRecord {
+  if (record.status === "Cancelled" || record.status === "Approved") return record
+  return log(
+    {
+      ...record,
+      status: "Cancelled",
+      cancelled: {
+        reason,
+        by,
+        timestamp: stamp(),
+        from: record.status as LifecycleStatus,
+      },
+    },
+    { by, action: "Cancelled", reason, fromStatus: record.status, toStatus: "Cancelled" }
+  )
 }

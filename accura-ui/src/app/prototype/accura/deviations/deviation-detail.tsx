@@ -25,15 +25,20 @@ import { Label } from "@/components/ui/label"
 import { Stepper } from "@/components/ui/stepper"
 import { Textarea } from "@/components/ui/textarea"
 
+import { allDeviations, saveDeviation } from "./store"
 import {
+  advance,
   auditEvents,
   basePath,
+  cancelRecord,
+  currentUser,
   capaCatalogue,
   display,
   displayDate,
   displayId,
   isOverdue,
   lifecycle,
+  reject,
   signatures,
   statusVariants,
   stepIndex,
@@ -213,6 +218,16 @@ function CapaSearch({
 
 
 export function DeviationDetail({ record }: { record: DeviationRecord }) {
+  /* The transitions themselves live in mock-data.ts beside the lifecycle;
+     these only decide who acted and push the result into the store.
+     Signature and reason dialogs come next — for now the action applies
+     directly, so the flow is clickable end to end. */
+  const onAdvance = () =>
+    saveDeviation(advance(record, currentUser, allDeviations()))
+  const onReject = () => saveDeviation(reject(record, currentUser))
+  const onCancel = () =>
+    saveDeviation(cancelRecord(record, currentUser, "Cancelled from the demo."))
+
   const blocks = visibleBlocks(record)
   const { captured, pending } = signatures(record)
   const overdue = isOverdue(record)
@@ -589,21 +604,27 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
      left, the primary on the right (spec §5.7). Reject is a real transition
      there — sending a record back one stage — not a route to Cancelled, which
      is what the briefs describe (spec §12.2). */
+  /* All three right-aligned, ordered by weight: the quiet exit, the
+     destructive-but-recoverable one, then the primary.
+
+     Reject is `destructiveSecondary` — Button.md names this exact case, "a
+     destructive action beside a primary one that must stay dominant (CAPA
+     Reject next to Approve & Sign)", and both CAPA and Training's review queue
+     already use it. Cancel stays `outline`: its weight belongs to the
+     confirmation, not to the control that opens it. */
   const actionBar = closed ? null : (
-    <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
-      <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
-        {record.status !== "Draft" && (
-          <>
-            <Button variant="ghost" size="sm">
-              Reject — send back one stage
-            </Button>
-            <Button variant="ghost" size="sm">
-              Cancel deviation
-            </Button>
-          </>
-        )}
-      </div>
-      <Button>{primaryAction(record)}</Button>
+    <div className="flex flex-wrap items-center justify-end gap-[var(--spacing-component-sm)]">
+      {record.status !== "Draft" && (
+        <>
+          <Button variant="outline" onClick={onCancel}>
+            Cancel deviation
+          </Button>
+          <Button variant="destructiveSecondary" onClick={onReject}>
+            Reject — send back one stage
+          </Button>
+        </>
+      )}
+      <Button onClick={onAdvance}>{primaryAction(record)}</Button>
     </div>
   )
 

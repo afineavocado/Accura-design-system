@@ -38,8 +38,13 @@ and report numbers rather than impressions.**
 - ⚠️ `npm run build` deletes `.next/dev` under a running dev server. Stop dev first, or every
   route 500s with `ENOENT … routes-manifest.json`, which reads like a code error and is not.
 
-Audit against what rendered, not against what you wrote, and compare with the sibling screen that
-already does the same job.
+Audit against what rendered, not against what you wrote, and compare with the sibling screen that already does the same job.
+
+## Scope
+
+- Build what was asked. Do not add screens, actions, data or flows nobody requested, and do not commit, push or deploy unless asked.
+- No em dash in the copywriting
+- When i said audit tokens, i mean all tokens : spacing, color, text style, font weight, typeface, components,.... everything must be correct and follow design system.
 
 ## Do not silently resolve open questions
 
@@ -116,7 +121,4 @@ Desktop stashed it on a branch switch. If it matters, commit it.
 > **Accura scores 9 ✅ · 3 🟡 · 1 ❌ — it does not pass.** Agentic's 13 ✅ certifies *Agentic's*
 > file. Never restate an inherited ✅ as if it were earned here.
 
-## Scope
 
-Build what was asked. Do not add screens, actions, data or flows nobody requested, and do not
-commit, push or deploy unless asked.
