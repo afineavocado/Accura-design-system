@@ -501,7 +501,11 @@ export function ComboboxField({
               <Combobox.Input
                 id={id}
                 placeholder={activeValues.length === 0 ? placeholder : undefined}
-                className={cn(inputClass, "h-5 text-xs min-w-[60px]")}
+                /* text-sm like every other input in this component and every
+                   other field on a form. The chips beside it stay text-xs —
+                   they are compact by design — but the input and its
+                   placeholder are the field's own text. */
+                className={cn(inputClass, "h-5 text-sm min-w-[60px]")}
                 aria-invalid={invalid || undefined}
               />
             </div>
