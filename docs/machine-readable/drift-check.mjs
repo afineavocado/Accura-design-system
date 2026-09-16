@@ -53,12 +53,49 @@ if (wrong.length === 0) ok(`meta.json count ${metaCount} matches doc claim(s): $
 else bad(`meta.json count is ${metaCount} but docs claim: ${wrong.join(', ')}`);
 
 // ── 3. accura-theme.md hexes exist in primitives ─────────────────────────────
-section('3. accura-theme.md — hex values exist in primitives.tokens.json');
+section('3. accura-theme.md — ramp tables match primitives, step by step');
 const theme = fs.readFileSync(path.join(root, 'accura-theme.md'), 'utf8');
-const prim = fs.readFileSync(path.join(root, 'tokens/primitives.tokens.json'), 'utf8').toLowerCase();
+const primRaw = fs.readFileSync(path.join(root, 'tokens/primitives.tokens.json'), 'utf8');
+const prim = primRaw.toLowerCase();
+
+// Flatten primitives to slash paths so a row can be checked against its own step,
+// not merely against the file. A hex on the wrong step used to pass.
+const flatPrim = {};
+(function walk(node, trail = []) {
+  for (const [k, v] of Object.entries(node)) {
+    if (v && typeof v === 'object') {
+      if ('$value' in v) flatPrim[[...trail, k].join('/')] = String(v.$value).toLowerCase();
+      else walk(v, [...trail, k]);
+    }
+  }
+})(JSON.parse(primRaw));
+
+const RAMPS = { '1. Brand ramp': 'color/brand', '2. Neutral ramp': 'color/zinc' };
+let ramp = null, rowsChecked = 0, rowsUnresolved = 0;
+for (const line of theme.split('\n')) {
+  if (line.startsWith('## ')) {
+    ramp = Object.entries(RAMPS).find(([k]) => line.startsWith('## ' + k))?.[1] ?? null;
+    continue;
+  }
+  if (!ramp || !line.startsWith('|')) continue;
+  const cells = line.split('|').slice(1, -1).map((c) => c.trim().replace(/[*`]/g, '').trim());
+  if (cells.length < 2) continue;
+  const [step, hex] = cells;
+  if (!/^#[0-9a-fA-F]{6}$/.test(hex)) continue;
+  const key = step.includes('/') ? `color/${step}` : `${ramp}/${step}`;
+  const actual = flatPrim[key];
+  if (!actual) { rowsUnresolved++; continue; }
+  rowsChecked++;
+  if (actual !== hex.toLowerCase())
+    bad(`accura-theme.md ${key}: doc says ${hex}, primitives say ${actual}`);
+}
+ok(`${rowsChecked} ramp rows match their own primitive step` +
+   (rowsUnresolved ? ` (${rowsUnresolved} rows name no primitive — prose, not a ramp)` : ''));
+
+// Still catch a hex invented anywhere in the file, ramp table or not.
 const hexes = [...new Set([...theme.matchAll(/#[0-9a-f]{6}/gi)].map((m) => m[0].toLowerCase()))];
 const orphans = hexes.filter((h) => !prim.includes(h));
-if (orphans.length === 0) ok(`all ${hexes.length} theme hexes found in primitives`);
+if (orphans.length === 0) ok(`all ${hexes.length} theme hexes exist in primitives`);
 else orphans.forEach((h) => bad(`theme hex ${h} not in primitives.tokens.json`));
 
 // ── 4. Figma Dark mode ↔ tokens.css .dark  (optional — needs figma-cli) ──────

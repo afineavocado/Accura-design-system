@@ -82,8 +82,11 @@ export default function DocumentListing() {
   const paged = usePagination(filtered);
   const { setPage } = paged;
   return (
-    <>
-      <div className="mb-[var(--spacing-layout-sm)] flex w-full flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
+    /* One vertical rhythm for the listing rather than a margin on whichever
+       child happened to need one. Matches the deviation registry and CAPA;
+       without it the summary row sat flush against the table. */
+    <div className="flex flex-col gap-[var(--spacing-component-md)]">
+      <div className="flex w-full flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
       <div
         className="flex min-w-0 flex-1 flex-wrap items-center gap-[var(--spacing-component-sm)]"
         aria-label="Document filters"
@@ -304,9 +307,7 @@ export default function DocumentListing() {
           </div>
         )}
       </div>
-      <div className="mt-[var(--spacing-component-lg)]">
-        <TablePagination {...paged} noun="revision records" />
-      </div>
-    </>
+      <TablePagination {...paged} noun="revision records" />
+    </div>
   );
 }

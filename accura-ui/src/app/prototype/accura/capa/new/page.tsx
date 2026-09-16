@@ -50,7 +50,7 @@ function SelectField({
   options: Array<{ value: string; label: string; disabled?: boolean }>
 }) {
   return (
-    <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+    <div className="flex flex-col gap-[var(--spacing-component-sm)]">
       <Label required htmlFor={id}>{label}</Label>
       <Select defaultValue={defaultValue} value={value} onValueChange={onValueChange} disabled={disabled}>
         <SelectTrigger id={id} aria-label={label}>
@@ -114,7 +114,7 @@ export default function CreateCapaPage() {
                 </CardHeader>
                 <Separator />
                 <CardContent className="grid grid-cols-1 gap-[var(--spacing-component-lg)] md:grid-cols-2">
-                  <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+                  <div className="flex flex-col gap-[var(--spacing-component-sm)]">
                     <Label required htmlFor="capa-title">Title</Label>
                     <Input id="capa-title" placeholder="Enter title" />
                   </div>
@@ -188,7 +188,7 @@ export default function CreateCapaPage() {
                     ]}
                   />
 
-                  <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+                  <div className="flex flex-col gap-[var(--spacing-component-sm)]">
                     <Label required htmlFor="due-date">Due Date</Label>
                     <DatePicker id="due-date" type="input" placeholder="Select due date" />
                   </div>

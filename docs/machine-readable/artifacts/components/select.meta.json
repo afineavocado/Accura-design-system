@@ -97,7 +97,7 @@
       "descriptionOpen": "hidden",
       "descriptionDisabled": "color/text/disabled",
       "descriptionInvalid": "color/text/invalid",
-      "gap": "spacing/component/xs"
+      "gap": "spacing/component/sm"
     },
     "dropdown": {
       "container": {
@@ -110,7 +110,7 @@
       },
       "item": {
         "height": "h-8 (32px)",
-        "paddingX": "spacing/component/sm (8px) — px-2",
+        "paddingX": "spacing/component/sm (8px) \u2014 px-2",
         "radius": "radius/md",
         "Default": {
           "fill": "transparent",
@@ -123,7 +123,7 @@
         "Selected": {
           "fill": "transparent",
           "text": "color/brand/primary",
-          "notes": "No checkmark — selected state uses brand/primary text color only"
+          "notes": "No checkmark \u2014 selected state uses brand/primary text color only"
         },
         "Disabled": {
           "fill": "transparent",
@@ -175,21 +175,21 @@
   ],
   "bestPractice": {
     "useCases": [
-      "Country or region field in a checkout or address form — fixed list, user needs to scroll and pick one",
-      "Timezone selector in account settings — short curated list, no typing required",
+      "Country or region field in a checkout or address form \u2014 fixed list, user needs to scroll and pick one",
+      "Timezone selector in account settings \u2014 short curated list, no typing required",
       "Status or priority picker in a project tool: To Do, In Progress, Done, Blocked",
-      "Theme preference: Light, Dark, System — 3 options, no search needed",
+      "Theme preference: Light, Dark, System \u2014 3 options, no search needed",
       "Role assignment in a user management form: Admin, Editor, Viewer"
     ],
     "variantExamples": {
       "State=Default": {
-        "whenToUse": "Field rendered, no value chosen yet — placeholder shown",
+        "whenToUse": "Field rendered, no value chosen yet \u2014 placeholder shown",
         "examples": [
           "Empty 'Select a country' on page load"
         ]
       },
       "State=Open": {
-        "whenToUse": "Actively showing the dropdown — use in mockups to preview the list",
+        "whenToUse": "Actively showing the dropdown \u2014 use in mockups to preview the list",
         "examples": [
           "Design spec showing dropdown with fruit options"
         ]
@@ -207,7 +207,7 @@
         ]
       },
       "State=Disabled": {
-        "whenToUse": "Field is locked — context determines the value or user lacks permission to change it",
+        "whenToUse": "Field is locked \u2014 context determines the value or user lacks permission to change it",
         "examples": [
           "Read-only role display on a locked team member record"
         ]
@@ -215,7 +215,7 @@
     },
     "comparedTo": [
       {
-        "situation": "Fixed short list (≤ ~10 items), pick one, no typing needed",
+        "situation": "Fixed short list (\u2264 ~10 items), pick one, no typing needed",
         "use": "select",
         "notInstead": "combobox"
       },
@@ -230,7 +230,7 @@
         "notInstead": "select"
       },
       {
-        "situation": "2–5 options where seeing all at once aids the decision",
+        "situation": "2\u20135 options where seeing all at once aids the decision",
         "use": "radio",
         "notInstead": "select"
       },
@@ -255,7 +255,7 @@
     "storyFile": "src/stories/Select.stories.tsx",
     "artifactStatus": "ready",
     "lastAuditDate": "2026-05-28",
-    "auditRules": "R1–R8",
+    "auditRules": "R1\u2013R8",
     "version": "3.0",
     "openQuestions": [],
     "notes": [
@@ -270,7 +270,7 @@
       }
     ],
     "darkMode": {
-      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "notes": "No known dark mode differences \u2014 all tokens are semantic and mode-aware.",
       "pairedSurfaceRisk": "None identified."
     }
   },
@@ -278,12 +278,19 @@
     "tsxFile": "src/components/ui/select.tsx",
     "packageDeps": [],
     "exports": [
-      "Select", "SelectGroup", "SelectValue", "SelectTrigger",
-      "SelectContent", "SelectLabel", "SelectItem", "SelectSeparator",
-      "SelectScrollUpButton", "SelectScrollDownButton"
+      "Select",
+      "SelectGroup",
+      "SelectValue",
+      "SelectTrigger",
+      "SelectContent",
+      "SelectLabel",
+      "SelectItem",
+      "SelectSeparator",
+      "SelectScrollUpButton",
+      "SelectScrollDownButton"
     ],
     "notes": [
-      "SelectItem: no checkmark indicator — selected state uses data-[state=checked]:text-[color/brand/primary] only.",
+      "SelectItem: no checkmark indicator \u2014 selected state uses data-[state=checked]:text-[color/brand/primary] only.",
       "Dropdown container uses radius/lg (not radius/md like trigger). Viewport uses p-0.5 + gap-0.5 flex-col layout."
     ]
   },

@@ -42,12 +42,12 @@ export default function CreateTrainingRolePage() {
             <CardTitle className="text-xl">Role Details</CardTitle>
           </CardHeader>
           <CardContent className="gap-[var(--spacing-component-lg)]">
-            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+            <div className="flex flex-col gap-[var(--spacing-component-sm)]">
               <Label required htmlFor="role-name">Role name</Label>
               <Input id="role-name" placeholder="e.g. GMP Operator" />
             </div>
 
-            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+            <div className="flex flex-col gap-[var(--spacing-component-sm)]">
               <Label required htmlFor="role-description">
                 Description
               </Label>

@@ -56,11 +56,11 @@ export const Right: Story = {
           </SheetDescription>
         </SheetHeader>
         <div className="flex-1 overflow-y-auto p-[var(--spacing-component-lg)] flex flex-col gap-[var(--spacing-component-lg)]">
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label htmlFor="r-name">Name</Label>
             <Input id="r-name" defaultValue="Phuong Lam" />
           </div>
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label htmlFor="r-email">Email</Label>
             <Input id="r-email" defaultValue="phuong@example.com" />
           </div>
@@ -174,7 +174,7 @@ export const ScrollableBody: Story = {
         </SheetHeader>
         <div className="flex-1 overflow-y-auto p-[var(--spacing-component-lg)] flex flex-col gap-[var(--spacing-component-lg)]">
           {['Name', 'Description', 'Owner', 'Team', 'Tags', 'Deadline', 'Budget', 'Priority'].map((field) => (
-            <div key={field} className="flex flex-col gap-[var(--spacing-component-xs)]">
+            <div key={field} className="flex flex-col gap-[var(--spacing-component-sm)]">
               <Label htmlFor={`sc-${field}`}>{field}</Label>
               <Input id={`sc-${field}`} placeholder={`Enter ${field.toLowerCase()}`} />
             </div>

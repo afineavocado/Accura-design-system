@@ -81,7 +81,7 @@ export default function CreateAssessmentPage() {
             <CardTitle className="text-xl">Assessment Details</CardTitle>
           </CardHeader>
           <CardContent className="gap-[var(--spacing-component-lg)]">
-            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+            <div className="flex flex-col gap-[var(--spacing-component-sm)]">
               <Label required htmlFor="assessment-name">
                 Assessment name
               </Label>
@@ -91,7 +91,7 @@ export default function CreateAssessmentPage() {
               />
             </div>
 
-            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+            <div className="flex flex-col gap-[var(--spacing-component-sm)]">
               <Label required htmlFor="assessment-due">Due date</Label>
               <DatePicker
                 id="assessment-due"

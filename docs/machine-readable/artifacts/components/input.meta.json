@@ -117,7 +117,7 @@
       "descriptionDefault": "color/text/secondary",
       "descriptionDisabled": "color/text/disabled",
       "descriptionInvalid": "color/text/invalid",
-      "gap": "spacing/component/xs"
+      "gap": "spacing/component/sm"
     },
     "states": {
       "invalid": {
@@ -169,8 +169,8 @@
     "useCases": [
       "User registration or account setup forms: name, email, phone, username fields",
       "Login forms where a single line of text is collected (email + password)",
-      "Search bars paired with a button — use trailing-button with the input",
-      "Address entry: street, city, postcode — each as a separate input-field",
+      "Search bars paired with a button \u2014 use trailing-button with the input",
+      "Address entry: street, city, postcode \u2014 each as a separate input-field",
       "API key or token display fields where the user reads or copies a value",
       "Notes, comments, or bio fields that require multi-line entry (Type=Textarea)"
     ],
@@ -185,7 +185,7 @@
         ]
       },
       "Type=Textarea": {
-        "whenToUse": "Free-form multi-line prose — the user needs more than one line",
+        "whenToUse": "Free-form multi-line prose \u2014 the user needs more than one line",
         "examples": [
           "Comment box",
           "Product description",
@@ -196,7 +196,7 @@
     },
     "comparedTo": [
       {
-        "situation": "User must type a free-form value — anything goes",
+        "situation": "User must type a free-form value \u2014 anything goes",
         "use": "input",
         "notInstead": "select or combobox"
       },
@@ -236,7 +236,7 @@
     "storyFile": "src/stories/Input.stories.tsx",
     "artifactStatus": "ready",
     "lastAuditDate": "2026-05-28",
-    "auditRules": "R1–R8",
+    "auditRules": "R1\u2013R8",
     "version": "3.0",
     "openQuestions": [],
     "notes": [
@@ -252,7 +252,7 @@
       }
     ],
     "darkMode": {
-      "notes": "Container fill uses color/input/bg (Dark: zinc/700) — one step lighter than surface/overlay so inputs stand out from the panel. Disabled fill uses color/surface/muted (Dark: zinc/800).",
+      "notes": "Container fill uses color/input/bg (Dark: zinc/700) \u2014 one step lighter than surface/overlay so inputs stand out from the panel. Disabled fill uses color/surface/muted (Dark: zinc/800).",
       "pairedSurfaceRisk": "None identified."
     }
   },

@@ -48,11 +48,11 @@ export const Form: Story = {
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-[var(--spacing-component-lg)]">
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label htmlFor="name">Name</Label>
             <Input id="name" defaultValue="Phuong Lam" />
           </div>
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label htmlFor="email">Email</Label>
             <Input id="email" defaultValue="phuong@example.com" />
           </div>
@@ -112,7 +112,7 @@ export const StickyFooter: Story = {
         </DialogHeader>
         <div className="flex-1 overflow-y-auto px-[var(--spacing-component-lg)] py-[var(--spacing-component-lg)] flex flex-col gap-[var(--spacing-component-lg)]">
           {['Project name', 'Description', 'Team', 'Deadline'].map((field) => (
-            <div key={field} className="flex flex-col gap-[var(--spacing-component-xs)]">
+            <div key={field} className="flex flex-col gap-[var(--spacing-component-sm)]">
               <Label htmlFor={field.toLowerCase().replace(' ', '-')}>{field}</Label>
               <Input
                 id={field.toLowerCase().replace(' ', '-')}
@@ -183,7 +183,7 @@ export const Destructive: Story = {
             from our servers. Type your email to confirm.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+        <div className="flex flex-col gap-[var(--spacing-component-sm)]">
           <Label htmlFor="confirm-email">Confirm email</Label>
           <Input id="confirm-email" placeholder="phuong@example.com" />
         </div>

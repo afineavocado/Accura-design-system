@@ -78,7 +78,8 @@ input                       — V AUTO-LAYOUT, fill: color/input/bg
 ### `input-field`
 
 ```
-input-field                 — V AUTO-LAYOUT, gap: spacing/component/xs
+input-field                 — V AUTO-LAYOUT, gap: spacing/component/sm
+  (was spacing/component/xs — 4px read as the label touching its control; changed 2026-09-15)
   ├─ label                  — INSTANCE (label component — see _Form-shared.md)
   ├─ input                  — INSTANCE (input component)
   └─ description            — TEXT
