@@ -285,7 +285,7 @@ export function ElectronicSignatureModal({
             type="password"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
-            placeholder="Enter your password"
+            placeholder="Type anything"
             autoComplete="off"
             aria-describedby="demo-auth-note"
           />
@@ -293,8 +293,8 @@ export function ElectronicSignatureModal({
             id="demo-auth-note"
             className="text-xs text-[var(--color-text-secondary)]"
           >
-            Prototype only. Type “demo”; do not enter a real password. No
-            authentication or legally binding signature is performed.
+            Prototype only; do not enter a real password. No authentication or
+            legally binding signature is performed.
           </p>
         </div>
         <div className="flex items-start gap-[var(--spacing-component-sm)]">
@@ -318,7 +318,7 @@ export function ElectronicSignatureModal({
           <Button
             disabled={
               !confirmation ||
-              credential !== "demo" ||
+              credential.trim().length === 0 ||
               (reasonRequired && !reason.trim())
             }
             onClick={() => {

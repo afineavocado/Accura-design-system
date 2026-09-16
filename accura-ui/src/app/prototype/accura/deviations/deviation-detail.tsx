@@ -648,30 +648,36 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
     .filter((block) => !inWorkspace.has(block.key))
     .map((block) => <Fragment key={block.key}>{block.node}</Fragment>)
 
-  /* Copy and placement follow the product: two text-style actions on the
-     left, the primary on the right (spec §5.7). Reject is a real transition
-     there — sending a record back one stage — not a route to Cancelled, which
-     is what the briefs describe (spec §12.2). */
-  /* All three right-aligned, ordered by weight: the quiet exit, the
-     destructive-but-recoverable one, then the primary.
+  /* Reject is a real transition in the product — it sends a record back one
+     stage — not a route to Cancelled, which is what the briefs describe
+     (spec §12.2). */
+  /* Reject and Cancel sit on the left, primary on the right — the split the
+     product uses (spec §5.7), so the destructive pair is nowhere near the
+     control people reach for by habit. Reject leads: it is the decision a
+     reviewer actually makes, while cancelling kills the record outright.
 
      Reject is `destructiveSecondary` — Button.md names this exact case, "a
      destructive action beside a primary one that must stay dominant (CAPA
      Reject next to Approve & Sign)", and both CAPA and Training's review queue
      already use it. Cancel stays `outline`: its weight belongs to the
-     confirmation, not to the control that opens it. */
+     confirmation, not to the control that opens it.
+
+     The left group renders even when empty (Draft has neither action) so the
+     primary stays pinned right rather than sliding over. */
   const actionBar = closed ? null : (
-    <div className="flex flex-wrap items-center justify-end gap-[var(--spacing-component-sm)]">
-      {record.status !== "Draft" && (
-        <>
-          <Button variant="outline" onClick={onCancel}>
-            Cancel deviation
-          </Button>
-          <Button variant="destructiveSecondary" onClick={onReject}>
-            Reject — send back one stage
-          </Button>
-        </>
-      )}
+    <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
+      <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
+        {record.status !== "Draft" && (
+          <>
+            <Button variant="destructiveSecondary" onClick={onReject}>
+              Reject and send back one stage
+            </Button>
+            <Button variant="outline" onClick={onCancel}>
+              Cancel deviation
+            </Button>
+          </>
+        )}
+      </div>
       <Button onClick={onAdvance}>{primaryAction(record)}</Button>
     </div>
   )
@@ -794,7 +800,6 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
               {column.map((block) => (
                 <Fragment key={block.key}>{block.node}</Fragment>
               ))}
-              {i === 1 && actionBar}
             </div>
           ))}
         </div>
@@ -803,15 +808,13 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
           {present.map((block) => (
             <Fragment key={block.key}>{block.node}</Fragment>
           ))}
-          {actionBar}
         </div>
       )}
 
-      {/* In the dossier layout the action belongs to the Signatures block it
-          acts on, so it sits at the foot of that column. Left where it was, it
-          hung 181px below the card because the grid is as tall as its tallest
-          column. */}
-      {workspace && !closed && (
+      {/* One row across the full width, below whichever layout ran. It used to
+          sit inside the second dossier column, which buried the decision in a
+          half-width rail and changed where it landed from state to state. */}
+      {!closed && (
         <div className="mt-[var(--spacing-layout-sm)]">{actionBar}</div>
       )}
 
@@ -847,13 +850,15 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
   )
 }
 
-/* Button copy is verbatim from brief §13.9 where it specifies one. */
+/* Button copy follows brief §13.9 where it specifies one. The In Review label
+   is the one deliberate departure: the brief writes it with an em dash
+   ("Approve & sign — advance to investigation"); we spell it out. */
 function primaryAction(record: DeviationRecord): string {
   switch (record.status) {
     case "Draft":
       return "Submit for Review"
     case "In Review":
-      return "Approve & sign — advance to investigation"
+      return "Approve and sign to advance to investigation"
     case "Investigation In Progress":
     case "CAPA Pending":
       /* The product labels both of these "Done" rather than naming the

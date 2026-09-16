@@ -819,7 +819,7 @@ export function reject(
   if (!to) return record
   return log({ ...record, status: to }, {
     by,
-    action: "Rejected — sent back one stage",
+    action: "Rejected and sent back one stage",
     reason,
     fromStatus: record.status,
     toStatus: to,
