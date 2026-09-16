@@ -106,7 +106,7 @@ export const Invalid: Story = {
 
 export const WithField: Story = {
   render: () => (
-    <div className="flex flex-col gap-[var(--spacing-component-xs)] w-[280px]">
+    <div className="flex flex-col gap-[var(--spacing-component-sm)] w-[280px]">
       <Label htmlFor="status-story">Status</Label>
       <Select>
         <SelectTrigger id="status-story">
@@ -131,7 +131,7 @@ export const WithField: Story = {
 
 export const WithFieldInvalid: Story = {
   render: () => (
-    <div className="flex flex-col gap-[var(--spacing-component-xs)] w-[280px]">
+    <div className="flex flex-col gap-[var(--spacing-component-sm)] w-[280px]">
       <Label htmlFor="role-story" className="text-[var(--color-text-invalid)]">
         Role
       </Label>
@@ -156,7 +156,7 @@ export const WithFieldInvalid: Story = {
 
 export const WithFieldDisabled: Story = {
   render: () => (
-    <div className="flex flex-col gap-[var(--spacing-component-xs)] w-[280px]">
+    <div className="flex flex-col gap-[var(--spacing-component-sm)] w-[280px]">
       <Label htmlFor="country-story" className="text-[var(--color-text-disabled)]">
         Country
       </Label>
@@ -180,7 +180,7 @@ export const WithFieldDisabled: Story = {
 
 export const WithGroups: Story = {
   render: () => (
-    <div className="flex flex-col gap-[var(--spacing-component-xs)] w-[280px]">
+    <div className="flex flex-col gap-[var(--spacing-component-sm)] w-[280px]">
       <Label htmlFor="timezone-story">Timezone</Label>
       <Select>
         <SelectTrigger id="timezone-story">

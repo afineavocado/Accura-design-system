@@ -76,7 +76,7 @@ export const AllStates: Story = {
 export const WithField: Story = {
   args: { children: 'Label' },
   render: () => (
-    <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+    <div className="flex flex-col gap-[var(--spacing-component-sm)]">
       <Label htmlFor="department">Department</Label>
       <Input id="department" placeholder="Quality Assurance" />
     </div>

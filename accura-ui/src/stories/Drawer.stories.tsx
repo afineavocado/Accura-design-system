@@ -78,11 +78,11 @@ export const Bottom: Story = {
           <DrawerDescription>Adjust the filters for this view.</DrawerDescription>
         </DrawerHeader>
         <div className="p-[var(--spacing-component-lg)] flex flex-col gap-[var(--spacing-component-lg)]">
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label htmlFor="filter-status">Status</Label>
             <Input id="filter-status" placeholder="All statuses" />
           </div>
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label htmlFor="filter-date">Date range</Label>
             <Input id="filter-date" placeholder="Last 30 days" />
           </div>
@@ -118,11 +118,11 @@ export const Right: Story = {
           <DrawerDescription>Review metadata and settings for this project.</DrawerDescription>
         </DrawerHeader>
         <div className="flex-1 p-[var(--spacing-component-lg)] flex flex-col gap-[var(--spacing-component-lg)]">
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label htmlFor="proj-name">Project name</Label>
             <Input id="proj-name" defaultValue="Accura Design System" />
           </div>
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label htmlFor="proj-owner">Owner</Label>
             <Input id="proj-owner" defaultValue="Phuong Lam" />
           </div>
@@ -153,7 +153,7 @@ export const Responsive: Story = {
     const content = (
       <>
         <div className="p-[var(--spacing-component-lg)] flex flex-col gap-[var(--spacing-component-lg)]">
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label htmlFor="resp-theme">Theme</Label>
             <Input id="resp-theme" defaultValue="System" />
           </div>
@@ -218,11 +218,11 @@ export const WithForm: Story = {
           <DrawerDescription>Fill in the details to create your project.</DrawerDescription>
         </DrawerHeader>
         <div className="p-[var(--spacing-component-lg)] flex flex-col gap-[var(--spacing-component-lg)]">
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label htmlFor="form-name">Project name</Label>
             <Input id="form-name" placeholder="Enter project name" />
           </div>
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label htmlFor="form-desc">Description</Label>
             <Input id="form-desc" placeholder="Optional description" />
           </div>

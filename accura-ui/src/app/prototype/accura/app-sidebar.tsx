@@ -40,7 +40,7 @@ export const platformNav = [
   { label: "CAPA", icon: ClipboardCheck, href: "/prototype/accura/capa" },
   { label: "Change Control", icon: RefreshCw, href: "#" },
   { label: "Training", icon: GraduationCap, href: "/prototype/accura/training" },
-  { label: "Deviations", icon: TriangleAlert, href: "#" },
+  { label: "Deviations", icon: TriangleAlert, href: "/prototype/accura/deviations" },
   { label: "Reports", icon: BarChart3, href: "#" },
 ] as const
 

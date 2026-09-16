@@ -11,11 +11,19 @@ Accura is a **re-theme of the Agentic Design System**, not a fork of its rules.
 
 Because the semantic and component tiers **alias** primitives, editing the primitive layer re-themes everything downstream with no semantic edits.
 
-**Figma source:** `[Accura] Agentic Design System`
-Primitives `VariableCollectionId:1:2` (mode: Value) · Semantics `1:129` (Light/Dark) · Components `17:4484` (Light)
-229 primitives · 115 semantics (Light + Dark) · 52 component tokens · 17 text styles — all exported to `tokens/`
+## What this file is for, and what it is not
 
-**Code:** `accura-ui/` — Storybook on **port 6007** (Agentic's runs on 6006, so both can run side by side).
+**It is not where values come from.** `accura-ui/src/app/tokens.css` is what ships; `tokens/*.json`
+is the export, checkable with `node tokens/token-parity.mjs`. This file explains the *decisions* —
+why the brand anchors where it does, what deviates from Agentic and why, and what is still open.
+
+**The ramp tables are verified, not restated by hand.** `drift-check` rule 3 checks every
+`| step | hex |` row against that step's own primitive, so a hex that is real but attached to the
+wrong step now fails. Do not hand-edit a hex here to match something you saw; fix the primitive,
+or say why the doc is right.
+
+Counts, for orientation: 229 primitives · 115 semantics (light + dark) · 52 component tokens ·
+17 text styles. Code lives in `accura-ui/`, Storybook on **port 6007**.
 
 ---
 
@@ -66,7 +74,7 @@ Agentic's theme doc defines the acceptance test for a brand anchor — restated 
 |---|---|---|---|
 | `brand/500` | `#17bb77` | **2.50:1** | ❌ **reject** — below the 3:1 hard floor |
 | `brand/700` | `#00995e` | **3.67:1** | ⚠️ fill only |
-| **`brand/800-base`** | **`#008852`** | **4.59:1** | ✅ **perfect — fill + small text** |
+| **`brand/800-base`** | **`#008852`** | **4.52:1** | ✅ **perfect — fill + small text** |
 | `brand/900` | `#175e41` | **7.74:1** | ✅ AAA |
 
 Green is intrinsically lighter than blue at the same ramp step, so `/500` cannot clear the floor. Anchoring at `/800` is **the rule being applied correctly, not broken.**
@@ -484,7 +492,7 @@ Same token name, different values, feeding two different product files.
 
 **Q11 — ACCEPTED 2026-09-14. Focus ring contrast.** `color/ring` = `brand/500` `#17bb77` =
 **2.50:1 vs white**, below the 3:1 WCAG 1.4.11 floor for non-text indicators. The `/800` anchor
-(`#008852`) would pass at 4.59:1.
+(`#008852`) would pass at 4.52:1.
 
 > **Decision: the ring stays at `brand/500`.** Accepted knowingly.
 >

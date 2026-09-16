@@ -1,13 +1,13 @@
 {
   "name": "combobox",
   "figmaNodeId": "75:9166",
-  "description": "A searchable, filterable dropdown control — single selection, multi-selection, search-as-you-type, free-form tag entry, or time selection.",
+  "description": "A searchable, filterable dropdown control \u2014 single selection, multi-selection, search-as-you-type, free-form tag entry, or time selection.",
   "category": "forms",
   "shadcnBase": "combobox",
   "componentSets": {
     "combobox-trigger": {
       "figmaNodeId": "75:9166",
-      "purpose": "Trigger input — Types: Basic, Search, Time-picker (Figma) + Tag Input (code-only). 19 Figma variants + 6 code-only Tag Input.",
+      "purpose": "Trigger input \u2014 Types: Basic, Search, Time-picker (Figma) + Tag Input (code-only). 19 Figma variants + 6 code-only Tag Input.",
       "variants": 25
     },
     "combobox-field": {
@@ -166,7 +166,7 @@
       "descriptionOpen": "hidden",
       "descriptionDisabled": "color/text/disabled",
       "descriptionInvalid": "color/text/invalid",
-      "gap": "spacing/component/xs"
+      "gap": "spacing/component/sm"
     },
     "states": {
       "invalid": {
@@ -225,15 +225,15 @@
   ],
   "bestPractice": {
     "useCases": [
-      "Assigning team members to a task — large org, user types a name to filter hundreds of people",
-      "Tag or label picker in a note-taking or project tool — multi-select with chips, large tag vocabulary",
-      "Language or locale selector in account settings — 100+ languages, search is the only sensible UX",
-      "'CC' or recipient field in an email composer — add multiple addresses as chips",
-      "Framework or technology filter in a job board — long list of options, user types to narrow"
+      "Assigning team members to a task \u2014 large org, user types a name to filter hundreds of people",
+      "Tag or label picker in a note-taking or project tool \u2014 multi-select with chips, large tag vocabulary",
+      "Language or locale selector in account settings \u2014 100+ languages, search is the only sensible UX",
+      "'CC' or recipient field in an email composer \u2014 add multiple addresses as chips",
+      "Framework or technology filter in a job board \u2014 long list of options, user types to narrow"
     ],
     "variantExamples": {
       "Type=Basic": {
-        "whenToUse": "Moderate-length list where the user browses to pick — click to open, scan the list",
+        "whenToUse": "Moderate-length list where the user browses to pick \u2014 click to open, scan the list",
         "examples": [
           "Status picker (10 options)",
           "Priority selector",
@@ -270,7 +270,7 @@
         "notInstead": "select or checkbox"
       },
       {
-        "situation": "Short fixed list (≤ ~10 items), no typing, pick one",
+        "situation": "Short fixed list (\u2264 ~10 items), no typing, pick one",
         "use": "select",
         "notInstead": "combobox"
       },
@@ -280,7 +280,7 @@
         "notInstead": "combobox"
       },
       {
-        "situation": "2–5 mutually exclusive options that benefit from being fully visible",
+        "situation": "2\u20135 mutually exclusive options that benefit from being fully visible",
         "use": "radio",
         "notInstead": "combobox"
       }
@@ -295,7 +295,7 @@
     "storyFile": "src/stories/Combobox.stories.tsx",
     "artifactStatus": "ready",
     "lastAuditDate": "2026-05-28",
-    "auditRules": "R1–R8",
+    "auditRules": "R1\u2013R8",
     "version": "3.0",
     "openQuestions": [],
     "notes": [
@@ -304,7 +304,7 @@
     ],
     "knownIssues": [
       {
-        "issue": "Dropdown width hardcoded to 280px — CSS var --anchor-width from Base UI Positioner doesn't resolve reliably on Popup element.",
+        "issue": "Dropdown width hardcoded to 280px \u2014 CSS var --anchor-width from Base UI Positioner doesn't resolve reliably on Popup element.",
         "workaround": "w-[280px] hardcoded on Combobox.Popup. If container width changes, update both the story wrapper and popupClass.",
         "date": "2026-06-03"
       }
@@ -312,7 +312,7 @@
     "changelog": [
       {
         "date": "2026-06-17",
-        "change": "Dropdown width fix: was hardcoded w-[280px]. Root cause of misalignment — Base UI anchors the Positioner to the Input (~50px narrower than the bordered Trigger box due to padding + chevron), so --anchor-width measured 230px not 280px. Fix: ref the Combobox.Trigger and pass anchor={triggerRef} to the Positioner; Positioner uses w-[var(--anchor-width)] min-w-[200px], Popup w-full. Now the dropdown matches the full trigger width. Single-select + multi-select. Tag-input uses absolute left-0/right-0 and was unaffected. Verified in-browser (trigger 280 = dropdown 280).",
+        "change": "Dropdown width fix: was hardcoded w-[280px]. Root cause of misalignment \u2014 Base UI anchors the Positioner to the Input (~50px narrower than the bordered Trigger box due to padding + chevron), so --anchor-width measured 230px not 280px. Fix: ref the Combobox.Trigger and pass anchor={triggerRef} to the Positioner; Positioner uses w-[var(--anchor-width)] min-w-[200px], Popup w-full. Now the dropdown matches the full trigger width. Single-select + multi-select. Tag-input uses absolute left-0/right-0 and was unaffected. Verified in-browser (trigger 280 = dropdown 280).",
         "breaking": false
       },
       {
@@ -327,7 +327,7 @@
       }
     ],
     "darkMode": {
-      "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
+      "notes": "No known dark mode differences \u2014 all tokens are semantic and mode-aware.",
       "pairedSurfaceRisk": "None identified."
     }
   },
@@ -341,8 +341,8 @@
     ],
     "notes": [
       "Type=Basic/Search: @base-ui/react Combobox. Type=Tag Input: custom controlled state, no Base UI.",
-      "Dropdown width hardcoded w-[280px] — CSS var --anchor-width unreliable in Base UI Positioner.",
-      "Filtering: manual label.toLowerCase().includes() — not using useComboboxFilter hook."
+      "Dropdown width hardcoded w-[280px] \u2014 CSS var --anchor-width unreliable in Base UI Positioner.",
+      "Filtering: manual label.toLowerCase().includes() \u2014 not using useComboboxFilter hook."
     ]
   },
   "storybook": {

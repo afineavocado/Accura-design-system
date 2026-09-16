@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { ChevronDown } from "lucide-react";
 import { Stepper } from "@/components/ui/stepper";
 import {
   Card,
@@ -26,21 +27,54 @@ import { Checkbox } from "@/components/ui/checkbox";
 export function RecordSection({
   title,
   description,
+  collapsible = false,
+  defaultOpen = true,
   children,
 }: {
   title: string;
   description?: string;
+  /** Locked, read-once blocks can fold to their header. Off by default, so
+   *  existing callers are unchanged. */
+  collapsible?: boolean;
+  defaultOpen?: boolean;
   children: ReactNode;
 }) {
+  const [open, setOpen] = useState(defaultOpen);
+  const folded = collapsible && !open;
+
   return (
     <Card className="text-[var(--color-surface-overlay-foreground)]">
       <CardHeader>
-        <CardTitle>
-          <h2 className="font-sans">{title}</h2>
-        </CardTitle>
-        {description && <CardDescription>{description}</CardDescription>}
+        {collapsible ? (
+          /* A button rather than <summary>: the heading stays a real heading
+             for assistive tech, and the control keeps the design system's
+             focus ring. Same shape as Training's audit-trail toggle. */
+          <button
+            type="button"
+            onClick={() => setOpen((value) => !value)}
+            aria-expanded={open}
+            className="flex w-full items-center justify-between gap-[var(--spacing-component-sm)] text-left"
+          >
+            <CardTitle>
+              <h2 className="font-sans">{title}</h2>
+            </CardTitle>
+            <ChevronDown
+              aria-hidden="true"
+              className={
+                open
+                  ? "size-4 shrink-0 rotate-180 text-[var(--color-icon-muted)] transition-transform"
+                  : "size-4 shrink-0 text-[var(--color-icon-muted)] transition-transform"
+              }
+            />
+          </button>
+        ) : (
+          <CardTitle>
+            <h2 className="font-sans">{title}</h2>
+          </CardTitle>
+        )}
+        {description && !folded && <CardDescription>{description}</CardDescription>}
       </CardHeader>
-      <CardContent>{children}</CardContent>
+      {!folded && <CardContent>{children}</CardContent>}
     </Card>
   );
 }

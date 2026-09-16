@@ -401,7 +401,7 @@ awaiting your review"*, not as an error.
 Pagination on every listing (`Rows per page` 5·10·20). Row-click plus a real control in the
 first cell. `CardTitle` as the one section-title token. Full pattern list, including two
 hand-rolled components and why, is in
-`docs/skills/accura-prototype-build/accura-prototype-build.md`.
+`docs/skills/accura-prototype-build/accura-design-patterns.md`.
 
 ---
 

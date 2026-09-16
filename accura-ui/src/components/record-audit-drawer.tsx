@@ -10,6 +10,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
+  SheetFooter,
 } from "@/components/ui/sheet";
 
 export type RecordAuditEvent = {
@@ -110,6 +111,13 @@ export function RecordAuditDrawer({
             </li>
           )}
         </ol>
+        {/* Every module that hand-rolled this drawer had one, and the brief
+            lists Export Audit Report beside View audit trail as a universal
+            detail-page control. Leaving it out of the shared component meant
+            Deviations and Documents silently lacked it. */}
+        <SheetFooter>
+          <Button className="w-full">Export Audit Report</Button>
+        </SheetFooter>
       </SheetContent>
     </Sheet>
   );

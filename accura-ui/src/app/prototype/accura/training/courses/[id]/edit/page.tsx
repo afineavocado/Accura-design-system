@@ -130,11 +130,11 @@ export default function EditCoursePage() {
             <CardTitle className="text-xl">Course Details</CardTitle>
           </CardHeader>
           <CardContent className="gap-[var(--spacing-component-lg)]">
-            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+            <div className="flex flex-col gap-[var(--spacing-component-sm)]">
               <Label required htmlFor="course-name">Course name</Label>
               <Input id="course-name" defaultValue={course.name} />
             </div>
-            <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+            <div className="flex flex-col gap-[var(--spacing-component-sm)]">
               <Label required htmlFor="course-description">
                 Description
               </Label>
@@ -287,7 +287,7 @@ export default function EditCoursePage() {
             </div>
 
             {trigger === "Specific date" && (
-              <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+              <div className="flex flex-col gap-[var(--spacing-component-sm)]">
                 <Label required htmlFor="trigger-date">Trigger date</Label>
                 {/* Same width as the recurring-period select beside it —
                     two forms of one control should not change size. */}
@@ -301,7 +301,7 @@ export default function EditCoursePage() {
             )}
 
             {trigger === "Recurring period" && (
-              <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+              <div className="flex flex-col gap-[var(--spacing-component-sm)]">
                 <Label required htmlFor="trigger-period">
                   Repeat every
                 </Label>

@@ -63,7 +63,7 @@ export const Invalid: Story = {
 
 export const WithField: Story = {
   render: () => (
-    <div className="flex flex-col gap-[var(--spacing-component-xs)] w-80">
+    <div className="flex flex-col gap-[var(--spacing-component-sm)] w-80">
       <Label htmlFor="notes-story">Notes</Label>
       <Textarea id="notes-story" placeholder="Write a short note…" />
       <p className="text-sm text-[var(--color-text-secondary)]">
@@ -77,7 +77,7 @@ export const WithField: Story = {
 
 export const WithFieldInvalid: Story = {
   render: () => (
-    <div className="flex flex-col gap-[var(--spacing-component-xs)] w-80">
+    <div className="flex flex-col gap-[var(--spacing-component-sm)] w-80">
       <Label htmlFor="notes-invalid-story">Description</Label>
       <Textarea
         id="notes-invalid-story"
@@ -95,7 +95,7 @@ export const WithFieldInvalid: Story = {
 
 export const WithFieldDisabled: Story = {
   render: () => (
-    <div className="flex flex-col gap-[var(--spacing-component-xs)] w-80">
+    <div className="flex flex-col gap-[var(--spacing-component-sm)] w-80">
       <Label htmlFor="notes-disabled-story">Notes</Label>
       <Textarea
         id="notes-disabled-story"
@@ -239,7 +239,7 @@ export const WithCharacterCount: Story = {
     const max = 160;
     const [value, setValue] = React.useState('');
     return (
-      <div className="flex flex-col gap-[var(--spacing-component-xs)] w-80">
+      <div className="flex flex-col gap-[var(--spacing-component-sm)] w-80">
         <Label htmlFor="bio-counter">Bio</Label>
         <div className="relative">
           <Textarea

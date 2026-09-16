@@ -4,14 +4,14 @@
 
 **Read order for any UI/token work:**
 1. `accura-theme.md` — Accura's values and the 12 logged questions
-2. `docs/design-system-rules.md` — the inherited ruleset (**read its override header first**)
+2. `docs/design-system-rules.md` — the design rules, with Accura's values inline
 3. the relevant `docs/component-specs/[Name].md` and `docs/machine-readable/artifacts/components/[name].meta.json`
 
 ---
 
 ## Precedence — this matters
 
-`docs/design-system-rules.md` is vendored from Agentic and contains **both rules and Agentic's values**.
+`docs/design-system-rules.md` began as a vendored copy of Agentic's and now states Accura's values inline. It was never re-synced upstream in five commits, so the vendoring — and the override table it forced — were retired on 2026-09-15.
 
 - **Rules** (naming, semantic layer, paired-surface rule, spacing scale, layout, dark mode) → follow exactly.
 - **Values** (brand hue, anchor step, ring, sidebar, button radius, status borders, font, the contrast table) → **`accura-theme.md` wins**.
@@ -32,11 +32,11 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 | Task | Read |
 |---|---|
 | Audit a component | `docs/skills/Component Audit Skill.md` + `docs/tracking/Audit Status.md` |
-| Build a Figma component | `docs/skills/Build component skill.md` |
 | Bind or fix tokens | `docs/skills/Token Binding Skill.md` |
 | Write component docs | `docs/skills/Component Documentation Skill.md` |
 | Any Storybook work | `docs/skills/Storybook Build Process.md` |
-| Build or extend a prototype | `docs/skills/accura-prototype-build/accura-prototype-build.md` |
+| Build or extend a prototype — what to build | `docs/skills/accura-prototype-build/accura-design-patterns.md` |
+| Build or extend a prototype — how to work | `docs/skills/accura-prototype-build/accura-prototype-build.md` |
 | Implement a component in code | `docs/skills/Component implementation process.md` |
 
 ## Component documentation
@@ -48,7 +48,8 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 - `docs/machine-readable/meta-artifact-template.md` — required fields for any new meta.json.
 - `docs/machine-readable/generation-rules.md` — when to regenerate a meta.json.
 - `docs/machine-readable/figma-ids.md` — Figma node, effect-style and text-style IDs. ⚠️ IDs are Agentic's; Accura's Figma file is different — verify before use.
-- `docs/machine-readable/sync-doc-values.mjs` — **rewrites restated px values from `tokens/*.json`.** Docs name a token then restate its value (`spacing/component/lg (16px)`). The name is right forever; the number is a hand-typed snapshot that goes stale the moment a primitive changes — one re-theme edit invalidates ~150 of them at once. This makes them derived, not authored. Dry-run by default; `--write` applies. **Run after any token value change, before committing.** Excludes `docs/design-system-rules.md` (vendored body + override table), any line marked `<!-- sync-doc-values:ignore -->`, and changelogs (historical by nature).
+- `docs/machine-readable/sync-doc-values.mjs` — **rewrites restated px values from `tokens/*.json`.** Docs name a token then restate its value (`spacing/component/lg (16px)`). The name is right forever; the number is a hand-typed snapshot that goes stale the moment a primitive changes — one re-theme edit invalidates ~150 of them at once. This makes them derived, not authored. Dry-run by default; `--write` applies. **Run after any token value change, before committing.** Excludes `docs/design-system-rules.md` (long prose body, checked by drift-check rule 6 instead), any line marked `<!-- sync-doc-values:ignore -->`, and changelogs (historical by nature).
+- `tokens/token-parity.mjs` — **the check that says whether `tokens/*.json` still matches what ships.** Resolves every alias and diffs against `tokens.css`; four known differences are explained in the script, anything else fails. The export is not the source of truth — `accura-ui/src/app/tokens.css` is. See `tokens/README.md`.
 - `docs/machine-readable/validate-artifacts.mjs` · `drift-check.mjs` — validation scripts. `drift-check` check 6 verifies every restated px against its token across specs, skills, tracking and the ruleset — it exits 1 on drift and names the fix command.
 
 ## Code — `accura-ui/`

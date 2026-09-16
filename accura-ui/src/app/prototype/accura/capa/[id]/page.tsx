@@ -314,7 +314,7 @@ export default function CapaDetailPage() {
                           <IdentityField icon={<Clock3 className="h-4 w-4" />} label="Timestamp UTC" value={signerIdentity.timestamp} />
                         </div>
 
-                        <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+                        <div className="flex flex-col gap-[var(--spacing-component-sm)]">
                           <Label htmlFor="signature-password">Re-enter Password</Label>
                           <Input
                             id="signature-password"
