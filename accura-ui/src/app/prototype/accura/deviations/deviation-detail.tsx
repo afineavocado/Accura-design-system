@@ -49,6 +49,7 @@ import {
   visibleBlocks,
   type CapaLink,
   type DeviationRecord,
+  type LifecycleStatus,
   type ImpactedProduct,
 } from "./mock-data"
 
@@ -736,6 +737,15 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
           <RecordAuditDrawer
             record={displayId(record)}
             events={auditEvents(record)}
+            /* Direction is read off the lifecycle array rather than stored:
+               reject moves a record to a lower index, cancel leaves the
+               sequence entirely. */
+            transitionDirection={(from, to) => {
+              if (to === "Cancelled") return "cancel"
+              const a = lifecycle.indexOf(from as LifecycleStatus)
+              const b = lifecycle.indexOf(to as LifecycleStatus)
+              return a > -1 && b > -1 && b < a ? "backward" : "forward"
+            }}
           />
         </div>
       </div>
