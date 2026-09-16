@@ -326,6 +326,11 @@ reviewer:` followed by the button `Sign as Sarah Johnson (QA)` (white, outlined,
 Captured 2026-09-16. One dialog serves both actions; only the description, the
 reason label and the confirm button differ.
 
+**When it opens.** Reject and Cancel from any open state, plus advancing from
+`In Review` and `In Approval` — the two gates the brief signs. `Done` at
+`Investigation In Progress` and `CAPA Pending` advances without it, and
+`Submit for Review` from `Draft` never did. See §10.32.
+
 **Header.** Title `Electronic Signature — 21 CFR Part 11`, then a line naming
 the consequence:
 
@@ -522,6 +527,20 @@ roles elsewhere.
 **31. A third date format.** The dialog stamps `16-09-2026 11:18:24`
 (DD-MM-YYYY). The detail grid uses ISO, signatures use `Sep 11, 2026, 12:11 PM`,
 the registry uses `Oct 11, 2026`. Four formats in one module.
+
+**32. Which gates take a signature was never specified for the middle states.** The brief signs
+`In Review` (§13.9) and `In Approval` (Step 5, multi-signature with legal commitment statements).
+Step 3 exits on *"RCA & Impact Analysis complete → `CAPA Pending`"* and Step 4 on *"Action plan
+defined and CAPA linked … → `In Approval`"* — neither mentions signing, and §13.7 defines no
+declaration for either. The captures show a `Done` button at both states but not what it opens,
+so the product's behaviour here is unknown.
+
+Our prototype signed every non-Draft advance until 2026-09-16, which was our error rather than a
+reading of the brief. It now signs only the two prescribed gates; the other transitions are
+recorded in the audit trail with actor and timestamp, which is what §11.10(e) requires of the
+trail itself. **Open question for the PO:** some eQMS products do sign the investigation
+close-out, since declaring RCA complete is a quality assertion. If that is wanted, it is a brief
+change and needs a declaration written for it — not a silent addition.
 
 **11. `Risk Analysis` is its own top-level block,** separate from `Investigation Report`, although
 the brief groups both under the investigation stage.

@@ -49,6 +49,7 @@ import {
   visibleBlocks,
   type CapaLink,
   type DeviationRecord,
+  type DeviationStatus,
   type LifecycleStatus,
   type ImpactedProduct,
 } from "./mock-data"
@@ -270,10 +271,22 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
 
   /* Draft has nothing to sign — Submit for Review runs validation and mints the
      ID, it is not a signed decision (brief §5 Step 1). */
+  /* The brief signs two gates and only two: `In Review` (§13.9, "Approve &
+     sign — advance to investigation") and `In Approval` (Step 5's
+     multi-signature gateway, each signature carrying a legal commitment
+     statement). Step 3 closes on "RCA & Impact Analysis complete" and Step 4 on
+     "Action plan defined and CAPA linked" — neither mentions a signature.
+
+     `Done` at Investigation In Progress and CAPA Pending therefore advances
+     directly. The transition is still logged with actor and timestamp, which is
+     what §11.10(e) asks of an audit trail; a signature belongs where the
+     process defines a signed act, not on every button. Spec §10.32. */
+  const signedGates: DeviationStatus[] = ["In Review", "In Approval"]
+
   const onAdvance = () =>
-    record.status === "Draft"
-      ? saveDeviation(advance(record, currentUser, allDeviations()))
-      : setSigning("advance")
+    signedGates.includes(record.status)
+      ? setSigning("advance")
+      : saveDeviation(advance(record, currentUser, allDeviations()))
   const onReject = () => setSigning("reject")
   const onCancel = () => setSigning("cancel")
 
