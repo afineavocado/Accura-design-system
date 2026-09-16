@@ -168,6 +168,11 @@ export function ElectronicSignatureModal({
   onSign,
   actionLabel = "Sign and approve",
   reasonRequired = false,
+  description = "Verify your identity to sign this regulated record.",
+  reasonLabel = "Reason",
+  reasonPlaceholder = "Explain this decision",
+  recordLabel = "Document · revision",
+  attestationSubject = "revision",
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -178,24 +183,49 @@ export function ElectronicSignatureModal({
   onSign: (receipt: SignatureReceipt) => void;
   actionLabel?: string;
   reasonRequired?: boolean;
+  /** What signing this will do. Defaults to the generic identity line. */
+  description?: string;
+  /** "Reason for rejection" reads better than a bare "Reason" when the dialog
+   *  serves more than one decision. */
+  reasonLabel?: string;
+  reasonPlaceholder?: string;
+  /** What `record` is. Was hardcoded to Documents' own wording, which read
+   *  "Document · revision" above a deviation ID. */
+  recordLabel?: string;
+  /** The noun in the attestation line: "I have reviewed this ___". */
+  attestationSubject?: string;
 }) {
   const [confirmation, setConfirmation] = useState(false);
   const [credential, setCredential] = useState("");
   const [reason, setReason] = useState("");
-  const [displayTime] = useState(() =>
-    new Date()
-      .toISOString()
-      .replace("T", " ")
-      .replace(/\.\d+Z$/, " UTC")
-  );
+  const [displayTime, setDisplayTime] = useState("");
+
+  /* Clear every field each time the dialog opens, and stamp the time then.
+     The modal stays mounted, so without this a second signing inherits the
+     first one's reason, its typed credential and its ticked attestation — and
+     shows the timestamp of when the page loaded rather than of the signing.
+
+     Adjusted during render rather than in an effect: React documents this as
+     the way to reset state when a prop changes, and it avoids the extra pass a
+     setState-in-effect would cost. */
+  const [wasOpen, setWasOpen] = useState(open);
+  if (open !== wasOpen) {
+    setWasOpen(open);
+    if (open) {
+      setConfirmation(false);
+      setCredential("");
+      setReason("");
+      setDisplayTime(
+        new Date().toISOString().replace("T", " ").replace(/\.\d+Z$/, " UTC")
+      );
+    }
+  }
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Electronic Signature — 21 CFR Part 11</DialogTitle>
-          <DialogDescription>
-            Verify your identity to sign this regulated record.
-          </DialogDescription>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <div className="grid grid-cols-2 gap-[var(--spacing-component-md)]">
           <div className="space-y-[var(--spacing-component-sm)]">
@@ -228,9 +258,7 @@ export function ElectronicSignatureModal({
         </div>
         <dl className="space-y-[var(--spacing-component-sm)] text-xs text-[var(--color-text-secondary)]">
           <div>
-            <dt className="text-[var(--color-text-secondary)]">
-              Document · revision
-            </dt>
+            <dt className="text-[var(--color-text-secondary)]">{recordLabel}</dt>
             <dd className="font-medium">{record}</dd>
           </div>
           <div>
@@ -240,12 +268,12 @@ export function ElectronicSignatureModal({
         </dl>
         {reasonRequired && (
           <div className="space-y-[var(--spacing-component-sm)]">
-            <Label required htmlFor="decision-reason">Reason</Label>
+            <Label required htmlFor="decision-reason">{reasonLabel}</Label>
             <Input
               id="decision-reason"
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              placeholder="Explain this decision"
+              placeholder={reasonPlaceholder}
               required
             />
           </div>
@@ -279,8 +307,8 @@ export function ElectronicSignatureModal({
             htmlFor="signature-intent"
             className="text-sm font-normal leading-normal"
           >
-            I have reviewed this revision and intend to sign with the meaning
-            stated above.
+            I have reviewed this {attestationSubject} and intend to sign with
+            the meaning stated above.
           </Label>
         </div>
         <DialogFooter>

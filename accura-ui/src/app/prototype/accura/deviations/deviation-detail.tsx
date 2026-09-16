@@ -13,7 +13,10 @@ import {
 } from "lucide-react"
 
 import { RecordAuditDrawer } from "@/components/record-audit-drawer"
-import { RecordSection } from "@/components/record-workflow"
+import {
+  ElectronicSignatureModal,
+  RecordSection,
+} from "@/components/record-workflow"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -40,6 +43,7 @@ import {
   lifecycle,
   reject,
   signatures,
+  statements,
   statusVariants,
   stepIndex,
   visibleBlocks,
@@ -218,15 +222,59 @@ function CapaSearch({
 
 
 export function DeviationDetail({ record }: { record: DeviationRecord }) {
-  /* The transitions themselves live in mock-data.ts beside the lifecycle;
-     these only decide who acted and push the result into the store.
-     Signature and reason dialogs come next — for now the action applies
-     directly, so the flow is clickable end to end. */
+  /* Which decision is being signed, if any. The transitions themselves live in
+     mock-data.ts beside the lifecycle; this only decides who acted, collects
+     the signature, and pushes the result into the store. */
+  const [signing, setSigning] = useState<null | "advance" | "reject" | "cancel">(
+    null
+  )
+
+  const signature = {
+    advance: {
+      /* Brief §13.7 — legal commitment copy is not paraphrased. */
+      meaning: statements.department,
+      actionLabel: "Sign and approve",
+      description:
+        "Approving advances this deviation to the next stage and requires your electronic signature.",
+      reasonRequired: false,
+      reasonLabel: "Reason",
+    },
+    reject: {
+      meaning:
+        "I am returning this deviation for further work. It has not been approved.",
+      actionLabel: "Sign & reject",
+      description:
+        "Rejecting sends this deviation back one stage for rework and requires a mandatory reason and your electronic signature.",
+      reasonRequired: true,
+      reasonLabel: "Reason for rejection",
+    },
+    cancel: {
+      meaning:
+        "I am cancelling this deviation as invalid, duplicate or out of scope.",
+      actionLabel: "Sign & cancel",
+      description:
+        "Cancelling requires a mandatory comment and your electronic signature.",
+      reasonRequired: true,
+      reasonLabel: "Reason for cancellation",
+    },
+  }[signing ?? "advance"]
+
+  const onSigned = (reasonText: string) => {
+    if (signing === "reject") saveDeviation(reject(record, currentUser, reasonText))
+    else if (signing === "cancel")
+      saveDeviation(cancelRecord(record, currentUser, reasonText))
+    else saveDeviation(advance(record, currentUser, allDeviations()))
+    setSigning(null)
+  }
+
+  /* Draft has nothing to sign — Submit for Review runs validation and mints the
+     ID, it is not a signed decision (brief §5 Step 1). */
   const onAdvance = () =>
-    saveDeviation(advance(record, currentUser, allDeviations()))
-  const onReject = () => saveDeviation(reject(record, currentUser))
-  const onCancel = () =>
-    saveDeviation(cancelRecord(record, currentUser, "Cancelled from the demo."))
+    record.status === "Draft"
+      ? saveDeviation(advance(record, currentUser, allDeviations()))
+      : setSigning("advance")
+  const onReject = () => setSigning("reject")
+  const onCancel = () => setSigning("cancel")
 
   const blocks = visibleBlocks(record)
   const { captured, pending } = signatures(record)
@@ -766,6 +814,35 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
       {workspace && !closed && (
         <div className="mt-[var(--spacing-layout-sm)]">{actionBar}</div>
       )}
+
+      {/* One dialog for all three decisions — the shared component already
+          carries the Part 11 title, the identity block, the attestation and
+          the demo credential. Only the copy differs per action.
+
+          Identity comes from the app's own user rather than the raw account:
+          the product renders an email under "Full Name" and leaves "Role at
+          Sign-off" blank (spec §10.29, §10.30), which is the field a regulator
+          reads to know who signed. */}
+      <ElectronicSignatureModal
+        open={signing !== null}
+        onOpenChange={(next) => !next && setSigning(null)}
+        title={record.title}
+        record={displayId(record)}
+        recordLabel="Deviation"
+        attestationSubject="deviation"
+        signer={{
+          name: currentUser.name,
+          role: currentUser.role,
+          account: `${currentUser.name.toLowerCase().replace(" ", ".")}@accura.one`,
+        }}
+        meaning={signature.meaning}
+        actionLabel={signature.actionLabel}
+        description={signature.description}
+        reasonRequired={signature.reasonRequired}
+        reasonLabel={signature.reasonLabel}
+        reasonPlaceholder="Add a comment..."
+        onSign={(receipt) => onSigned(receipt.meaning)}
+      />
     </>
   )
 }
