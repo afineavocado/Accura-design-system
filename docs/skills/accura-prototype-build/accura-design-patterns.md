@@ -402,6 +402,37 @@ module files are invisible to every documented lookup path.
   audit drawer and Training's history panel. Logged here because it *was* one, privately, inside
   `training/history-panel.tsx`, and that is what made it invisible. Anatomy in §4b.
 
+**Vertical section-nav rail** — *icon-only stack, fixed to the edge, with a current item.*
+
+- Hand-rolled in `change-control/[id]/page.tsx` (`ScrollToSectionNav`). **Not `ButtonGroup`** — its
+  spec groups actions that are *"mutually independent"*, and this is navigation with a **current**
+  item (`aria-pressed`). The same distinction the segmented control makes above: ButtonGroup groups
+  actions, not choices.
+- It does borrow ButtonGroup's treatment, deliberately: `radius/md` container, 1px border, a
+  separator between children. The buttons are ghost `Button`s, so focus, hover and disabled come
+  from the system rather than from hand-written classes.
+- Active state is `surface/brand/subtle` — **not** `status/success/subtle`. Being on a section is
+  not a success.
+- Closing the gap means a real component: a vertical nav rail whose items have a selected state.
+  One use so far.
+
+**Row overflow menu** — *View / Edit / Delete on a table row.*
+
+- Built on raw `@radix-ui/react-popover` in Change Control, and again as `settings/row-menu.tsx` in
+  Chi's Settings module, whose own log calls it prototype-only. `RecordRowAction` only opens a
+  record, so it does not cover this.
+- **Two modules have now hand-rolled it.** That is the threshold Settings' log itself names: if a
+  second screen needs it, it becomes a `DropdownMenu` in `components/ui/`.
+- ⚠️ Change Control's copy was removed on 2026-09-17 when the actions column was dropped, so the
+  live example is Settings'.
+
+**Field wrapper for `Select`** — *label + required + error, the way `ComboboxField` does it.*
+
+- `ComboboxField` bundles label, description, required and invalid; `Select` has no equivalent, so
+  every form writes its own `SelectField`. Change Control's create screen has one.
+- Field-level error text has no shared component either — `FieldError` is local to that file, and
+  `deviations/new` has no validation at all, so there is no house pattern to copy.
+
 **Combobox option with a qualifier** — *`Amit Kothari · Quality Assurance` on one line.*
 
 - `ComboboxOption.label` is a plain string, rendered in both the list item and the chip, so name

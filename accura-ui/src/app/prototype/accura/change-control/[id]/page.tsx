@@ -1985,7 +1985,13 @@ function ScrollToSectionNav({
 }) {
   return (
     <TooltipProvider>
-      <div className="fixed right-0 top-1/2 hidden -translate-y-1/2 overflow-hidden rounded-l-[var(--radius-sm)] border border-[var(--color-border-default)] bg-[var(--color-background-default)] lg:flex lg:flex-col">
+      {/* Hand-rolled on purpose: ButtonGroup groups actions that are
+          "mutually independent" (Button-group.md), and this is navigation with
+          a current item. Logged in accura-design-patterns.md under the known
+          gaps. Container mirrors ButtonGroup's own treatment — radius/md, a
+          1px border, separators between children — and the buttons are ghost
+          Buttons so focus, hover and disabled come from the system. */}
+      <div className="fixed right-0 top-1/2 hidden -translate-y-1/2 overflow-hidden rounded-l-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)] lg:flex lg:flex-col">
         {items.map((item, index) => {
           const Icon = item.icon
           const active = activeSection === item.id
@@ -1993,23 +1999,24 @@ function ScrollToSectionNav({
           return (
             <Tooltip key={item.id}>
               <TooltipTrigger asChild>
-                <button
-                  type="button"
+                <Button
+                  variant="ghost"
+                  size="icon"
                   aria-label={item.label}
                   aria-pressed={active}
                   onClick={() => onSectionClick(item.id)}
                   className={[
-                    "flex size-10 items-center justify-center transition-colors",
+                    "size-10 rounded-none",
                     index < items.length - 1
                       ? "border-b border-[var(--color-border-default)]"
                       : "",
                     active
-                      ? "bg-[var(--color-status-success-subtle)] text-[var(--color-brand-primary)]"
-                      : "bg-[var(--color-background-default)] text-[var(--color-icon-muted)] hover:bg-[var(--color-background-accent)]",
+                      ? "bg-[var(--color-surface-brand-subtle)] text-[var(--color-brand-primary)]"
+                      : "text-[var(--color-icon-muted)]",
                   ].join(" ")}
                 >
-                  <Icon className="h-5 w-5" />
-                </button>
+                  <Icon className="size-5" />
+                </Button>
               </TooltipTrigger>
               <TooltipContent side="left">{item.label}</TooltipContent>
             </Tooltip>
