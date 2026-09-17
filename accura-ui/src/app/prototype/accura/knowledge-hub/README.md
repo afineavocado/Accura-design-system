@@ -2,7 +2,7 @@
 
 Route: `/prototype/accura/knowledge-hub` — reached from **Knowledge Hub** in the sidebar footer.
 
-Built for UX/UI review against the source-of-truth documents in `flow/knowledge-hub/`.
+Built for UX/UI review against the source-of-truth documents in `flow/knowledge-hub-spec.md`.
 Not a confirmed specification.
 
 ## Screens

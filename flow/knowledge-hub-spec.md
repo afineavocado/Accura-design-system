@@ -1,9 +1,10 @@
 # Knowledge Hub — module spec
 
 **As-built**, read from the code on 2026-09-17. Built for UX review, **not a confirmed
-specification** — its own README says so. The source material is in `flow/knowledge-hub/`:
-`01-origin.md`, `02-main-business-flow-and-rules.md`, `03-log.md`,
-`04-ui-build-instructions.md`.
+specification** — its own README says so. Its source material — `01-origin.md`,
+`02-main-business-flow-and-rules.md`, `03-log.md`, `04-ui-build-instructions.md` — lived in
+`flow/knowledge-hub/` and was **removed on 2026-09-17** once this file existed; it is recoverable
+from git history.
 
 Files — `accura-ui/src/app/prototype/accura/knowledge-hub/` (537 lines):
 `mock-data.ts` (381) · `page.tsx` · `[folder]/` · `layout.tsx` · `README.md`.

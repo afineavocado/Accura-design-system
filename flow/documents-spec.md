@@ -1,9 +1,10 @@
 # Documents — module spec
 
 **As-built**, read from the code on 2026-09-17. Chi built this module; it was integrated on
-2026-09-14 and realigned to the house patterns the same week. The discovery material — a functional
-specification PDF, product knowledge, a session log and a post-demo backlog — is in
-`flow/documents-discovery/`, and two mapping documents sit beside the code
+2026-09-14 and realigned to the house patterns the same week. The discovery material it was built
+from — a functional specification PDF, product knowledge, a session log and a post-demo backlog —
+lived in `flow/documents-discovery/` and was **removed on 2026-09-17** once this file existed; it is
+recoverable from git history. Two mapping documents still sit beside the code
 (`FUNCTIONAL-SPEC-MAPPING.md`, `TRAINING-MAPPING.md`).
 
 Files — `accura-ui/src/app/prototype/accura/documents/` (2,639 lines):
@@ -111,7 +112,7 @@ primary display state, so those badges are hard to review.
 outside the code explains that `getUseStatus()` is derived, which is exactly the kind of rule that
 gets re-implemented differently in a second module.
 
-**4.6 Its discovery folder holds five files with no shared shape** — a PDF, a handoff README whose
-integration instructions are now historical, product knowledge that also covers CAPA, a session log
-with entries explicitly superseded by later ones, and a backlog. A brief-and-spec split was proposed
-on 2026-09-17 and declined as too much work for the value.
+**4.6 The client's functional specification was a PDF and is now only in git history.** It was
+deleted with the rest of `flow/documents-discovery/` when this file replaced it. If the PDF is still
+the contract, it should come back as a source document rather than be reconstructed from this
+summary: `git show HEAD~1:"flow/documents-discovery/Documents Module Functional Specification.pdf"`.

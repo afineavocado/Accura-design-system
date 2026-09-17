@@ -79,7 +79,7 @@ The gates, and what each one cannot see:
 decisions** — read the entry before assuming one is open. **Q10 does not**: it was answered in
 conversation and never recorded, so it is still open.
 
-`flow/training-module.md` logs 24 more, and `flow/deviation-spec.md` logs its own findings with
+`flow/training-spec.md` logs 24 more, and `flow/deviation-spec.md` logs its own findings with
 two retractions. Flag them; never "fix" one without being asked.
 
 ## When you change something, what else has to change

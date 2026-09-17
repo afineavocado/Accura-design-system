@@ -1,9 +1,11 @@
 # Settings — module spec
 
 **As-built**, read from the code on 2026-09-17. Chi built this module; it reached `main` on the same
-day. Her own source documents are in `flow/Setting Module/` — a business flow, a metadata-and-screens
-spec (v1.1, which `mock-data.ts` cites by section) and a build log. **This file describes what the
-prototype does**; where the two differ, hers says what was intended and this one says what shipped.
+day. Her own source documents — a business flow, a
+metadata-and-screens spec (v1.1, which `mock-data.ts` still cites by section) and a build log —
+lived in `flow/Setting Module/` and were **removed on 2026-09-17** once this file existed; they are
+recoverable from git history. **This file describes what the prototype does**, not what was
+intended.
 
 Files — `accura-ui/src/app/prototype/accura/settings/` (1,525 lines):
 

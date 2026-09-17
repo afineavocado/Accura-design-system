@@ -24,7 +24,7 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 | `docs/tracking/` | Storybook and audit status. ⚠️ Reflects Agentic's status, not Accura's. |
 | `tokens/` | DTCG export of Accura's tokens, plus `token-parity.mjs` — the check that says whether it still matches what ships. See `tokens/README.md`. |
 | **`accura-ui/`** | Component library + Storybook. Same components as `agentic-ui`, Accura tokens. |
-| **`flow/`** | Module specifications — what each prototype is, what the brief asked for, and the open questions. `training-module.md` (24 questions), `domain/training-module.md`, `capa-prototype-spec.md`, `deviation-spec.md` (as-built record of the live Deviation screens) and the source briefs in `flow/brief/`. |
+| **`flow/`** | **One spec per module**, all in the same shape — what the module is, its data model, its screens, then numbered questions: `capa-spec.md` · `change-control-spec.md` · `deviation-spec.md` · `documents-spec.md` · `knowledge-hub-spec.md` · `settings-spec.md` · `training-spec.md`. Supplied briefs stay separate in `flow/brief/`. |
 | `docs/demo-scope.md` | What the demo covers and what is deferred. Component patterns live in the prototype-build skill. |
 | `docs/team-workflow.md` | **(Tiếng Việt)** Branch + PR workflow for two people working on different modules. Daily routine, shared-file list, conflict handling. |
 | `CHANGELOG.md` | Every Accura-specific change, breaking ones called out. |
@@ -78,12 +78,12 @@ in `prototype/accura/app-sidebar.tsx`, never in a page.
 
 | Module | Spec | State |
 |---|---|---|
-| **CAPA** | `flow/capa-prototype-spec.md` | listing, create, detail |
-| **Training** | `flow/training-module.md` | five tabs built. Trainee screens and the workflow behind Review are not |
+| **CAPA** | `flow/capa-spec.md` | listing, create, detail |
+| **Training** | `flow/training-spec.md` | five tabs built. Trainee screens and the workflow behind Review are not |
 | **Documents** | `accura-ui/src/app/prototype/accura/documents/README.md` | one happy path: Draft → In Review → In Approval → Approved |
 | **Deviations** | `flow/deviation-spec.md` | listing, create, detail across seven states, transitions signed at two gates |
 | **Change Control** | `flow/change-control-spec.md` | listing, create, detail across seven states. `check-mock-data.mjs` validates the seed data against the process brief |
-| **Settings** | `flow/Setting Module/` | organisation settings, record numbering, users |
+| **Settings** | `flow/settings-spec.md` | organisation settings, record numbering, users |
 
 **Before extending any prototype, read both skill files in
 [`docs/skills/accura-prototype-build/`](docs/skills/accura-prototype-build/):
@@ -169,7 +169,7 @@ with what ships, and names every difference that has no recorded reason.
 ## Open questions
 
 Questions are logged rather than silently resolved. `accura-decisions.md` holds 11 about the
-theme; `flow/training-module.md` holds 24 about the Training module. **Flag them — never "fix"
+theme; `flow/training-spec.md` holds 24 about the Training module. **Flag them — never "fix"
 one without being asked.**
 
 The load-bearing theme questions:
