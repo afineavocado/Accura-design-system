@@ -11,6 +11,16 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-17 — A brand-tinted surface finally has a name
+
+**Added**
+
+- **`--color-surface-brand-subtle`** — aliases `color/green/50` (`#f0fdf4`) in light,
+  `color/green/950` in dark. There was no semantic for "a brand-tinted surface", so a module that
+  wanted a green section header reached for `color/status/success/subtle` — the same hex, but it
+  means *this succeeded*. Spending a status colour on decoration leaves the vocabulary unavailable
+  when a section actually needs to show state. Change Control's section headers use it now.
+
 ### 2026-09-17 — Badge gains `orange`, and three variants that shipped undocumented
 
 **Added**

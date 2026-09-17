@@ -30,7 +30,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardTitle } from "@/components/ui/card"
 import { DatePicker } from "@/components/ui/date-picker"
 import { ElectronicSignatureModal } from "@/components/record-workflow"
 import {
@@ -328,14 +328,24 @@ function SectionHeader({
   action?: React.ReactNode
 }) {
   return (
-    <div className="flex items-start gap-[var(--spacing-component-lg)] border-b border-[var(--color-border-default)] bg-[var(--color-status-success-subtle)] px-[var(--spacing-component-xl)] py-[var(--spacing-component-md)]">
-      <div className="flex size-10 shrink-0 items-center justify-center rounded-[var(--radius-base)] border border-[var(--color-brand-secondary-hover)] bg-[var(--color-surface-default)] text-[var(--color-icon-brand)]">
+    /* `surface/brand/subtle`, not `status/success/subtle`: the same hex, but a
+       name that means "a brand-tinted surface" rather than "this succeeded".
+       The token was added for this on 2026-09-17. */
+    <div className="flex items-start gap-[var(--spacing-component-lg)] border-b border-[var(--color-border-default)] bg-[var(--color-surface-brand-subtle)] px-[var(--spacing-component-xl)] py-[var(--spacing-component-md)]">
+      {/* 20px glyph in a 32px tile, the same footprint as Avatar sm, at
+          radius/md like every other small control. It was a 24px glyph in a
+          40px tile at radius/base (12px), which read as a button and set the
+          header's height above its own title. */}
+      <div className="flex size-8 shrink-0 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-brand-secondary-hover)] bg-[var(--color-surface-default)] text-[var(--color-icon-brand)]">
         {icon}
       </div>
       <div className="min-w-0 flex-1">
-        <h2 className="text-base font-medium leading-snug text-[var(--color-text-link)]">
-          {title}
-        </h2>
+        {/* CardTitle carries the house heading — 16px semibold, neutral. It
+            was link-coloured, on a heading that is not a link. The inner h2
+            keeps the document outline, the way Documents writes it. */}
+        <CardTitle>
+          <h2>{title}</h2>
+        </CardTitle>
         {description && (
           <p className="mt-[var(--spacing-component-xs)] max-w-[760px] text-sm leading-normal text-[var(--color-text-secondary)]">
             {description}
@@ -405,7 +415,7 @@ function DetailsSection({ record }: { record: ChangeControlRecord }) {
   return (
     <SectionCard
       id="details"
-      icon={<File05 className="h-6 w-6" />}
+      icon={<File05 className="size-5" />}
       title="Details"
       action={
         record.status === "Draft" ? (
@@ -1134,7 +1144,7 @@ function ImpactAssessmentSection({
   return (
     <SectionCard
       id="impact-assessment"
-      icon={<Building05 className="h-6 w-6" />}
+      icon={<Building05 className="size-5" />}
       title="Affected Departments & Impact Assessment"
       description={
         record.status === "Draft"
@@ -1237,7 +1247,7 @@ function ChangeActionsSection({
   return (
     <SectionCard
       id="change-actions"
-      icon={<ListIcon className="h-6 w-6" />}
+      icon={<ListIcon className="size-5" />}
       title="Change Actions"
       description="Each affected department defines and executes its own actions. Every action has its own status: Draft → In Review → Implementation in Progress → Completed. The Action Owner need not be the Impact Owner."
     >
@@ -1650,7 +1660,7 @@ function ActionExecutionSection({
   return (
     <SectionCard
       id="change-actions"
-      icon={<ListIcon className="h-6 w-6" />}
+      icon={<ListIcon className="size-5" />}
       title="Change Actions"
       description="Each affected department defines and executes its own actions. Every action has its own status: Draft → In Review → Implementation in Progress → Completed. The Action Owner need not be the Impact Owner."
     >
@@ -1708,7 +1718,7 @@ function EvidenceSection({ actions }: { actions: ChangeAction[] }) {
   return (
     <SectionCard
       id="evidence"
-      icon={<Attachment01 className="h-6 w-6" />}
+      icon={<Attachment01 className="size-5" />}
       title="Evidence"
       description="Consolidated view of all evidence attached to Change Actions across departments."
     >

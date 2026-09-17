@@ -1459,6 +1459,12 @@
      "Record" panels and the Impact Assessment card's active border, where
      var(--color-border-brand) had been resolving to nothing. */
   --color-border-brand: #008852;
+  /* A brand-tinted surface, for section headers and other brand-owned bands.
+     Aliases the primitive color/green/50. No semantic carried this: modules
+     wanting a green band were reaching for color/status/success/subtle, which
+     is the same hex but means "this succeeded" — spending a status colour on
+     decoration leaves the vocabulary unavailable when a section needs it. */
+  --color-surface-brand-subtle: var(--color-green-50);
   --color-text-tertiary: #71717a;
   --breadcrumb-breadcrumb: 4;
 
@@ -1543,6 +1549,8 @@
   --color-brand-secondary-active: #1447e6;
   --color-brand-secondary-foreground: #fafafa;
   --color-status-success: #4ade80;
+  /* Dark counterpart of the light-mode alias: green/50 would glare here. */
+  --color-surface-brand-subtle: var(--color-green-950);
   --color-status-success-subtle: #052e16;
   --color-status-success-subtle-foreground: #4ade80;
   --color-status-warning: #facc15;
