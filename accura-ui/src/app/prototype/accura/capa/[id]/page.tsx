@@ -88,7 +88,7 @@ function IdentityField({
 }) {
   return (
     <div className="flex min-w-0 items-center gap-[var(--spacing-component-md)]">
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--color-border-default)] bg-[var(--color-surface-muted)] text-[var(--color-surface-muted-foreground)]">
+      <div className="flex size-9 shrink-0 items-center justify-center rounded-full border border-[var(--color-border-default)] bg-[var(--color-surface-muted)] text-[var(--color-surface-muted-foreground)]">
         {icon}
       </div>
       <div className="min-w-0">
@@ -167,7 +167,7 @@ export default function CapaDetailPage() {
                 <div className="flex flex-col gap-[var(--spacing-component-sm)]">
                   <Button asChild variant="link" className="h-auto w-fit p-0 text-sm no-underline hover:no-underline">
                     <Link href="/prototype/accura/capa">
-                      <ChevronLeft className="h-4 w-4" />
+                      <ChevronLeft className="size-4" />
                       Back to CAPAs
                     </Link>
                   </Button>
@@ -176,7 +176,7 @@ export default function CapaDetailPage() {
                 <Sheet>
                   <SheetTrigger asChild>
                     <Button variant="outline" size="sm" className="self-start sm:self-auto">
-                      <Clock3 className="h-4 w-4" />
+                      <Clock3 className="size-4" />
                       View audit trail
                     </Button>
                   </SheetTrigger>
@@ -205,7 +205,7 @@ export default function CapaDetailPage() {
                               <div className="mt-[var(--spacing-component-sm)] flex flex-col gap-[var(--spacing-component-sm)] sm:flex-row sm:items-center sm:justify-between">
                                 <span className="font-mono text-xs leading-4 text-[var(--color-text-secondary)]">{record.hash}</span>
                                 <span className="inline-flex shrink-0 items-center gap-[var(--spacing-component-xs)] text-sm font-medium leading-none text-[var(--color-text-success)]">
-                                  <CircleCheck className="h-4 w-4 text-[var(--color-icon-success)]" />
+                                  <CircleCheck className="size-4 text-[var(--color-icon-success)]" />
                                   Verified
                                 </span>
                               </div>
@@ -308,10 +308,10 @@ export default function CapaDetailPage() {
                         </div>
 
                         <div className="grid grid-cols-1 gap-[var(--spacing-component-lg)] sm:grid-cols-2">
-                          <IdentityField icon={<UserRound className="h-4 w-4" />} label="Full name" value={signerIdentity.fullName} />
-                          <IdentityField icon={<Mail className="h-4 w-4" />} label="Email" value={signerIdentity.email} />
-                          <IdentityField icon={<PenTool className="h-4 w-4" />} label="Role at sign-off" value={signerIdentity.role} />
-                          <IdentityField icon={<Clock3 className="h-4 w-4" />} label="Timestamp UTC" value={signerIdentity.timestamp} />
+                          <IdentityField icon={<UserRound className="size-4" />} label="Full name" value={signerIdentity.fullName} />
+                          <IdentityField icon={<Mail className="size-4" />} label="Email" value={signerIdentity.email} />
+                          <IdentityField icon={<PenTool className="size-4" />} label="Role at sign-off" value={signerIdentity.role} />
+                          <IdentityField icon={<Clock3 className="size-4" />} label="Timestamp UTC" value={signerIdentity.timestamp} />
                         </div>
 
                         <div className="flex flex-col gap-[var(--spacing-component-sm)]">

@@ -101,7 +101,7 @@ function CourseRow({
       <TableCell className="text-right">
         <Button asChild variant="outline" size="sm">
           <Link href={`${href}/assessments/new`}>
-            <Plus className="h-4 w-4" />
+            <Plus className="size-4" />
             Create Assessment
           </Link>
         </Button>
@@ -136,7 +136,7 @@ export default function TrainingCoursesPage() {
       <div className="flex flex-col gap-[var(--spacing-component-sm)] sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-col gap-[var(--spacing-component-sm)] sm:flex-row">
           <div className="relative flex-1 sm:max-w-[380px]">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
+            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
             <Input
               type="search"
               value={query}
@@ -168,7 +168,7 @@ export default function TrainingCoursesPage() {
         </div>
         <Button asChild>
           <Link href="/prototype/accura/training/courses/new">
-            <Plus className="h-4 w-4" />
+            <Plus className="size-4" />
             Create Course
           </Link>
         </Button>
@@ -203,7 +203,7 @@ export default function TrainingCoursesPage() {
               <TableRow>
                 <TableCell
                   colSpan={6}
-                  className="py-8 text-center text-sm text-[var(--color-text-secondary)]"
+                  className="py-[var(--spacing-layout-md)] text-center text-sm text-[var(--color-text-secondary)]"
                 >
                   No courses match this search.
                 </TableCell>

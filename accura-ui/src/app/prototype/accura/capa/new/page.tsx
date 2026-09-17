@@ -72,7 +72,7 @@ export default function CreateCapaPage() {
   const [sourceLink, setSourceLink] = React.useState("")
 
   const sourceLinkOptions = source === "risk-assessment"
-    ? [{ value: "ra-2026-0012", label: "RA-2026-0012 — Equipment failure" }]
+    ? [{ value: "ra-2026-0012", label: "RA-2026-0012 · Equipment failure" }]
     : source === "deviation"
       ? [{ value: "dev-2026-0089", label: "DEV-2026-0089" }]
       : [{ value: "no-audit-records", label: "No audit records available", disabled: true }]
@@ -99,7 +99,7 @@ export default function CreateCapaPage() {
               <div className="flex flex-col gap-[var(--spacing-component-sm)]">
                 <Button asChild variant="link" className="h-auto w-fit p-0 text-sm no-underline hover:no-underline">
                   <Link href="/prototype/accura/capa">
-                    <ChevronLeft className="h-4 w-4" />
+                    <ChevronLeft className="size-4" />
                     Back to CAPAs
                   </Link>
                 </Button>

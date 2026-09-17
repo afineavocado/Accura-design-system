@@ -50,13 +50,13 @@ export default function CourseDetailPage() {
       <div>
         <Link
           href="/prototype/accura/training/courses"
-          className="inline-flex items-center gap-1 text-sm text-[var(--color-brand-primary)] hover:underline"
+          className="inline-flex items-center gap-[var(--spacing-component-xs)] text-sm text-[var(--color-brand-primary)] hover:underline"
         >
-          <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+          <ChevronLeft className="size-4" aria-hidden="true" />
           Back to Courses
         </Link>
 
-        <div className="mt-2 flex flex-wrap items-start justify-between gap-3">
+        <div className="mt-[var(--spacing-component-sm)] flex flex-wrap items-start justify-between gap-[var(--spacing-component-md)]">
           <div>
             {/* Description as a subline, not its own card — see §22.2. */}
             <h2 className="text-xl font-semibold text-[var(--color-surface-default-foreground)]">
@@ -67,7 +67,7 @@ export default function CourseDetailPage() {
             </p>
             {/* The trigger is the brief's central mechanism (Q31), so it sits
                 in the header rather than in a metadata card. */}
-            <div className="mt-2 flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
+            <div className="mt-[var(--spacing-component-sm)] flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
               <Badge
                 variant={triggerVariant[course.trigger]}
                 shape="pill"
@@ -85,7 +85,7 @@ export default function CourseDetailPage() {
           <div className="flex flex-wrap gap-[var(--spacing-component-sm)]">
             <Button asChild variant="outline" size="sm">
               <Link href={`/prototype/accura/training/courses/${course.id}/edit`}>
-                <Pencil className="h-4 w-4" />
+                <Pencil className="size-4" />
                 Edit course
               </Link>
             </Button>
@@ -93,7 +93,7 @@ export default function CourseDetailPage() {
               <Link
                 href={`/prototype/accura/training/courses/${course.id}/assessments/new`}
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="size-4" />
                 Create Assessment
               </Link>
             </Button>
@@ -105,9 +105,9 @@ export default function CourseDetailPage() {
           left, the context around it on the right. Methods and linked roles
           are lists, not tables — two rows do not need a header, and nothing
           here sorts or is compared. */}
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px] xl:items-start">
+      <div className="grid gap-[var(--spacing-component-lg)] xl:grid-cols-[minmax(0,1fr)_320px] xl:items-start">
         <Card>
-          <CardHeader className="flex-row items-baseline justify-between gap-3">
+          <CardHeader className="flex-row items-baseline justify-between gap-[var(--spacing-component-md)]">
             <CardTitle>Assessments ({rounds.length})</CardTitle>
             <span className="text-xs text-[var(--color-text-secondary)]">
               rounds sent from this course
@@ -155,7 +155,7 @@ export default function CourseDetailPage() {
                   <TableRow>
                     <TableCell
                       colSpan={4}
-                      className="py-8 text-center text-sm text-[var(--color-text-secondary)]"
+                      className="py-[var(--spacing-layout-md)] text-center text-sm text-[var(--color-text-secondary)]"
                     >
                       No assessments sent yet.
                     </TableCell>
@@ -166,7 +166,7 @@ export default function CourseDetailPage() {
           </CardContent>
         </Card>
 
-        <aside className="flex flex-col gap-4">
+        <aside className="flex flex-col gap-[var(--spacing-component-lg)]">
           <Card>
             <CardHeader>
               <CardTitle>Assessment methods ({methods.length})</CardTitle>
@@ -186,7 +186,7 @@ export default function CourseDetailPage() {
                   {entry.document ? (
                     <div className="mt-[var(--spacing-component-sm)] flex items-start gap-[var(--spacing-component-xs)]">
                       <FileText
-                        className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-icon-muted)]"
+                        className="mt-0.5 size-4 shrink-0 text-[var(--color-icon-muted)]"
                         aria-hidden="true"
                       />
                       <div className="min-w-0">
@@ -219,7 +219,7 @@ export default function CourseDetailPage() {
               {linkedRoles.map((role) => (
                 <div
                   key={role.id}
-                  className="flex justify-between gap-3 py-[var(--spacing-component-md)] first:pt-0 last:pb-0"
+                  className="flex justify-between gap-[var(--spacing-component-md)] py-[var(--spacing-component-md)] first:pt-0 last:pb-0"
                 >
                   <div className="min-w-0">
                     <Link

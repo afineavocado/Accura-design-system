@@ -92,7 +92,7 @@ export function LookupScreen({ tab }: { tab: LookupTab }) {
         subtitle={tab.subtitle}
         action={
           <Button onClick={() => setEditing("new")}>
-            <Plus className="h-4 w-4" />
+            <Plus className="size-4" />
             Add {tab.entity}
           </Button>
         }
@@ -100,7 +100,7 @@ export function LookupScreen({ tab }: { tab: LookupTab }) {
 
       {(tab.searchable || items.length > 8) && (
         <div className="relative w-full sm:max-w-[380px]">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
           <Input
             type="search"
             value={query}
@@ -161,7 +161,7 @@ export function LookupScreen({ tab }: { tab: LookupTab }) {
             ))}
             {visible.length === 0 && (
               <TableRow>
-                <TableCell colSpan={cols} className="py-8 text-center text-sm text-[var(--color-text-secondary)]">
+                <TableCell colSpan={cols} className="py-[var(--spacing-layout-md)] text-center text-sm text-[var(--color-text-secondary)]">
                   {items.length === 0
                     ? `No ${tab.noun} yet. Add one to make it available in forms.`
                     : `No ${tab.noun} match this search.`}
@@ -260,7 +260,7 @@ function LookupDialog({
             </DialogDescription>
           </DialogHeader>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label htmlFor="lookup-name" required state={submitted && nameError ? "invalid" : "default"}>
               Name
             </Label>
@@ -278,7 +278,7 @@ function LookupDialog({
           </div>
 
           {tab.withAbbreviation && (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-[var(--spacing-component-sm)]">
               <Label htmlFor="lookup-abbr" required state={submitted && abbrError ? "invalid" : "default"}>
                 Abbreviation
               </Label>
@@ -299,7 +299,7 @@ function LookupDialog({
             </div>
           )}
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Label htmlFor="lookup-description">Description</Label>
             <Input
               id="lookup-description"

@@ -71,8 +71,8 @@ export function RecordAuditDrawer({
                   {event.role && `${event.role} · `}
                   {event.account && `${event.account} · `}
                   <time dateTime={event.timestamp}>
-                    {new Date(event.timestamp).toLocaleString("en-GB", {
-                      day: "2-digit",
+                    {new Date(event.timestamp).toLocaleString("en-US", {
+                      day: "numeric",
                       month: "short",
                       year: "numeric",
                       hour: "2-digit",

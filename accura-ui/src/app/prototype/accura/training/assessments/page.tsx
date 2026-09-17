@@ -72,7 +72,7 @@ function RoundRow({
       <TableCell>
         <div>{round.due}</div>
         {round.overdue && (
-          <div className="text-xs text-[var(--color-status-danger-subtle-foreground)]">
+          <div className="text-xs text-[var(--color-text-invalid)]">
             overdue
           </div>
         )}
@@ -124,7 +124,7 @@ export default function TrainingAssessmentsPage() {
 
       <div className="flex flex-col gap-[var(--spacing-component-sm)] sm:flex-row sm:items-center">
         <div className="relative flex-1 sm:max-w-[380px]">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
           <Input
             type="search"
             value={query}
@@ -175,7 +175,7 @@ export default function TrainingAssessmentsPage() {
               <TableRow>
                 <TableCell
                   colSpan={5}
-                  className="py-8 text-center text-sm text-[var(--color-text-secondary)]"
+                  className="py-[var(--spacing-layout-md)] text-center text-sm text-[var(--color-text-secondary)]"
                 >
                   No assessments match this search.
                 </TableCell>

@@ -81,9 +81,9 @@ export default function TrainingRolesPage() {
     <TrainingShell>
       <TrainingTabs />
 
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-[var(--spacing-component-sm)] sm:flex-row sm:items-center sm:justify-between">
         <div className="relative flex-1 sm:max-w-[380px]">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
           <Input
             type="search"
             value={query}
@@ -95,7 +95,7 @@ export default function TrainingRolesPage() {
         </div>
         <Button asChild>
           <Link href="/prototype/accura/training/roles/new">
-            <Plus className="h-4 w-4" />
+            <Plus className="size-4" />
             Create Role
           </Link>
         </Button>
@@ -129,7 +129,7 @@ export default function TrainingRolesPage() {
               <TableRow>
                 <TableCell
                   colSpan={4}
-                  className="py-8 text-center text-sm text-[var(--color-text-secondary)]"
+                  className="py-[var(--spacing-layout-md)] text-center text-sm text-[var(--color-text-secondary)]"
                 >
                   No roles match this search.
                 </TableCell>

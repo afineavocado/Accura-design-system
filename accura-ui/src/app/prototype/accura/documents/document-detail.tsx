@@ -289,7 +289,7 @@ function DetailEditor({
         ...receipt,
         action:
           action === "reject"
-            ? "Rejection signed — returned to Draft"
+            ? "Rejection signed, returned to Draft"
             : "Obsolete decision signed",
         fromStatus: doc.status,
         toStatus: action === "reject" ? "Draft" : "Obsolete",
@@ -333,7 +333,7 @@ function DetailEditor({
       );
       toast.success(
         action === "reject"
-          ? "Returned to Draft — fresh signatures required"
+          ? "Returned to Draft: fresh signatures required"
           : "Document marked Obsolete"
       );
       return;
@@ -389,7 +389,7 @@ function DetailEditor({
     toast.success(
       status === "Approved"
         ? "Document approved"
-        : "Review complete — ready for QA approval"
+        : "Review complete, ready for QA approval"
     );
     if (isNew) router.replace(documentHref(doc));
   };
@@ -457,9 +457,9 @@ function DetailEditor({
         >
           <AlertTitle>
             {doc.lifecycle === "Obsolete"
-              ? "Obsolete — not available for use"
+              ? "Obsolete: not available for use"
               : doc.lifecycle === "Superseded"
-              ? "Superseded — historical revision"
+              ? "Superseded: historical revision"
               : doc.returned
               ? `Returned to Draft by ${doc.returned.name}`
               : approved
@@ -659,7 +659,7 @@ function DetailEditor({
                     <dt className={infoLabel}>Effective date</dt>
                     <dd>
                       {external ? (
-                        "Not applicable — external approval"
+                        "Not applicable: external approval"
                       ) : doc.effectiveDate ? (
                         displayDate(doc.effectiveDate)
                       ) : (
@@ -684,7 +684,7 @@ function DetailEditor({
                     <dt className={infoLabel}>Effective date</dt>
                     <dd>
                       {external ? (
-                        "Not applicable — external approval"
+                        "Not applicable: external approval"
                       ) : (
                         <>
                           <Badge variant="secondary" shape="pill" size="md">

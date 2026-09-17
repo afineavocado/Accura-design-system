@@ -112,13 +112,13 @@ export default function AssessmentDetailPage() {
       <div>
         <Link
           href="/prototype/accura/training/assessments"
-          className="inline-flex items-center gap-1 text-sm text-[var(--color-brand-primary)] hover:underline"
+          className="inline-flex items-center gap-[var(--spacing-component-xs)] text-sm text-[var(--color-brand-primary)] hover:underline"
         >
-          <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+          <ChevronLeft className="size-4" aria-hidden="true" />
           Back to Assessments
         </Link>
 
-        <div className="mt-2 flex flex-wrap items-start justify-between gap-3">
+        <div className="mt-[var(--spacing-component-sm)] flex flex-wrap items-start justify-between gap-[var(--spacing-component-md)]">
           <div>
             <h2 className="text-xl font-semibold text-[var(--color-surface-default-foreground)]">
               {round.name}
@@ -139,11 +139,11 @@ export default function AssessmentDetailPage() {
               size="sm"
               onClick={() => setTrailOpen(true)}
             >
-              <Clock3 className="h-4 w-4" />
+              <Clock3 className="size-4" />
               View audit trail
             </Button>
             <Button variant="outline" size="sm">
-              <Download className="h-4 w-4" />
+              <Download className="size-4" />
               Export
             </Button>
           </div>
@@ -151,9 +151,9 @@ export default function AssessmentDetailPage() {
       </div>
 
       {/* Main + right rail, matching the User and Course detail screens. */}
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px] xl:items-start">
+      <div className="grid gap-[var(--spacing-component-lg)] xl:grid-cols-[minmax(0,1fr)_320px] xl:items-start">
         <Card>
-          <CardHeader className="flex-row items-baseline justify-between gap-3">
+          <CardHeader className="flex-row items-baseline justify-between gap-[var(--spacing-component-md)]">
             <CardTitle>Participant progress ({participants.length})</CardTitle>
             <span className="text-xs text-[var(--color-text-secondary)]">
               one record per person
@@ -181,7 +181,7 @@ export default function AssessmentDetailPage() {
                   <TableRow>
                     <TableCell
                       colSpan={4}
-                      className="py-8 text-center text-sm text-[var(--color-text-secondary)]"
+                      className="py-[var(--spacing-layout-md)] text-center text-sm text-[var(--color-text-secondary)]"
                     >
                       No participant records for this assessment.
                     </TableCell>
@@ -192,7 +192,7 @@ export default function AssessmentDetailPage() {
           </CardContent>
         </Card>
 
-        <aside className="flex flex-col gap-4">
+        <aside className="flex flex-col gap-[var(--spacing-component-lg)]">
           <Card>
             <CardHeader>
               <CardTitle>Details</CardTitle>
@@ -236,7 +236,7 @@ export default function AssessmentDetailPage() {
                   {round.due}
                 </p>
                 {round.overdue && (
-                  <p className="text-xs text-[var(--color-status-danger-subtle-foreground)]">
+                  <p className="text-xs text-[var(--color-text-invalid)]">
                     overdue
                   </p>
                 )}
@@ -283,7 +283,7 @@ export default function AssessmentDetailPage() {
                   {entry.document ? (
                     <div className="mt-[var(--spacing-component-sm)] flex items-start gap-[var(--spacing-component-xs)]">
                       <FileText
-                        className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-icon-muted)]"
+                        className="mt-0.5 size-4 shrink-0 text-[var(--color-icon-muted)]"
                         aria-hidden="true"
                       />
                       <div className="min-w-0">
@@ -319,11 +319,11 @@ export default function AssessmentDetailPage() {
             <SheetDescription>{round.id.toUpperCase()}</SheetDescription>
           </SheetHeader>
 
-          <ol className="flex flex-col gap-4 px-4 py-4">
+          <ol className="flex flex-col gap-[var(--spacing-component-lg)] px-[var(--spacing-component-lg)] py-[var(--spacing-component-lg)]">
             {(round.auditTrail ?? []).map((event) => (
               <li
                 key={event.event + event.timestamp}
-                className="border-t border-[var(--color-border-default)] pt-4 first:border-t-0 first:pt-0"
+                className="border-t border-[var(--color-border-default)] pt-[var(--spacing-component-lg)] first:border-t-0 first:pt-0"
               >
                 <p className="text-sm font-medium text-[var(--color-surface-default-foreground)]">
                   {event.actor}
@@ -332,7 +332,7 @@ export default function AssessmentDetailPage() {
                   {event.email ? `${event.email} · ` : ""}
                   {event.timestamp}
                 </p>
-                <p className="mt-1 text-sm text-[var(--color-surface-default-foreground)]">
+                <p className="mt-[var(--spacing-component-xs)] text-sm text-[var(--color-surface-default-foreground)]">
                   {event.event}
                 </p>
                 {event.note && (
@@ -341,9 +341,9 @@ export default function AssessmentDetailPage() {
                   </p>
                 )}
                 {event.change && (
-                  <span className="mt-1.5 inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border-success)] bg-[var(--color-status-success-subtle)] px-2 py-0.5 text-xs">
+                  <span className="mt-[var(--spacing-component-xs-plus)] inline-flex items-center gap-[var(--spacing-component-xs-plus)] rounded-full border border-[var(--color-border-success)] bg-[var(--color-status-success-subtle)] px-[var(--spacing-component-sm)] py-0.5 text-xs">
                     <span className="text-[var(--color-text-secondary)]">Status</span>
-                    <s className="text-[var(--color-status-danger-subtle-foreground)]">
+                    <s className="text-[var(--color-text-invalid)]">
                       {event.change.from}
                     </s>
                     <span aria-hidden="true" className="text-[var(--color-text-secondary)]">→</span>
@@ -363,7 +363,7 @@ export default function AssessmentDetailPage() {
 
           <SheetFooter>
             <Button className="w-full">
-              <Download className="h-4 w-4" />
+              <Download className="size-4" />
               Export Audit Report
             </Button>
           </SheetFooter>

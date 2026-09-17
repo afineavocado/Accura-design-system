@@ -60,9 +60,9 @@ export default function CreateAssessmentPage() {
         <div className="flex flex-col gap-[var(--spacing-component-sm)]">
           <Link
             href="/prototype/accura/training/courses"
-            className="inline-flex w-fit items-center gap-1 text-sm text-[var(--color-brand-primary)] hover:underline"
+            className="inline-flex w-fit items-center gap-[var(--spacing-component-xs)] text-sm text-[var(--color-brand-primary)] hover:underline"
           >
-            <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+            <ChevronLeft className="size-4" aria-hidden="true" />
             Back to Courses
           </Link>
           <h2 className="text-2xl font-semibold text-[var(--color-background-default-foreground)]">

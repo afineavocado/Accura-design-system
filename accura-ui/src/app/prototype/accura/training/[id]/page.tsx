@@ -63,14 +63,14 @@ export default function TrainingUserDetailPage() {
       <div>
         <Link
           href="/prototype/accura/training"
-          className="inline-flex items-center gap-1 text-sm text-[var(--color-brand-primary)] hover:underline"
+          className="inline-flex items-center gap-[var(--spacing-component-xs)] text-sm text-[var(--color-brand-primary)] hover:underline"
         >
-          <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+          <ChevronLeft className="size-4" aria-hidden="true" />
           Back to Users
         </Link>
 
-        <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
+        <div className="mt-[var(--spacing-component-sm)] flex flex-wrap items-center justify-between gap-[var(--spacing-component-md)]">
+          <div className="flex items-center gap-[var(--spacing-component-md)]">
             <h2 className="text-xl font-semibold text-[var(--color-surface-default-foreground)]">
               {user.name}
             </h2>
@@ -79,7 +79,7 @@ export default function TrainingUserDetailPage() {
             </Badge>
           </div>
           <Button variant="outline" size="sm">
-            <Download className="h-4 w-4" />
+            <Download className="size-4" />
             Export Record
           </Button>
         </div>
@@ -87,8 +87,8 @@ export default function TrainingUserDetailPage() {
 
       {/* Read-only. No approve, reject, checkboxes or bulk bar — actions live
           in Review and on Participant Progress. See §15. */}
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px] xl:items-start">
-        <div className="flex min-w-0 flex-col gap-4">
+      <div className="grid gap-[var(--spacing-component-lg)] xl:grid-cols-[minmax(0,1fr)_320px] xl:items-start">
+        <div className="flex min-w-0 flex-col gap-[var(--spacing-component-lg)]">
           <Panel title="Assigned Assessments">
             <Table>
               <TableHeader>
@@ -117,7 +117,7 @@ export default function TrainingUserDetailPage() {
                       {/* Overdue sits on the date, not the status — it is a
                           fact about a date and coexists with any state. */}
                       {assignment.overdue && (
-                        <div className="text-xs text-[var(--color-status-danger-subtle-foreground)]">
+                        <div className="text-xs text-[var(--color-text-invalid)]">
                           overdue
                         </div>
                       )}
@@ -212,12 +212,12 @@ export default function TrainingUserDetailPage() {
 
         {/* Roles answer *why this person owes these things* — context, not
             content, so they sit in the rail. */}
-        <aside className="flex flex-col gap-4">
+        <aside className="flex flex-col gap-[var(--spacing-component-lg)]">
           <Card>
             <CardHeader>
               <CardTitle>General info</CardTitle>
             </CardHeader>
-            <dl className="flex flex-col gap-3">
+            <dl className="flex flex-col gap-[var(--spacing-component-md)]">
               {[
                 ["Department", user.department],
                 ["Email", user.email],
@@ -243,7 +243,7 @@ export default function TrainingUserDetailPage() {
               {assignedRoles.map((role) => (
                 <li
                   key={role.name}
-                  className="flex justify-between gap-3 py-2 first:pt-0 last:pb-0"
+                  className="flex justify-between gap-[var(--spacing-component-md)] py-[var(--spacing-component-sm)] first:pt-0 last:pb-0"
                 >
                   <div>
                     <p className="text-sm text-[var(--color-surface-default-foreground)]">

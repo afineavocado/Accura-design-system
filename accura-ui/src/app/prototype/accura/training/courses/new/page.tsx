@@ -54,9 +54,9 @@ export default function CreateCoursePage() {
         <div className="flex flex-col gap-[var(--spacing-component-sm)]">
           <Link
             href="/prototype/accura/training/courses"
-            className="inline-flex w-fit items-center gap-1 text-sm text-[var(--color-brand-primary)] hover:underline"
+            className="inline-flex w-fit items-center gap-[var(--spacing-component-xs)] text-sm text-[var(--color-brand-primary)] hover:underline"
           >
-            <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+            <ChevronLeft className="size-4" aria-hidden="true" />
             Back to Courses
           </Link>
           <h2 className="text-2xl font-semibold text-[var(--color-background-default-foreground)]">
@@ -99,7 +99,7 @@ export default function CreateCoursePage() {
         {/* Card and button both say "assessment method" — this defines the
             course, it does not send a round. See Q28. */}
         <Card>
-          <CardHeader className="flex-row items-baseline justify-between gap-3">
+          <CardHeader className="flex-row items-baseline justify-between gap-[var(--spacing-component-md)]">
             <CardTitle className="text-xl">Assessment methods</CardTitle>
             <span className="text-xs text-[var(--color-text-secondary)]">
               {methods.length} {methods.length === 1 ? "method" : "methods"}
@@ -133,7 +133,7 @@ export default function CreateCoursePage() {
                       )
                     }
                   >
-                    <X className="h-4 w-4" />
+                    <X className="size-4" />
                   </Button>
                 </div>
 
@@ -185,7 +185,7 @@ export default function CreateCoursePage() {
             ))}
 
             <Button variant="outline" className="w-fit" onClick={addMethod}>
-              <Plus className="h-4 w-4" />
+              <Plus className="size-4" />
               Add assessment method
             </Button>
           </CardContent>

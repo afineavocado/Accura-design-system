@@ -105,16 +105,16 @@ export default function CapaListingPage() {
             />
 
             {mobileNavOpen && (
-              <div className="border-b border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-background)] p-3 lg:hidden">
+              <div className="border-b border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-background)] p-[var(--spacing-component-md)] lg:hidden">
               <AppNavItems />
               </div>
             )}
 
-            <section className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-4 md:p-5 lg:p-6">
+            <section className="flex min-h-0 flex-1 flex-col gap-[var(--spacing-component-md)] overflow-y-auto p-[var(--spacing-component-lg)] md:p-5 lg:p-6">
               <div className="flex w-full flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
                 <div className="flex min-w-0 flex-1 flex-wrap items-center gap-[var(--spacing-component-sm)]">
                   <div className="relative min-w-[240px] flex-1 sm:max-w-[380px]">
-                    <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
+                    <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
                     <Input
                       type="search"
                       value={query}
@@ -167,7 +167,7 @@ export default function CapaListingPage() {
 
                 <Button asChild className="shrink-0">
                   <Link href="/prototype/accura/capa/new">
-                    <Plus className="h-4 w-4" />
+                    <Plus className="size-4" />
                     Create CAPA
                   </Link>
                 </Button>
@@ -254,7 +254,7 @@ export default function CapaListingPage() {
                 ) : (
                   <Empty
                     className="min-h-80 justify-center"
-                    icon={<Search className="h-5 w-5 text-[var(--color-icon-muted)]" />}
+                    icon={<Search className="size-5 text-[var(--color-icon-muted)]" />}
                     title="No CAPA records found"
                     description="Try changing your search or filter selections."
                     primaryAction={
@@ -273,8 +273,8 @@ export default function CapaListingPage() {
               </div>
 
               {filteredRecords.length > 0 && (
-                <div className="flex flex-col gap-3 text-sm sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex items-center gap-2 text-[var(--color-text-secondary)]">
+                <div className="flex flex-col gap-[var(--spacing-component-md)] text-sm sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-center gap-[var(--spacing-component-sm)] text-[var(--color-text-secondary)]">
                     <span>Showing</span>
                     <Select
                       value={String(pageSize)}

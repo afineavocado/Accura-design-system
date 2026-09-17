@@ -115,9 +115,9 @@ export default function EditCoursePage() {
         <div className="flex flex-col gap-[var(--spacing-component-sm)]">
           <Link
             href={`/prototype/accura/training/courses/${course.id}`}
-            className="inline-flex w-fit items-center gap-1 text-sm text-[var(--color-brand-primary)] hover:underline"
+            className="inline-flex w-fit items-center gap-[var(--spacing-component-xs)] text-sm text-[var(--color-brand-primary)] hover:underline"
           >
-            <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+            <ChevronLeft className="size-4" aria-hidden="true" />
             Back to {course.name}
           </Link>
           <h2 className="text-2xl font-semibold text-[var(--color-background-default-foreground)]">
@@ -158,7 +158,7 @@ export default function EditCoursePage() {
         </Card>
 
         <Card>
-          <CardHeader className="flex-row items-baseline justify-between gap-3">
+          <CardHeader className="flex-row items-baseline justify-between gap-[var(--spacing-component-md)]">
             <CardTitle className="text-xl">Assessment methods</CardTitle>
             <span className="text-xs text-[var(--color-text-secondary)]">
               {methods.length} {methods.length === 1 ? "method" : "methods"}
@@ -187,7 +187,7 @@ export default function EditCoursePage() {
                       })
                     }
                   >
-                    <X className="h-4 w-4" />
+                    <X className="size-4" />
                   </Button>
                 </div>
 
@@ -250,7 +250,7 @@ export default function EditCoursePage() {
                 ])
               }
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="size-4" />
               Add assessment method
             </Button>
           </CardContent>

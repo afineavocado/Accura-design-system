@@ -81,12 +81,12 @@ export function TrainingShell({ children }: { children: React.ReactNode }) {
             onMobileNavigationToggle={() => setMobileNavOpen((open) => !open)}
           />
           {mobileNavOpen && (
-            <div className="border-b border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-background)] p-3 lg:hidden">
+            <div className="border-b border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-background)] p-[var(--spacing-component-md)] lg:hidden">
               <AppNavItems />
             </div>
           )}
 
-          <section className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4 lg:p-6">
+          <section className="flex min-h-0 flex-1 flex-col gap-[var(--spacing-component-lg)] overflow-y-auto p-[var(--spacing-component-lg)] lg:p-6">
             {children}
           </section>
         </main>

@@ -8,7 +8,7 @@ export function UnbuiltTab({ name }: { name: string }) {
   return (
     <TrainingShell>
       <TrainingTabs />
-      <div className="flex flex-1 flex-col items-center justify-center gap-1 rounded-[var(--radius-lg)] border border-dashed border-[var(--color-border-strong)] p-8 text-center">
+      <div className="flex flex-1 flex-col items-center justify-center gap-[var(--spacing-component-xs)] rounded-[var(--radius-lg)] border border-dashed border-[var(--color-border-strong)] p-[var(--spacing-layout-md)] text-center">
         <p className="text-sm font-medium text-[var(--color-surface-default-foreground)]">
           Not built in this prototype
         </p>

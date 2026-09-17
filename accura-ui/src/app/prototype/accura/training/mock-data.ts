@@ -822,7 +822,7 @@ export const reviewItems: ReviewItem[] = [
     id: "rev-003", userId: "lena-fischer", name: "Lena Fischer",
     department: "Manufacturing", course: "Waste segregation",
     method: "Quiz", waitingDays: 3, due: "30 Sep 2026",
-    evidence: "10 answers", score: "scored 4 of 10 — failed",
+    evidence: "10 answers", score: "scored 4 of 10, failed",
     document: "SOP-030 v2.0",
   },
   {

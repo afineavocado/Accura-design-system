@@ -249,12 +249,24 @@ than `01`, because a leading zero buys nothing in prose.
 Use `en-US`, not `en-GB`: en-GB abbreviates September to `Sept` and en-US to `Sep`, which is why
 the same month is spelled two ways today depending on which function rendered it.
 
-> ⚠️ **Not yet applied. Fix when the prototypes are done, in one pass** — it touches four modules
-> and two shared components, so doing it mid-build means re-measuring screens that are still
-> moving. As of 2026-09-17 the product has four renderings and two storage shapes:
+> **Formatters unified 2026-09-17; storage not.** Every function that *formats* a date now renders
+> the shapes above:
 >
-> | Where | Renders | Change |
-> |---|---|---|
+> | Where | Renders |
+> |---|---|
+> | Deviations `displayDate` | `Oct 8, 2026` — `2-digit` → `numeric` |
+> | Documents `displayDate` | `Oct 1, 2026` — already correct |
+> | Documents `displayTime` | `Sep 20, 2026, 08:45:00 UTC` — was `en-GB` with no seconds |
+> | `RecordAuditDrawer` | same — was `en-GB`, which is also where `Sept` came from |
+> | Documents empty date | `—` — was `Not set` |
+>
+> ⚠️ **Still stored as display strings, so they bypass every formatter:** Change Control's
+> `dateRaised`, `targetImplementationDate`, `dueDate` and `completedAt` (24 values plus 7
+> completions), its action **comment** timestamps, and CAPA's 6 `dueDate` values. These print
+> exactly as typed, which is why they happen to look right today and will not survive a locale or
+> a sort. Converting them is the remaining half of this pass.
+
+---|---|---|
 > | Deviations `displayDate` | `Oct 01, 2026` | `day: "2-digit"` → `"numeric"` |
 > | Documents `displayDate` | `Oct 1, 2026` | ✓ already correct |
 > | Documents `displayTime` | `20 Sept 2026, 08:45` | → `en-US`, add seconds |

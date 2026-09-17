@@ -51,14 +51,14 @@ export function UsersScreen({ tab }: { tab: FormTab }) {
         subtitle={tab.subtitle}
         action={
           <Button onClick={() => setEditing("new")}>
-            <Plus className="h-4 w-4" />
+            <Plus className="size-4" />
             Invite user
           </Button>
         }
       />
 
       <div className="relative w-full sm:max-w-[380px]">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
+        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
         <Input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search by name or email..." aria-label="Search users" className="pl-9" />
       </div>
 
@@ -84,7 +84,7 @@ export function UsersScreen({ tab }: { tab: FormTab }) {
                     <div className="text-xs text-[var(--color-text-secondary)]">{user.email}</div>
                   </TableCell>
                   <TableCell>
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex flex-wrap gap-[var(--spacing-component-xs)]">
                       {roles.map((r) => (
                         <Badge key={r} variant={user.globalRoles.includes(r) ? "success" : "outline"} shape="pill" size="md">
                           {r}
@@ -114,7 +114,7 @@ export function UsersScreen({ tab }: { tab: FormTab }) {
             })}
             {visible.length === 0 && (
               <TableRow>
-                <TableCell colSpan={4} className="py-8 text-center text-sm text-[var(--color-text-secondary)]">
+                <TableCell colSpan={4} className="py-[var(--spacing-layout-md)] text-center text-sm text-[var(--color-text-secondary)]">
                   No users match this search.
                 </TableCell>
               </TableRow>
@@ -224,15 +224,15 @@ function UserDialog({
             <DialogDescription>A user can hold different roles in different modules.</DialogDescription>
           </DialogHeader>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="flex flex-col gap-2">
+          <div className="grid gap-[var(--spacing-component-lg)] sm:grid-cols-2">
+            <div className="flex flex-col gap-[var(--spacing-component-sm)]">
               <Label htmlFor="user-name" required state={submitted && nameError ? "invalid" : "default"}>
                 Name
               </Label>
               <Input id="user-name" value={name} autoFocus onChange={(e) => setName(e.target.value)} aria-invalid={(submitted && !!nameError) || undefined} aria-describedby="user-name-error" />
               {err(nameError, "user-name-error")}
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-[var(--spacing-component-sm)]">
               <Label htmlFor="user-email" required state={submitted && emailError ? "invalid" : "default"}>
                 Email
               </Label>
@@ -241,17 +241,17 @@ function UserDialog({
             </div>
           </div>
 
-          <fieldset className="flex flex-col gap-3">
-            <legend className="mb-3 text-sm font-semibold text-[var(--color-background-default-foreground)]">Module roles</legend>
+          <fieldset className="flex flex-col gap-[var(--spacing-component-md)]">
+            <legend className="mb-[var(--spacing-component-md)] text-sm font-semibold text-[var(--color-background-default-foreground)]">Module roles</legend>
             {moduleRoles.map((m) => (
-              <div key={m.module} className="flex flex-col gap-2 border-t border-[var(--color-border-default)] pt-3 sm:flex-row sm:gap-4">
+              <div key={m.module} className="flex flex-col gap-[var(--spacing-component-sm)] border-t border-[var(--color-border-default)] pt-[var(--spacing-component-md)] sm:flex-row sm:gap-4">
                 <span className="text-sm font-medium text-[var(--color-text-secondary)] sm:w-32 sm:shrink-0">{m.module}</span>
                 <div className="flex flex-wrap gap-x-4 gap-y-2">
                   {m.roles.map((r) => {
                     const key = `${m.module}: ${r}`
                     const id = `role-${slug(key)}`
                     return (
-                      <div key={key} className="flex items-center gap-2">
+                      <div key={key} className="flex items-center gap-[var(--spacing-component-sm)]">
                         <Checkbox id={id} checked={mods.includes(key)} onCheckedChange={(v) => toggle(mods, setMods, key, v === true)} />
                         <Label htmlFor={id} className="font-normal">
                           {r}
@@ -264,14 +264,14 @@ function UserDialog({
             ))}
           </fieldset>
 
-          <fieldset className="flex flex-col gap-3">
-            <legend className="mb-3 text-sm font-semibold text-[var(--color-background-default-foreground)]">Global roles</legend>
+          <fieldset className="flex flex-col gap-[var(--spacing-component-md)]">
+            <legend className="mb-[var(--spacing-component-md)] text-sm font-semibold text-[var(--color-background-default-foreground)]">Global roles</legend>
             {globalRoles.map((g) => {
               const id = `global-${slug(g.role)}`
               return (
-                <div key={g.role} className="flex items-start gap-2">
+                <div key={g.role} className="flex items-start gap-[var(--spacing-component-sm)]">
                   <Checkbox id={id} className="mt-0.5" checked={globals.includes(g.role)} onCheckedChange={(v) => toggle(globals, setGlobals, g.role, v === true)} aria-describedby={`${id}-desc`} />
-                  <div className="flex flex-col gap-1">
+                  <div className="flex flex-col gap-[var(--spacing-component-xs)]">
                     <Label htmlFor={id}>{g.role}</Label>
                     <p id={`${id}-desc`} className="text-xs text-[var(--color-text-secondary)]">
                       {g.description}
@@ -318,7 +318,7 @@ export function RolesScreen({ tab }: { tab: FormTab }) {
                   <TableRow key={m.module}>
                     <TableCell className="font-medium">{m.module}</TableCell>
                     <TableCell>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-[var(--spacing-component-sm)]">
                         {m.roles.map((r) => (
                           <Badge key={r} variant="success" shape="pill" size="md">
                             {r}
@@ -339,9 +339,9 @@ export function RolesScreen({ tab }: { tab: FormTab }) {
           <CardTitle>Global roles</CardTitle>
           <CardDescription>Cross-cutting roles that apply across all modules.</CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-3">
+        <CardContent className="grid gap-[var(--spacing-component-lg)] md:grid-cols-3">
           {globalRoles.map((g) => (
-            <div key={g.role} className="flex flex-col gap-1 rounded-[var(--radius-md)] border border-[var(--color-border-default)] p-4">
+            <div key={g.role} className="flex flex-col gap-[var(--spacing-component-xs)] rounded-[var(--radius-md)] border border-[var(--color-border-default)] p-[var(--spacing-component-lg)]">
               <span className="text-sm font-semibold text-[var(--color-surface-overlay-foreground)]">{g.role}</span>
               <span className="text-sm text-[var(--color-text-secondary)]">{g.description}</span>
             </div>

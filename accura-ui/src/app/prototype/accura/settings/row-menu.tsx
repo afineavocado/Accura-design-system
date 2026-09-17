@@ -16,14 +16,14 @@ export function RowMenu({ label, items }: { label: string; items: RowMenuItem[] 
     <Popover.Root open={open} onOpenChange={setOpen}>
       <Popover.Trigger asChild>
         <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${label}`}>
-          <MoreHorizontal className="h-4 w-4" />
+          <MoreHorizontal className="size-4" />
         </Button>
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content
           align="end"
           sideOffset={4}
-          className="z-50 flex min-w-40 flex-col rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-surface-overlay)] p-1"
+          className="z-50 flex min-w-40 flex-col rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-surface-overlay)] p-[var(--spacing-component-xs)]"
         >
           {items.map((item) => (
             <button
@@ -34,7 +34,7 @@ export function RowMenu({ label, items }: { label: string; items: RowMenuItem[] 
                 setOpen(false)
                 item.onSelect()
               }}
-              className={`rounded-[var(--radius-sm)] px-2 py-2 text-left text-sm hover:bg-[var(--color-background-muted)] focus-visible:bg-[var(--color-background-muted)] focus-visible:outline-none disabled:pointer-events-none disabled:text-[var(--color-text-disabled)] ${
+              className={`rounded-[var(--radius-sm)] px-[var(--spacing-component-sm)] py-[var(--spacing-component-sm)] text-left text-sm hover:bg-[var(--color-background-muted)] focus-visible:bg-[var(--color-background-muted)] focus-visible:outline-none disabled:pointer-events-none disabled:text-[var(--color-text-disabled)] ${
                 item.destructive ? "text-[var(--color-text-invalid)]" : "text-[var(--color-surface-overlay-foreground)]"
               }`}
             >

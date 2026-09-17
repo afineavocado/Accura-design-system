@@ -80,8 +80,8 @@ function SignerIdentity({ signedAt }: { signedAt: string }) {
         { icon: Clock, label: "Timestamp UTC", value: signedAt },
       ].map(({ icon: Icon, label, value }) => (
         <div key={label} className="flex items-center gap-[var(--spacing-component-sm)]">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--color-background-muted)]">
-            <Icon className="h-4 w-4 text-[var(--color-icon-muted)]" aria-hidden="true" />
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[var(--color-background-muted)]">
+            <Icon className="size-4 text-[var(--color-icon-muted)]" aria-hidden="true" />
           </span>
           <span className="min-w-0">
             <span className="block text-xs text-[var(--color-text-secondary)]">{label}</span>
@@ -166,7 +166,7 @@ export default function ReviewQueuePage() {
 
       <div className="flex flex-col gap-[var(--spacing-component-sm)] sm:flex-row">
         <div className="relative flex-1 sm:max-w-[380px]">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
           <Input
             type="search"
             value={query}
@@ -213,8 +213,8 @@ export default function ReviewQueuePage() {
                   be done on a record nobody opened. Rejecting can — its causes
                   are often administrative and visible from the row. */}
               {unopenedSelected.length > 0 && (
-                <span className="flex items-center gap-1 text-xs text-[var(--color-status-warning-subtle-foreground)]">
-                  <TriangleAlert className="h-3.5 w-3.5" aria-hidden="true" />
+                <span className="flex items-center gap-[var(--spacing-component-xs)] text-xs text-[var(--color-status-warning-subtle-foreground)]">
+                  <TriangleAlert className="size-3.5" aria-hidden="true" />
                   {unopenedSelected.length} not opened yet — open to approve
                 </span>
               )}
@@ -228,7 +228,7 @@ export default function ReviewQueuePage() {
                   setRejectingIds(selectedItems.map((i) => i.id))
                 }}
               >
-                <X className="h-4 w-4" />
+                <X className="size-4" />
                 Reject {selectedItems.length}
               </Button>
               <Button
@@ -241,7 +241,7 @@ export default function ReviewQueuePage() {
                   })
                 }
               >
-                <Check className="h-4 w-4" />
+                <Check className="size-4" />
                 Approve {selectedItems.length}
               </Button>
             </div>
@@ -317,7 +317,7 @@ export default function ReviewQueuePage() {
                         {item.method}
                       </Badge>
                       {item.score && (
-                        <span className="text-xs text-[var(--color-status-danger-subtle-foreground)]">
+                        <span className="text-xs text-[var(--color-text-invalid)]">
                           {item.score}
                         </span>
                       )}
@@ -330,7 +330,7 @@ export default function ReviewQueuePage() {
                     <div
                       className={
                         item.overdue
-                          ? "text-xs text-[var(--color-status-danger-subtle-foreground)]"
+                          ? "text-xs text-[var(--color-text-invalid)]"
                           : "text-xs text-[var(--color-text-secondary)]"
                       }
                     >
@@ -342,7 +342,7 @@ export default function ReviewQueuePage() {
                     {item.evidenceIsFile ? (
                       <span className="inline-flex items-center gap-[var(--spacing-component-xs)]">
                         <FileText
-                          className="h-4 w-4 shrink-0 text-[var(--color-icon-muted)]"
+                          className="size-4 shrink-0 text-[var(--color-icon-muted)]"
                           aria-hidden="true"
                         />
                         <span className="text-[var(--color-text-secondary)]">
@@ -357,21 +357,21 @@ export default function ReviewQueuePage() {
                   </TableCell>
                   <TableCell className="text-right">
                     {decision === "approved" && (
-                      <span className="inline-flex items-center gap-1 text-xs font-medium text-[var(--color-status-success-subtle-foreground)]">
-                        <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                      <span className="inline-flex items-center gap-[var(--spacing-component-xs)] text-xs font-medium text-[var(--color-status-success-subtle-foreground)]">
+                        <Check className="size-3.5" aria-hidden="true" />
                         Approved
                       </span>
                     )}
                     {decision === "rejected" && (
-                      <span className="inline-flex items-center gap-1 text-xs font-medium text-[var(--color-status-danger-subtle-foreground)]">
-                        <X className="h-3.5 w-3.5" aria-hidden="true" />
+                      <span className="inline-flex items-center gap-[var(--spacing-component-xs)] text-xs font-medium text-[var(--color-text-invalid)]">
+                        <X className="size-3.5" aria-hidden="true" />
                         Rejected
                       </span>
                     )}
                     {!decision &&
                       (isOpened ? (
-                        <span className="inline-flex items-center gap-1 text-xs text-[var(--color-text-secondary)]">
-                          <Eye className="h-3.5 w-3.5" aria-hidden="true" />
+                        <span className="inline-flex items-center gap-[var(--spacing-component-xs)] text-xs text-[var(--color-text-secondary)]">
+                          <Eye className="size-3.5" aria-hidden="true" />
                           Opened
                         </span>
                       ) : (
@@ -408,7 +408,7 @@ export default function ReviewQueuePage() {
 
       <p className="text-xs text-[var(--color-text-secondary)]">
         {ownRecordsAwaitingOtherManager}
-        {" of your own records need another manager’s sign-off — "}
+        {" of your own records need another manager’s sign-off. "}
         <a href="#" className="text-[var(--color-brand-primary)] hover:underline">
           view
         </a>
@@ -425,7 +425,7 @@ export default function ReviewQueuePage() {
             </SheetDescription>
           </SheetHeader>
 
-          <div className="flex flex-col gap-[var(--spacing-component-lg)] px-4 py-4">
+          <div className="flex flex-col gap-[var(--spacing-component-lg)] px-[var(--spacing-component-lg)] py-[var(--spacing-component-lg)]">
             <div>
               <p className="text-xs uppercase tracking-wide text-[var(--color-text-secondary)]">
                 Method
@@ -435,7 +435,7 @@ export default function ReviewQueuePage() {
                   {viewing?.method}
                 </Badge>
                 {viewing?.score && (
-                  <span className="text-xs text-[var(--color-status-danger-subtle-foreground)]">
+                  <span className="text-xs text-[var(--color-text-invalid)]">
                     {viewing.score}
                   </span>
                 )}
@@ -463,7 +463,7 @@ export default function ReviewQueuePage() {
                     href="#"
                     className="inline-flex items-center gap-[var(--spacing-component-xs)] text-sm text-[var(--color-brand-primary)] hover:underline"
                   >
-                    <FileText className="h-4 w-4" aria-hidden="true" />
+                    <FileText className="size-4" aria-hidden="true" />
                     {viewing.evidence}
                   </a>
                 ) : (

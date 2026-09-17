@@ -312,14 +312,19 @@ export function displayDate(date: string) {
         day: "numeric",
         year: "numeric",
       })
-    : "Not set";
+    : "—";
 }
 export function displayTime(date: string) {
   return (
-    new Date(date).toLocaleString("en-GB", {
-      dateStyle: "medium",
-      timeStyle: "short",
+    new Date(date).toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
       timeZone: "UTC",
+      hour12: false,
     }) + " UTC"
   );
 }
@@ -463,7 +468,7 @@ export const contextSeeds: DemoDocument[] = [
         record: "ACME/WI/2026/000002 · v1.0",
         meaning:
           "I return this revision to Draft. Reason: Clarify which equipment is covered before resubmission.",
-        action: "Rejection signed — returned to Draft",
+        action: "Rejection signed, returned to Draft",
         fromStatus: "In QA Approval",
         toStatus: "Draft",
         timestamp: "2026-09-13T09:00:00Z",
@@ -527,7 +532,7 @@ export const contextSeeds: DemoDocument[] = [
     },
     activity: [
       {
-        text: "Marked Obsolete — equipment retired (sample history)",
+        text: "Marked Obsolete: equipment retired (sample history)",
         name: actors.owner.name,
         timestamp: "2026-09-12T09:00:00Z",
       },

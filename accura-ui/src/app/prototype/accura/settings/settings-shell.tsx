@@ -52,14 +52,14 @@ export function SettingsShell({ children }: { children: React.ReactNode }) {
             onMobileNavigationToggle={() => setMobileNavOpen((open) => !open)}
           />
           {mobileNavOpen && (
-            <div className="border-b border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-background)] p-3 lg:hidden">
+            <div className="border-b border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-background)] p-[var(--spacing-component-md)] lg:hidden">
               <AppNavItems />
             </div>
           )}
           <div className="flex min-h-0 flex-1">
             <SettingsMenu />
-            <section className="min-h-0 min-w-0 flex-1 overflow-y-auto p-4 lg:p-8">
-              <div className="mx-auto flex w-full max-w-[960px] flex-col gap-6">
+            <section className="min-h-0 min-w-0 flex-1 overflow-y-auto p-[var(--spacing-component-lg)] lg:p-8">
+              <div className="mx-auto flex w-full max-w-[960px] flex-col gap-[var(--spacing-component-xl)]">
                 <MobileSettingsMenu />
                 <SectionTabs />
                 {children}
@@ -78,9 +78,9 @@ function SettingsMenu() {
   return (
     <nav
       aria-label="Settings sections"
-      className="hidden w-60 shrink-0 overflow-y-auto border-r border-[var(--color-border-default)] bg-[var(--color-surface-default)] px-3 py-4 md:block"
+      className="hidden w-60 shrink-0 overflow-y-auto border-r border-[var(--color-border-default)] bg-[var(--color-surface-default)] px-[var(--spacing-component-md)] py-[var(--spacing-component-lg)] md:block"
     >
-      <ul className="flex flex-col gap-1">
+      <ul className="flex flex-col gap-[var(--spacing-component-xs)]">
         {settingsSections.map((section) => {
           const Icon = sectionIcons[section.icon]
           const active = current?.slug === section.slug
@@ -89,13 +89,13 @@ function SettingsMenu() {
               <Link
                 href={settingsHref(section.slug, section.tabs[0].slug)}
                 aria-current={active ? "page" : undefined}
-                className={`flex items-center gap-2 rounded-[var(--radius-md)] px-2 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)] ${
+                className={`flex items-center gap-[var(--spacing-component-sm)] rounded-[var(--radius-md)] px-[var(--spacing-component-sm)] py-[var(--spacing-component-sm)] text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)] ${
                   active
                     ? "bg-[var(--color-surface-accent)] font-medium text-[var(--color-brand-primary)]"
                     : "text-[var(--color-surface-default-foreground)] hover:bg-[var(--color-background-muted)]"
                 }`}
               >
-                <Icon className={`h-4 w-4 shrink-0 ${active ? "" : "text-[var(--color-icon-muted)]"}`} />
+                <Icon className={`size-4 shrink-0 ${active ? "" : "text-[var(--color-icon-muted)]"}`} />
                 {section.label}
               </Link>
             </li>
@@ -160,7 +160,7 @@ function MobileSettingsMenu() {
 export function ScreenHeading({ heading, subtitle, action }: { heading: string; subtitle?: string; action?: React.ReactNode }) {
   return (
     <div className="flex w-full flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
+      <div className="flex min-w-0 flex-1 flex-col gap-[var(--spacing-component-xs)]">
         <h2 className="font-heading text-xl font-semibold text-[var(--color-background-default-foreground)]">{heading}</h2>
         {subtitle && <p className="text-sm text-[var(--color-text-secondary)]">{subtitle}</p>}
       </div>

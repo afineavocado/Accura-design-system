@@ -81,13 +81,13 @@ export default function TrainingRoleDetailPage() {
       <div>
         <Link
           href="/prototype/accura/training/roles"
-          className="inline-flex items-center gap-1 text-sm text-[var(--color-brand-primary)] hover:underline"
+          className="inline-flex items-center gap-[var(--spacing-component-xs)] text-sm text-[var(--color-brand-primary)] hover:underline"
         >
-          <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+          <ChevronLeft className="size-4" aria-hidden="true" />
           Back to Roles
         </Link>
 
-        <div className="mt-2 flex flex-wrap items-start justify-between gap-3">
+        <div className="mt-[var(--spacing-component-sm)] flex flex-wrap items-start justify-between gap-[var(--spacing-component-md)]">
           <div>
             {/* Description sits under the title, not in a card of its own —
                 one line of prose does not need a surface. */}
@@ -100,7 +100,7 @@ export default function TrainingRoleDetailPage() {
           </div>
           <Button asChild variant="outline" size="sm">
             <Link href={`/prototype/accura/training/roles/${role.id}/edit`}>
-              <Pencil className="h-4 w-4" />
+              <Pencil className="size-4" />
               Edit role
             </Link>
           </Button>
@@ -153,7 +153,7 @@ export default function TrainingRoleDetailPage() {
       </Card>
 
       <Card>
-        <CardHeader className="flex-row items-baseline justify-between gap-3">
+        <CardHeader className="flex-row items-baseline justify-between gap-[var(--spacing-component-md)]">
           <CardTitle>Assigned users ({role.users})</CardTitle>
           {/* Status here is scoped to this role. A person's overall status
               would be misleading — they may be overdue on another role. */}
@@ -184,7 +184,7 @@ export default function TrainingRoleDetailPage() {
                 <TableRow>
                   <TableCell
                     colSpan={4}
-                    className="py-8 text-center text-sm text-[var(--color-text-secondary)]"
+                    className="py-[var(--spacing-layout-md)] text-center text-sm text-[var(--color-text-secondary)]"
                   >
                     No users are assigned to this role.
                   </TableCell>

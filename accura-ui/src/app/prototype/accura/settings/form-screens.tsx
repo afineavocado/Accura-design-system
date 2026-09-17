@@ -25,14 +25,14 @@ import { ScreenHeading } from "./settings-shell"
    so it never claims a state that is no longer true. */
 function SaveBar({ label, saved, disabled }: { label: string; saved: boolean; disabled?: boolean }) {
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <div className="flex flex-wrap items-center gap-[var(--spacing-component-md)]">
       <Button type="submit" disabled={disabled}>
         {label}
       </Button>
-      <p aria-live="polite" className="flex items-center gap-1 text-sm text-[var(--color-text-secondary)]">
+      <p aria-live="polite" className="flex items-center gap-[var(--spacing-component-xs)] text-sm text-[var(--color-text-secondary)]">
         {saved && (
           <>
-            <CheckCircle2 className="h-4 w-4 text-[var(--color-status-success)]" />
+            <CheckCircle2 className="size-4 text-[var(--color-status-success)]" />
             Saved
           </>
         )}
@@ -43,7 +43,7 @@ function SaveBar({ label, saved, disabled }: { label: string; saved: boolean; di
 
 function Field({ id, label, required, children }: { id: string; label: string; required?: boolean; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-[var(--spacing-component-sm)]">
       <Label htmlFor={id} required={required}>
         {label}
       </Label>
@@ -82,7 +82,7 @@ export function RecordNumberingScreen({ tab }: { tab: FormTab }) {
           <CardTitle>Preview</CardTitle>
         </CardHeader>
         <CardContent>
-          <output aria-live="polite" className="block rounded-[var(--radius-md)] bg-[var(--color-background-muted)] p-4 font-mono text-lg font-semibold text-[var(--color-background-default-foreground)]">
+          <output aria-live="polite" className="block rounded-[var(--radius-md)] bg-[var(--color-background-muted)] p-[var(--spacing-component-lg)] font-mono text-lg font-semibold text-[var(--color-background-default-foreground)]">
             {preview}
           </output>
         </CardContent>
@@ -94,7 +94,7 @@ export function RecordNumberingScreen({ tab }: { tab: FormTab }) {
         <CardContent>
           <form
             noValidate
-            className="flex flex-col gap-6"
+            className="flex flex-col gap-[var(--spacing-component-xl)]"
             onSubmit={(e) => {
               e.preventDefault()
               if (!prefixError) setSaved(true)
@@ -114,15 +114,15 @@ export function RecordNumberingScreen({ tab }: { tab: FormTab }) {
               </p>
             </Field>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-[var(--spacing-component-sm)]">
               <span className="text-sm font-medium text-[var(--color-background-default-foreground)]">Document type</span>
-              <p className="flex items-start gap-2 rounded-[var(--radius-md)] bg-[var(--color-background-muted)] p-3 text-sm text-[var(--color-text-secondary)]">
-                <Info className="mt-0.5 h-4 w-4 shrink-0" />
+              <p className="flex items-start gap-[var(--spacing-component-sm)] rounded-[var(--radius-md)] bg-[var(--color-background-muted)] p-[var(--spacing-component-md)] text-sm text-[var(--color-text-secondary)]">
+                <Info className="mt-0.5 size-4 shrink-0" />
                 Always included (e.g. SOP, WI, POL) — configured under Documents → Document Types.
               </p>
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-2">
+            <div className="grid gap-[var(--spacing-component-xl)] sm:grid-cols-2">
               <Field id="rn-separator" label="Separator">
                 <Select value={separator || "none"} onValueChange={touch(setSeparator)}>
                   <SelectTrigger id="rn-separator">
@@ -153,12 +153,12 @@ export function RecordNumberingScreen({ tab }: { tab: FormTab }) {
               </Field>
             </div>
 
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-[var(--spacing-component-md)]">
+              <div className="flex items-center gap-[var(--spacing-component-sm)]">
                 <Checkbox id="rn-year" checked={year} onCheckedChange={(v) => touch(setYear)(v === true)} />
                 <Label htmlFor="rn-year">Include year in record number</Label>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-[var(--spacing-component-sm)]">
                 <Checkbox id="rn-subtype" checked={subType} onCheckedChange={(v) => touch(setSubType)(v === true)} />
                 <Label htmlFor="rn-subtype">Include document sub-type</Label>
               </div>
@@ -197,7 +197,7 @@ export function PreferencesScreen({ tab }: { tab: FormTab }) {
         </CardHeader>
         <CardContent>
           <form
-            className="flex flex-col gap-6"
+            className="flex flex-col gap-[var(--spacing-component-xl)]"
             onSubmit={(e) => {
               e.preventDefault()
               setSaved(true)

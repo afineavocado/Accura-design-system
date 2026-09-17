@@ -26,8 +26,8 @@ function Section({
   action?: React.ReactNode
 }) {
   return (
-    <div className="border-t border-[var(--color-border-default)] pt-4">
-      <div className="mb-2 flex items-center justify-between">
+    <div className="border-t border-[var(--color-border-default)] pt-[var(--spacing-component-lg)]">
+      <div className="mb-[var(--spacing-component-sm)] flex items-center justify-between">
         <h3 className="font-sans text-sm font-medium text-[var(--color-surface-default-foreground)]">
           {label}
         </h3>
@@ -64,7 +64,7 @@ export function HistoryRecordPanel({
           <SheetDescription>
             {record.assessmentId} · Amit Kothari
           </SheetDescription>
-          <div className="pt-2">
+          <div className="pt-[var(--spacing-component-sm)]">
             <Badge
               variant={historyStatusVariant[record.status]}
               shape="pill"
@@ -75,11 +75,11 @@ export function HistoryRecordPanel({
           </div>
         </SheetHeader>
 
-        <div className="flex flex-col gap-4 px-4 pb-4 pt-4">
+        <div className="flex flex-col gap-[var(--spacing-component-lg)] px-[var(--spacing-component-lg)] pb-[var(--spacing-component-lg)] pt-[var(--spacing-component-lg)]">
           {/* Trained on leads: an acknowledgement not bound to a document
               version evidences nothing. See §20 / Q7. */}
           <Section label="Trained on">
-            <div className="rounded-[var(--radius-md)] border border-[var(--color-border-default)] p-3">
+            <div className="rounded-[var(--radius-md)] border border-[var(--color-border-default)] p-[var(--spacing-component-md)]">
               <a
                 href="#"
                 className="text-sm font-medium text-[var(--color-brand-primary)] hover:underline"
@@ -90,8 +90,8 @@ export function HistoryRecordPanel({
                 {record.documentVersion} · {record.documentEffective}
               </p>
               {superseded ? (
-                <p className="mt-2 flex items-start gap-1.5 text-xs text-[var(--color-status-warning-subtle-foreground)]">
-                  <AlertTriangle className="mt-px h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                <p className="mt-[var(--spacing-component-sm)] flex items-start gap-[var(--spacing-component-xs-plus)] text-xs text-[var(--color-status-warning-subtle-foreground)]">
+                  <AlertTriangle className="mt-px size-3.5 shrink-0" aria-hidden="true" />
                   <span>
                     Superseded by {record.supersededBy} —{" "}
                     {record.retrainingAssigned
@@ -100,8 +100,8 @@ export function HistoryRecordPanel({
                   </span>
                 </p>
               ) : (
-                <p className="mt-2 flex items-center gap-1.5 text-xs text-[var(--color-status-success-subtle-foreground)]">
-                  <Check className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                <p className="mt-[var(--spacing-component-sm)] flex items-center gap-[var(--spacing-component-xs-plus)] text-xs text-[var(--color-status-success-subtle-foreground)]">
+                  <Check className="size-3.5 shrink-0" aria-hidden="true" />
                   Still the current version
                 </p>
               )}
@@ -119,7 +119,7 @@ export function HistoryRecordPanel({
                 {record.score}
               </span>
             )}
-            <dl className="mt-3 grid grid-cols-2 gap-3">
+            <dl className="mt-[var(--spacing-component-md)] grid grid-cols-2 gap-[var(--spacing-component-md)]">
               {[
                 ["Assigned", record.assignedDate],
                 ["Due", record.dueDate],
@@ -140,9 +140,9 @@ export function HistoryRecordPanel({
 
           {record.evidence && (
             <Section label="Evidence">
-              <div className="flex items-center gap-2 rounded-[var(--radius-md)] border border-[var(--color-border-default)] px-3 py-2">
+              <div className="flex items-center gap-[var(--spacing-component-sm)] rounded-[var(--radius-md)] border border-[var(--color-border-default)] px-[var(--spacing-component-md)] py-[var(--spacing-component-sm)]">
                 <FileText
-                  className="h-4 w-4 shrink-0 text-[var(--color-icon-muted)]"
+                  className="size-4 shrink-0 text-[var(--color-icon-muted)]"
                   aria-hidden="true"
                 />
                 <div className="min-w-0">
@@ -163,7 +163,7 @@ export function HistoryRecordPanel({
           {/* Signatures as a sequence, not a field — self-signed versus
               reviewed becomes visible instead of inferred. */}
           <Section label="Signatures">
-            <ol className="flex flex-col gap-3">
+            <ol className="flex flex-col gap-[var(--spacing-component-md)]">
               {record.signatures.map((signature) => (
                 <li key={signature.name + signature.timestamp}>
                   <p className="text-sm font-medium text-[var(--color-surface-default-foreground)]">
@@ -184,14 +184,14 @@ export function HistoryRecordPanel({
                 type="button"
                 onClick={() => setTrailOpen((value) => !value)}
                 aria-expanded={trailOpen}
-                className="flex items-center gap-1 text-xs text-[var(--color-text-secondary)]"
+                className="flex items-center gap-[var(--spacing-component-xs)] text-xs text-[var(--color-text-secondary)]"
               >
                 {record.auditTrail.length} events
                 <ChevronDown
                   className={
                     trailOpen
-                      ? "h-3.5 w-3.5 rotate-180 transition-transform"
-                      : "h-3.5 w-3.5 transition-transform"
+                      ? "size-3.5 rotate-180 transition-transform"
+                      : "size-3.5 transition-transform"
                   }
                   aria-hidden="true"
                 />
@@ -199,7 +199,7 @@ export function HistoryRecordPanel({
             }
           >
             {trailOpen && (
-              <ol className="flex flex-col gap-4">
+              <ol className="flex flex-col gap-[var(--spacing-component-lg)]">
                 {record.auditTrail.map((event) => (
                   <li key={event.event + event.timestamp}>
                     <p className="text-sm font-medium text-[var(--color-surface-default-foreground)]">
@@ -209,7 +209,7 @@ export function HistoryRecordPanel({
                       {event.email ? `${event.email} · ` : ""}
                       {event.timestamp}
                     </p>
-                    <p className="mt-1 text-sm text-[var(--color-surface-default-foreground)]">
+                    <p className="mt-[var(--spacing-component-xs)] text-sm text-[var(--color-surface-default-foreground)]">
                       {event.event}
                     </p>
                     {event.note && (
@@ -226,9 +226,9 @@ export function HistoryRecordPanel({
             )}
           </Section>
 
-          <div className="border-t border-[var(--color-border-default)] pt-4">
+          <div className="border-t border-[var(--color-border-default)] pt-[var(--spacing-component-lg)]">
             <Button variant="outline" size="sm" className="w-full">
-              <Download className="h-4 w-4" />
+              <Download className="size-4" />
               Export record
             </Button>
           </div>

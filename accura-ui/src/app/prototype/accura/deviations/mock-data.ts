@@ -529,7 +529,7 @@ export function nextAction(record: DeviationRecord): string | null {
 export function displayDate(date: string) {
   return new Date(date + (date.length === 10 ? "T00:00:00" : "")).toLocaleDateString(
     "en-US",
-    { month: "short", day: "2-digit", year: "numeric" }
+    { month: "short", day: "numeric", year: "numeric" }
   )
 }
 
