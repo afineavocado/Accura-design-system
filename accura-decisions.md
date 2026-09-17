@@ -41,26 +41,15 @@ Three of the five primitive levers moved. But the primitive layer is not the who
 
 ---
 
-## 1. Brand ramp — Green
+> **The value tables moved.** Ramps, radius, spacing, the 17 text styles and the semantic
+> deviations now live in `docs/design-system-rules.md` → *Accura values*, beside the rules that
+> govern them. What stays here is why Accura differs from Agentic, and what is still unanswered.
 
-**Anchor = `/800-base` = `#008852`.** This is the deliberate deviation from Agentic's `/500` rule.
+> **Dark mode is not used.** The token pipeline generates a `.dark` block and every semantic has a
+> dark value. No screen renders in dark mode and none is designed for it. Keep dark values correct
+> when adding a token; do not audit or design against them.
 
-| Step | Hex | Role |
-|---|---|---|
-| 25 | `#f0faf4` | extra step — lightest wash |
-| 50 | `#e6f7ee` | secondary button hover |
-| 100 | `#c3ead5` | secondary button fill |
-| 150-lightshade | `#b5e5d1` | `brand/secondary` |
-| 200 | `#9cddbb` | secondary active |
-| 300 | `#70d1a0` | primary-active (dark mode) |
-| 400 | `#4bc68b` | primary-hover (dark mode) |
-| 500 | `#17bb77` | **`color/ring`** · focus border · brand/primary (dark) |
-| 600 | `#0dac6c` | |
-| 700 | `#00995e` | link hover (dark) |
-| **800-base** | **`#008852`** | **brand/primary · anchor** |
-| 900 | `#175e41` | primary-hover (light) |
-| 950-darkshade | `#00393f` | primary-active · **sidebar background** |
-| 975 | `#0f172a` | ⚠️ slate, not green — see Q2 |
+---
 
 ### Why the anchor moved to /800
 
@@ -83,94 +72,7 @@ Green is intrinsically lighter than blue at the same ramp step, so `/500` cannot
 
 ---
 
-## 2. Neutral ramp — Zinc
-
-**Unchanged from Agentic.** Identical hexes, identical roles.
-
-| Step | Hex | Role (light · dark) |
-|---|---|---|
-| 50 | `#fafafa` | surface/raised · **sidebar foreground** · inverted (dark) |
-| 100 | `#f4f4f5` | background/muted · accent |
-| 200 | `#e4e4e7` | border/default |
-| 300 | `#d4d4d8` | input/border |
-| 400 | `#a1a1aa` | text/disabled · placeholder (dark) |
-| 500 | `#71717a` | text/secondary · text/tertiary · placeholder (light) |
-| 600 | `#52525b` | input/border (dark) |
-| 700 | `#3f3f46` | input/bg (dark) · border (dark) |
-| 800 | `#27272a` | surface/overlay (dark) · **sidebar bg (dark)** |
-| 900 | `#18181b` | default/foreground · surface/default (dark) · inverted (light) |
-| 950 | `#09090b` | background/default (dark — page canvas) |
-
-**Dark-mode zinc elevation:** `950` page → `900` cards/dialogs → `800` dropdowns → `700` active inputs.
-
 ---
-
-## 3. Status ramps
-
-Primitive ramps are **unchanged from Agentic** — all three anchors identical.
-
-| Status | Anchor `/500` | Notes |
-|---|---|---|
-| **Danger** — Red | `#ef4444` | `brand/destructive` + `status/danger` both anchor here |
-| **Success** — Green | `#22c55e` | icons remap to `/700` (`#15803d`) for AA |
-| **Warning** — Yellow | `#eab308` | dark text (zinc/900); icons/text remap to `/700` |
-
-> ⚠️ The **status border semantics** are NOT unchanged — see §7. The ramps match; the semantic tokens that pick from them do not.
-
-> ⚠️ `color/green` (status) and `color/brand` (green) are **different ramps**. A success badge is `color/status/success`; a primary button is `color/brand/primary`. Never substitute.
-
-**Chart series** — unchanged:
-`1 #e76e50` · `2 #2a9d90` · `3 #274754` · `4 #e8c468` · `5 #f4a362`
-
-**Retained accent — Blue** (`500 = #2b7fff`): Agentic's former brand ramp, kept as a plain accent family. Used by `color/border/info`. Not the brand.
-
-### Additional ramps — not in Agentic
-
-| Ramp | `/500` | Steps |
-|---|---|---|
-| **Orange** | `#ef6820` | 25 · 50 · 100–950 |
-| **Violet** | `#875bf7` | 25 · 50 · 100–950 |
-
-Since 2026-09-17 three steps of each are mapped into `tokens.css` and used by `Badge` — orange
-`50 / 300 / 700` for Change Control's `Impact Assessment`, violet `50 / 300 / 700 / 800` for
-`Final QA Approval`. **Q4 still stands:** that is a use found for them, not an answer to what they
-were imported for, and nothing yet says which category or status either ramp owns.
-
----
-
-## 4. Radius — rescaled to base 12
-
-**This is the third changed primitive lever.** Agentic anchors at `8px`; Accura anchors at
-**`12px`**. Accura is deliberately a rounder system.
-
-The shadcn offset relationships are preserved, so shadcn components that expect
-`sm/md/lg/xl` to sit ±4 and ±2 around the anchor still behave:
-
-```
-sm  = base − 4   →   8px
-md  = base − 2   →  10px
-lg  = base       →  12px   ← anchor (radius/base)
-xl  = base + 4   →  16px
-```
-
-| Token | Agentic | **Accura** | Consumed by |
-|---|---:|---:|---|
-| `none` | 0 | **0** | — |
-| `sm` | 4 | **8** | breadcrumb |
-| `md` | 6 | **10** | 42 uses — inputs, select, tabs, badge, tooltip, sidebar |
-| `base` | 8 | **12** | 1 use |
-| `lg` | 8 | **12** | 29 uses — cards, dialogs, sheets, drawers, toasts |
-| `xl` | 12 | **16** | — |
-| `2xl` | 14 | **20** | chat-bubble |
-| `3xl` | 18 | **24** | — |
-| `4xl` | 21 | **28** | — |
-| `full` | 9999 | **9999** | pills, stepper, avatar |
-
-The top of the scale (`2xl`–`4xl`) was regularised to +4 steps; Agentic's `14 / 18 / 21`
-was irregular and nothing consumed `3xl` or `4xl`.
-
-> ⚠️ **Buttons are pills regardless.** `button/size/Button radius 1` and `radius 2` both
-> resolve to **`9999`**, where Agentic uses `12px` and `8px`. Unaffected by the rescale.
 
 ### Small-box clamping — read before raising `md` again
 
@@ -190,29 +92,9 @@ the choice is exclusive.
 
 ---
 
-## 5. Spacing
-
-**Unchanged from Agentic.** Linear +4px (8-point grid).
-
-```
-0 · 4 · 8 · 12 · 16 · 20 · 24 · 28 · 32 · 36 · 40 · 44 · 48 · 56 · 64 · 80 · 96 · 112 · 128
-```
-
-Base unit **4px** · half-steps `px(1) · 0-5(2) · 1-5(6) · 2-5(10) · 3-5(14)`
-
-> Figma naming uses a hyphen (`spacing/0-5`) where the Agentic doc writes a dot (`spacing/0.5`). Same value — Figma-safe naming only.
-
 ---
 
-## 6. Typography — Figma and code agree
-
-| Aspect | Figma primitive | Code (`accura-ui`) |
-|---|---|---|
-| **Sans (UI / body)** | **`Inter`** | **`Inter`** ✅ match |
-| **Headings** | **`Albert Sans`** (`font-family/display`) | **`Albert Sans`** ✅ match |
-| **Mono** | `Roboto Mono` | `Roboto Mono` |
-| **Serif** | `Georgia` | `Georgia` |
-| Size scale · weights · line-height · tracking | identical to Agentic | identical |
+## Typography decisions
 
 ### Decision — headings are Albert Sans, now in Figma too (resolved 2026-09-08)
 
@@ -270,99 +152,7 @@ to clear them.
 *Confirmed by the file owner 2026-09-14. Not independently verified here — figma-cli was not
 connected, so this rests on that confirmation rather than a read of the variable.*
 
-### Text styles — 17
-
-Bound on four axes: `fontFamily` → `font-family/*`, `fontWeight` → `font-weight/*`, `fontSize` → `font-size/*`, `letterSpacing` → `letter-spacing/*`.
-**`lineHeight` is hardcoded px and must stay that way** — unitless ratios resolve to different px values per font size.
-
-| Style | Size | Weight | Tracking | Line-height |
-|---|---|---|---|---|
-| `display/lg` | 48 | Bold | −1.5 | 48 |
-| `display/md` | 36 | Semibold | −1.5 | 45 |
-| `display/sm` | 30 | Medium | 0 | 38 |
-| `heading/xl` | 24 | Semibold | 0 | 33 |
-| `heading/lg` | 20 | Semibold | 0 | 28 |
-| `heading/md` | 18 | Semibold | 0 | 25 |
-| `heading/sm` | 16 | Semibold | 0 | 22 |
-| `heading/xs` | 14 | Semibold | 0 | 19 |
-| `body/lg` | 18 | Regular | 0 | 29 |
-| `body/md` | 16 | Regular | 0 | 24 |
-| `body/sm` | 14 | Regular | 0 | 21 |
-| `body/xs` | 12 | Regular | 0 | 18 |
-| `label/lg` | 16 | Medium | 0 | 16 |
-| `label/md` | 14 | Medium | 0 | 14 |
-| `label/sm` | 12 | Medium | 0 | 12 |
-| `code/md` | 14 | Roboto Mono | 0 | 23 |
-| `code/sm` | 12 | Roboto Mono | 0 | 20 |
-
 ---
-
-## 7. Semantic & component deviations
-
-**These are the easy ones to miss.** The primitive ramps match Agentic, so a primitives-only comparison reports "no change" — but the semantic tokens that *pick from* those ramps differ. Verified by diffing Accura's resolved Figma values against Agentic's `tokens.css`.
-
-### Sidebar — dark teal, not light
-
-| Token | Agentic | **Accura** |
-|---|---|---|
-| `color/sidebar/background` | `#fafafa` (zinc/50) | **`#00393f`** (brand/950-darkshade) light · `#27272a` dark |
-| `color/sidebar/foreground` | `#3f3f46` (zinc/700) | **`#fafafa`** (zinc/50) |
-
-Accura's sidebar is a **dark teal panel with light text** — a major identity difference from Agentic's light sidebar. This is correct and intentional; it matches the product designs.
-
-### Status borders — markedly paler
-
-| Token | Agentic | **Accura** | Accura step |
-|---|---|---|---|
-| `color/border/error` | `#ef4444` | `#fca5a5` | red/**300** |
-| `color/border/success` | `#15803d` | `#4ade80` | green/**400** |
-| `color/border/warning` | `#a16207` | `#fde047` | yellow/**300** |
-
-Accura picks 300/400 steps where Agentic picks 500/700. See Q10 — a red/300 error border is very faint for an error signal.
-
-### Focus ring — uses `/500`, not the anchor
-
-| Token | Light | Dark |
-|---|---|---|
-| `color/ring` | `#17bb77` | `#17bb77` |
-| `color/border/focus` | `#17bb77` | `#17bb77` |
-
-The ring uses `brand/500`, **not** the `/800` anchor. `#17bb77` measures **2.50:1 against white** — below the 3:1 WCAG 1.4.11 minimum for non-text UI indicators. See Q11.
-
-### Button radius — pills
-
-`button/size/Button radius 1` and `radius 2` both = **`9999`** (Agentic: `12px` / `8px`).
-
-### Other
-
-| Token | Agentic | Accura |
-|---|---|---|
-| `opacity/overlay` (dark) | `50` | `20` |
-| `motion/easing/standard` | `cubic-bezier(0.4, 0, 0.2, 1)` | `cubic-bezier(0.2, 0, 0, 1)` |
-
-### Accura-only tokens
-
-Tokens that exist in Accura and not in Agentic. **Add a row here the moment you add a token** —
-this table was stale within a week of the first one being added, and it is the only place a reader
-learns a token is Accura-local.
-
-| Token | Value | Source |
-|---|---|---|
-| `color/border/info` | `#8ec5ff` (blue/300) | Figma |
-| `color/text/tertiary` | `#71717a` (zinc/500) | Figma |
-| `color/orange/50 · 300 · 700` | `#fef6ee · #f7b27a · #b93815` | Figma primitives, mapped 2026-09-17 for `Badge` `orange` |
-| `color/border/brand` | `#008852` (= `color/brand/primary`) | added 2026-09-17; Change Control referenced it while it resolved to nothing |
-| `color/surface/brand/subtle` | `var(--color-green-50)`, dark `green/950` | added 2026-09-17; a brand-tinted band, so modules stop using `status/success/subtle` as decoration |
-| `breadcrumb/breadcrumb` | `4` | Figma |
-| **`stepper/border`** | **`#d4d4d8` (zinc/300)** | Figma |
-| **`checkbox/radius`** | **`4px`** | Figma |
-| **`button/destructive-secondary/*`** (5) | red `100 / 50 / 200 / 900` + `brand/destructive` | **code only — not yet in Figma** |
-
-Plus two semantics Agentic lacks: `color/sidebar/active` and `color/sidebar/active/foreground`.
-
-> ✅ Both `stepper/border` and `checkbox/radius` exist in Figma's **Components** collection
-> (47 tokens) and were confirmed present by re-export on 2026-09-08. They are durable — a
-> re-export will not drop them.
 
 ### Rule deviation — component tokens may alias primitives
 
@@ -415,6 +205,8 @@ the value has to stop tracking the scale. Pinned at `4px`.
 
 ---
 
+---
+
 ## 8. Code implementation — `accura-ui`
 
 Forked from `agentic-ui`; identical components, Accura tokens.
@@ -436,6 +228,8 @@ Forked from `agentic-ui`; identical components, Accura tokens.
 
 ---
 
+---
+
 ## Deviation summary
 
 | #   | Deviation                                                       | Verdict                                                  |
@@ -453,6 +247,8 @@ Forked from `agentic-ui`; identical components, Accura tokens.
 | 10  | `motion/easing/standard` differs                                | ⚠️ Unexplained (Q5)                                      |
 | 11  | `opacity/overlay` dark = 20 vs 50                               | ⚠️ Unexplained                                           |
 | 12  | Neutral · radius · spacing · status ramps · chart · type scale  | ✅ Identical — no drift                                   |
+
+---
 
 ---
 

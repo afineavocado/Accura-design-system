@@ -67,7 +67,7 @@ no vertical space there; in page content it costs a whole row.
 | Record title — detail pages | `heading/lg` | 20px / 600 | **Albert Sans** |
 | Card title — `CardTitle` | `heading/sm` | 16px / 600 | Inter |
 
-**Why 18 and not 16:** `accura-theme.md` — *"at or above 18px is display, below is sans."* A 16px
+**Why 18 and not 16:** `accura-decisions.md` — *"at or above 18px is display, below is sans."* A 16px
 title is `heading/sm`, deliberately Inter, so it **cannot** be Albert Sans. **Why not 20:** detail
 pages use 20px for the record title; the module name should sit below the record in hierarchy.
 `<h1>` then inherits `font-heading` from the base rule — no font class needed.
@@ -212,7 +212,7 @@ The hook clamps `page` into range when a filtered set shrinks.
   second title size.
 - **Card padding is 16px** (`spacing/component/lg`), the component default. ⚠️ `Card.md` said
   24px; `card.tsx` and `card.meta.json` said 16px, and the outlier was a **vendored** spec. See
-  `accura-theme.md` **Q12**.
+  `accura-decisions.md` **Q12**.
 - A table **inside** a card gets its own surface: `radius/md` + `border/default` on `CardContent`
   — **one step below the parent's `radius/lg`**. A table on the page background takes `radius/lg`.
 

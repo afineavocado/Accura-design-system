@@ -45,7 +45,7 @@ against Agentic and may be accidental. Regard the fork warning below as **live**
 | Status borders | 500/700 steps | 300/400 steps (paler) |
 | UI font | Inter | Inter *(headings Albert Sans)* |
 
-Full detail and rationale: **`../accura-theme.md`**.
+Full detail and rationale: **`../accura-decisions.md`**.
 
 ---
 

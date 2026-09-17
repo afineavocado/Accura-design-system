@@ -6,7 +6,7 @@ description: How to add, rename or retire a token in Accura — every file it ha
 # Adding a token
 
 Five tokens were added between 2026-09-15 and 09-17. Each went into `tokens.css`, each went into
-the CHANGELOG, and **none of them went anywhere else** — so `accura-theme.md` claimed four
+the CHANGELOG, and **none of them went anywhere else** — so `accura-decisions.md` claimed four
 Accura-only tokens while listing five and knowing about none of the new ones, and the semantic list
 in `docs/design-system-rules.md` had never heard of them. This is the order that prevents that.
 
@@ -57,10 +57,10 @@ two that stop the token being misapplied, so they are not optional.
 | File | What goes in |
 |---|---|
 | `docs/design-system-rules.md` | the token's name in the Layer 2 semantic list, **and** a row in the light/dark value table. If it has no `/foreground` pair, add it to the exception list beside `color/background/subtle` |
-| `accura-theme.md` §7 | a row in **Accura-only tokens** if it does not exist in Agentic |
+| `accura-decisions.md` §7 | a row in **Accura-only tokens** if it does not exist in Agentic |
 | `CHANGELOG.md` | what it is, what modules were doing without it, and why the alternative was wrong |
 
-If the token resolves an open question in `accura-theme.md`, **do not close the question** — note
+If the token resolves an open question in `accura-decisions.md`, **do not close the question** — note
 the state and leave it. A use being found is not an answer to what the value was for.
 
 ## 4. Prove it

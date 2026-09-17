@@ -95,7 +95,7 @@ All variants: `border-radius → checkbox/radius` (**4px**) bound on all four co
 > ⚠️ **Do not rebind this to `radius/md`.** `radius/md` is `10px` after the base-12 rescale, and CSS clamps
 > `border-radius` to half the shorter side — on a 16×16 box that renders a perfect circle, making the
 > checkbox indistinguishable from a RadioGroup item. Shape is the only cue that tells the user whether the
-> choice is exclusive. `checkbox/radius` exists in Figma's Components collection. See accura-theme.md §4 and §7.
+> choice is exclusive. `checkbox/radius` exists in Figma's Components collection. See accura-decisions.md §4 and §7.
 
 ### checkbox-item — text tokens per State
 

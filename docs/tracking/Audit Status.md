@@ -71,5 +71,5 @@ Start where Accura deviates most from the inherited defaults — those are the c
    cd ~/figma-cli && node src/index.js eval "return figma.root.name"
    ```
    It must print `[Accura] Agentic Design System`.
-3. Check token values against `accura-theme.md`, **not** `docs/design-system-rules.md` — the latter carries Agentic's values.
+3. Check token values against `accura-decisions.md`, **not** `docs/design-system-rules.md` — the latter carries Agentic's values.
 4. Record findings here as you go. Never fix without showing the report first.

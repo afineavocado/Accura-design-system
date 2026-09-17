@@ -76,7 +76,7 @@ const tokenIn = (s) => (s.match(new RegExp(`${GROUPS}\\/[a-z0-9\\/-]+`, 'i')) ||
 // ── Sweep the specs ──────────────────────────────────────────────────────────
 
 // Every doc that restates a dimensional token, not just the component specs — the
-// ruleset, the skills and the tracking files carry the same liability. accura-theme.md
+// ruleset, the skills and the tracking files carry the same liability. accura-decisions.md
 // is deliberately excluded: it is the values file, so stating values IS its job.
 const SCAN_DIRS = ['docs/component-specs', 'docs/skills', 'docs/machine-readable', 'docs/tracking'];
 const SCAN_FILES = ['docs/design-system-rules.md', 'docs/content-guidelines.md', 'llms.txt'];

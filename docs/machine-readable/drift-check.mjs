@@ -6,7 +6,7 @@
  * Checks (drift = a doc restates a fact owned authoritatively elsewhere):
  *   1. llms.txt — every referenced file path resolves
  *   2. Component count — doc claims ("N components") match actual meta.json count
- *   3. accura-theme.md — every hex value exists in primitives.tokens.json
+ *   3. Ramp tables (accura-decisions.md + the ruleset) — every hex exists in primitives
  *   4. Figma Dark mode ↔ tokens.css .dark block  (only if figma-cli is connected)
  *   5. Storybook stories — every story file has a matching meta.json (catches undocumented components)
  *   6. Docs — px values restated beside a token name still match that token
@@ -53,8 +53,18 @@ if (wrong.length === 0) ok(`meta.json count ${metaCount} matches doc claim(s): $
 else bad(`meta.json count is ${metaCount} but docs claim: ${wrong.join(', ')}`);
 
 // ── 3. accura-theme.md hexes exist in primitives ─────────────────────────────
-section('3. accura-theme.md — ramp tables match primitives, step by step');
-const theme = fs.readFileSync(path.join(root, 'accura-theme.md'), 'utf8');
+section('3. Ramp tables match primitives, step by step');
+/* The tables moved from accura-theme.md into the ruleset on 2026-09-17 and the
+   file was renamed. Read both, so the check follows the tables rather than a
+   filename — a rule that reads a file which no longer has the tables passes
+   while looking at nothing. */
+/* Only the Accura values section of the ruleset: the rest of that file is
+   vendored from Agentic and quotes Agentic's own hexes, which are not Accura
+   primitives and are not drift. */
+const rulesFull = fs.readFileSync(path.join(root, 'docs/design-system-rules.md'), 'utf8');
+const accuraValues = rulesFull.slice(rulesFull.indexOf('## Accura values'));
+const theme =
+  fs.readFileSync(path.join(root, 'accura-decisions.md'), 'utf8') + '\n' + accuraValues;
 const primRaw = fs.readFileSync(path.join(root, 'tokens/primitives.tokens.json'), 'utf8');
 const prim = primRaw.toLowerCase();
 
@@ -87,7 +97,7 @@ for (const line of theme.split('\n')) {
   if (!actual) { rowsUnresolved++; continue; }
   rowsChecked++;
   if (actual !== hex.toLowerCase())
-    bad(`accura-theme.md ${key}: doc says ${hex}, primitives say ${actual}`);
+    bad(`ramp table ${key}: doc says ${hex}, primitives say ${actual}`);
 }
 ok(`${rowsChecked} ramp rows match their own primitive step` +
    (rowsUnresolved ? ` (${rowsUnresolved} rows name no primitive — prose, not a ramp)` : ''));

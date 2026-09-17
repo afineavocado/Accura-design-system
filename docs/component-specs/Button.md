@@ -19,7 +19,7 @@ A clickable action element. Supports 6 visual types, 5 states, and 6 sizes inclu
 > ⚠️ **Accura override — the Radius column below is Agentic's.**
 > In Accura both `button/size/Button radius 1` and `radius 2` resolve to **`9999` (pill)**, not 12px/8px.
 > **Accura buttons are fully rounded.** The token *names* are unchanged; only the values differ.
-> See `accura-theme.md` §4 and §7. Everything else in this table — heights, padding, text styles — is correct for Accura.
+> See `accura-decisions.md` §4 and §7. Everything else in this table — heights, padding, text styles — is correct for Accura.
 
 | Size | Height | Radius token | Radius *(Agentic)* | Padding H token | Padding H | Text style |
 |---|---|---|---|---|---|---|

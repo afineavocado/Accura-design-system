@@ -63,7 +63,7 @@ Audit against what rendered, not against what you wrote, and compare with the si
 
 ## Do not silently resolve open questions
 
-`accura-theme.md` logs 11 questions numbered Q1–Q12 (Q3 is unused). **Q8, Q11 and Q12 carry
+`accura-decisions.md` logs 11 questions numbered Q1–Q12 (Q3 is unused). **Q8, Q11 and Q12 carry
 decisions** — read the entry before assuming one is open. **Q10 does not**: it was answered in
 conversation and never recorded, so it is still open.
 
@@ -76,14 +76,14 @@ Work is not finished when the code runs. Each row is a thing that has gone stale
 
 | You changed | Also update | Check with |
 |---|---|---|
-| A **new token** | `tokens/*.json` first, then `tokens.css` (+ `.dark`) · `docs/design-system-rules.md` list **and** value table · `accura-theme.md` §7 · CHANGELOG — the full order is `docs/skills/accura-token-change/` | `node tokens/token-parity.mjs` |
+| A **new token** | `tokens/*.json` first, then `tokens.css` (+ `.dark`) · `docs/design-system-rules.md` list **and** value table · `accura-decisions.md` §7 · CHANGELOG — the full order is `docs/skills/accura-token-change/` | `node tokens/token-parity.mjs` |
 | A **token value** in `tokens.css` | `tokens/*.json` export · any doc restating it | `node tokens/token-parity.mjs` · `node docs/machine-readable/sync-doc-values.mjs --write` |
 | A **component** in `accura-ui/src/components/ui/` | its story · `docs/component-specs/<Name>.md` · `docs/machine-readable/artifacts/components/<name>.meta.json` | `node docs/machine-readable/drift-check.mjs` |
 | A **prototype screen** | the module's file in `flow/` | — |
 | A **pattern** other screens should follow | `docs/skills/accura-prototype-build/accura-design-patterns.md` | — |
 | **How to work** — an order, a gate, a trap | `docs/skills/accura-prototype-build/accura-prototype-build.md` | — |
 | A **file's name or purpose** | `llms.txt` · `README.md` table | `drift-check` rule 1 (dead paths) |
-| A **decision on an open question** | the `accura-theme.md` entry · every file quoting it | grep the old value repo-wide before assuming one copy |
+| A **decision on an open question** | the `accura-decisions.md` entry · every file quoting it | grep the old value repo-wide before assuming one copy |
 | **Scope** — what the demo covers | `docs/demo-scope.md` | — |
 
 ### CHANGELOG

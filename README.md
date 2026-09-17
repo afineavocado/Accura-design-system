@@ -16,8 +16,8 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 |---|---|
 | **`llms.txt`** | **Agent entry point** — indexes every file and states the read order. |
 | **`CLAUDE.md`** | Agent instructions — where values come from, how to verify, what not to touch. Deliberately does not repeat this file. |
-| **`accura-theme.md`** | The theme reference — every token value, every deviation from Agentic, the reasoning, and 12 logged questions — 4 now decided. |
-| **`docs/design-system-rules.md`** | The design rules, with Accura's values inline. Reasoning and open questions live in `accura-theme.md`. |
+| **`accura-decisions.md`** | The theme reference — every token value, every deviation from Agentic, the reasoning, and 12 logged questions — 4 now decided. |
+| **`docs/design-system-rules.md`** | The design rules, with Accura's values inline. Reasoning and open questions live in `accura-decisions.md`. |
 | `docs/skills/` | 7 process skills — audit, build, token binding, documentation, Storybook, component implementation, prototype build. |
 | `docs/component-specs/` | 39 spec files — 37 components, plus `_template.md` and `Form-shared.md`. |
 | `docs/machine-readable/` | 38 `meta.json` artifacts, component directory, quick reference, validation scripts. |
@@ -161,7 +161,7 @@ with what ships, and names every difference that has no recorded reason.
 
 ## Open questions
 
-Questions are logged rather than silently resolved. `accura-theme.md` holds 11 about the
+Questions are logged rather than silently resolved. `accura-decisions.md` holds 11 about the
 theme; `flow/training-module.md` holds 24 about the Training module. **Flag them — never "fix"
 one without being asked.**
 
@@ -173,6 +173,6 @@ The load-bearing theme questions:
 
 ---
 
-*Design system rules: [`docs/design-system-rules.md`](docs/design-system-rules.md) — Accura's values inline; reasoning in `accura-theme.md`
+*Design system rules: [`docs/design-system-rules.md`](docs/design-system-rules.md) — Accura's values inline; reasoning in `accura-decisions.md`
 Agent entry point: [`llms.txt`](llms.txt) · [`CLAUDE.md`](CLAUDE.md)
 Values source of truth: `accura-ui/src/app/tokens.css` — check the export with `node tokens/token-parity.mjs`*

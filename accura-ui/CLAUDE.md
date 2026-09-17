@@ -59,15 +59,15 @@ That split matters:
 | Layer | Source of truth | Applies to Accura? |
 |---|---|---|
 | **Rules** — naming, semantic layer, paired-surface rule, spacing scale, layout, dark mode | `../docs/design-system-rules.md` | **Inherited unchanged** |
-| **Values** — brand ramp, sidebar, radius usage, type | `../accura-theme.md` | **Accura-specific** |
+| **Values** — brand ramp, sidebar, radius usage, type | `../accura-decisions.md` | **Accura-specific** |
 
-**Read `../accura-theme.md` before touching tokens.** It documents every deviation, the reasoning, and 11 logged questions (numbered Q1–Q12; Q3 is unused) that must not be silently "fixed". **Q8, Q11 and Q12 now carry decisions** — read the entry before assuming one is open.
+**Read `../accura-decisions.md` before touching tokens.** It documents every deviation, the reasoning, and 11 logged questions (numbered Q1–Q12; Q3 is unused) that must not be silently "fixed". **Q8, Q11 and Q12 now carry decisions** — read the entry before assuming one is open.
 
 Everything lives in this repository — no external vault, no absolute paths.
 
 **Start at `../llms.txt`** — the navigation index for the ruleset, component specs, machine-readable `.meta.json` artifacts, skills and tracking docs.
 
-> `../docs/design-system-rules.md` states Accura's values inline — it used to carry Agentic's, behind an override table, until 2026-09-15. `../accura-theme.md` is now reasoning and open questions, not a values override.
+> `../docs/design-system-rules.md` states Accura's values inline — it used to carry Agentic's, behind an override table, until 2026-09-15. `../accura-decisions.md` is now reasoning and open questions, not a values override.
 
 ### Before writing or modifying any UI code
 

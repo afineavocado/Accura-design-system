@@ -11,6 +11,32 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-17 — `accura-theme.md` is now `accura-decisions.md`, and its values moved to the ruleset
+
+**Changed**
+
+- **The value tables moved into `docs/design-system-rules.md`** — the brand ramp, the neutral and
+  status ramps, the orange and violet ramps, the 17 text styles, and the semantic deviations
+  (sidebar, status borders, focus ring, button radius). They now sit beside the rules that govern
+  them, in a section that says it wins where the vendored text disagrees. `Albert Sans` appeared 14
+  times in the theme file and **zero** times in the ruleset, so anyone following the rules never
+  saw the typeface decision.
+- **`accura-theme.md` → `accura-decisions.md`.** What is left is why Accura differs from Agentic,
+  the dated typography decisions, the deviation summary and Q1–Q11. Every reference across the
+  repo was updated.
+- **`drift-check` rule 3 follows the tables, not the filename.** It read `accura-theme.md`; had it
+  been left alone it would have passed while checking a file that no longer holds a ramp table.
+  It now reads `accura-decisions.md` plus the ruleset's Accura values section — scoped to that
+  section, because the rest of the ruleset quotes Agentic's own hexes, which are not drift.
+  Verified by planting `#008851` in the brand ramp and watching it fail.
+
+**Noted, not changed**
+
+- **Dark mode is not used.** `tokens.css` ships a `.dark` block and every semantic carries a dark
+  value, because the pipeline generates both. No screen renders in dark mode and none is designed
+  for it. Both documents now say so: keep dark values correct when adding a token, but do not
+  audit, measure or design against dark mode.
+
 ### 2026-09-17 — A brand-tinted surface finally has a name
 
 **Added**

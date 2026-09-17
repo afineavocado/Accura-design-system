@@ -34,7 +34,7 @@ Do NOT write timing values, thresholds, or click-sequence behavior from memory �
 
 ## Step 1 — Before Writing
 
-1. Read `docs/design-system-rules.md` token rules if not already loaded this session — **values come from `accura-theme.md`, which wins on every value**
+1. Read `docs/design-system-rules.md` token rules if not already loaded this session — **values come from `accura-decisions.md`, which wins on every value**
 2. Check `docs/tracking/Audit Status.md` — confirm the component has been audited and all issues resolved
 3. Fetch the relevant library docs for this component (see Rule Zero above)
 4. Check `docs/component-specs/` — if a doc already exists, read it first (may be stale, not blank)

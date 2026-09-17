@@ -3,7 +3,7 @@
 > Self-contained design system for Accura. A **re-theme** of the Agentic Design System: the rules are inherited unchanged, the values are Accura's. Everything an agent needs is in this repository — no external vault or absolute paths.
 
 **Read order for any UI/token work:**
-1. `accura-theme.md` — Accura's values and the 12 logged questions
+1. `accura-decisions.md` — Accura's values and the 12 logged questions
 2. `docs/design-system-rules.md` — the design rules, with Accura's values inline
 3. the relevant `docs/component-specs/[Name].md` and `docs/machine-readable/artifacts/components/[name].meta.json`
 
@@ -14,7 +14,7 @@
 `docs/design-system-rules.md` began as a vendored copy of Agentic's and now states Accura's values inline. It was never re-synced upstream in five commits, so the vendoring — and the override table it forced — were retired on 2026-09-15.
 
 - **Rules** (naming, semantic layer, paired-surface rule, spacing scale, layout, dark mode) → follow exactly.
-- **Values** (brand hue, anchor step, ring, sidebar, button radius, status borders, font, the contrast table) → **`accura-theme.md` wins**.
+- **Values** (brand hue, anchor step, ring, sidebar, button radius, status borders, font, the contrast table) → **`accura-decisions.md` wins**.
 
 The override table at the top of `docs/design-system-rules.md` lists every known conflict. If you find a new one, add it there rather than editing the rule text.
 
@@ -23,7 +23,7 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 ## Rules and process
 
 - `docs/design-system-rules.md`: Token architecture, every semantic token name and rule, spacing system, layout grid, Figma ↔ Tailwind mapping, dark mode. **Inherited — do not edit the rules.**
-- `accura-theme.md`: Accura's theme — brand ramp, neutral, radius, spacing, type, plus the semantic/component deviations and 12 logged questions. **The authority on values.**
+- `accura-decisions.md`: Accura's theme — brand ramp, neutral, radius, spacing, type, plus the semantic/component deviations and 12 logged questions. **The authority on values.**
 - `docs/content-guidelines.md`: Voice-neutral UX writing — capitalisation, button labels, error messages, empty states.
 - `docs/team-workflow.md`: **(Tiếng Việt)** How the two people working on this repo share it — branch per module, PR before merging to `main`, which files both touch, what to do on conflict. Process for humans, not a spec.
 
@@ -80,7 +80,7 @@ npm run dev         # prototypes        → :3001
 
 DTCG source + Style Dictionary build. **Exported from Accura's Figma file** — 229 primitives, 115 semantics (Light + Dark), 52 component tokens.
 
-> `stepper/border` aliases a **primitive** directly rather than a semantic — a deliberate Accura rule deviation, see `accura-theme.md` §7. It exists in Figma and survives re-export.
+> `stepper/border` aliases a **primitive** directly rather than a semantic — a deliberate Accura rule deviation, see `accura-decisions.md` §7. It exists in Figma and survives re-export.
 
 ```bash
 cd tokens && npm install && node sd.build.mjs   # → output/css/, output/js/

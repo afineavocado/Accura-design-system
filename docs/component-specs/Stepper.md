@@ -84,7 +84,7 @@ Optional second line (`text-xs`). Steps without one render the label alone.
 
 `stepper/border` → `color/zinc/300` → `#d4d4d8`
 
-It aliases a **primitive directly**, which the inherited ruleset forbids. Accura treats the component tier as another semantic layer, so this is allowed — see `accura-theme.md` §7. The value exists because no semantic carries it with the right meaning: `color/border/default` (`#e4e4e7`) is invisible against the `#f4f4f5` fill, and `color/border/hover` / `color/input/border` mean hover state and input boundary.
+It aliases a **primitive directly**, which the inherited ruleset forbids. Accura treats the component tier as another semantic layer, so this is allowed — see `accura-decisions.md` §7. The value exists because no semantic carries it with the right meaning: `color/border/default` (`#e4e4e7`) is invisible against the `#f4f4f5` fill, and `color/border/hover` / `color/input/border` mean hover state and input boundary.
 
 > Created in Figma's Components collection 2026-09-08 — it survives token re-export.
 

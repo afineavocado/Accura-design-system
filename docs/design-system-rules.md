@@ -9,7 +9,7 @@
 > cost a twelve-row table of *"this file says X, Accura uses Y"* and a banner telling readers
 > that half the numbers were wrong. One true file beats two files and a disclaimer.
 >
-> **Rules live here. Reasoning lives in [`../accura-theme.md`](../accura-theme.md)** — why the
+> **Rules live here. Reasoning lives in [`../accura-decisions.md`](../accura-decisions.md)** — why the
 > anchor moved, every deviation, and the open questions. Values ship from
 > `accura-ui/src/app/tokens.css`; `node tokens/token-parity.mjs` says whether the export still
 > agrees.
@@ -90,7 +90,7 @@ The acceptance test, applied to any candidate:
 | < 3:1 | ❌ reject |
 
 Anchoring away from `/500` is **this rule applied correctly, not broken.** Reasoning and the
-measured candidates: `accura-theme.md` §1.
+measured candidates: `accura-decisions.md` §1.
 
 **Rule 2 — build the scale outward from the anchor using perceptual lightness:**
 ```
@@ -217,7 +217,7 @@ radius/lg   → 12px  (= base)     radius/3xl → 24px
 
 The shadcn offsets (±2, ±4 around the anchor) are preserved, so components expecting
 `sm/md/lg/xl` to sit around the base still behave. **Buttons are the exception — Accura buttons
-are pills at `9999`.** See `accura-theme.md` §4.
+are pills at `9999`.** See `accura-decisions.md` §4.
 
 ---
 
@@ -343,7 +343,7 @@ color/text/secondary · disabled · invalid · warning · success · inverse
 color/text/link · link-hover · link-active
 
 color/border/subtle · default · hover · strong · focus · disabled · error · success · warning
-color/border/info · color/border/brand        ← Accura-only, see accura-theme.md §7
+color/border/info · color/border/brand        ← Accura-only, see accura-decisions.md §7
 color/surface/brand-subtle                    ← Accura-only, brand-tinted band (no /foreground pair)
 color/text/tertiary                           ← Accura-only
 color/input/bg · color/input/border · color/input/placeholder · color/ring
@@ -1483,3 +1483,162 @@ Include:
 3. Icon descriptions file (visual + do-not-use per icon)
 4. Note: _"All spacing uses Tailwind's 4px base unit. Semantic tokens always reference primitives — never hardcode hex. Brand primary anchors at the lightest step clearing 3:1 — /800-base in Accura. Every surface token has a /foreground pair (exception: color/background/subtle is a tint, no foreground). Radius scale is relative to radius/base. Line-height variables are CSS reference only — text styles use direct px values. Standalone icons use color/icon/*; icons in filled containers use the container's /foreground. color/brand/destructive ≠ color/status/danger. color/ring is the root focus color (brand/500 in Accura) — color/border/focus and button/outline/border/focus are direct aliases. Chart, sidebar, opacity tokens are scoped. Font-family values must be clean names (Inter, not a full CSS stack). Deprecated tokens are marked — always check. Flex for component layout, Grid for page layout. 1440px Figma = xl: in Tailwind. 80px Figma margin = visual guide, not CSS. z-index always uses named tokens."_
 5. Ensure `tailwind.config.js` has exact custom hex values from the Primitive layer.
+
+---
+
+## Accura values — ramps, type, and the semantic deviations
+
+Moved here from `accura-decisions.md` on 2026-09-17. These are values you follow; the reasoning behind
+them, and the eleven open questions, are in **`accura-decisions.md`**. Where this section and the
+generic ruleset above disagree, this section wins — the text above was written against Agentic.
+
+**Dark mode is not used.** `tokens.css` ships a `.dark` block and every semantic has a dark value,
+because the token pipeline generates both. No Accura screen renders in dark mode and none is
+designed for it. Keep dark values correct when you add a token — it costs one line — but do not
+audit, measure or design against dark mode.
+
+## 1. Brand ramp — Green
+
+**Anchor = `/800-base` = `#008852`.** This is the deliberate deviation from Agentic's `/500` rule.
+
+| Step | Hex | Role |
+|---|---|---|
+| 25 | `#f0faf4` | extra step — lightest wash |
+| 50 | `#e6f7ee` | secondary button hover |
+| 100 | `#c3ead5` | secondary button fill |
+| 150-lightshade | `#b5e5d1` | `brand/secondary` |
+| 200 | `#9cddbb` | secondary active |
+| 300 | `#70d1a0` | primary-active (dark mode) |
+| 400 | `#4bc68b` | primary-hover (dark mode) |
+| 500 | `#17bb77` | **`color/ring`** · focus border · brand/primary (dark) |
+| 600 | `#0dac6c` | |
+| 700 | `#00995e` | link hover (dark) |
+| **800-base** | **`#008852`** | **brand/primary · anchor** |
+| 900 | `#175e41` | primary-hover (light) |
+| 950-darkshade | `#00393f` | primary-active · **sidebar background** |
+| 975 | `#0f172a` | ⚠️ slate, not green — see Q2 |
+
+## 2. Neutral ramp — Zinc
+
+**Unchanged from Agentic.** Identical hexes, identical roles.
+
+| Step | Hex | Role (light · dark) |
+|---|---|---|
+| 50 | `#fafafa` | surface/raised · **sidebar foreground** · inverted (dark) |
+| 100 | `#f4f4f5` | background/muted · accent |
+| 200 | `#e4e4e7` | border/default |
+| 300 | `#d4d4d8` | input/border |
+| 400 | `#a1a1aa` | text/disabled · placeholder (dark) |
+| 500 | `#71717a` | text/secondary · text/tertiary · placeholder (light) |
+| 600 | `#52525b` | input/border (dark) |
+| 700 | `#3f3f46` | input/bg (dark) · border (dark) |
+| 800 | `#27272a` | surface/overlay (dark) · **sidebar bg (dark)** |
+| 900 | `#18181b` | default/foreground · surface/default (dark) · inverted (light) |
+| 950 | `#09090b` | background/default (dark — page canvas) |
+
+**Dark-mode zinc elevation:** `950` page → `900` cards/dialogs → `800` dropdowns → `700` active inputs.
+
+---
+
+## 3. Status ramps
+
+Primitive ramps are **unchanged from Agentic** — all three anchors identical.
+
+| Status | Anchor `/500` | Notes |
+|---|---|---|
+| **Danger** — Red | `#ef4444` | `brand/destructive` + `status/danger` both anchor here |
+| **Success** — Green | `#22c55e` | icons remap to `/700` (`#15803d`) for AA |
+| **Warning** — Yellow | `#eab308` | dark text (zinc/900); icons/text remap to `/700` |
+
+> ⚠️ The **status border semantics** are NOT unchanged — see §7. The ramps match; the semantic tokens that pick from them do not.
+
+> ⚠️ `color/green` (status) and `color/brand` (green) are **different ramps**. A success badge is `color/status/success`; a primary button is `color/brand/primary`. Never substitute.
+
+**Chart series** — unchanged:
+`1 #e76e50` · `2 #2a9d90` · `3 #274754` · `4 #e8c468` · `5 #f4a362`
+
+**Retained accent — Blue** (`500 = #2b7fff`): Agentic's former brand ramp, kept as a plain accent family. Used by `color/border/info`. Not the brand.
+
+### Additional ramps — not in Agentic
+
+| Ramp | `/500` | Steps |
+|---|---|---|
+| **Orange** | `#ef6820` | 25 · 50 · 100–950 |
+| **Violet** | `#875bf7` | 25 · 50 · 100–950 |
+
+Since 2026-09-17 three steps of each are mapped into `tokens.css` and used by `Badge` — orange
+`50 / 300 / 700` for Change Control's `Impact Assessment`, violet `50 / 300 / 700 / 800` for
+`Final QA Approval`. **Q4 still stands:** that is a use found for them, not an answer to what they
+were imported for, and nothing yet says which category or status either ramp owns.
+
+---
+
+### Text styles — 17
+
+Bound on four axes: `fontFamily` → `font-family/*`, `fontWeight` → `font-weight/*`, `fontSize` → `font-size/*`, `letterSpacing` → `letter-spacing/*`.
+**`lineHeight` is hardcoded px and must stay that way** — unitless ratios resolve to different px values per font size.
+
+| Style | Size | Weight | Tracking | Line-height |
+|---|---|---|---|---|
+| `display/lg` | 48 | Bold | −1.5 | 48 |
+| `display/md` | 36 | Semibold | −1.5 | 45 |
+| `display/sm` | 30 | Medium | 0 | 38 |
+| `heading/xl` | 24 | Semibold | 0 | 33 |
+| `heading/lg` | 20 | Semibold | 0 | 28 |
+| `heading/md` | 18 | Semibold | 0 | 25 |
+| `heading/sm` | 16 | Semibold | 0 | 22 |
+| `heading/xs` | 14 | Semibold | 0 | 19 |
+| `body/lg` | 18 | Regular | 0 | 29 |
+| `body/md` | 16 | Regular | 0 | 24 |
+| `body/sm` | 14 | Regular | 0 | 21 |
+| `body/xs` | 12 | Regular | 0 | 18 |
+| `label/lg` | 16 | Medium | 0 | 16 |
+| `label/md` | 14 | Medium | 0 | 14 |
+| `label/sm` | 12 | Medium | 0 | 12 |
+| `code/md` | 14 | Roboto Mono | 0 | 23 |
+| `code/sm` | 12 | Roboto Mono | 0 | 20 |
+
+---
+
+## 7. Semantic & component deviations
+
+**These are the easy ones to miss.** The primitive ramps match Agentic, so a primitives-only comparison reports "no change" — but the semantic tokens that *pick from* those ramps differ. Verified by diffing Accura's resolved Figma values against Agentic's `tokens.css`.
+
+### Sidebar — dark teal, not light
+
+| Token | Agentic | **Accura** |
+|---|---|---|
+| `color/sidebar/background` | `#fafafa` (zinc/50) | **`#00393f`** (brand/950-darkshade) light · `#27272a` dark |
+| `color/sidebar/foreground` | `#3f3f46` (zinc/700) | **`#fafafa`** (zinc/50) |
+
+Accura's sidebar is a **dark teal panel with light text** — a major identity difference from Agentic's light sidebar. This is correct and intentional; it matches the product designs.
+
+### Status borders — markedly paler
+
+| Token | Agentic | **Accura** | Accura step |
+|---|---|---|---|
+| `color/border/error` | `#ef4444` | `#fca5a5` | red/**300** |
+| `color/border/success` | `#15803d` | `#4ade80` | green/**400** |
+| `color/border/warning` | `#a16207` | `#fde047` | yellow/**300** |
+
+Accura picks 300/400 steps where Agentic picks 500/700. See Q10 — a red/300 error border is very faint for an error signal.
+
+### Focus ring — uses `/500`, not the anchor
+
+| Token | Light | Dark |
+|---|---|---|
+| `color/ring` | `#17bb77` | `#17bb77` |
+| `color/border/focus` | `#17bb77` | `#17bb77` |
+
+The ring uses `brand/500`, **not** the `/800` anchor. `#17bb77` measures **2.50:1 against white** — below the 3:1 WCAG 1.4.11 minimum for non-text UI indicators. See Q11.
+
+### Button radius — pills
+
+`button/size/Button radius 1` and `radius 2` both = **`9999`** (Agentic: `12px` / `8px`).
+
+### Other
+
+| Token | Agentic | Accura |
+|---|---|---|
+| `opacity/overlay` (dark) | `50` | `20` |
+| `motion/easing/standard` | `cubic-bezier(0.4, 0, 0.2, 1)` | `cubic-bezier(0.2, 0, 0, 1)` |
