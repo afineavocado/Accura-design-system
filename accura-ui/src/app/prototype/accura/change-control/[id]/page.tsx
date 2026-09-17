@@ -560,55 +560,54 @@ function SignedDepartmentCard({
   signer,
   signedAt,
   assessmentText,
+  actionCount,
 }: {
   department: string
   type: "impacted" | "not-impacted"
   signer: string
   signedAt: string
   assessmentText: string
+  actionCount?: number
 }) {
   const isImpacted = type === "impacted"
 
   return (
-    <div className="rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-background-subtle)] p-[var(--spacing-component-md)]">
-      <div className="flex flex-col gap-[var(--spacing-component-md)] lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex min-w-0 flex-wrap items-center gap-[var(--spacing-component-sm)]">
-          <Building className="size-5 shrink-0 text-[var(--color-icon-muted)]" />
-          <div className="min-w-0 text-sm font-medium uppercase leading-snug text-[var(--color-background-default-foreground)]">
-            {department} Department
-          </div>
-          <Badge
-            variant={isImpacted ? "success" : "secondary"}
-            shape="pill"
-            size="md"
-          >
-            {isImpacted ? "Approved" : "Not Impacted"}
-          </Badge>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-[var(--spacing-component-lg)] text-sm font-medium leading-none text-[var(--color-text-secondary)]">
-          <span className="flex items-center gap-[var(--spacing-component-sm)]">
-            <User className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
-            {isImpacted ? "Impact owner" : "Declared by"}: {signer}
+    <Card className="gap-[var(--spacing-component-sm)] bg-[var(--color-background-subtle)]">
+      <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
+        <Building className="size-5 shrink-0 text-[var(--color-icon-muted)]" />
+        {/* Sentence case, and no "Department" suffix — the section is already
+            titled Affected Departments, and uppercase at 14px shouts. */}
+        <span className="min-w-0 text-[15px] font-medium leading-snug text-[var(--color-background-default-foreground)]">
+          {department}
+        </span>
+        {/* The four statuses are Pending · Impacted · Not Impacted · Signed.
+            This badge used to read "Approved" for an impacted department, a
+            word the UI invented that claims more than what happened: the
+            department declared an impact and signed its assessment, it did not
+            approve the change. Impacted is also not a success, so no green. */}
+        <Badge variant={isImpacted ? "secondary" : "outline"} shape="pill" size="md">
+          {isImpacted ? "Impacted" : "Not impacted"}
+        </Badge>
+        {isImpacted && !!actionCount && (
+          <span className="ml-auto text-xs text-[var(--color-text-secondary)]">
+            {formatActionCount(actionCount)}
           </span>
-          <span className="flex items-center gap-[var(--spacing-component-sm)]">
-            <CalendarDays className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
-            Signed: {signedAt}
-          </span>
-        </div>
+        )}
       </div>
 
+      {/* Who and when on one line, as in the audit trail entry. */}
+      <p className="text-xs text-[var(--color-text-secondary)]">
+        {signer} · signed {signedAt}
+      </p>
+
+      {/* The assessment is what a reviewer reads. It used to sit fifth on a
+          wrapped 72px row, behind its own label, and truncate. */}
       {assessmentText.trim() && (
-        <div className="mt-[var(--spacing-component-md)] flex flex-wrap gap-[var(--spacing-component-sm)] text-sm font-medium leading-none">
-          <span className="text-[var(--color-text-secondary)]">
-            {isImpacted ? "Assessment:" : "Reason not impacted:"}
-          </span>
-          <span className="text-[var(--color-background-default-foreground)]">
-            {assessmentText}
-          </span>
-        </div>
+        <p className="text-sm leading-normal text-[var(--color-background-default-foreground)]">
+          {assessmentText}
+        </p>
       )}
-    </div>
+    </Card>
   )
 }
 
@@ -618,10 +617,14 @@ function AssessmentCard({
   recordId,
   signedAssessment,
   onSignedAssessmentChange,
+  actionCount,
 }: {
   assessment: DepartmentAssessment
   readOnly: boolean
   recordId: string
+  /** Actions this department owns. An impacted department with none is the
+   *  thing a reviewer needs to catch, so the count is on the card. */
+  actionCount?: number
   signedAssessment?: SignedAssessmentState
   onSignedAssessmentChange?: (
     department: string,
@@ -763,6 +766,7 @@ function AssessmentCard({
         signer={signedAssessment.signer}
         signedAt={signedAssessment.signedAt}
         assessmentText={signedAssessment.assessmentText}
+        actionCount={actionCount}
       />
     )
   }
@@ -779,6 +783,7 @@ function AssessmentCard({
             ? assessment.impactSummary
             : (assessment.reason ?? "This is the reason")
         }
+        actionCount={actionCount}
       />
     )
   }
@@ -794,10 +799,10 @@ function AssessmentCard({
         ].join(" ")}
       >
       <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-md)]">
-        <div className="flex min-w-0 items-center gap-[var(--spacing-component-md)]">
+        <div className="flex min-w-0 items-center gap-[var(--spacing-component-sm)]">
           <Building className="size-5 shrink-0 text-[var(--color-icon-muted)]" />
-          <div className="min-w-0 text-sm font-medium uppercase leading-5 text-[var(--color-background-default-foreground)]">
-            {assessment.department} Department
+          <div className="min-w-0 text-[15px] font-medium leading-snug text-[var(--color-background-default-foreground)]">
+            {assessment.department}
           </div>
           <Badge
             variant={
@@ -1169,6 +1174,11 @@ function ImpactAssessmentSection({
                 recordId={record.id}
                 signedAssessment={signedAssessments[assessment.department]}
                 onSignedAssessmentChange={handleSignedAssessmentChange}
+                actionCount={
+                  savedActions.filter((action) =>
+                    departmentActionMatches(action, assessment)
+                  ).length
+                }
               />
             ))}
           </>
