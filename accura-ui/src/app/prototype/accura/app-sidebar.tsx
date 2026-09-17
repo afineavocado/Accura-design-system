@@ -50,7 +50,7 @@ const footerNav = [
     icon: BookOpen,
     href: "/prototype/accura/knowledge-hub",
   },
-  { label: "Setting", icon: Settings, href: "#" },
+  { label: "Settings", icon: Settings, href: "/prototype/accura/settings" },
   { label: "Log Out", icon: LogOut, href: "#" },
 ] as const
 
