@@ -50,13 +50,13 @@ Supplied briefs stay separate in `flow/brief` — they are inputs, not documenta
 | Task | Read |
 |---|---|
 | Audit a component | `docs/skills/Component Audit Skill.md` + `docs/tracking/Audit Status.md` |
-| Bind or fix tokens | `docs/skills/Token Binding Skill.md` |
 | Write component docs | `docs/skills/Component Documentation Skill.md` |
 | Any Storybook work | `docs/skills/Storybook Build Process.md` |
 | Build or extend a prototype — what to build | `docs/skills/accura-prototype-build/accura-design-patterns.md` |
 | Build or extend a prototype — how to work | `docs/skills/accura-prototype-build/accura-prototype-build.md` |
 | Audit a prototype screen | `docs/skills/accura-screen-audit/accura-screen-audit.md` |
 | Add, rename or retire a token | `docs/skills/accura-token-change/accura-token-change.md` |
+| Bind a token in Figma | — **removed 2026-09-17.** `Token Binding Skill.md` was a figma-cli workflow, and this repo does not work in Figma. In git history if the decision reverses. |
 | Implement a component in code | `docs/skills/Component implementation process.md` |
 
 ## Component documentation

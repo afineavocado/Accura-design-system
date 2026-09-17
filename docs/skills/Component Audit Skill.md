@@ -24,7 +24,9 @@ Confirm which set to audit by ID or name.
 ### 2a. Token Bindings — Fills, Strokes & Radius
 For every node with a fill or stroke: check `boundVariables.fills[i]` / `boundVariables.strokes[i]`. If unresolvable → flag `UNBOUND`.
 
-> To fix unbound tokens found here → **Token Binding Skill**.
+> ~~To fix unbound tokens found here → **Token Binding Skill**.~~ That skill was removed on
+> 2026-09-17: it was a figma-cli workflow and this repo does not work in Figma. For a token change
+> in code, see `docs/skills/accura-token-change/`.
 
 For corner radius: Figma stores radius as 4 individual corner bindings — **always check `boundVariables.topLeftRadius`**, never `boundVariables.cornerRadius` (which always returns undefined even when bound).
 

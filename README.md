@@ -18,7 +18,7 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 | **`CLAUDE.md`** | Agent instructions — where values come from, how to verify, what not to touch. Deliberately does not repeat this file. |
 | **`accura-decisions.md`** | The theme reference — every token value, every deviation from Agentic, the reasoning, and 12 logged questions — 4 now decided. |
 | **`docs/design-system-rules.md`** | The design rules, with Accura's values inline. Reasoning and open questions live in `accura-decisions.md`. |
-| `docs/skills/` | 9 process skills — component audit, build, token binding, documentation, Storybook, component implementation, prototype build (patterns + execution), **screen audit**, **token change**. |
+| `docs/skills/` | 8 process skills — component audit, component documentation, component implementation, Storybook build, prototype build (patterns + execution), screen audit, token change. Token Binding was removed on 2026-09-17: a figma-cli workflow, and this repo does not work in Figma. |
 | `docs/component-specs/` | 39 spec files — 37 components, plus `_template.md` and `Form-shared.md`. |
 | `docs/machine-readable/` | 38 `meta.json` artifacts, component directory, quick reference, validation scripts. |
 | `docs/tracking/` | Storybook and audit status. ⚠️ Reflects Agentic's status, not Accura's. |
