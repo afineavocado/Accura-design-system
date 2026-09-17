@@ -827,7 +827,7 @@ function AssessmentCard({
       </div>
 
       {(stage === "default" || impactedSelected) && !readOnly && (
-        <div className="mt-[var(--spacing-component-xl)] flex max-w-[280px] flex-col gap-[var(--spacing-component-xs)]">
+        <div className="flex max-w-[280px] flex-col gap-[var(--spacing-component-xs)]">
           <Label>Point of contact</Label>
           <Select value={pointOfContact} onValueChange={setPointOfContact}>
             <SelectTrigger aria-label="Point of contact">
@@ -845,7 +845,7 @@ function AssessmentCard({
       )}
 
       {stage === "default" && !readOnly && (
-        <div className="mt-[var(--spacing-component-xl)] flex justify-end gap-[var(--spacing-component-sm)]">
+        <div className="flex justify-end gap-[var(--spacing-component-sm)]">
           <Button variant="outline" onClick={markNotImpacted}>
             Not Impacted
           </Button>
@@ -865,7 +865,7 @@ function AssessmentCard({
       )}
 
       {impactedSelected && (
-        <div className="mt-[var(--spacing-component-xl)] flex flex-col gap-[var(--spacing-component-xl)]">
+        <div className="flex flex-col gap-[var(--spacing-component-lg)]">
           <div className="flex flex-col gap-[var(--spacing-component-xs)]">
             <Label>Impact Assessment (optional)</Label>
             <Textarea
@@ -1021,7 +1021,7 @@ function AssessmentCard({
       )}
 
       {impactedSelected && !readOnly && (
-        <div className="mt-[var(--spacing-component-xl)] flex flex-wrap justify-between gap-[var(--spacing-component-sm)]">
+        <div className="flex flex-wrap justify-between gap-[var(--spacing-component-sm)]">
           <Button variant="outline" onClick={addAction}>
             <Plus className="size-4" />
             Add Action
@@ -1036,7 +1036,7 @@ function AssessmentCard({
       )}
 
       {notImpactedSelected && !readOnly && (
-        <div className="mt-[var(--spacing-component-xl)] flex flex-wrap justify-between gap-[var(--spacing-component-sm)]">
+        <div className="flex flex-wrap justify-between gap-[var(--spacing-component-sm)]">
           <div className="flex gap-[var(--spacing-component-sm)]">
             <Button variant="ghost" onClick={() => setStage("default")}>
               Cancel
