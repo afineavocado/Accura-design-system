@@ -85,7 +85,9 @@ transition past the record's current status.
 
 ### Seed records
 
-Seven, one per status:
+Seven, one per status. `check-mock-data.mjs` beside `mock-data.ts` validates them against the
+process brief — run `node src/app/prototype/accura/change-control/check-mock-data.mjs` from
+`accura-ui`. It also prints an inventory of how much of each screen every record can exercise.
 
 | ID | Status | Title | Owner | Depts |
 |---|---|---|---|---|
