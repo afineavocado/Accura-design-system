@@ -142,7 +142,9 @@ department names.
 One screen for both. `?mode=edit&id=CC-YYYY-NNN` loads the record and switches the middle button to
 `Save Changes`.
 
-**Fields**, all required, all validated on submit with the message *This field is required*:
+**Fields.** All required and validated on submit with *This field is required*, **except Risk
+assessment**, which carries no asterisk and is not in the validation map. (An earlier draft of this
+spec said all nine were required; it was wrong.)
 
 | Field | Control | Options |
 |---|---|---|
@@ -312,7 +314,13 @@ go? *Likely answered in `backlog.md`.*
 **7.11 Six duplicate `Anna Hoang` entries** in the create form's owner list — three identical
 labels with different values and mismatched initials (`CH` for Anna Hoang).
 
-**7.12 Create is not yet audited** (623 lines). Detail was audited and fixed on 2026-09-17: the six
+**7.12 All three screens are now audited.** Create (623 lines) turned out to be the cleanest file in
+the module — 16 spacing tokens to 1 literal, type and weights already matching `deviations/new`, no
+hardcoded colour. Fixed on 2026-09-17: labels to sentence case, the `Separator` under the card title
+removed (no other create screen has one), `max-w-[900px]`/`[860px]` to the house `max-w-5xl` — both
+screens now measure 976px — the last `leading-[14px]`, em dashes out of prose and dialog titles, and
+empty optional fields now save as `undefined` instead of `"-"`, which had been defeating the detail
+page's own em dash. Detail was audited and fixed the same day: the six
 dialogs above, 21 `font-semibold` → `font-medium`, 34 arbitrary `leading-[Npx]` → scale utilities,
 a seventh private `RequiredLabel` → `Label required`, two hand-drawn panels → `Card`, off-scale
 `p-5` and `p-[14px]` removed, 48 spacing literals → tokens, and `--` → `—`.

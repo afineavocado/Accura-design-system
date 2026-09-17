@@ -507,8 +507,8 @@ function DepartmentSignatureDialog({
       recordId={recordId}
       title={
         isNotImpacted
-          ? `Declare not impacted — ${department}`
-          : `Sign impact assessment — ${department}`
+          ? `Declare not impacted for ${department}`
+          : `Sign impact assessment for ${department}`
       }
       meaning={isNotImpacted ? "Declare not impacted" : "Sign impact assessment"}
       actionLabel={
@@ -1346,7 +1346,7 @@ function ActionExecutionSignatureDialog({
       open={open}
       onOpenChange={onOpenChange}
       recordId={recordId}
-      title={`Complete action — ${actionTitle}`}
+      title={`Complete action: ${actionTitle}`}
       meaning="Complete action"
       actionLabel="Sign & Complete"
       reasonLabel="Completion note"
@@ -1741,7 +1741,7 @@ function QaDecisionDialog({
       onOpenChange={onOpenChange}
       recordId={record.id}
       title={
-        isReject ? `QA Rejection — ${record.id}` : `QA Approval — ${record.id}`
+        isReject ? "QA rejection" : "QA approval"
       }
       meaning={isReject ? "Reject change plan" : "Approve change plan"}
       actionLabel={isReject ? "Sign & Reject" : "Sign & Approve"}
@@ -1770,7 +1770,7 @@ function ChangeOwnerSignOffDialog({
       open={open}
       onOpenChange={onOpenChange}
       recordId={record.id}
-      title={`Change Owner sign-off — ${record.id}`}
+      title="Change owner sign-off"
       meaning="Change Owner sign-off"
       actionLabel="Sign & Submit for QA Approval"
       reasonLabel="Sign-off note (optional)"
@@ -1796,7 +1796,7 @@ function SubmitForQaApprovalDialog({
       open={open}
       onOpenChange={onOpenChange}
       recordId={record.id}
-      title={`Submit for QA Approval — ${record.id}`}
+      title="Submit for QA approval"
       meaning="Submit for QA Approval"
       actionLabel="Sign & Submit for QA Approval"
       reasonLabel="Additional note (optional)"
@@ -1827,9 +1827,7 @@ function FinalQaDecisionDialog({
       onOpenChange={onOpenChange}
       recordId={record.id}
       title={
-        isReject
-          ? `Final QA Rejection — ${record.id}`
-          : `Final QA Approval — ${record.id}`
+        isReject ? "Final QA rejection" : "Final QA approval"
       }
       meaning={
         isReject ? "Reject & return to Pending Closure" : "Final QA Approval"
@@ -2169,7 +2167,7 @@ export default function ChangeControlDetailPage() {
       {
         actor: "Sarah Johnson",
         timestamp: "Sep 22, 2026 09:42 AM",
-        action: "All change actions completed — moved to Pending Closure",
+        action: "All change actions completed, moved to Pending Closure",
         from: "Action in Progress",
         to: "Pending Closure",
       }

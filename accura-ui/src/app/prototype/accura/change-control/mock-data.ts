@@ -462,7 +462,7 @@ export const initialChangeControlRecords: ChangeControlRecord[] = [
       {
         actor: "John Smith",
         timestamp: "Sep 20, 2026 8:45 AM",
-        action: "All change actions completed — moved to Pending Closure",
+        action: "All change actions completed, moved to Pending Closure",
         from: "Action in Progress",
         to: "Pending Closure",
       },
@@ -583,7 +583,7 @@ export const initialChangeControlRecords: ChangeControlRecord[] = [
       {
         actor: "Priya Shah",
         timestamp: "Aug 29, 2026 8:00 AM",
-        action: "All change actions completed — moved to Pending Closure",
+        action: "All change actions completed, moved to Pending Closure",
         from: "Action in Progress",
         to: "Pending Closure",
       },
@@ -720,7 +720,7 @@ export const initialChangeControlRecords: ChangeControlRecord[] = [
       {
         actor: "Anna Hoang",
         timestamp: "Jul 23, 2026 9:00 AM",
-        action: "All change actions completed — moved to Pending Closure",
+        action: "All change actions completed, moved to Pending Closure",
         from: "Action in Progress",
         to: "Pending Closure",
       },

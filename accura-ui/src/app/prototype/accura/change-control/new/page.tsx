@@ -23,7 +23,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Textarea } from "@/components/ui/textarea"
 import { AppNavItems, AppSidebar } from "../../app-sidebar"
@@ -113,9 +112,18 @@ type FormErrors = Partial<Record<keyof FormValues, string>>
 function optionLabel(
   options: Array<{ value: string; label: string }>,
   value: string,
-  fallback = "-"
+  fallback: string
 ) {
   return options.find((option) => option.value === value)?.label ?? fallback
+}
+
+/* Unset stays undefined rather than becoming "-": the detail page already
+   renders "—" for a missing value, and a stored hyphen defeated that. */
+function optionLabelOrNothing(
+  options: Array<{ value: string; label: string }>,
+  value: string
+) {
+  return options.find((option) => option.value === value)?.label
 }
 
 function optionValue(
@@ -228,7 +236,7 @@ function SelectField({
 
 function FieldError({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-sm font-medium leading-[14px] text-[var(--color-text-invalid)]">
+    <p className="text-sm font-medium leading-none text-[var(--color-text-invalid)]">
       {children}
     </p>
   )
@@ -316,11 +324,11 @@ export default function NewChangeControlPage() {
       affectedDepartments,
       raisedBy: editRecord?.raisedBy ?? "Sarah Johnson",
       department,
-      type: optionLabel(changeTypeOptions, values.changeType, "-"),
-      classification: optionLabel(classificationOptions, values.classification, "-"),
-      category: optionLabel(categoryOptions, values.category, "-"),
-      description: values.description.trim() || "-",
-      riskAssessment: values.riskAssessment.trim() || "-",
+      type: optionLabelOrNothing(changeTypeOptions, values.changeType),
+      classification: optionLabelOrNothing(classificationOptions, values.classification),
+      category: optionLabelOrNothing(categoryOptions, values.category),
+      description: values.description.trim() || undefined,
+      riskAssessment: values.riskAssessment.trim() || undefined,
       departmentAssessments,
       changeActions: editRecord?.changeActions ?? [],
       auditTrail: [
@@ -378,7 +386,7 @@ export default function NewChangeControlPage() {
           )}
 
           <div className="flex min-h-0 flex-1 overflow-y-auto p-[var(--spacing-component-lg)] lg:p-[var(--spacing-component-xl)]">
-            <div className="mx-auto flex w-full max-w-[900px] flex-col gap-[var(--spacing-layout-sm)]">
+            <div className="mx-auto flex w-full max-w-5xl flex-col gap-[var(--spacing-layout-sm)]">
               <div className="flex flex-col gap-[var(--spacing-component-sm)]">
                 <Button
                   asChild
@@ -394,10 +402,10 @@ export default function NewChangeControlPage() {
                   <h1 className="text-2xl font-semibold text-[var(--color-background-default-foreground)]">
                     {isEdit ? "Edit Change Control" : "New Change Control"}
                   </h1>
-                  <p className="max-w-[860px] text-sm leading-6 text-[var(--color-text-secondary)]">
+                  <p className="text-sm leading-6 text-[var(--color-text-secondary)]">
                     {isEdit
                       ? `${recordId} is editable while the record remains in an active workflow state. Save progress to keep the current status, or submit when the change is ready for the next workflow step.`
-                      : "The Change Control ID, Status, Date Raised and Raised By are generated automatically. You can save at any time — a partially completed record is kept as a draft. On submission, every department is notified to declare whether it is impacted."}
+                      : "The Change Control ID, Status, Date Raised and Raised By are generated automatically. You can save at any time; a partially completed record is kept as a draft. On submission, every department is notified to declare whether it is impacted."}
                   </p>
                 </div>
               </div>
@@ -406,7 +414,6 @@ export default function NewChangeControlPage() {
                 <CardHeader>
                   <CardTitle className="text-xl">Change Control Details</CardTitle>
                 </CardHeader>
-                <Separator />
                 <CardContent className="grid grid-cols-1 gap-[var(--spacing-component-lg)] md:grid-cols-2">
                   <div className="flex flex-col gap-[var(--spacing-component-xs)] md:col-span-2">
                     <Label
@@ -432,7 +439,7 @@ export default function NewChangeControlPage() {
                       htmlFor="target-date"
                       state={errors.targetDate ? "invalid" : "default"}
                     >
-                      Target Implementation Date
+                      Target implementation date
                     </Label>
                     <DatePicker
                       id="target-date"
@@ -466,7 +473,7 @@ export default function NewChangeControlPage() {
                       htmlFor="change-owner"
                       state={errors.changeOwner ? "invalid" : "default"}
                     >
-                      Change Owner
+                      Change owner
                     </Label>
                     <Select
                       value={values.changeOwner}
@@ -474,7 +481,7 @@ export default function NewChangeControlPage() {
                     >
                       <SelectTrigger
                         id="change-owner"
-                        aria-label="Change Owner"
+                        aria-label="Change owner"
                         aria-invalid={invalidAttr(errors.changeOwner)}
                       >
                         <SelectValue placeholder="Select owner" />
@@ -501,7 +508,7 @@ export default function NewChangeControlPage() {
                   <div className="grid grid-cols-1 gap-[var(--spacing-component-lg)] md:col-span-2 md:grid-cols-3">
                     <SelectField
                       id="change-type"
-                      label="Change Control Type"
+                      label="Change control type"
                       placeholder="Select type"
                       options={changeTypeOptions}
                       value={values.changeType}
@@ -553,7 +560,7 @@ export default function NewChangeControlPage() {
 
                   <div className="flex flex-col gap-[var(--spacing-component-xs)] md:col-span-2">
                     <Label htmlFor="risk-assessment">
-                      Risk Assessment
+                      Risk assessment
                     </Label>
                     <Textarea
                       id="risk-assessment"
