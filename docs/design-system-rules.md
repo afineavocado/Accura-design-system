@@ -343,6 +343,9 @@ color/text/secondary · disabled · invalid · warning · success · inverse
 color/text/link · link-hover · link-active
 
 color/border/subtle · default · hover · strong · focus · disabled · error · success · warning
+color/border/info · brand                     ← Accura-only, see accura-theme.md §7
+color/surface/brand/subtle                    ← Accura-only, brand-tinted band (no foreground pair)
+color/text/tertiary                           ← Accura-only
 color/input/bg · color/input/border · color/input/placeholder · color/ring
 
 color/brand/primary · primary/foreground · primary-hover · primary-active

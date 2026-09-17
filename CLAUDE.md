@@ -10,7 +10,7 @@ does not.
 
 | Question | Answer |
 |---|---|
-| What ships? | `accura-ui/src/app/tokens.css` — 351 tokens, the runtime source of truth |
+| What ships? | `accura-ui/src/app/tokens.css` — 360 tokens, the runtime source of truth |
 | Does the export still agree? | `node tokens/token-parity.mjs` |
 | Do the docs still agree? | `node docs/machine-readable/drift-check.mjs` |
 | What does a component actually do? | `accura-ui/src/components/ui/<name>.tsx`, then its story |
@@ -76,6 +76,7 @@ Work is not finished when the code runs. Each row is a thing that has gone stale
 
 | You changed | Also update | Check with |
 |---|---|---|
+| A **new token** in `tokens.css` | `accura-theme.md` §7 Accura-only table · the semantic list in `docs/design-system-rules.md` · CHANGELOG | — |
 | A **token value** in `tokens.css` | `tokens/*.json` export · any doc restating it | `node tokens/token-parity.mjs` · `node docs/machine-readable/sync-doc-values.mjs --write` |
 | A **component** in `accura-ui/src/components/ui/` | its story · `docs/component-specs/<Name>.md` · `docs/machine-readable/artifacts/components/<name>.meta.json` | `node docs/machine-readable/drift-check.mjs` |
 | A **prototype screen** | the module's file in `flow/` | — |

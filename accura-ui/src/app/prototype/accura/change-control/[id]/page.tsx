@@ -331,7 +331,7 @@ function SectionHeader({
     /* `surface/brand/subtle`, not `status/success/subtle`: the same hex, but a
        name that means "a brand-tinted surface" rather than "this succeeded".
        The token was added for this on 2026-09-17. */
-    <div className="flex items-start gap-[var(--spacing-component-lg)] border-b border-[var(--color-border-default)] bg-[var(--color-surface-brand-subtle)] px-[var(--spacing-component-xl)] py-[var(--spacing-component-md)]">
+    <div className={`flex ${description ? "items-start" : "items-center"} gap-[var(--spacing-component-lg)] border-b border-[var(--color-border-default)] bg-[var(--color-surface-brand-subtle)] px-[var(--spacing-component-xl)] py-[var(--spacing-component-md)]`}>
       {/* 20px glyph in a 32px tile, the same footprint as Avatar sm, at
           radius/md like every other small control. It was a 24px glyph in a
           40px tile at radius/base (12px), which read as a button and set the

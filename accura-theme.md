@@ -131,7 +131,10 @@ Primitive ramps are **unchanged from Agentic** — all three anchors identical.
 | **Orange** | `#ef6820` | 25 · 50 · 100–950 |
 | **Violet** | `#875bf7` | 25 · 50 · 100–950 |
 
-Neither is mapped to any semantic token. See Q4.
+Since 2026-09-17 three steps of each are mapped into `tokens.css` and used by `Badge` — orange
+`50 / 300 / 700` for Change Control's `Impact Assessment`, violet `50 / 300 / 700 / 800` for
+`Final QA Approval`. **Q4 still stands:** that is a use found for them, not an answer to what they
+were imported for, and nothing yet says which category or status either ramp owns.
 
 ---
 
@@ -339,12 +342,17 @@ The ring uses `brand/500`, **not** the `/800` anchor. `#17bb77` measures **2.50:
 
 ### Accura-only tokens
 
-Four tokens exist in Accura and not in Agentic:
+Tokens that exist in Accura and not in Agentic. **Add a row here the moment you add a token** —
+this table was stale within a week of the first one being added, and it is the only place a reader
+learns a token is Accura-local.
 
 | Token | Value | Source |
 |---|---|---|
 | `color/border/info` | `#8ec5ff` (blue/300) | Figma |
 | `color/text/tertiary` | `#71717a` (zinc/500) | Figma |
+| `color/orange/50 · 300 · 700` | `#fef6ee · #f7b27a · #b93815` | Figma primitives, mapped 2026-09-17 for `Badge` `orange` |
+| `color/border/brand` | `#008852` (= `color/brand/primary`) | added 2026-09-17; Change Control referenced it while it resolved to nothing |
+| `color/surface/brand/subtle` | `var(--color-green-50)`, dark `green/950` | added 2026-09-17; a brand-tinted band, so modules stop using `status/success/subtle` as decoration |
 | `breadcrumb/breadcrumb` | `4` | Figma |
 | **`stepper/border`** | **`#d4d4d8` (zinc/300)** | Figma |
 | **`checkbox/radius`** | **`4px`** | Figma |
