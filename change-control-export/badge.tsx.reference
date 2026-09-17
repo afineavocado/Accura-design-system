@@ -20,17 +20,17 @@ const badgeVariants = cva(
           "bg-transparent border-dashed border-[var(--color-border-strong)] text-[var(--color-surface-default-foreground)]",
         // Status variants — Pill shape only per spec
         success:
-          "bg-[var(--color-status-success-subtle)] border-transparent text-[var(--color-status-success-subtle-foreground)]",
+          "bg-[var(--color-status-success-subtle)] border-[var(--color-border-success)] text-[var(--color-status-success-subtle-foreground)]",
         warning:
           "bg-[var(--color-status-warning-subtle)] border-[var(--color-border-warning)] text-[var(--color-status-warning-subtle-foreground)]",
         error:
           "bg-[var(--color-status-danger-subtle)] border-[var(--color-border-error)] text-[var(--color-status-danger-subtle-foreground)]",
-        orange:
-          "bg-[var(--color-orange-50)] border-[var(--color-orange-300)] text-[var(--color-orange-700)]",
         violet:
           "bg-[var(--color-violet-50)] border-[var(--color-violet-300)] text-[var(--color-violet-700)] dark:text-[var(--color-violet-800)]",
+        orange:
+          "bg-[var(--color-orange-50)] border-[var(--color-orange-300)] text-[var(--color-orange-700)]",
         blue:
-          "bg-[var(--color-status-info-subtle)] border-[var(--color-border-subtle)] text-[var(--color-status-info-subtle-foreground)]",
+          "bg-[var(--color-status-info-subtle)] border-[var(--color-border-info)] text-[var(--color-status-info-subtle-foreground)]",
         // Presence variants — Pill shape only, dot-slot rendered in JSX
         online:
           "bg-transparent border-[var(--color-border-default)] text-[var(--color-surface-default-foreground)]",

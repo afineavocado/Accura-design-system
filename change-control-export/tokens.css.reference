@@ -1449,15 +1449,18 @@
   --color-violet-300: #c3b5fd;
   --color-violet-700: #6927da;
   --color-violet-800: #5720b7;
-  --color-border-info: #8ec5ff;
   /* Orange ramp — exists in Figma primitives (color/orange/50, /300, /700) but was
-     unmapped. Surfaced for the Change Control "Impact Assessment" status badge. */
+     unmapped, same gap as the violet ramp above. Surfaced here for the Change
+     Control "Impact Assessment" status badge (badge-status-CC, node 6780-9358). */
   --color-orange-50: #fef6ee;
   --color-orange-300: #f7b27a;
   --color-orange-700: #b93815;
-  /* Same hex as color/brand/primary. Referenced by Change Control's e-sign
-     "Record" panels and the Impact Assessment card's active border, where
-     var(--color-border-brand) had been resolving to nothing. */
+  --color-border-info: #8ec5ff;
+  /* Referenced by every Change Control e-sign dialog's "Record" panel border and by
+     the Impact Assessment card's active/assessing border, but never generated —
+     var(--color-border-brand) silently resolved to nothing (CLAUDE.md warns about
+     exactly this failure mode). Value confirmed against the Impact Assessment card's
+     active-state stroke in Figma (node 6780-7449): #008852, same as color/brand/primary. */
   --color-border-brand: #008852;
   --color-text-tertiary: #71717a;
   --breadcrumb-breadcrumb: 4;

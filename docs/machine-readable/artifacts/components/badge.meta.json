@@ -15,6 +15,9 @@
         "Success",
         "Error",
         "Warning",
+        "Dashed",
+        "Orange",
+        "Violet",
         "Blue",
         "Online",
         "Offline",
@@ -33,7 +36,10 @@
         "Blue": "blue",
         "Online": "online",
         "Offline": "offline",
-        "Notification counters": "notification"
+        "Notification counters": "notification",
+        "Dashed": "dashed",
+        "Orange": "orange",
+        "Violet": "violet"
       }
     },
     "Shape": {
@@ -205,6 +211,16 @@
       "Notification counters": {
         "fill": "color/brand/primary",
         "fg": "color/brand/primary/foreground"
+      },
+      "Orange": {
+        "fill": "color/orange/50",
+        "border": "color/orange/300",
+        "fg": "color/orange/700"
+      },
+      "Violet": {
+        "fill": "color/violet/50",
+        "border": "color/violet/300",
+        "fg": "color/violet/700"
       }
     },
     "presenceDot": {

@@ -8,7 +8,7 @@ A small status label used to categorise, tag, or communicate state. Supports 11 
 
 | Property | Options | Default |
 |---|---|---|
-| `Variant` | `Default`, `Secondary`, `Destructive`, `Outline`, `Success`, `Error`, `Warning`, `Blue`, `Online`, `Notification counters`, `Offline` | `Default` |
+| `Variant` | `Default`, `Secondary`, `Destructive`, `Outline`, `Dashed`, `Success`, `Error`, `Warning`, `Orange`, `Violet`, `Blue`, `Online`, `Notification counters`, `Offline` | `Default` |
 | `Shape` | `Default`, `Pill`, `Dashed` | `Default` |
 | `Size` | `Small`, `Medium`, `Large` | `Small` |
 
@@ -102,6 +102,8 @@ badge
 | `Success` | `color/status/success-subtle` | — | `color/status/success-subtle/foreground` |
 | `Error` | `color/status/danger-subtle` | `color/border/error` | `color/status/danger-subtle/foreground` |
 | `Warning` | `color/status/warning-subtle` | `color/border/warning` | `color/status/warning-subtle/foreground` |
+| `Orange` | `color/orange/50` | `color/orange/300` | `color/orange/700` |
+| `Violet` | `color/violet/50` | `color/violet/300` | `color/violet/700` |
 | `Blue` | `color/status/info-subtle` | `color/border/subtle` | `color/status/info-subtle/foreground` |
 | `Online` | — (transparent) | `color/border/default` | `color/surface/default/foreground` |
 | `Offline` | — (transparent) | `color/border/default` | `color/surface/default/foreground` |
@@ -203,6 +205,10 @@ Switch `Variant` for semantic meaning — never for visual preference alone.
 - Examples: "Invalid", "Expired", "Limit Reached"
 
 **`Warning`** — Caution state. Something needs attention but has not yet failed.
+
+**`Orange`** — A distinct mid-process state that would otherwise collide with `Warning`. Added for Change Control's `Impact Assessment`, where `Warning` already means `Action in Progress`.
+
+**`Violet`** — As above, for a second such state: CAPA's and Change Control's `Final QA Approval`.
 - Examples: "Expiring Soon", "Low Balance", "Needs Review"
 
 **`Blue`** — Informational or in-progress state. Neutral signal, no urgency.
@@ -251,6 +257,8 @@ Concrete UI situations where this component is the right choice:
 | `Success` | Positive or healthy state — item is active or complete | "Active" · "Connected" · "Completed" · "Live" |
 | `Error` | Soft recoverable error — needs attention but not critical | "Invalid" · "Expired" · "Limit Reached" |
 | `Warning` | Caution — something needs attention before it fails | "Expiring Soon" · "Low Balance" · "Needs Review" |
+| `Orange` | A mid-process state distinct from Warning | "Impact Assessment" |
+| `Violet` | A second such state | "Final QA Approval" |
 | `Blue` | Informational or in-progress — neutral signal, no urgency | "In Progress" · "Pending" · "Syncing" |
 | `Online` | User or entity is currently available | "Online" · "Available" · "Active now" |
 | `Offline` | User or entity is absent or unavailable | "Offline" · "Away" · "Unavailable" |

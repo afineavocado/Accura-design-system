@@ -11,6 +11,27 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-17 — Badge gains `orange`, and three variants that shipped undocumented
+
+**Added**
+
+- **Badge variant `orange`** — `color/orange/50` fill, `/300` border, `/700` text. Change Control's
+  `Impact Assessment` needed a mid-process colour that does not collide with `Warning`, which that
+  module already uses for `Action in Progress`.
+- **Four tokens:** `--color-orange-50 / -300 / -700`, which existed in Figma primitives but had
+  never been mapped, and `--color-border-brand: #008852` (same hex as `color/brand/primary`), which
+  Change Control referenced in six places while it silently resolved to nothing.
+
+**Changed**
+
+- **`Badge.md` and `badge.meta.json` now list `Dashed`, `Orange` and `Violet`.** All three exist in
+  `badge.tsx`; none appeared in either document, so the spec described 11 variants where the
+  component ships 14. `Violet` and `Dashed` are not new — only newly written down.
+
+**Note.** The merge notes for Change Control also asked for `success` and `blue` to be rewired to
+`color/border/success` and `color/border/info`. Not done: unlike the above, that changes badges
+already rendering in every module, and it needs a decision rather than an import.
+
 ### 2026-09-15 — The rules moved into the repo, and say when to update what
 
 **Changed**

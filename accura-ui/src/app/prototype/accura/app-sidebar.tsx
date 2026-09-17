@@ -38,7 +38,7 @@ export const platformNav = [
   { label: "Dashboard", icon: LayoutDashboard, href: "#" },
   { label: "Documents", icon: FileText, href: "/prototype/accura/documents" },
   { label: "CAPA", icon: ClipboardCheck, href: "/prototype/accura/capa" },
-  { label: "Change Control", icon: RefreshCw, href: "#" },
+  { label: "Change Control", icon: RefreshCw, href: "/prototype/accura/change-control" },
   { label: "Training", icon: GraduationCap, href: "/prototype/accura/training" },
   { label: "Deviations", icon: TriangleAlert, href: "/prototype/accura/deviations" },
   { label: "Reports", icon: BarChart3, href: "#" },
