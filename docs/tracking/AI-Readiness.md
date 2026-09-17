@@ -93,7 +93,7 @@ This is the **third** fork-broken script found, after `validate-artifacts.mjs` (
 
 Fixed 2026-09-08: paths corrected, plus a new **check 6** that verifies every px value restated
 beside a token name still matches that token. It immediately found two stale values that manual
-grep had missed (`Button-group.md`, `Empty.md`).
+grep had missed (`ButtonGroup.md`, `Empty.md`).
 
 **Run it before every commit that touches tokens or specs:**
 

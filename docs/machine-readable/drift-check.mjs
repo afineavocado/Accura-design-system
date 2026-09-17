@@ -8,7 +8,7 @@
  *   2. Component count — doc claims ("N components") match actual meta.json count
  *   3. Ramp tables (accura-decisions.md + the ruleset) — every hex exists in primitives
  *   4. Figma Dark mode ↔ tokens.css .dark block  (only if figma-cli is connected)
- *   5. Storybook stories — every story file has a matching meta.json (catches undocumented components)
+ *   5. Components ↔ stories ↔ specs ↔ meta.json — all four line up, both directions
  *   6. Docs — px values restated beside a token name still match that token
  *
  * Exit code 1 if any drift is found (so CI can gate on it).
@@ -170,6 +170,52 @@ for (const f of storyFiles) {
   if (!ownedStories.has(f)) { bad(`story "${f}" is not owned by any meta.json — undocumented component`); undoc++; }
 }
 if (undoc === 0) ok(`all ${storyFiles.length} story files are owned by a meta.json`);
+
+/* The check above runs one way: story → meta. A component with no story, or a
+   meta whose story was deleted, or a component with no spec, all passed it.
+   chat-bubble sat with a component and a meta and no story for weeks, and
+   Label had no spec at all while being the component every form was told to
+   use. Compare all three sets, both directions.
+
+   Naming is normalised, not matched literally: the component is kebab
+   (radio-group.tsx), the story is Pascal (RadioGroup.stories.tsx) and the spec
+   is a title (RadioGroup.md). Normalising is what lets a rename be caught
+   rather than silently creating an orphan. */
+const norm = (s) => s.toLowerCase().replace(/[-_\s]/g, '');
+const componentsDir = path.join(root, 'accura-ui/src/components/ui');
+const specsDir = path.join(root, 'docs/component-specs');
+
+const components = fs
+  .readdirSync(componentsDir)
+  .filter((f) => f.endsWith('.tsx') && !f.endsWith('.figma.tsx'))
+  .map((f) => norm(f.replace('.tsx', '')));
+const specs = fs
+  .readdirSync(specsDir)
+  .filter((f) => f.endsWith('.md') && !f.startsWith('_'))
+  .map((f) => norm(f.replace('.md', '')));
+const metas = fs
+  .readdirSync(metaDir)
+  .filter((f) => f.endsWith('.meta.json'))
+  .map((f) => norm(f.replace('.meta.json', '')));
+const storyNames = storyFiles.map((f) => norm(f.replace('.stories.tsx', '')));
+
+/* Specs that describe a shared concern rather than one component. */
+const SPEC_EXCEPTIONS = new Set(['formshared']);
+
+let pairing = 0;
+const unpaired = (msg) => { bad(msg); pairing++; };
+for (const c of components) {
+  if (!storyNames.includes(c)) unpaired(`component "${c}" has no story`);
+  if (!specs.includes(c)) unpaired(`component "${c}" has no spec in docs/component-specs`);
+  if (!metas.includes(c)) unpaired(`component "${c}" has no meta.json`);
+}
+for (const m of metas)
+  if (!components.includes(m)) unpaired(`meta.json "${m}" describes no component in components/ui`);
+for (const sp of specs)
+  if (!components.includes(sp) && !SPEC_EXCEPTIONS.has(sp))
+    unpaired(`spec "${sp}.md" describes no component in components/ui`);
+if (pairing === 0)
+  ok(`${components.length} components each have a story, a spec and a meta.json`);
 
 // ── 6. Resolved px values restated in docs ───────────────────────────────────
 // Docs name a token and restate its value as a convenience:

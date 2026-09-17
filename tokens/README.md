@@ -11,7 +11,7 @@ only worth anything while it still matches.
 | `components.tokens.json` | component tokens, aliasing semantics |
 | `tokens.tokens.json` | all of the above in one file |
 | `output/` | Style Dictionary build — **not consumed by the app** |
-| `sd.build.mjs` | `npm run build` here regenerates `output/` |
+| `sd.build.mjs` | `npm run build` here regenerates `output/` — **a build artifact, not tracked in git.** On 2026-09-17 the committed copy was three tokens behind the export and looked authoritative; it is now gitignored and rebuilt on demand |
 
 ## Check it before trusting it
 

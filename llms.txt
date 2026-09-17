@@ -83,7 +83,7 @@ DTCG source + Style Dictionary build. **Exported from Accura's Figma file** — 
 > `stepper/border` aliases a **primitive** directly rather than a semantic — a deliberate Accura rule deviation, see `accura-decisions.md` §7. It exists in Figma and survives re-export.
 
 ```bash
-cd tokens && npm install && node sd.build.mjs   # → output/css/, output/js/
+cd tokens && npm install && node sd.build.mjs   # → output/css/, output/js/ (gitignored build artifact)
 ```
 
 | File | |

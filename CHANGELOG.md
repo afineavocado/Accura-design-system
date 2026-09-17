@@ -11,6 +11,27 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-17 — Label gets a spec, the pairing check runs both ways, `tokens/output/` stops pretending
+
+**Added**
+
+- **`docs/component-specs/Label.md`.** It had no spec — two code samples inside `Form-shared.md`,
+  which describes the field anatomy, not this component's API. Seven consumers hand-rolled the
+  asterisk in the meantime, the seventh three days after `required` shipped.
+
+**Changed**
+
+- **Spec filenames match their components:** `Navigation Menu.md` → `NavigationMenu.md`,
+  `Radio.md` → `RadioGroup.md`, `Button-group.md` → `ButtonGroup.md`, `Date-picker.md` →
+  `DatePicker.md`, `Input-OTP.md` → `InputOTP.md`. The mapping was by eye; now it normalises.
+- **`drift-check` rule 5 compares components, stories, specs and meta.json in both directions.**
+  It ran one way — story → meta — so a component with no story, a meta whose story was deleted, or
+  a component with no spec all passed. It now reports two real orphans: `chat-bubble` has a
+  component and a meta and no story, and `RecordRowAction` has a story and no meta.
+- **`tokens/output/` is gitignored.** It is a build artifact of `sd.build.mjs`; nothing imports it
+  at runtime, and the committed copy was three tokens behind the export — a second CSS file that
+  looked authoritative and was not. Rebuild with `cd tokens && node sd.build.mjs`.
+
 ### 2026-09-17 — `accura-theme.md` is now `accura-decisions.md`, and its values moved to the ruleset
 
 **Changed**

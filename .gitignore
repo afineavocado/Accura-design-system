@@ -21,3 +21,7 @@ storybook-static/
 # Logs
 *.log
 npm-debug.log*
+
+# Build artifact — regenerate with: cd tokens && node sd.build.mjs
+# Tracked until 2026-09-17, when it was found three tokens behind the export.
+tokens/output/
