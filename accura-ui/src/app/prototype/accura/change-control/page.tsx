@@ -45,7 +45,6 @@ import {
 } from "./mock-data"
 
 const storedRecordsKey = "accura-change-control-records"
-const deletedRecordIdsKey = "accura-deleted-change-control-record-ids"
 
 function StatusBadge({ record }: { record: ChangeControlRecord }) {
   return (
@@ -234,26 +233,6 @@ function AffectedDepartmentsCell({
   )
 }
 
-function readDeletedRecordIds() {
-  try {
-    const parsed = JSON.parse(
-      window.localStorage.getItem(deletedRecordIdsKey) ?? "[]"
-    )
-
-    return Array.isArray(parsed) ? (parsed as string[]) : []
-  } catch {
-    return []
-  }
-}
-
-/* One row. A component rather than JSX inside the map because `useRowClick` is
-   a hook — and the row-click rule is the shared one: the row is a convenience
-   target, the ID cell keeps the real link for keyboard and middle-click.
-
-   No padding or type overrides on the cells. TableCell is p-4 and 14px/400 by
-   design (table.tsx:130); this listing used to pass `px-4 py-2` on all eight
-   cells and `text-xs font-medium` on the ID, which made its rows 8px tighter
-   and its body text a size smaller than every other listing in the product. */
 function ChangeControlRow({ record }: { record: ChangeControlRecord }) {
   const router = useRouter()
   const href = `/prototype/accura/change-control/${record.id}`
@@ -302,7 +281,6 @@ function ChangeControlRow({ record }: { record: ChangeControlRecord }) {
 
 export default function ChangeControlListingPage() {
   const [storedRecords, setStoredRecords] = React.useState<ChangeControlRecord[]>([])
-  const [deletedRecordIds, setDeletedRecordIds] = React.useState<string[]>([])
   const [query, setQuery] = React.useState("")
   const [status, setStatus] = React.useState("all")
   const [department, setDepartment] = React.useState("all")
@@ -312,23 +290,23 @@ export default function ChangeControlListingPage() {
     try {
       const parsed = JSON.parse(window.localStorage.getItem(storedRecordsKey) ?? "[]")
       setStoredRecords(Array.isArray(parsed) ? (parsed as ChangeControlRecord[]) : [])
-      setDeletedRecordIds(readDeletedRecordIds())
     } catch {
       setStoredRecords([])
-      setDeletedRecordIds([])
     }
   }, [])
 
+  /* Tombstones are gone. The row menu that wrote them was removed on
+     2026-09-17, so nothing has created one since — but a browser that deleted a
+     record while the menu existed kept hiding it, with no way to bring it back.
+     A seed record disappearing for one person and not another is not a state
+     this prototype should be able to reach. */
   const records = React.useMemo(() => {
     const storedIds = new Set(storedRecords.map((record) => record.id))
-    const deletedIds = new Set(deletedRecordIds)
     return [
-      ...storedRecords.filter((record) => !deletedIds.has(record.id)),
-      ...initialChangeControlRecords.filter(
-        (record) => !storedIds.has(record.id) && !deletedIds.has(record.id)
-      ),
+      ...storedRecords,
+      ...initialChangeControlRecords.filter((record) => !storedIds.has(record.id)),
     ]
-  }, [deletedRecordIds, storedRecords])
+  }, [storedRecords])
 
   const departments = React.useMemo(
     () =>

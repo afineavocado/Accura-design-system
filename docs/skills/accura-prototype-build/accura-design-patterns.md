@@ -310,6 +310,34 @@ For Document, Effective Date belongs to the QA final-approval step. Show it in t
 
 Reuse Dialog, Button, Input, and existing authentication/signature patterns. Preserve focus management and keyboard behavior. Design the happy-path signing state and successful result; do not expand into failed-authentication or rejection flows for this demo.
 
+### ⚠️ Three implementations ship today — a decision is pending
+
+Audited 2026-09-17. **Do not unify these without the owner's decision**; the differences are
+recorded so the choice can be made once rather than drifted into.
+
+| | `components/record-workflow.tsx` | CAPA — `capa/[id]/page.tsx` | Training review — `training/review/page.tsx` |
+|---|---|---|---|
+| Used by | Documents · Deviations · Change Control | CAPA only | the review queue only |
+| Title | `Electronic Signature — 21 CFR Part 11` | same | same |
+| Identity | Full Name · Role at Sign-off · Time and Date, read-only | none — Record and Signature meaning rows only | Full name · Email · Role at sign-off · Timestamp, each with an icon in a 36px circle |
+| Credential label | `Enter password` | `Re-enter Password` (title case) | `Re-enter password`, marked `required` |
+| Prototype warning | **yes** — "do not enter a real password. No authentication or legally binding signature is performed." | none | none |
+| Attestation | "I have reviewed this {subject} and intend to sign with the meaning stated above." | "By entering my credentials, I confirm that this review complies with formal requirements…" | same as CAPA |
+| Reason field | optional, per-action label | none | collected in a **separate** dialog before signing |
+| **Confirm gate** | attestation + non-empty credential (+ reason when required) | `!password \|\| !attested` | **`!attested` only — the password is ignored** |
+
+Two of these matter beyond styling:
+
+- **The Training gate does not check the password.** Its field is marked required and its button
+  does not read it, so a signature can be completed with the credential blank. That is the one
+  difference that is a defect rather than a preference.
+- **Only the shared modal says the credential is fake.** The other two present a password field
+  with no warning, which in a demo of a regulated system invites someone to type a real one.
+
+Three attestation sentences also mean three pieces of regulated wording with nothing governing
+them. §11.50 asks that the meaning of a signature be recorded with it; which sentence is *the*
+sentence is a product decision, not a styling one.
+
 Regulatory reference: 21 CFR 11.50 covers signer name, execution date/time, and signature meaning; 11.70 covers signature-to-record linkage; 11.200 covers signature components and controls. This master is a UI specification supporting those requirements, not a standalone Part 11 compliance certification. Production authentication, linkage, and record controls remain implementation responsibilities.
 
 Sources:
