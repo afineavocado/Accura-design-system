@@ -111,6 +111,9 @@ export type ChangeAction = {
 
 export type AuditTrailItem = {
   actor: string
+  /** ISO 8601 UTC, as in Deviations and Documents. These were 12-hour display
+   *  strings with no zone, which the shared audit drawer had to guess at
+   *  before reformatting — and it labels what it prints "UTC". */
   timestamp: string
   action: string
   from?: ChangeControlStatus
@@ -166,14 +169,14 @@ export const initialChangeControlRecords: ChangeControlRecord[] = [
     auditTrail: [
       {
         actor: "Amit Kothari",
-        timestamp: "Sep 19, 2026 9:30 AM",
+        timestamp: "2026-09-19T09:30:00Z",
         action: "Submitted for Impact Assessment",
         from: "Draft",
         to: "Impact Assessment",
       },
       {
         actor: "Amit Kothari",
-        timestamp: "Aug 28, 2026 10:05 AM",
+        timestamp: "2026-08-28T10:05:00Z",
         action: "Created Change Control",
       },
     ],
@@ -230,21 +233,21 @@ export const initialChangeControlRecords: ChangeControlRecord[] = [
     auditTrail: [
       {
         actor: "Anna Hoang",
-        timestamp: "Sep 15, 2026 2:10 PM",
+        timestamp: "2026-09-15T14:10:00Z",
         action: "Submitted for QA Approval",
         from: "Impact Assessment",
         to: "QA Approval",
       },
       {
         actor: "Anna Hoang",
-        timestamp: "Sep 13, 2026 9:00 AM",
+        timestamp: "2026-09-13T09:00:00Z",
         action: "Submitted for Impact Assessment",
         from: "Draft",
         to: "Impact Assessment",
       },
       {
         actor: "Anna Hoang",
-        timestamp: "Sep 12, 2026 8:15 AM",
+        timestamp: "2026-09-12T08:15:00Z",
         action: "Created Change Control",
       },
     ],
@@ -271,7 +274,7 @@ export const initialChangeControlRecords: ChangeControlRecord[] = [
     auditTrail: [
       {
         actor: "John Baker",
-        timestamp: "Aug 28, 2026 9:00 AM",
+        timestamp: "2026-08-28T09:00:00Z",
         action: "Created Change Control",
       },
     ],
@@ -355,28 +358,28 @@ export const initialChangeControlRecords: ChangeControlRecord[] = [
     auditTrail: [
       {
         actor: "Sarah Johnson",
-        timestamp: "Aug 18, 2026 11:00 AM",
+        timestamp: "2026-08-18T11:00:00Z",
         action: "QA approved change plan",
         from: "QA Approval",
         to: "Action in Progress",
       },
       {
         actor: "Lisa Tran",
-        timestamp: "Aug 10, 2026 4:20 PM",
+        timestamp: "2026-08-10T16:20:00Z",
         action: "Submitted for QA Approval",
         from: "Impact Assessment",
         to: "QA Approval",
       },
       {
         actor: "Lisa Tran",
-        timestamp: "Aug 05, 2026 9:15 AM",
+        timestamp: "2026-08-05T09:15:00Z",
         action: "Submitted for Impact Assessment",
         from: "Draft",
         to: "Impact Assessment",
       },
       {
         actor: "Lisa Tran",
-        timestamp: "Aug 03, 2026 8:00 AM",
+        timestamp: "2026-08-03T08:00:00Z",
         action: "Created Change Control",
       },
     ],
@@ -461,35 +464,35 @@ export const initialChangeControlRecords: ChangeControlRecord[] = [
     auditTrail: [
       {
         actor: "John Smith",
-        timestamp: "Sep 20, 2026 8:45 AM",
+        timestamp: "2026-09-20T08:45:00Z",
         action: "All change actions completed, moved to Pending Closure",
         from: "Action in Progress",
         to: "Pending Closure",
       },
       {
         actor: "Sarah Johnson",
-        timestamp: "Aug 05, 2026 1:00 PM",
+        timestamp: "2026-08-05T13:00:00Z",
         action: "QA approved change plan",
         from: "QA Approval",
         to: "Action in Progress",
       },
       {
         actor: "John Smith",
-        timestamp: "Jul 28, 2026 9:30 AM",
+        timestamp: "2026-07-28T09:30:00Z",
         action: "Submitted for QA Approval",
         from: "Impact Assessment",
         to: "QA Approval",
       },
       {
         actor: "John Smith",
-        timestamp: "Jul 24, 2026 10:00 AM",
+        timestamp: "2026-07-24T10:00:00Z",
         action: "Submitted for Impact Assessment",
         from: "Draft",
         to: "Impact Assessment",
       },
       {
         actor: "John Smith",
-        timestamp: "Jul 22, 2026 9:00 AM",
+        timestamp: "2026-07-22T09:00:00Z",
         action: "Created Change Control",
       },
     ],
@@ -575,42 +578,42 @@ export const initialChangeControlRecords: ChangeControlRecord[] = [
     auditTrail: [
       {
         actor: "Priya Shah",
-        timestamp: "Sep 01, 2026 9:20 AM",
+        timestamp: "2026-09-01T09:20:00Z",
         action: "Change Owner signed off and submitted for Final QA Approval",
         from: "Pending Closure",
         to: "Final QA Approval",
       },
       {
         actor: "Priya Shah",
-        timestamp: "Aug 29, 2026 8:00 AM",
+        timestamp: "2026-08-29T08:00:00Z",
         action: "All change actions completed, moved to Pending Closure",
         from: "Action in Progress",
         to: "Pending Closure",
       },
       {
         actor: "David Lee",
-        timestamp: "Jul 20, 2026 10:30 AM",
+        timestamp: "2026-07-20T10:30:00Z",
         action: "QA approved change plan",
         from: "QA Approval",
         to: "Action in Progress",
       },
       {
         actor: "Priya Shah",
-        timestamp: "Jul 12, 2026 2:00 PM",
+        timestamp: "2026-07-12T14:00:00Z",
         action: "Submitted for QA Approval",
         from: "Impact Assessment",
         to: "QA Approval",
       },
       {
         actor: "Priya Shah",
-        timestamp: "Jul 09, 2026 9:00 AM",
+        timestamp: "2026-07-09T09:00:00Z",
         action: "Submitted for Impact Assessment",
         from: "Draft",
         to: "Impact Assessment",
       },
       {
         actor: "Priya Shah",
-        timestamp: "Jul 08, 2026 8:30 AM",
+        timestamp: "2026-07-08T08:30:00Z",
         action: "Created Change Control",
       },
     ],
@@ -705,49 +708,49 @@ export const initialChangeControlRecords: ChangeControlRecord[] = [
     auditTrail: [
       {
         actor: "Sarah Johnson",
-        timestamp: "Aug 01, 2026 3:00 PM",
+        timestamp: "2026-08-01T15:00:00Z",
         action: "Final QA approved and closed",
         from: "Final QA Approval",
         to: "Closed",
       },
       {
         actor: "Anna Hoang",
-        timestamp: "Jul 28, 2026 10:00 AM",
+        timestamp: "2026-07-28T10:00:00Z",
         action: "Change Owner signed off and submitted for Final QA Approval",
         from: "Pending Closure",
         to: "Final QA Approval",
       },
       {
         actor: "Anna Hoang",
-        timestamp: "Jul 23, 2026 9:00 AM",
+        timestamp: "2026-07-23T09:00:00Z",
         action: "All change actions completed, moved to Pending Closure",
         from: "Action in Progress",
         to: "Pending Closure",
       },
       {
         actor: "Sarah Johnson",
-        timestamp: "Jul 15, 2026 11:00 AM",
+        timestamp: "2026-07-15T11:00:00Z",
         action: "QA approved change plan",
         from: "QA Approval",
         to: "Action in Progress",
       },
       {
         actor: "Anna Hoang",
-        timestamp: "Jun 20, 2026 2:00 PM",
+        timestamp: "2026-06-20T14:00:00Z",
         action: "Submitted for QA Approval",
         from: "Impact Assessment",
         to: "QA Approval",
       },
       {
         actor: "Anna Hoang",
-        timestamp: "Jun 16, 2026 9:00 AM",
+        timestamp: "2026-06-16T09:00:00Z",
         action: "Submitted for Impact Assessment",
         from: "Draft",
         to: "Impact Assessment",
       },
       {
         actor: "Anna Hoang",
-        timestamp: "Jun 14, 2026 8:00 AM",
+        timestamp: "2026-06-14T08:00:00Z",
         action: "Created Change Control",
       },
     ],

@@ -76,7 +76,9 @@ reads in most places.
 
 ### `AuditTrailItem`
 
-`actor` · `timestamp` (display string, e.g. `Sep 19, 2026 9:30 AM`) · `action` · `from?` · `to?`.
+`actor` · `timestamp` (**ISO 8601 UTC** since 2026-09-17; previously a 12-hour display string with
+no zone, which the shared drawer had to guess at while labelling its output "UTC") · `action` ·
+`from?` · `to?`.
 Newest first in the seed data. Entries without `from`/`to` (e.g. `Created Change Control`) always
 display; entries with them are filtered by `visibleAuditTrailItems()` so a trail never shows a
 transition past the record's current status.
@@ -289,7 +291,8 @@ product uses `—`. Three conventions in one module.
 **7.5 The audit trail is a fourth implementation. FIXED 2026-09-17** — the module's own sheet is
 gone; the detail page renders `RecordAuditDrawer` with the house entry (§4b of
 `accura-design-patterns.md`) and the `StateChange` pill. Its seeds carry zoneless display strings,
-so they are read as UTC before the drawer reformats them. Original finding: Deviations and Documents share
+so they were converted to ISO UTC at the source — the shape Deviations and Documents already use.
+Original finding: Deviations and Documents share
 `RecordAuditDrawer`; Training has its own; this is a fourth. Since 2026-09-16 the shared one renders
 the house entry (name · role · account · timestamp, action, `StateChange` pill) and takes a
 `transitionDirection`. This module's `from`/`to` maps onto that directly.

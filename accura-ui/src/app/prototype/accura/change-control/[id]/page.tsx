@@ -184,26 +184,20 @@ function stepDescription(
   }
 }
 
-/* The trail as the shared drawer wants it. Two things need translating:
-   the seeds carry display strings ("Sep 19, 2026 9:30 AM") with no zone, so
-   they are read as UTC rather than as local time and re-rendered by the
-   drawer; and direction is derived from the lifecycle index, so a backward
-   move would read as a return rather than an approval. */
+/* The trail as the shared drawer wants it. Direction is derived from the
+   lifecycle index rather than stored, so a backward move reads as a return
+   rather than an approval. Timestamps are already ISO UTC in the seeds, as
+   they are in Deviations and Documents. */
 function auditEventsFor(record: ChangeControlRecord): RecordAuditEvent[] {
-  return visibleAuditTrailItems(record).map((item, index) => {
-    const parsed = Date.parse(`${item.timestamp} UTC`)
-    return {
-      id: `${record.id}-${index}`,
-      timestamp: Number.isNaN(parsed)
-        ? item.timestamp
-        : new Date(parsed).toISOString(),
-      name: item.actor,
-      action: item.action,
-      record: record.id,
-      fromStatus: item.from,
-      toStatus: item.to,
-    }
-  })
+  return visibleAuditTrailItems(record).map((item, index) => ({
+    id: `${record.id}-${index}`,
+    timestamp: item.timestamp,
+    name: item.actor,
+    action: item.action,
+    record: record.id,
+    fromStatus: item.from,
+    toStatus: item.to,
+  }))
 }
 
 function transitionDirectionFor(from: string, to: string): StateChangeDirection {
