@@ -76,7 +76,7 @@ Work is not finished when the code runs. Each row is a thing that has gone stale
 
 | You changed | Also update | Check with |
 |---|---|---|
-| A **new token** in `tokens.css` | `accura-theme.md` §7 Accura-only table · the semantic list in `docs/design-system-rules.md` · CHANGELOG | — |
+| A **new token** | `tokens/*.json` first, then `tokens.css` (+ `.dark`) · `docs/design-system-rules.md` list **and** value table · `accura-theme.md` §7 · CHANGELOG — the full order is `docs/skills/accura-token-change/` | `node tokens/token-parity.mjs` |
 | A **token value** in `tokens.css` | `tokens/*.json` export · any doc restating it | `node tokens/token-parity.mjs` · `node docs/machine-readable/sync-doc-values.mjs --write` |
 | A **component** in `accura-ui/src/components/ui/` | its story · `docs/component-specs/<Name>.md` · `docs/machine-readable/artifacts/components/<name>.meta.json` | `node docs/machine-readable/drift-check.mjs` |
 | A **prototype screen** | the module's file in `flow/` | — |

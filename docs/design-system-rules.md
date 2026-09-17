@@ -343,8 +343,8 @@ color/text/secondary · disabled · invalid · warning · success · inverse
 color/text/link · link-hover · link-active
 
 color/border/subtle · default · hover · strong · focus · disabled · error · success · warning
-color/border/info · brand                     ← Accura-only, see accura-theme.md §7
-color/surface/brand/subtle                    ← Accura-only, brand-tinted band (no foreground pair)
+color/border/info · color/border/brand        ← Accura-only, see accura-theme.md §7
+color/surface/brand-subtle                    ← Accura-only, brand-tinted band (no /foreground pair)
 color/text/tertiary                           ← Accura-only
 color/input/bg · color/input/border · color/input/placeholder · color/ring
 
@@ -367,7 +367,7 @@ color/sidebar/accent · accent/foreground · border · ring
 
 **Critical rules:**
 - Semantic tokens always reference primitives — never hardcode hex
-- Every surface token needs a `/foreground` pair (exception: `color/background/subtle`)
+- Every surface token needs a `/foreground` pair. Two exceptions, both flat tints rather than surfaces you set text on: `color/background/subtle` and `color/surface/brand/subtle`
 - **`color/brand/destructive` ≠ `color/status/danger`** — destructive = delete button fill; danger = error status indicator. Never swap.
 - **Paired-surface rule:** `[token]/foreground` is only valid when the background IS the matching `[token]`. Wrong surface = wrong value in dark mode.
 - **`color/brand/destructive` is a fill, never a text color.** Use `color/text/invalid` for error text.
@@ -1284,6 +1284,10 @@ Zinc elevation hierarchy in dark mode:
 | `--color-border-default` | #e4e4e7 | #3f3f46 (zinc/700) | Standard borders |
 | `--color-border-disabled` | #e4e4e7 | #3f3f46 (zinc/700) | Disabled element borders |
 | `--color-input-placeholder` | #71717a (zinc/500) | #a1a1aa (zinc/400) | Placeholder text |
+| `--color-surface-brand-subtle` | #f0fdf4 (green/50) | #052e16 (green/950) | Brand-tinted bands — section headers, a selected nav item. **Accura-only.** Not a status: `color/status/success/subtle` is the same light hex and means "this succeeded" |
+| `--color-border-brand` | #008852 | #008852 | Brand-coloured borders. **Accura-only**, same hex as `color/brand/primary` |
+| `--color-border-info` | #8ec5ff (blue/300) | #8ec5ff | Info borders. **Accura-only** |
+| `--color-text-tertiary` | #71717a (zinc/500) | #71717a | A third text weight below secondary. **Accura-only** |
 
 ### Tooltip auto-inversion
 

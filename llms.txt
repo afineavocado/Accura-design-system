@@ -37,6 +37,8 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 | Any Storybook work | `docs/skills/Storybook Build Process.md` |
 | Build or extend a prototype — what to build | `docs/skills/accura-prototype-build/accura-design-patterns.md` |
 | Build or extend a prototype — how to work | `docs/skills/accura-prototype-build/accura-prototype-build.md` |
+| Audit a prototype screen | `docs/skills/accura-screen-audit/accura-screen-audit.md` |
+| Add, rename or retire a token | `docs/skills/accura-token-change/accura-token-change.md` |
 | Implement a component in code | `docs/skills/Component implementation process.md` |
 
 ## Component documentation

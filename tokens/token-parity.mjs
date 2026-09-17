@@ -61,6 +61,18 @@ const shipped = new Map();
 for (const m of light.matchAll(/--([a-z0-9-]+):\s*([^;]+);/g))
   shipped.set(m[1], m[2].trim());
 
+/* A shipped value may itself be `var(--other-token)` — tokens.css is mostly
+   literals, but an alias is legitimate (tooltip/bg is one, and an
+   Accura-only semantic that points at a primitive is another). Resolve the
+   chain before comparing, or the alias reads as a disagreement with its own
+   target. */
+const resolveCss = (value, depth = 0) => {
+  const alias = /^var\(\s*(--[a-z0-9-]+)\s*\)$/.exec(value.trim());
+  if (!alias || depth > 10) return value;
+  const target = shipped.get(alias[1].slice(2));
+  return target === undefined ? value : resolveCss(target, depth + 1);
+};
+
 const key = (p) => p.toLowerCase().replace(/[\s_]+/g, "-").replace(/\./g, "-").replace(/-+/g, "-");
 const tidy = (v) => v.replace(/\s/g, "").toLowerCase();
 
@@ -73,7 +85,7 @@ for (const [dotted, raw] of json) {
   if (!cssKey) continue;
   compared++;
   const exported = resolve(raw);
-  const actual = shipped.get(cssKey);
+  const actual = resolveCss(shipped.get(cssKey));
   if (tidy(exported) === tidy(actual) || tidy(actual).includes(tidy(exported))) {
     agreed++;
     continue;
@@ -85,7 +97,24 @@ for (const [dotted, raw] of json) {
 }
 
 console.log(`\nToken parity — tokens/*.json vs accura-ui/src/app/tokens.css\n`);
+/* The loop above walks the export and looks each token up in the CSS, so a
+   token that exists only in tokens.css was never compared and nothing said so.
+   That is how five Accura-only tokens sat outside this check. */
+const exportedKeys = new Set();
+for (const [dotted] of json) {
+  const k = key(dotted);
+  exportedKeys.add(k).add("color-" + k).add("spacing-" + k);
+}
+const cssOnly = [...shipped.keys()].filter(
+  (k) => !exportedKeys.has(k) && !k.startsWith("button-") && !k.startsWith("tooltip-")
+);
+
 console.log(`  compared ${compared} · agree ${agreed} · known differences ${explained.length} · unexplained ${unexplained.length}`);
+if (cssOnly.length)
+  console.log(
+    `\n  ⚠ ${cssOnly.length} token(s) ship in tokens.css with no entry in the export — add them to tokens/*.json:\n` +
+      cssOnly.map((k) => `    • --${k}`).join("\n")
+  );
 
 if (explained.length) {
   console.log(`\n  Known and accepted:`);

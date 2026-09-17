@@ -95,6 +95,11 @@
       "accent-foreground": {
         "$value": "{color.zinc.900}",
         "$type": "color"
+      },
+      "brand-subtle": {
+        "$value": "{color.green.50}",
+        "$type": "color",
+        "$description": "Intent:      A brand-tinted surface for bands a module owns — section headers, a selected nav item\nUse when:    A container should read as brand-owned chrome rather than as state\nDo not use:  To signal success — that is color/status/success/subtle, which happens to be the same hex\nUse instead: color/background/subtle when the band is neutral chrome with no brand meaning\nNote:        Accura-only; added 2026-09-17 because modules wanting a green band were reaching for a status token\nStatus:      active"
       }
     },
     "text": {
