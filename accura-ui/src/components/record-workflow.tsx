@@ -149,6 +149,10 @@ export type SignatureReceipt = {
   role: string;
   account: string;
   meaning: string;
+  /** What the signer typed, unmixed with `meaning`. Callers that store the
+   *  reason on the record need it on its own; `meaning` keeps the combined
+   *  sentence for display. */
+  reason?: string;
   record: string;
   timestamp: string;
   action?: string;
@@ -328,6 +332,7 @@ export function ElectronicSignatureModal({
                 meaning: reasonRequired
                   ? `${meaning} Reason: ${reason.trim()}`
                   : meaning,
+                reason: reason.trim() || undefined,
                 timestamp: new Date().toISOString(),
               });
               onOpenChange(false);

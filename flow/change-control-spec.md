@@ -286,7 +286,9 @@ product uses `—`. Three conventions in one module.
 the house entry (name · role · account · timestamp, action, `StateChange` pill) and takes a
 `transitionDirection`. This module's `from`/`to` maps onto that directly.
 
-**7.6 Six hand-rolled signature dialogs.** The shared `ElectronicSignatureModal` carries the Part 11
+**7.6 Six hand-rolled signature dialogs. FIXED 2026-09-17** — all six now wrap the shared
+`ElectronicSignatureModal` through one local `ChangeControlSignature` adapter, keeping each gate's
+own title, meaning, action label and reason copy. Original finding: The shared `ElectronicSignatureModal` carries the Part 11
 title, identity block, meaning, credential and attestation, and now takes per-action copy
 (`description`, `reasonLabel`, `reasonPlaceholder`, `recordLabel`, `attestationSubject`). Six
 bespoke dialogs is six places for the regulated wording to drift.
@@ -310,8 +312,15 @@ go? *Likely answered in `backlog.md`.*
 **7.11 Six duplicate `Anna Hoang` entries** in the create form's owner list — three identical
 labels with different values and mismatched initials (`CH` for Anna Hoang).
 
-**7.12 Not yet audited.** Detail (3,482 lines) and create (623) have had no token or component pass.
-The listing needed five fixes; assume these need more. `--color-border-brand`, referenced six times
+**7.12 Create is not yet audited** (623 lines). Detail was audited and fixed on 2026-09-17: the six
+dialogs above, 21 `font-semibold` → `font-medium`, 34 arbitrary `leading-[Npx]` → scale utilities,
+a seventh private `RequiredLabel` → `Label required`, two hand-drawn panels → `Card`, off-scale
+`p-5` and `p-[14px]` removed, 48 spacing literals → tokens, and `--` → `—`.
+
+**7.13 The 600 weight that remains is component-owned.** After the page was fixed, `14px/600` and
+`18px/600` still render — from `Stepper` (lines 108–109) and `ApplicationHeader` (line 173), both
+shared. The system runs two weights; three components disagree. Fixing it changes Deviations and
+Training too, so it is a design-system decision, not a Change Control one. `--color-border-brand`, referenced six times
 in the detail page, resolved to nothing until it was added on import.
 
 ---

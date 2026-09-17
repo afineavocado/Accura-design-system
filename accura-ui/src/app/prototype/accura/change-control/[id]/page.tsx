@@ -11,7 +11,6 @@ import {
   CornerDownLeft,
   Download,
   FileCheck2,
-  Mail,
   MessageSquare,
   Paperclip,
   Pencil,
@@ -26,7 +25,6 @@ import {
   Container,
   File05,
   List as ListIcon,
-  PenTool02,
 } from "@untitledui/icons"
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -34,16 +32,8 @@ import { Avatar } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
 import { DatePicker } from "@/components/ui/date-picker"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+import { ElectronicSignatureModal } from "@/components/record-workflow"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
@@ -163,10 +153,10 @@ function stepDescription(
 ): string {
   switch (status) {
     case "Draft":
-      return record.raisedBy ? `Created by ${record.raisedBy}` : "--"
+      return record.raisedBy ? `Created by ${record.raisedBy}` : "—"
     case "Impact Assessment": {
       const roster = record.departmentAssessments ?? []
-      if (!atOrAfter(record.status, "Impact Assessment") || !roster.length) return "--"
+      if (!atOrAfter(record.status, "Impact Assessment") || !roster.length) return "—"
       const declared =
         record.status === "Impact Assessment"
           ? assessments.length
@@ -175,27 +165,27 @@ function stepDescription(
     }
     case "QA Approval": {
       const actor = actorFor(record, "Action in Progress")
-      return actor ? `Approved by ${actor}` : "--"
+      return actor ? `Approved by ${actor}` : "—"
     }
     case "Action in Progress": {
-      if (!atOrAfter(record.status, "Action in Progress") || !actions.length) return "--"
+      if (!atOrAfter(record.status, "Action in Progress") || !actions.length) return "—"
       const done = actions.filter((item) => item.status === "Done").length
       return `${done}/${actions.length} Actions Submitted`
     }
     case "Pending Closure": {
       const actor = actorFor(record, "Final QA Approval")
-      return actor ? `Submitted by ${actor}` : "--"
+      return actor ? `Submitted by ${actor}` : "—"
     }
     case "Final QA Approval": {
       const actor = actorFor(record, "Closed")
-      return actor ? `Approved by ${actor}` : "--"
+      return actor ? `Approved by ${actor}` : "—"
     }
     case "Closed": {
       const actor = actorFor(record, "Closed")
-      return actor ? `Closed by ${actor}` : "--"
+      return actor ? `Closed by ${actor}` : "—"
     }
     default:
-      return "--"
+      return "—"
   }
 }
 
@@ -259,7 +249,7 @@ function formatActionCount(count: number) {
 
 function PriorityBadge({ priority }: { priority?: string }) {
   return (
-    <span className="inline-flex h-5 w-fit items-center gap-1.5 rounded-full border border-[var(--color-border-default)] bg-[var(--color-background-default)] px-2 text-xs font-medium leading-none text-[var(--color-background-default-foreground)]">
+    <span className="inline-flex h-5 w-fit items-center gap-[var(--spacing-component-xs-plus)] rounded-full border border-[var(--color-border-default)] bg-[var(--color-background-default)] px-[var(--spacing-component-sm)] text-xs font-medium leading-none text-[var(--color-background-default-foreground)]">
       <span
         aria-hidden="true"
         className="size-1.5 shrink-0 rounded-full"
@@ -300,7 +290,7 @@ function DetailField({ label, value }: { label: string; value: string }) {
         {label}
       </div>
       <div
-        className="mt-[6px] text-sm leading-[21px] text-[var(--color-background-default-foreground)]"
+        className="mt-[6px] text-sm leading-normal text-[var(--color-background-default-foreground)]"
         title={value}
       >
         {value}
@@ -321,16 +311,16 @@ function SectionHeader({
   action?: React.ReactNode
 }) {
   return (
-    <div className="flex items-start gap-[var(--spacing-component-lg)] border-b border-[var(--color-border-default)] bg-[var(--color-status-success-subtle)] px-5 py-3">
+    <div className="flex items-start gap-[var(--spacing-component-lg)] border-b border-[var(--color-border-default)] bg-[var(--color-status-success-subtle)] px-[var(--spacing-component-xl)] py-[var(--spacing-component-md)]">
       <div className="flex size-10 shrink-0 items-center justify-center rounded-[var(--radius-base)] border border-[var(--color-brand-secondary-hover)] bg-[var(--color-surface-default)] text-[var(--color-icon-brand)]">
         {icon}
       </div>
       <div className="min-w-0 flex-1">
-        <h2 className="text-base font-semibold leading-snug text-[var(--color-text-link)]">
+        <h2 className="text-base font-medium leading-snug text-[var(--color-text-link)]">
           {title}
         </h2>
         {description && (
-          <p className="mt-1 max-w-[760px] text-sm leading-[21px] text-[var(--color-text-secondary)]">
+          <p className="mt-[var(--spacing-component-xs)] max-w-[760px] text-sm leading-normal text-[var(--color-text-secondary)]">
             {description}
           </p>
         )}
@@ -363,7 +353,7 @@ function SectionCard({
         description={description}
         action={action}
       />
-      <CardContent className="bg-[var(--color-background-default)] p-5">
+      <CardContent className="bg-[var(--color-background-default)] p-[var(--spacing-component-lg)]">
         {children}
       </CardContent>
     </Card>
@@ -379,20 +369,20 @@ function DetailsSection({ record }: { record: ChangeControlRecord }) {
         label: "TARGET IMPLEMENT DATE",
         value: record.targetImplementationDate,
       },
-      { label: "ORIGINAL DEPARTMENT", value: record.department ?? "-" },
+      { label: "ORIGINAL DEPARTMENT", value: record.department ?? "—" },
     ],
     [
       { label: "OWNER", value: record.owner },
-      { label: "TYPE", value: record.type ?? "-" },
-      { label: "CLASSIFICATION", value: record.classification ?? "-" },
-      { label: "CATEGORY", value: record.category ?? "-" },
+      { label: "TYPE", value: record.type ?? "—" },
+      { label: "CLASSIFICATION", value: record.classification ?? "—" },
+      { label: "CATEGORY", value: record.category ?? "—" },
     ],
   ]
 
   const fullWidthDetails = [
     { label: "TITLE", value: record.title },
-    { label: "DESCRIPTION", value: record.description ?? "-" },
-    { label: "RISK ASSESSMENT", value: record.riskAssessment ?? "-" },
+    { label: "DESCRIPTION", value: record.description ?? "—" },
+    { label: "RISK ASSESSMENT", value: record.riskAssessment ?? "—" },
   ]
 
   return (
@@ -413,7 +403,7 @@ function DetailsSection({ record }: { record: ChangeControlRecord }) {
         ) : null
       }
     >
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-[var(--spacing-component-xl)]">
         {detailRows.map((row, index) => (
           <div
             key={index}
@@ -441,57 +431,56 @@ function DetailsSection({ record }: { record: ChangeControlRecord }) {
   )
 }
 
-function RequiredLabel({
-  htmlFor,
-  children,
+const changeControlSigner = {
+  name: "Sarah Johnson",
+  role: "QA Approver",
+  account: "sarah.johnson@accura.one",
+}
+
+/* Every signature in this module goes through the shared 21 CFR Part 11 modal.
+   Six bespoke dialogs used to carry their own identity block, credential field
+   and attestation sentence — six copies of regulated wording with nothing
+   governing them, and none carrying the Part 11 title or the demo-credential
+   warning. These wrappers keep each gate's copy and hand the rest to the
+   shared component. */
+function ChangeControlSignature({
+  open,
+  onOpenChange,
+  recordId,
+  title,
+  meaning,
+  actionLabel,
+  reasonLabel,
+  reasonRequired,
+  onSigned,
 }: {
-  htmlFor?: string
-  children: React.ReactNode
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  recordId: string
+  title: string
+  meaning: string
+  actionLabel: string
+  reasonLabel: string
+  reasonRequired: boolean
+  onSigned: (reason: string) => void
 }) {
   return (
-    <Label htmlFor={htmlFor} className="gap-[var(--spacing-component-xs)]">
-      {children}
-      <span className="text-[var(--color-status-danger)]">*</span>
-    </Label>
+    <ElectronicSignatureModal
+      open={open}
+      onOpenChange={onOpenChange}
+      title={title}
+      record={recordId}
+      recordLabel="Change control"
+      attestationSubject="change control"
+      signer={changeControlSigner}
+      meaning={meaning}
+      actionLabel={actionLabel}
+      reasonLabel={reasonLabel}
+      reasonRequired={reasonRequired}
+      reasonPlaceholder="Add a comment"
+      onSign={(receipt) => onSigned(receipt.reason ?? "")}
+    />
   )
-}
-
-function SignatureInfoItem({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode
-  label: string
-  value: string
-}) {
-  return (
-    <div className="flex min-w-0 items-center gap-3">
-      <div className="flex size-9 shrink-0 items-center justify-center rounded-full border border-[var(--color-border-default)] bg-[var(--color-background-subtle)] text-[var(--color-icon-muted)]">
-        {icon}
-      </div>
-      <div className="min-w-0">
-        <div className="text-xs font-medium leading-3 text-[var(--color-text-tertiary)]">
-          {label}
-        </div>
-        <div className="mt-[6px] truncate text-sm leading-[21px] text-[var(--color-background-default-foreground)]">
-          {value}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function FieldError({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="text-sm font-medium leading-[14px] text-[var(--color-text-invalid)]">
-      {children}
-    </p>
-  )
-}
-
-function invalidAttr(isInvalid: boolean) {
-  return isInvalid ? true : undefined
 }
 
 function DepartmentSignatureDialog({
@@ -509,179 +498,30 @@ function DepartmentSignatureDialog({
   type: "impacted" | "not-impacted"
   onConfirm: (values: { reason?: string; note?: string }) => void
 }) {
-  const [reason, setReason] = React.useState("")
-  const [note, setNote] = React.useState("")
-  const [password, setPassword] = React.useState("")
-  const [confirmed, setConfirmed] = React.useState(false)
-  const [submitted, setSubmitted] = React.useState(false)
-
   const isNotImpacted = type === "not-impacted"
-  const title = isNotImpacted
-    ? `Declare not impacted - ${department}`
-    : `Sign impact assessment - ${department}`
-  const signatureMeaning = isNotImpacted
-    ? "Declare not impacted"
-    : "Sign impact assessment"
-  const actionLabel = isNotImpacted
-    ? "Sign & Confirm Not Impacted"
-    : "Sign & Confirm Impacted"
-
-  React.useEffect(() => {
-    if (!open) {
-      setReason("")
-      setNote("")
-      setPassword("")
-      setConfirmed(false)
-      setSubmitted(false)
-    }
-  }, [open])
-
-  function confirmSignature() {
-    setSubmitted(true)
-
-    if ((isNotImpacted && !reason.trim()) || !password.trim() || !confirmed) {
-      return
-    }
-
-    onConfirm({
-      reason: isNotImpacted ? reason.trim() : undefined,
-      note: !isNotImpacted ? note.trim() : undefined,
-    })
-    onOpenChange(false)
-  }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[640px]">
-        <DialogHeader>
-          <DialogTitle className="text-base leading-[22px]">{title}</DialogTitle>
-          <DialogDescription>
-            Verify your identity to sign this regulated record.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="flex flex-col gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-brand)] bg-[var(--color-status-success-subtle)] p-4 text-sm">
-          <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--color-background-default-foreground)]">
-              Record
-            </span>
-            <span className="font-semibold text-[var(--color-text-link)]">
-              {recordId}
-            </span>
-          </div>
-          <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--color-background-default-foreground)]">
-              Signature meaning
-            </span>
-            <span className="font-semibold text-[var(--color-background-default-foreground)]">
-              {signatureMeaning}
-            </span>
-          </div>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <SignatureInfoItem
-            icon={<User className="h-5 w-5" />}
-            label="Full name"
-            value="Sarah Johnson"
-          />
-          <SignatureInfoItem
-            icon={<Mail className="h-5 w-5" />}
-            label="Email"
-            value="sarah.johnson@accura.one"
-          />
-          <SignatureInfoItem
-            icon={<PenTool02 className="h-5 w-5" />}
-            label="Role at sign-off"
-            value="QA Approver"
-          />
-          <SignatureInfoItem
-            icon={<Clock3 className="h-5 w-5" />}
-            label="Timestamp UTC"
-            value="Sep 22, 2026 09:42:18 UTC"
-          />
-        </div>
-
-        {isNotImpacted ? (
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-            <RequiredLabel htmlFor="not-impacted-reason">
-              Reason not impacted
-            </RequiredLabel>
-            <Textarea
-              id="not-impacted-reason"
-              className="min-h-[80px]"
-              value={reason}
-              onChange={(event) => setReason(event.target.value)}
-              placeholder="Add a comment"
-              aria-invalid={invalidAttr(submitted && !reason.trim())}
-            />
-            {submitted && !reason.trim() && (
-              <FieldError>Reason not impacted is required.</FieldError>
-            )}
-          </div>
-        ) : (
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-            <Label htmlFor="impact-signature-note">
-              Additional note (Optional)
-            </Label>
-            <Textarea
-              id="impact-signature-note"
-              className="min-h-[80px]"
-              value={note}
-              onChange={(event) => setNote(event.target.value)}
-              placeholder="Add a comment"
-            />
-          </div>
-        )}
-
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-            <RequiredLabel htmlFor="department-signature-password">
-              Enter Password
-            </RequiredLabel>
-            <Input
-              id="department-signature-password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Re-enter your password"
-              aria-invalid={invalidAttr(submitted && !password.trim())}
-            />
-            {submitted && !password.trim() && (
-              <FieldError>Password is required to sign this record.</FieldError>
-            )}
-          </div>
-
-          <label className="flex items-start gap-[var(--spacing-component-sm)] text-sm leading-[21px] text-[var(--color-background-default-foreground)]">
-            <Checkbox
-              className="mt-0.5"
-              checked={confirmed}
-              onCheckedChange={(value) => setConfirmed(value === true)}
-              aria-invalid={invalidAttr(submitted && !confirmed)}
-            />
-            <span>
-              By entering my credentials, I confirm that this review complies
-              with formal requirements as equivalent to my handwritten signature.
-            </span>
-          </label>
-          {submitted && !confirmed && (
-            <FieldError>Confirmation is required before signing.</FieldError>
-          )}
-        </div>
-
-        <DialogFooter>
-          <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button
-            variant={isNotImpacted ? "outline" : "default"}
-            onClick={confirmSignature}
-          >
-            {actionLabel}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <ChangeControlSignature
+      open={open}
+      onOpenChange={onOpenChange}
+      recordId={recordId}
+      title={
+        isNotImpacted
+          ? `Declare not impacted — ${department}`
+          : `Sign impact assessment — ${department}`
+      }
+      meaning={isNotImpacted ? "Declare not impacted" : "Sign impact assessment"}
+      actionLabel={
+        isNotImpacted ? "Sign & Confirm Not Impacted" : "Sign & Confirm Impacted"
+      }
+      reasonLabel={
+        isNotImpacted ? "Reason not impacted" : "Additional note (optional)"
+      }
+      reasonRequired={isNotImpacted}
+      onSigned={(reason) =>
+        onConfirm(isNotImpacted ? { reason } : { note: reason })
+      }
+    />
   )
 }
 
@@ -701,11 +541,11 @@ function SignedDepartmentCard({
   const isImpacted = type === "impacted"
 
   return (
-    <div className="rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-background-subtle)] p-[14px]">
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex min-w-0 flex-wrap items-center gap-2">
+    <div className="rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-background-subtle)] p-[var(--spacing-component-md)]">
+      <div className="flex flex-col gap-[var(--spacing-component-md)] lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex min-w-0 flex-wrap items-center gap-[var(--spacing-component-sm)]">
           <Container className="h-6 w-6 shrink-0 text-[var(--color-icon-muted)]" />
-          <div className="min-w-0 text-sm font-semibold uppercase leading-[19px] text-[var(--color-background-default-foreground)]">
+          <div className="min-w-0 text-sm font-medium uppercase leading-snug text-[var(--color-background-default-foreground)]">
             {department} Department
           </div>
           <Badge
@@ -717,12 +557,12 @@ function SignedDepartmentCard({
           </Badge>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4 text-sm font-medium leading-[14px] text-[var(--color-text-secondary)]">
-          <span className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-[var(--spacing-component-lg)] text-sm font-medium leading-none text-[var(--color-text-secondary)]">
+          <span className="flex items-center gap-[var(--spacing-component-sm)]">
             <User className="h-5 w-5 shrink-0 text-[var(--color-icon-muted)]" />
             {isImpacted ? "Impact owner" : "Declared by"}: {signer}
           </span>
-          <span className="flex items-center gap-2">
+          <span className="flex items-center gap-[var(--spacing-component-sm)]">
             <CalendarDays className="h-5 w-5 shrink-0 text-[var(--color-icon-muted)]" />
             Signed: {signedAt}
           </span>
@@ -730,7 +570,7 @@ function SignedDepartmentCard({
       </div>
 
       {assessmentText.trim() && (
-        <div className="mt-3 flex flex-wrap gap-2 text-sm font-medium leading-[14px]">
+        <div className="mt-[var(--spacing-component-md)] flex flex-wrap gap-[var(--spacing-component-sm)] text-sm font-medium leading-none">
           <span className="text-[var(--color-text-secondary)]">
             {isImpacted ? "Assessment:" : "Reason not impacted:"}
           </span>
@@ -916,9 +756,9 @@ function AssessmentCard({
 
   return (
     <>
-      <div
+      <Card
         className={[
-          "rounded-[var(--radius-lg)] border p-[var(--spacing-component-lg)]",
+          "gap-[var(--spacing-component-md)]",
           impactedSelected && !readOnly
             ? "border-[var(--color-border-brand)] bg-[var(--color-background-default)]"
             : "border-[var(--color-border-default)] bg-[var(--color-background-subtle)]",
@@ -927,7 +767,7 @@ function AssessmentCard({
       <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-md)]">
         <div className="flex min-w-0 items-center gap-[var(--spacing-component-md)]">
           <Container className="h-6 w-6 shrink-0 text-[var(--color-icon-muted)]" />
-          <div className="min-w-0 text-sm font-semibold uppercase leading-5 text-[var(--color-background-default-foreground)]">
+          <div className="min-w-0 text-sm font-medium uppercase leading-5 text-[var(--color-background-default-foreground)]">
             {assessment.department} Department
           </div>
           <Badge
@@ -953,7 +793,7 @@ function AssessmentCard({
       </div>
 
       {(stage === "default" || impactedSelected) && !readOnly && (
-        <div className="mt-5 flex max-w-[280px] flex-col gap-[var(--spacing-component-xs)]">
+        <div className="mt-[var(--spacing-component-xl)] flex max-w-[280px] flex-col gap-[var(--spacing-component-xs)]">
           <Label>Point of contact</Label>
           <Select value={pointOfContact} onValueChange={setPointOfContact}>
             <SelectTrigger aria-label="Point of contact">
@@ -971,7 +811,7 @@ function AssessmentCard({
       )}
 
       {stage === "default" && !readOnly && (
-        <div className="mt-5 flex justify-end gap-[var(--spacing-component-sm)]">
+        <div className="mt-[var(--spacing-component-xl)] flex justify-end gap-[var(--spacing-component-sm)]">
           <Button variant="outline" onClick={markNotImpacted}>
             Not Impacted
           </Button>
@@ -980,7 +820,7 @@ function AssessmentCard({
       )}
 
       {notImpactedSelected && readOnly && (
-        <div className="mt-3 flex flex-wrap gap-[var(--spacing-component-sm)] text-sm">
+        <div className="mt-[var(--spacing-component-md)] flex flex-wrap gap-[var(--spacing-component-sm)] text-sm">
           <span className="font-medium text-[var(--color-text-secondary)]">
             Reason not impacted:
           </span>
@@ -991,7 +831,7 @@ function AssessmentCard({
       )}
 
       {impactedSelected && (
-        <div className="mt-5 flex flex-col gap-5">
+        <div className="mt-[var(--spacing-component-xl)] flex flex-col gap-[var(--spacing-component-xl)]">
           <div className="flex flex-col gap-[var(--spacing-component-xs)]">
             <Label>Impact Assessment (optional)</Label>
             <Textarea
@@ -1133,13 +973,13 @@ function AssessmentCard({
           )}
 
           {error === "missing-action" && (
-            <p className="text-sm font-medium leading-[14px] text-[var(--color-text-invalid)]">
+            <p className="text-sm font-medium leading-none text-[var(--color-text-invalid)]">
               Add at least one change action for this department before signing.
             </p>
           )}
 
           {error === "incomplete-action" && (
-            <p className="text-sm font-medium leading-[14px] text-[var(--color-text-invalid)]">
+            <p className="text-sm font-medium leading-none text-[var(--color-text-invalid)]">
               Each action needs a description, an action owner and a due date.
             </p>
           )}
@@ -1147,7 +987,7 @@ function AssessmentCard({
       )}
 
       {impactedSelected && !readOnly && (
-        <div className="mt-5 flex flex-wrap justify-between gap-[var(--spacing-component-sm)]">
+        <div className="mt-[var(--spacing-component-xl)] flex flex-wrap justify-between gap-[var(--spacing-component-sm)]">
           <Button variant="outline" onClick={addAction}>
             <Plus className="h-4 w-4" />
             Add Action
@@ -1162,7 +1002,7 @@ function AssessmentCard({
       )}
 
       {notImpactedSelected && !readOnly && (
-        <div className="mt-5 flex flex-wrap justify-between gap-[var(--spacing-component-sm)]">
+        <div className="mt-[var(--spacing-component-xl)] flex flex-wrap justify-between gap-[var(--spacing-component-sm)]">
           <div className="flex gap-[var(--spacing-component-sm)]">
             <Button variant="ghost" onClick={() => setStage("default")}>
               Cancel
@@ -1171,7 +1011,7 @@ function AssessmentCard({
           </div>
         </div>
       )}
-      </div>
+      </Card>
 
       {signatureType && (
         <DepartmentSignatureDialog
@@ -1285,10 +1125,10 @@ function ImpactAssessmentSection({
           : "On submission, every department is notified. Each department declares whether it is impacted: impacted departments assess the impact, define change actions and sign; not-impacted departments record a reason and sign off."
       }
     >
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-[var(--spacing-component-xl)]">
         {assessments.length ? (
           <>
-            <p className="text-sm leading-[21px] text-[var(--color-background-default-foreground)]">
+            <p className="text-sm leading-normal text-[var(--color-background-default-foreground)]">
               {declaredDepartmentCount} of {assessments.length} departments have
               declared.
             </p>
@@ -1304,7 +1144,7 @@ function ImpactAssessmentSection({
             ))}
           </>
         ) : (
-          <p className="text-sm leading-[21px] text-[var(--color-background-default-foreground)]">
+          <p className="text-sm leading-normal text-[var(--color-background-default-foreground)]">
             Departments are notified to declare their impact once this Change
             Control is submitted for assessment.
           </p>
@@ -1384,31 +1224,31 @@ function ChangeActionsSection({
       title="Change Actions"
       description="Each affected department defines and executes its own actions. Every action has its own status: Draft → In Review → Implementation in Progress → Completed. The Action Owner need not be the Impact Owner."
     >
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-[var(--spacing-component-xl)]">
         {actionGroups.map(({ assessment, actions }) => (
           <div
             key={assessment.department}
-            className="flex flex-col gap-3"
+            className="flex flex-col gap-[var(--spacing-component-md)]"
           >
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-              <div className="flex min-w-0 items-center gap-2">
+            <div className="flex flex-col gap-[var(--spacing-component-md)] lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex min-w-0 items-center gap-[var(--spacing-component-sm)]">
                 <Container className="h-6 w-6 shrink-0 text-[var(--color-icon-muted)]" />
-                <div className="min-w-0 text-sm font-semibold uppercase leading-[21px] text-[var(--color-background-default-foreground)]">
+                <div className="min-w-0 text-sm font-medium uppercase leading-normal text-[var(--color-background-default-foreground)]">
                   {assessment.department} Department
                 </div>
               </div>
 
               {!useActionCards && (
-                <div className="flex flex-wrap items-center gap-4 text-sm font-medium leading-[14px] text-[var(--color-text-secondary)]">
-                  <span className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-[var(--spacing-component-lg)] text-sm font-medium leading-none text-[var(--color-text-secondary)]">
+                  <span className="flex items-center gap-[var(--spacing-component-sm)]">
                     <ListIcon className="h-5 w-5 shrink-0 text-[var(--color-icon-muted)]" />
                     {formatActionCount(actions.length)}
                   </span>
-                  <span className="flex items-center gap-2">
+                  <span className="flex items-center gap-[var(--spacing-component-sm)]">
                     <CalendarDays className="h-5 w-5 shrink-0 text-[var(--color-icon-muted)]" />
                     Signed Sep 15, 2026
                   </span>
-                  <span className="flex items-center gap-2">
+                  <span className="flex items-center gap-[var(--spacing-component-sm)]">
                     <User className="h-5 w-5 shrink-0 text-[var(--color-icon-muted)]" />
                     Impact owner: {assessment.signer ?? "Department owner"}
                   </span>
@@ -1417,7 +1257,7 @@ function ChangeActionsSection({
             </div>
 
             {useActionCards ? (
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-[var(--spacing-component-md)]">
                 {actions.map((action, index) => (
                   <ActionExecutionCard
                     key={action.id}
@@ -1446,7 +1286,7 @@ function ChangeActionsSection({
                         <TableCell className="h-12 py-0">{index + 1}</TableCell>
                         <TableCell className="h-12 py-0">{action.title}</TableCell>
                         <TableCell className="h-12 py-0">
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-[var(--spacing-component-sm)]">
                             <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-muted)] text-xs font-medium text-[var(--color-surface-muted-foreground)]">
                               {avatarFallback(action.owner)}
                             </span>
@@ -1501,143 +1341,18 @@ function ActionExecutionSignatureDialog({
   actionTitle: string
   onConfirm: (values: { note: string }) => void
 }) {
-  const [note, setNote] = React.useState("")
-  const [password, setPassword] = React.useState("")
-  const [confirmed, setConfirmed] = React.useState(false)
-  const [submitted, setSubmitted] = React.useState(false)
-
-  React.useEffect(() => {
-    if (!open) {
-      setNote("")
-      setPassword("")
-      setConfirmed(false)
-      setSubmitted(false)
-    }
-  }, [open])
-
-  function confirmSignature() {
-    setSubmitted(true)
-
-    if (!note.trim() || !password.trim() || !confirmed) return
-
-    onConfirm({ note: note.trim() })
-    onOpenChange(false)
-  }
-
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[640px]">
-        <DialogHeader>
-          <DialogTitle className="text-base leading-[22px]">
-            Complete action - {actionTitle}
-          </DialogTitle>
-          <DialogDescription>
-            Verify your identity to sign this regulated record.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="flex flex-col gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-brand)] bg-[var(--color-status-success-subtle)] p-4 text-sm">
-          <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--color-background-default-foreground)]">
-              Record
-            </span>
-            <span className="font-semibold text-[var(--color-text-link)]">
-              {recordId}
-            </span>
-          </div>
-          <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--color-background-default-foreground)]">
-              Signature meaning
-            </span>
-            <span className="font-semibold text-[var(--color-background-default-foreground)]">
-              Complete action
-            </span>
-          </div>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <SignatureInfoItem
-            icon={<User className="h-5 w-5" />}
-            label="Full name"
-            value="Sarah Johnson"
-          />
-          <SignatureInfoItem
-            icon={<Mail className="h-5 w-5" />}
-            label="Email"
-            value="sarah.johnson@accura.one"
-          />
-          <SignatureInfoItem
-            icon={<PenTool02 className="h-5 w-5" />}
-            label="Role at sign-off"
-            value="QA Approver"
-          />
-          <SignatureInfoItem
-            icon={<Clock3 className="h-5 w-5" />}
-            label="Timestamp UTC"
-            value="Sep 22, 2026 09:42:18 UTC"
-          />
-        </div>
-
-        <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-          <RequiredLabel htmlFor="action-completion-note">
-            Completion note
-          </RequiredLabel>
-          <Textarea
-            id="action-completion-note"
-            className="min-h-[80px]"
-            value={note}
-            onChange={(event) => setNote(event.target.value)}
-            placeholder="Add a comment"
-            aria-invalid={invalidAttr(submitted && !note.trim())}
-          />
-          {submitted && !note.trim() && (
-            <FieldError>Completion note is required.</FieldError>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-            <RequiredLabel htmlFor="action-signature-password">
-              Enter Password
-            </RequiredLabel>
-            <Input
-              id="action-signature-password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Re-enter your password"
-              aria-invalid={invalidAttr(submitted && !password.trim())}
-            />
-            {submitted && !password.trim() && (
-              <FieldError>Password is required to sign this record.</FieldError>
-            )}
-          </div>
-
-          <label className="flex items-start gap-[var(--spacing-component-sm)] text-sm leading-[21px] text-[var(--color-background-default-foreground)]">
-            <Checkbox
-              className="mt-0.5"
-              checked={confirmed}
-              onCheckedChange={(value) => setConfirmed(value === true)}
-              aria-invalid={invalidAttr(submitted && !confirmed)}
-            />
-            <span>
-              By entering my credentials, I confirm that this review complies
-              with formal requirements as equivalent to my handwritten signature.
-            </span>
-          </label>
-          {submitted && !confirmed && (
-            <FieldError>Confirmation is required before signing.</FieldError>
-          )}
-        </div>
-
-        <DialogFooter>
-          <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button onClick={confirmSignature}>Sign &amp; Complete</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <ChangeControlSignature
+      open={open}
+      onOpenChange={onOpenChange}
+      recordId={recordId}
+      title={`Complete action — ${actionTitle}`}
+      meaning="Complete action"
+      actionLabel="Sign & Complete"
+      reasonLabel="Completion note"
+      reasonRequired
+      onSigned={(note) => onConfirm({ note })}
+    />
   )
 }
 
@@ -1722,16 +1437,16 @@ function ActionExecutionCard({
   }
 
   return (
-    <div
+    <Card
       className={[
-        "rounded-[var(--radius-lg)] border p-[var(--spacing-component-lg)]",
+        "gap-[var(--spacing-component-md)]",
         readOnly
           ? "border-[var(--color-border-default)] bg-[var(--color-background-subtle)]"
           : "border-l-4 border-y border-r border-[var(--color-border-default)] border-l-[var(--color-brand-primary)] bg-[var(--color-background-subtle)]",
       ].join(" ")}
     >
       <div className="flex flex-wrap items-start justify-between gap-[var(--spacing-component-sm)]">
-        <div className="min-w-0 text-sm font-semibold leading-[21px] text-[var(--color-background-default-foreground)]">
+        <div className="min-w-0 text-sm font-medium leading-normal text-[var(--color-background-default-foreground)]">
           {index + 1}. {action.title}
         </div>
         <div className="flex shrink-0 items-center gap-[var(--spacing-component-xs)]">
@@ -1740,31 +1455,31 @@ function ActionExecutionCard({
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-[var(--color-text-secondary)]">
-        <span className="flex items-center gap-2">
+      <div className="mt-[var(--spacing-component-md)] flex flex-wrap items-center gap-[var(--spacing-component-lg)] text-sm text-[var(--color-text-secondary)]">
+        <span className="flex items-center gap-[var(--spacing-component-sm)]">
           <User className="h-4 w-4 shrink-0 text-[var(--color-icon-muted)]" />
           Owner: {action.owner}
         </span>
-        <span className="flex items-center gap-2">
+        <span className="flex items-center gap-[var(--spacing-component-sm)]">
           <CalendarDays className="h-4 w-4 shrink-0 text-[var(--color-icon-muted)]" />
           Due: {action.dueDate}
         </span>
         {action.completedAt && (
-          <span className="flex items-center gap-2">
+          <span className="flex items-center gap-[var(--spacing-component-sm)]">
             <Clock3 className="h-4 w-4 shrink-0 text-[var(--color-icon-muted)]" />
             Completed &amp; Signed: {action.completedAt}
           </span>
         )}
       </div>
 
-      <div className="mt-4 flex flex-col gap-2">
-        <div className="flex flex-wrap items-center gap-2 text-sm text-[var(--color-text-secondary)]">
+      <div className="mt-[var(--spacing-component-lg)] flex flex-col gap-[var(--spacing-component-sm)]">
+        <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)] text-sm text-[var(--color-text-secondary)]">
           <Paperclip className="h-4 w-4 shrink-0 text-[var(--color-icon-muted)]" />
           Evidences:
           {evidenceFiles.map((file) => (
             <span
               key={file}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border-default)] bg-[var(--color-background-default)] px-2.5 py-1 text-xs font-medium text-[var(--color-background-default-foreground)]"
+              className="inline-flex items-center gap-[var(--spacing-component-xs-plus)] rounded-full border border-[var(--color-border-default)] bg-[var(--color-background-default)] px-[var(--spacing-component-sm)] py-[var(--spacing-component-xs)] text-xs font-medium text-[var(--color-background-default-foreground)]"
             >
               {file}
               {!readOnly && (
@@ -1781,15 +1496,15 @@ function ActionExecutionCard({
           ))}
         </div>
 
-        <div className="flex flex-col gap-1.5 text-sm text-[var(--color-text-secondary)]">
-          <span className="flex items-center gap-2">
+        <div className="flex flex-col gap-[var(--spacing-component-xs-plus)] text-sm text-[var(--color-text-secondary)]">
+          <span className="flex items-center gap-[var(--spacing-component-sm)]">
             <MessageSquare className="h-4 w-4 shrink-0 text-[var(--color-icon-muted)]" />
             Comments:
           </span>
           {comments.map((comment, commentIndex) => (
             <p
               key={`${comment.author}-${commentIndex}`}
-              className="pl-6 text-sm leading-[21px] text-[var(--color-background-default-foreground)]"
+              className="pl-6 text-sm leading-normal text-[var(--color-background-default-foreground)]"
             >
               <span className="font-medium">{comment.author}</span>
               {" · "}
@@ -1816,7 +1531,7 @@ function ActionExecutionCard({
             }}
           />
           <TooltipProvider>
-            <div className="mt-4 flex items-center gap-2 rounded-full border border-[var(--color-border-default)] bg-[var(--color-background-default)] pl-2 pr-1.5">
+            <div className="mt-[var(--spacing-component-lg)] flex items-center gap-[var(--spacing-component-sm)] rounded-full border border-[var(--color-border-default)] bg-[var(--color-background-default)] pl-2 pr-1.5">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
@@ -1854,7 +1569,7 @@ function ActionExecutionCard({
             </div>
           </TooltipProvider>
 
-          <Button className="mt-4" onClick={() => setSignatureOpen(true)}>
+          <Button className="mt-[var(--spacing-component-lg)]" onClick={() => setSignatureOpen(true)}>
             Marked as completed
           </Button>
 
@@ -1867,7 +1582,7 @@ function ActionExecutionCard({
           />
         </>
       )}
-    </div>
+    </Card>
   )
 }
 
@@ -1922,17 +1637,17 @@ function ActionExecutionSection({
       title="Change Actions"
       description="Each affected department defines and executes its own actions. Every action has its own status: Draft → In Review → Implementation in Progress → Completed. The Action Owner need not be the Impact Owner."
     >
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-[var(--spacing-component-xl)]">
         {actionGroups.map(({ assessment, actions: groupActions }) => (
-          <div key={assessment.department} className="flex flex-col gap-3">
-            <div className="flex min-w-0 items-center gap-2">
+          <div key={assessment.department} className="flex flex-col gap-[var(--spacing-component-md)]">
+            <div className="flex min-w-0 items-center gap-[var(--spacing-component-sm)]">
               <Container className="h-6 w-6 shrink-0 text-[var(--color-icon-muted)]" />
-              <div className="min-w-0 text-sm font-semibold uppercase leading-[21px] text-[var(--color-background-default-foreground)]">
+              <div className="min-w-0 text-sm font-medium uppercase leading-normal text-[var(--color-background-default-foreground)]">
                 {assessment.department} Department
               </div>
             </div>
 
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-[var(--spacing-component-md)]">
               {groupActions.map((action, index) => (
                 <ActionExecutionCard
                   key={action.id}
@@ -1992,7 +1707,7 @@ function EvidenceSection({ actions }: { actions: ChangeAction[] }) {
                 <div className="truncate text-sm font-medium text-[var(--color-background-default-foreground)]">
                   {item.fileName}
                 </div>
-                <div className="mt-1 text-xs text-[var(--color-text-secondary)]">
+                <div className="mt-[var(--spacing-component-xs)] text-xs text-[var(--color-text-secondary)]">
                   {item.department} department · {item.actionTitle}
                 </div>
               </div>
@@ -2018,158 +1733,24 @@ function QaDecisionDialog({
   decision: "approve" | "reject"
   onConfirm: (values: { comment?: string; reason?: string }) => void
 }) {
-  const [comment, setComment] = React.useState("")
-  const [password, setPassword] = React.useState("")
-  const [confirmed, setConfirmed] = React.useState(false)
-  const [submitted, setSubmitted] = React.useState(false)
   const isReject = decision === "reject"
-  const title = isReject
-    ? `QA Rejection — ${record.id}`
-    : `QA Approval — ${record.id}`
-  const signatureMeaning = isReject ? "Reject change plan" : "Approve change plan"
-  const actionLabel = isReject ? "Sign & Reject" : "Sign & Approve"
-
-  React.useEffect(() => {
-    if (!open) {
-      setComment("")
-      setPassword("")
-      setConfirmed(false)
-      setSubmitted(false)
-    }
-  }, [open])
-
-  function confirmDecision() {
-    setSubmitted(true)
-
-    if ((isReject && !comment.trim()) || !password.trim() || !confirmed) {
-      return
-    }
-
-    onConfirm(isReject ? { reason: comment.trim() } : { comment: comment.trim() })
-    onOpenChange(false)
-  }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[640px]">
-        <DialogHeader>
-          <DialogTitle className="text-base leading-[22px]">{title}</DialogTitle>
-          <DialogDescription>
-            Verify your identity to sign this regulated record.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="flex flex-col gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-brand)] bg-[var(--color-status-success-subtle)] p-4 text-sm">
-          <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--color-background-default-foreground)]">
-              Record
-            </span>
-            <span className="font-semibold text-[var(--color-text-link)]">
-              {record.id}
-            </span>
-          </div>
-          <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--color-background-default-foreground)]">
-              Signature meaning
-            </span>
-            <span className="font-semibold text-[var(--color-background-default-foreground)]">
-              {signatureMeaning}
-            </span>
-          </div>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <SignatureInfoItem
-            icon={<User className="h-5 w-5" />}
-            label="Full name"
-            value="Sarah Johnson"
-          />
-          <SignatureInfoItem
-            icon={<Mail className="h-5 w-5" />}
-            label="Email"
-            value="sarah.johnson@accura.one"
-          />
-          <SignatureInfoItem
-            icon={<PenTool02 className="h-5 w-5" />}
-            label="Role at sign-off"
-            value="QA Approver"
-          />
-          <SignatureInfoItem
-            icon={<Clock3 className="h-5 w-5" />}
-            label="Timestamp UTC"
-            value="Sep 22, 2026 09:42:18 UTC"
-          />
-        </div>
-
-        <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-          {isReject ? (
-            <RequiredLabel htmlFor="qa-rejection-reason">
-              Reason for rejection
-            </RequiredLabel>
-          ) : (
-            <Label htmlFor="qa-approval-comment">Comment</Label>
-          )}
-          <Textarea
-            id={isReject ? "qa-rejection-reason" : "qa-approval-comment"}
-            className="min-h-[80px]"
-            value={comment}
-            onChange={(event) => setComment(event.target.value)}
-            placeholder="Add a comment"
-            aria-invalid={invalidAttr(isReject && submitted && !comment.trim())}
-          />
-          {isReject && submitted && !comment.trim() && (
-            <FieldError>Reason for rejection is required.</FieldError>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-            <RequiredLabel htmlFor="qa-signature-password">
-              Enter Password
-            </RequiredLabel>
-            <Input
-              id="qa-signature-password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Re-enter your password"
-              aria-invalid={invalidAttr(submitted && !password.trim())}
-            />
-            {submitted && !password.trim() && (
-              <FieldError>Password is required to sign this record.</FieldError>
-            )}
-          </div>
-
-          <label className="flex items-start gap-[var(--spacing-component-sm)] text-sm leading-[21px] text-[var(--color-background-default-foreground)]">
-            <Checkbox
-              className="mt-0.5"
-              checked={confirmed}
-              onCheckedChange={(value) => setConfirmed(value === true)}
-              aria-invalid={invalidAttr(submitted && !confirmed)}
-            />
-            <span>
-              By entering my credentials, I confirm that this review complies
-              with formal requirements as equivalent to my handwritten signature.
-            </span>
-          </label>
-          {submitted && !confirmed && (
-            <FieldError>Confirmation is required before signing.</FieldError>
-          )}
-        </div>
-
-        <DialogFooter>
-          <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button
-            variant={isReject ? "destructive" : "default"}
-            onClick={confirmDecision}
-          >
-            {actionLabel}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <ChangeControlSignature
+      open={open}
+      onOpenChange={onOpenChange}
+      recordId={record.id}
+      title={
+        isReject ? `QA Rejection — ${record.id}` : `QA Approval — ${record.id}`
+      }
+      meaning={isReject ? "Reject change plan" : "Approve change plan"}
+      actionLabel={isReject ? "Sign & Reject" : "Sign & Approve"}
+      reasonLabel={isReject ? "Reason for rejection" : "Comment (optional)"}
+      reasonRequired={isReject}
+      onSigned={(text) =>
+        onConfirm(isReject ? { reason: text } : { comment: text })
+      }
+    />
   )
 }
 
@@ -2184,137 +1765,18 @@ function ChangeOwnerSignOffDialog({
   record: ChangeControlRecord
   onConfirm: (values: { note: string }) => void
 }) {
-  const [note, setNote] = React.useState("")
-  const [password, setPassword] = React.useState("")
-  const [confirmed, setConfirmed] = React.useState(false)
-  const [submitted, setSubmitted] = React.useState(false)
-
-  React.useEffect(() => {
-    if (!open) {
-      setNote("")
-      setPassword("")
-      setConfirmed(false)
-      setSubmitted(false)
-    }
-  }, [open])
-
-  function confirmSignOff() {
-    setSubmitted(true)
-
-    if (!password.trim() || !confirmed) return
-
-    onConfirm({ note: note.trim() })
-    onOpenChange(false)
-  }
-
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[640px]">
-        <DialogHeader>
-          <DialogTitle className="text-base leading-[22px]">
-            Change Owner sign-off — {record.id}
-          </DialogTitle>
-          <DialogDescription>
-            Verify your identity to sign this regulated record.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="flex flex-col gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-brand)] bg-[var(--color-status-success-subtle)] p-4 text-sm">
-          <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--color-background-default-foreground)]">
-              Record
-            </span>
-            <span className="font-semibold text-[var(--color-text-link)]">
-              {record.id}
-            </span>
-          </div>
-          <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--color-background-default-foreground)]">
-              Signature meaning
-            </span>
-            <span className="font-semibold text-[var(--color-background-default-foreground)]">
-              Change Owner sign-off
-            </span>
-          </div>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <SignatureInfoItem
-            icon={<User className="h-5 w-5" />}
-            label="Full name"
-            value="Sarah Johnson"
-          />
-          <SignatureInfoItem
-            icon={<Mail className="h-5 w-5" />}
-            label="Email"
-            value="sarah.johnson@accura.one"
-          />
-          <SignatureInfoItem
-            icon={<PenTool02 className="h-5 w-5" />}
-            label="Role at sign-off"
-            value="QA Approver"
-          />
-          <SignatureInfoItem
-            icon={<Clock3 className="h-5 w-5" />}
-            label="Timestamp UTC"
-            value="Sep 22, 2026 09:42:18 UTC"
-          />
-        </div>
-
-        <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-          <Label htmlFor="pending-closure-note">Sign-off note (optional)</Label>
-          <Textarea
-            id="pending-closure-note"
-            className="min-h-[80px]"
-            value={note}
-            onChange={(event) => setNote(event.target.value)}
-            placeholder="Add a comment"
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-            <RequiredLabel htmlFor="pending-closure-password">
-              Enter Password
-            </RequiredLabel>
-            <Input
-              id="pending-closure-password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Re-enter your password"
-              aria-invalid={invalidAttr(submitted && !password.trim())}
-            />
-            {submitted && !password.trim() && (
-              <FieldError>Password is required to sign this record.</FieldError>
-            )}
-          </div>
-
-          <label className="flex items-start gap-[var(--spacing-component-sm)] text-sm leading-[21px] text-[var(--color-background-default-foreground)]">
-            <Checkbox
-              className="mt-0.5"
-              checked={confirmed}
-              onCheckedChange={(value) => setConfirmed(value === true)}
-              aria-invalid={invalidAttr(submitted && !confirmed)}
-            />
-            <span>
-              By entering my credentials, I confirm that this review complies
-              with formal requirements as equivalent to my handwritten signature.
-            </span>
-          </label>
-          {submitted && !confirmed && (
-            <FieldError>Confirmation is required before signing.</FieldError>
-          )}
-        </div>
-
-        <DialogFooter>
-          <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button onClick={confirmSignOff}>Sign &amp; Submit for QA Approval</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <ChangeControlSignature
+      open={open}
+      onOpenChange={onOpenChange}
+      recordId={record.id}
+      title={`Change Owner sign-off — ${record.id}`}
+      meaning="Change Owner sign-off"
+      actionLabel="Sign & Submit for QA Approval"
+      reasonLabel="Sign-off note (optional)"
+      reasonRequired={false}
+      onSigned={(note) => onConfirm({ note })}
+    />
   )
 }
 
@@ -2329,139 +1791,18 @@ function SubmitForQaApprovalDialog({
   record: ChangeControlRecord
   onConfirm: (values: { note: string }) => void
 }) {
-  const [note, setNote] = React.useState("")
-  const [password, setPassword] = React.useState("")
-  const [confirmed, setConfirmed] = React.useState(false)
-  const [submitted, setSubmitted] = React.useState(false)
-
-  React.useEffect(() => {
-    if (!open) {
-      setNote("")
-      setPassword("")
-      setConfirmed(false)
-      setSubmitted(false)
-    }
-  }, [open])
-
-  function confirmSubmit() {
-    setSubmitted(true)
-
-    if (!password.trim() || !confirmed) return
-
-    onConfirm({ note: note.trim() })
-    onOpenChange(false)
-  }
-
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[640px]">
-        <DialogHeader>
-          <DialogTitle className="text-base leading-[22px]">
-            Submit for QA Approval — {record.id}
-          </DialogTitle>
-          <DialogDescription>
-            Verify your identity to sign this regulated record.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="flex flex-col gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-brand)] bg-[var(--color-status-success-subtle)] p-4 text-sm">
-          <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--color-background-default-foreground)]">
-              Record
-            </span>
-            <span className="font-semibold text-[var(--color-text-link)]">
-              {record.id}
-            </span>
-          </div>
-          <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--color-background-default-foreground)]">
-              Signature meaning
-            </span>
-            <span className="font-semibold text-[var(--color-background-default-foreground)]">
-              Submit for QA Approval
-            </span>
-          </div>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <SignatureInfoItem
-            icon={<User className="h-5 w-5" />}
-            label="Full name"
-            value="Sarah Johnson"
-          />
-          <SignatureInfoItem
-            icon={<Mail className="h-5 w-5" />}
-            label="Email"
-            value="sarah.johnson@accura.one"
-          />
-          <SignatureInfoItem
-            icon={<PenTool02 className="h-5 w-5" />}
-            label="Role at sign-off"
-            value="QA Approver"
-          />
-          <SignatureInfoItem
-            icon={<Clock3 className="h-5 w-5" />}
-            label="Timestamp UTC"
-            value="Sep 22, 2026 09:42:18 UTC"
-          />
-        </div>
-
-        <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-          <Label htmlFor="submit-qa-approval-note">
-            Additional note (optional)
-          </Label>
-          <Textarea
-            id="submit-qa-approval-note"
-            className="min-h-[80px]"
-            value={note}
-            onChange={(event) => setNote(event.target.value)}
-            placeholder="Add a comment"
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-            <RequiredLabel htmlFor="submit-qa-approval-password">
-              Enter Password
-            </RequiredLabel>
-            <Input
-              id="submit-qa-approval-password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Re-enter your password"
-              aria-invalid={invalidAttr(submitted && !password.trim())}
-            />
-            {submitted && !password.trim() && (
-              <FieldError>Password is required to sign this record.</FieldError>
-            )}
-          </div>
-
-          <label className="flex items-start gap-[var(--spacing-component-sm)] text-sm leading-[21px] text-[var(--color-background-default-foreground)]">
-            <Checkbox
-              className="mt-0.5"
-              checked={confirmed}
-              onCheckedChange={(value) => setConfirmed(value === true)}
-              aria-invalid={invalidAttr(submitted && !confirmed)}
-            />
-            <span>
-              By entering my credentials, I confirm that this review complies
-              with formal requirements as equivalent to my handwritten signature.
-            </span>
-          </label>
-          {submitted && !confirmed && (
-            <FieldError>Confirmation is required before signing.</FieldError>
-          )}
-        </div>
-
-        <DialogFooter>
-          <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button onClick={confirmSubmit}>Sign &amp; Submit for QA Approval</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <ChangeControlSignature
+      open={open}
+      onOpenChange={onOpenChange}
+      recordId={record.id}
+      title={`Submit for QA Approval — ${record.id}`}
+      meaning="Submit for QA Approval"
+      actionLabel="Sign & Submit for QA Approval"
+      reasonLabel="Additional note (optional)"
+      reasonRequired={false}
+      onSigned={(note) => onConfirm({ note })}
+    />
   )
 }
 
@@ -2478,162 +1819,28 @@ function FinalQaDecisionDialog({
   decision: "approve" | "reject"
   onConfirm: (values: { comment?: string; reason?: string }) => void
 }) {
-  const [comment, setComment] = React.useState("")
-  const [password, setPassword] = React.useState("")
-  const [confirmed, setConfirmed] = React.useState(false)
-  const [submitted, setSubmitted] = React.useState(false)
   const isReject = decision === "reject"
-  const title = isReject
-    ? `Final QA Rejection — ${record.id}`
-    : `Final QA Approval — ${record.id}`
-  const signatureMeaning = isReject
-    ? "Reject & return to Pending Closure"
-    : "Final QA Approval"
-  const actionLabel = isReject ? "Sign & Reject" : "Sign, Approve & Close"
-
-  React.useEffect(() => {
-    if (!open) {
-      setComment("")
-      setPassword("")
-      setConfirmed(false)
-      setSubmitted(false)
-    }
-  }, [open])
-
-  function confirmDecision() {
-    setSubmitted(true)
-
-    if ((isReject && !comment.trim()) || !password.trim() || !confirmed) {
-      return
-    }
-
-    onConfirm(isReject ? { reason: comment.trim() } : { comment: comment.trim() })
-    onOpenChange(false)
-  }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[640px]">
-        <DialogHeader>
-          <DialogTitle className="text-base leading-[22px]">{title}</DialogTitle>
-          <DialogDescription>
-            Verify your identity to sign this regulated record.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="flex flex-col gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-brand)] bg-[var(--color-status-success-subtle)] p-4 text-sm">
-          <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--color-background-default-foreground)]">
-              Record
-            </span>
-            <span className="font-semibold text-[var(--color-text-link)]">
-              {record.id}
-            </span>
-          </div>
-          <div className="flex items-center justify-between gap-4">
-            <span className="text-[var(--color-background-default-foreground)]">
-              Signature meaning
-            </span>
-            <span className="font-semibold text-[var(--color-background-default-foreground)]">
-              {signatureMeaning}
-            </span>
-          </div>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <SignatureInfoItem
-            icon={<User className="h-5 w-5" />}
-            label="Full name"
-            value="Sarah Johnson"
-          />
-          <SignatureInfoItem
-            icon={<Mail className="h-5 w-5" />}
-            label="Email"
-            value="sarah.johnson@accura.one"
-          />
-          <SignatureInfoItem
-            icon={<PenTool02 className="h-5 w-5" />}
-            label="Role at sign-off"
-            value="QA Approver"
-          />
-          <SignatureInfoItem
-            icon={<Clock3 className="h-5 w-5" />}
-            label="Timestamp UTC"
-            value="Sep 22, 2026 09:42:18 UTC"
-          />
-        </div>
-
-        <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-          {isReject ? (
-            <RequiredLabel htmlFor="final-qa-rejection-reason">
-              Reason for rejection
-            </RequiredLabel>
-          ) : (
-            <Label htmlFor="final-qa-approval-comment">
-              Closure comment (optional)
-            </Label>
-          )}
-          <Textarea
-            id={isReject ? "final-qa-rejection-reason" : "final-qa-approval-comment"}
-            className="min-h-[80px]"
-            value={comment}
-            onChange={(event) => setComment(event.target.value)}
-            placeholder="Add a comment"
-            aria-invalid={invalidAttr(isReject && submitted && !comment.trim())}
-          />
-          {isReject && submitted && !comment.trim() && (
-            <FieldError>Reason for rejection is required.</FieldError>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-            <RequiredLabel htmlFor="final-qa-signature-password">
-              Enter Password
-            </RequiredLabel>
-            <Input
-              id="final-qa-signature-password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Re-enter your password"
-              aria-invalid={invalidAttr(submitted && !password.trim())}
-            />
-            {submitted && !password.trim() && (
-              <FieldError>Password is required to sign this record.</FieldError>
-            )}
-          </div>
-
-          <label className="flex items-start gap-[var(--spacing-component-sm)] text-sm leading-[21px] text-[var(--color-background-default-foreground)]">
-            <Checkbox
-              className="mt-0.5"
-              checked={confirmed}
-              onCheckedChange={(value) => setConfirmed(value === true)}
-              aria-invalid={invalidAttr(submitted && !confirmed)}
-            />
-            <span>
-              By entering my credentials, I confirm that this review complies
-              with formal requirements as equivalent to my handwritten signature.
-            </span>
-          </label>
-          {submitted && !confirmed && (
-            <FieldError>Confirmation is required before signing.</FieldError>
-          )}
-        </div>
-
-        <DialogFooter>
-          <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button
-            variant={isReject ? "destructive" : "default"}
-            onClick={confirmDecision}
-          >
-            {actionLabel}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <ChangeControlSignature
+      open={open}
+      onOpenChange={onOpenChange}
+      recordId={record.id}
+      title={
+        isReject
+          ? `Final QA Rejection — ${record.id}`
+          : `Final QA Approval — ${record.id}`
+      }
+      meaning={
+        isReject ? "Reject & return to Pending Closure" : "Final QA Approval"
+      }
+      actionLabel={isReject ? "Sign & Reject" : "Sign, Approve & Close"}
+      reasonLabel={isReject ? "Reason for rejection" : "Comment (optional)"}
+      reasonRequired={isReject}
+      onSigned={(text) =>
+        onConfirm(isReject ? { reason: text } : { comment: text })
+      }
+    />
   )
 }
 
@@ -2667,15 +1874,15 @@ function AuditTrailSheet({
                       <div className="text-sm font-medium text-[var(--color-background-default-foreground)]">
                         {item.actor}
                       </div>
-                      <div className="mt-1 text-xs text-[var(--color-text-secondary)]">
+                      <div className="mt-[var(--spacing-component-xs)] text-xs text-[var(--color-text-secondary)]">
                         {item.timestamp}
                       </div>
                     </div>
                   </div>
-                  <div className="mt-3 pl-12 text-sm text-[var(--color-background-default-foreground)]">
+                  <div className="mt-[var(--spacing-component-md)] pl-12 text-sm text-[var(--color-background-default-foreground)]">
                     {item.action}
                     {item.from && item.to && (
-                      <span className="mt-2 flex flex-wrap items-center gap-2">
+                      <span className="mt-[var(--spacing-component-sm)] flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
                         <Badge
                           variant={changeControlStatusVariant[item.from]}
                           shape="pill"
@@ -2698,7 +1905,7 @@ function AuditTrailSheet({
                 {index < items.length - 1 && <Separator />}
               </React.Fragment>
             )) : (
-              <p className="py-[var(--spacing-component-lg)] text-sm leading-[21px] text-[var(--color-text-secondary)]">
+              <p className="py-[var(--spacing-component-lg)] text-sm leading-normal text-[var(--color-text-secondary)]">
                 No user activity has been recorded for this step yet.
               </p>
             )}
@@ -2757,7 +1964,7 @@ function ActionBar({
   if (status === "QA Approval") {
     return (
       <div className="flex flex-col gap-[var(--spacing-component-md)] pb-[var(--spacing-layout-md)] sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm font-medium leading-[14px] text-[var(--color-background-default-foreground)]">
+        <p className="text-sm font-medium leading-none text-[var(--color-background-default-foreground)]">
           Awaiting QA approval of the proposed change actions.
         </p>
         <div className="flex flex-wrap justify-end gap-[var(--spacing-component-sm)]">
@@ -2773,7 +1980,7 @@ function ActionBar({
   if (status === "Pending Closure") {
     return (
       <div className="flex flex-col gap-[var(--spacing-component-md)] pb-[var(--spacing-layout-md)] sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm font-medium leading-[14px] text-[var(--color-background-default-foreground)]">
+        <p className="text-sm font-medium leading-none text-[var(--color-background-default-foreground)]">
           All actions are complete. Review, sign off, and submit for final QA
           approval.
         </p>
@@ -2789,7 +1996,7 @@ function ActionBar({
   if (status === "Final QA Approval") {
     return (
       <div className="flex flex-col gap-[var(--spacing-component-md)] pb-[var(--spacing-layout-md)] sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm font-medium leading-[14px] text-[var(--color-background-default-foreground)]">
+        <p className="text-sm font-medium leading-none text-[var(--color-background-default-foreground)]">
           Awaiting final QA approval and closure.
         </p>
         <div className="flex flex-wrap justify-end gap-[var(--spacing-component-sm)]">
@@ -3005,13 +2212,13 @@ export default function ChangeControlDetailPage() {
             />
             <section className="flex min-h-0 flex-1 items-center justify-center p-[var(--spacing-component-xl)]">
               <div className="text-center">
-                <h1 className="text-lg font-semibold text-[var(--color-background-default-foreground)]">
+                <h1 className="text-lg font-medium text-[var(--color-background-default-foreground)]">
                   Change Control not found
                 </h1>
-                <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+                <p className="mt-[var(--spacing-component-sm)] text-sm text-[var(--color-text-secondary)]">
                   No record exists for {recordId}.
                 </p>
-                <Button asChild className="mt-4">
+                <Button asChild className="mt-[var(--spacing-component-lg)]">
                   <Link href="/prototype/accura/change-control">
                     Back to Change Controls
                   </Link>
@@ -3315,7 +2522,7 @@ export default function ChangeControlDetailPage() {
                 <div className="flex flex-col gap-[var(--spacing-component-md)] sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-[10px]">
-                      <span className="text-sm font-semibold leading-[19px] text-[var(--color-text-link)]">
+                      <span className="text-sm font-medium leading-snug text-[var(--color-text-link)]">
                         {record.id}
                       </span>
                       <Badge
@@ -3326,10 +2533,10 @@ export default function ChangeControlDetailPage() {
                         {record.status}
                       </Badge>
                     </div>
-                    <h1 className="mt-1 text-xl font-semibold leading-7 text-[var(--color-background-default-foreground)]">
+                    <h1 className="mt-[var(--spacing-component-xs)] text-xl font-medium leading-7 text-[var(--color-background-default-foreground)]">
                       {record.title}
                     </h1>
-                    <p className="mt-1 text-sm leading-[21px] text-[var(--color-text-secondary)]">
+                    <p className="mt-[var(--spacing-component-xs)] text-sm leading-normal text-[var(--color-text-secondary)]">
                       Change Owner: {record.owner}
                     </p>
                   </div>
@@ -3345,7 +2552,7 @@ export default function ChangeControlDetailPage() {
                 </div>
               </div>
 
-              <Card className="overflow-x-auto rounded-[var(--radius-lg)] px-5 py-4">
+              <Card className="overflow-x-auto rounded-[var(--radius-lg)] px-[var(--spacing-component-xl)] py-[var(--spacing-component-lg)]">
                 <Stepper
                   steps={recordProgressSteps}
                   currentStep={currentStep}
@@ -3385,7 +2592,7 @@ export default function ChangeControlDetailPage() {
               {showEvidence && <EvidenceSection actions={visibleChangeActions} />}
 
               {record.status === "Closed" && (
-                <div className="flex items-center gap-2 rounded-[var(--radius-lg)] border border-[var(--color-border-success)] bg-[var(--color-status-success-subtle)] p-[var(--spacing-component-lg)] text-sm font-medium text-[var(--color-status-success-subtle-foreground)]">
+                <div className="flex items-center gap-[var(--spacing-component-sm)] rounded-[var(--radius-lg)] border border-[var(--color-border-success)] bg-[var(--color-status-success-subtle)] p-[var(--spacing-component-lg)] text-sm font-medium text-[var(--color-status-success-subtle-foreground)]">
                   <CheckCircle2 className="h-5 w-5 shrink-0" />
                   This Change Control is closed.
                 </div>

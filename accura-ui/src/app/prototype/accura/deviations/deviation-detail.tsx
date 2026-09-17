@@ -867,7 +867,7 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
         reasonRequired={signature.reasonRequired}
         reasonLabel={signature.reasonLabel}
         reasonPlaceholder="Add a comment..."
-        onSign={(receipt) => onSigned(receipt.meaning)}
+        onSign={(receipt) => onSigned(receipt.reason ?? "")}
       />
     </>
   )
