@@ -321,6 +321,50 @@ reviewer:` followed by the button `Sign as Sarah Johnson (QA)` (white, outlined,
 
 ---
 
+## 7b. Dialog — Electronic signature (Reject and Cancel)
+
+Captured 2026-09-16. One dialog serves both actions; only the description, the
+reason label and the confirm button differ.
+
+**When it opens.** Reject and Cancel from any open state, plus advancing from
+`In Review` and `In Approval` — the two gates the brief signs. `Done` at
+`Investigation In Progress` and `CAPA Pending` advances without it, and
+`Submit for Review` from `Draft` never did. See §10.32.
+
+**Header.** Title `Electronic Signature — 21 CFR Part 11`, then a line naming
+the consequence:
+
+| Action | Description |
+|---|---|
+| Reject | *Rejecting sends this deviation back one stage for rework and requires a mandatory reason and your electronic signature.* |
+| Cancel | *Cancelling requires a mandatory comment and your electronic signature.* |
+
+**Identity block** — three read-only inputs on a muted ground, two across then
+one full width:
+
+| Field | Observed |
+|---|---|
+| `Full Name` | `amit@accura.one` — an email, not a name (§10.29) |
+| `Role at Sign-off` | `—` (§10.30) |
+| `Time and Date` | `16-09-2026 11:18:24` — DD-MM-YYYY (§10.31) |
+
+**Inputs.**
+
+- `Reason for rejection` ✱ / `Reason for cancellation` ✱ — textarea, placeholder
+  `Add a comment...`
+- `Enter password` — masked input, placeholder `Enter your password`
+- Attestation checkbox: *By entering my credentials, I confirm that this action
+  complies with formal requirements as equivalent to my handwritten signature.*
+
+**Footer.** `Cancel` (quiet) · `Sign & reject` / `Sign & cancel` — solid green,
+rendering muted until the form is valid.
+
+> Confirms "send back **one stage**" in the product's own words, which settles
+> the question §13 left open about whether `In Approval` can return two stages.
+> It cannot.
+
+---
+
 ## 8. Screen — Deviation Audit Trail (drawer)
 
 Opens as a **right-side overlay** covering roughly a third of the viewport; the page behind dims
@@ -470,6 +514,33 @@ detail: a prototype built from the first capture alone would omit a mandatory fi
 
 **26. Three investigation fields are required** — `Risk analysis`, `Impact analysis`,
 `Root cause analysis` all carry the red asterisk. Neither brief marks any of them required.
+
+**29. `Full Name` in the signature dialog shows an email,** `amit@accura.one`.
+The same raw-identity problem as `RAISED BY` (§10.8), but on the field a
+regulator reads to know who signed.
+
+**30. `Role at Sign-off` is empty** — `—`. Part 11 §11.50 requires a signature
+to carry the signer's identity and the meaning of the signing; a blank role
+weakens the first half, and the deviation's own Signatures block does render
+roles elsewhere.
+
+**31. A third date format.** The dialog stamps `16-09-2026 11:18:24`
+(DD-MM-YYYY). The detail grid uses ISO, signatures use `Sep 11, 2026, 12:11 PM`,
+the registry uses `Oct 11, 2026`. Four formats in one module.
+
+**32. Which gates take a signature was never specified for the middle states.** The brief signs
+`In Review` (§13.9) and `In Approval` (Step 5, multi-signature with legal commitment statements).
+Step 3 exits on *"RCA & Impact Analysis complete → `CAPA Pending`"* and Step 4 on *"Action plan
+defined and CAPA linked … → `In Approval`"* — neither mentions signing, and §13.7 defines no
+declaration for either. The captures show a `Done` button at both states but not what it opens,
+so the product's behaviour here is unknown.
+
+Our prototype signed every non-Draft advance until 2026-09-16, which was our error rather than a
+reading of the brief. It now signs only the two prescribed gates; the other transitions are
+recorded in the audit trail with actor and timestamp, which is what §11.10(e) requires of the
+trail itself. **Open question for the PO:** some eQMS products do sign the investigation
+close-out, since declaring RCA complete is a quality assertion. If that is wanted, it is a brief
+change and needs a declaration written for it — not a silent addition.
 
 **11. `Risk Analysis` is its own top-level block,** separate from `Investigation Report`, although
 the brief groups both under the investigation stage.

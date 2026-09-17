@@ -281,6 +281,31 @@ Sources:
 - https://www.law.cornell.edu/cfr/text/21/11.70
 - https://www.law.cornell.edu/cfr/text/21/11.200
 
+## 4b. Master: the audit trail entry
+
+One treatment, three modules. `components/record-audit-drawer.tsx` renders it for Deviations and
+Documents; Training's `history-panel.tsx` renders the same entry inside its own sheet.
+
+Each entry, in this order:
+
+1. **Actor name** — `text-sm font-medium`.
+2. **Who and when, one line** — `role · account · timestamp`, `text-xs`, `--color-text-secondary`.
+   Timestamp in a `<time dateTime>`, UTC, seconds included.
+3. **The action** — `text-sm`, the module's own wording (`Status changed`, `Deviation created`).
+4. **The transition, as a `StateChange` pill** — `components/state-change.tsx`. Reads
+   `Status  ~~old~~ → new`: the old value struck through in danger text, the new value in the
+   direction's tone, the whole thing in a tinted rounded-full border. This mirrors the live
+   product's Assessment Audit Trail — it is observed, not invented.
+5. **Signature, only when one was taken** — `Signature recorded` badge, then the meaning.
+
+`direction` colours the pill: `forward` success, `backward` warning, `cancel` danger. Training
+only moves forward and omits it. Deviations derives it from `lifecycle` indices — a lower index is
+backward, `Cancelled` leaves the sequence. **A return rendered in green, with the stage it
+returned to struck out in red, reads as an approval.** That is why the prop exists.
+
+Do not print the record ID on every entry: the sheet description already names the record, and
+repeating it per row is most of what made the list long.
+
 ## 5. Master: RecordDetailLayout
 
 - Full-width shared application shell and page heading above the content.
@@ -314,8 +339,14 @@ Sources:
 
 ## Known component gaps — hand-rolled, and why
 
-Two patterns the design system cannot express. **Both are hand-rolled.** Logged so the next
-person finds a decision rather than a mystery — not a licence to hand-roll anything else.
+Patterns the design system cannot express, hand-rolled and logged so the next person finds a
+decision rather than a mystery — not a licence to hand-roll anything else.
+
+**This list is maintained, not closed. Add to it the moment you hand-roll something.** It said
+"two" until 2026-09-16, while a third had been rendering in Training for weeks — and the audit
+trail was redesigned from scratch because a stated count reads as a complete inventory. If you
+hand-roll a pattern and do not log it here, the next agent will not find it: private helpers in
+module files are invisible to every documented lookup path.
 
 **Segmented control** — *choose one of N, all options visible, and the choice changes the form.*
 
@@ -328,6 +359,12 @@ person finds a decision rather than a mystery — not a licence to hand-roll any
   `RadioGroup` is what the form actually wanted. **The trigger for building this component is a
   choice that *restructures the form beneath it*, not simply a choice with few options.** Ordinary
   single-select fields take `RadioGroup` or `Select`.
+
+**State change pill** — *`Status  ~~old~~ → new`, the audit trail transition.*
+
+- **No longer hand-rolled, and no longer a gap** — `components/state-change.tsx`, shared by the
+  audit drawer and Training's history panel. Logged here because it *was* one, privately, inside
+  `training/history-panel.tsx`, and that is what made it invisible. Anatomy in §4b.
 
 **Combobox option with a qualifier** — *`Amit Kothari · Quality Assurance` on one line.*
 
@@ -352,7 +389,7 @@ person finds a decision rather than a mystery — not a licence to hand-roll any
 Anything used twice lives in `prototype/accura/`, not in a page:
 
 `app-sidebar.tsx` · `row-click.ts` · `table-pagination.tsx` · `list-summary.tsx` ·
-`capa/capa-header.tsx`
+`capa/capa-header.tsx` · `components/state-change.tsx`
 
 **A convention that lives only as a local helper cannot be reused; it gets reinvented.**
 `RequiredLabel` existed as six identical private helpers, invisible from outside — which is how

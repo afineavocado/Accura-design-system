@@ -3,7 +3,7 @@
 import { use } from "react"
 
 import { DeviationDetail } from "../deviation-detail"
-import { seeds } from "../mock-data"
+import { useDeviation } from "../store"
 import { Unbuilt } from "../unbuilt"
 
 export default function DeviationDetailPage({
@@ -12,7 +12,7 @@ export default function DeviationDetailPage({
   params: Promise<{ key: string }>
 }) {
   const { key } = use(params)
-  const record = seeds.find((candidate) => candidate.key === key)
+  const record = useDeviation(key)
 
   if (!record)
     return (
