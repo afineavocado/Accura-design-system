@@ -28,15 +28,18 @@ import {
 } from "@untitledui/icons"
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Avatar } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { DatePicker } from "@/components/ui/date-picker"
 import { ElectronicSignatureModal } from "@/components/record-workflow"
+import {
+  RecordAuditDrawer,
+  type RecordAuditEvent,
+} from "@/components/record-audit-drawer"
+import type { StateChangeDirection } from "@/components/state-change"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
 import {
   Select,
   SelectContent,
@@ -44,14 +47,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Stepper } from "@/components/ui/stepper"
 import {
@@ -187,6 +182,34 @@ function stepDescription(
     default:
       return "—"
   }
+}
+
+/* The trail as the shared drawer wants it. Two things need translating:
+   the seeds carry display strings ("Sep 19, 2026 9:30 AM") with no zone, so
+   they are read as UTC rather than as local time and re-rendered by the
+   drawer; and direction is derived from the lifecycle index, so a backward
+   move would read as a return rather than an approval. */
+function auditEventsFor(record: ChangeControlRecord): RecordAuditEvent[] {
+  return visibleAuditTrailItems(record).map((item, index) => {
+    const parsed = Date.parse(`${item.timestamp} UTC`)
+    return {
+      id: `${record.id}-${index}`,
+      timestamp: Number.isNaN(parsed)
+        ? item.timestamp
+        : new Date(parsed).toISOString(),
+      name: item.actor,
+      action: item.action,
+      record: record.id,
+      fromStatus: item.from,
+      toStatus: item.to,
+    }
+  })
+}
+
+function transitionDirectionFor(from: string, to: string): StateChangeDirection {
+  const a = changeControlStatuses.indexOf(from as ChangeControlStatus)
+  const b = changeControlStatuses.indexOf(to as ChangeControlStatus)
+  return a > -1 && b > -1 && b < a ? "backward" : "forward"
 }
 
 function visibleAuditTrailItems(record: ChangeControlRecord) {
@@ -1842,82 +1865,6 @@ function FinalQaDecisionDialog({
   )
 }
 
-function AuditTrailSheet({
-  open,
-  onOpenChange,
-  items,
-}: {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  items: AuditTrailItem[]
-}) {
-  return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="max-w-[380px]">
-        <SheetHeader>
-          <SheetTitle>Audit trail</SheetTitle>
-          <SheetDescription>
-            Step-by-step user activity revealed up to the current workflow step.
-          </SheetDescription>
-        </SheetHeader>
-
-        <div className="flex-1 overflow-y-auto px-[var(--spacing-component-lg)]">
-          <div className="flex flex-col">
-            {items.length ? items.map((item, index) => (
-              <React.Fragment key={`${item.action}-${item.timestamp}-${index}`}>
-                <div className="py-[var(--spacing-component-lg)]">
-                  <div className="flex items-start gap-[var(--spacing-component-sm)]">
-                    <Avatar fallback={avatarFallback(item.actor)} name={item.actor} />
-                    <div className="min-w-0 flex-1">
-                      <div className="text-sm font-medium text-[var(--color-background-default-foreground)]">
-                        {item.actor}
-                      </div>
-                      <div className="mt-[var(--spacing-component-xs)] text-xs text-[var(--color-text-secondary)]">
-                        {item.timestamp}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-[var(--spacing-component-md)] pl-12 text-sm text-[var(--color-background-default-foreground)]">
-                    {item.action}
-                    {item.from && item.to && (
-                      <span className="mt-[var(--spacing-component-sm)] flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
-                        <Badge
-                          variant={changeControlStatusVariant[item.from]}
-                          shape="pill"
-                          size="md"
-                        >
-                          {item.from}
-                        </Badge>
-                        <span className="text-[var(--color-text-secondary)]">→</span>
-                        <Badge
-                          variant={changeControlStatusVariant[item.to]}
-                          shape="pill"
-                          size="md"
-                        >
-                          {item.to}
-                        </Badge>
-                      </span>
-                    )}
-                  </div>
-                </div>
-                {index < items.length - 1 && <Separator />}
-              </React.Fragment>
-            )) : (
-              <p className="py-[var(--spacing-component-lg)] text-sm leading-normal text-[var(--color-text-secondary)]">
-                No user activity has been recorded for this step yet.
-              </p>
-            )}
-          </div>
-        </div>
-
-        <SheetFooter>
-          <Button>Export audit report</Button>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
-  )
-}
-
 function ActionBar({
   status,
   onPrimary,
@@ -2075,7 +2022,6 @@ export default function ChangeControlDetailPage() {
   const [storedRecords, setStoredRecords] = React.useState<ChangeControlRecord[]>([])
   const [storedRecordsLoaded, setStoredRecordsLoaded] = React.useState(false)
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false)
-  const [auditOpen, setAuditOpen] = React.useState(false)
   const [qaDecision, setQaDecision] = React.useState<"approve" | "reject" | null>(
     null
   )
@@ -2539,14 +2485,11 @@ export default function ChangeControlDetailPage() {
                     </p>
                   </div>
 
-                  <Button
-                    variant="outline"
-                    className="self-start sm:self-auto"
-                    onClick={() => setAuditOpen(true)}
-                  >
-                    <Clock3 className="h-4 w-4" />
-                    View audit trail
-                  </Button>
+                  <RecordAuditDrawer
+                    record={record.id}
+                    events={auditEventsFor(record)}
+                    transitionDirection={transitionDirectionFor}
+                  />
                 </div>
               </div>
 
@@ -2640,11 +2583,6 @@ export default function ChangeControlDetailPage() {
           </section>
         </main>
 
-        <AuditTrailSheet
-          open={auditOpen}
-          onOpenChange={setAuditOpen}
-          items={visibleAuditTrailItems(record)}
-        />
         {qaDecision && (
           <QaDecisionDialog
             open={Boolean(qaDecision)}

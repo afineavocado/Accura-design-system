@@ -232,8 +232,11 @@ from. The section hides itself when empty.
 
 ### 5.7 Audit trail
 
-A right-hand `Sheet` titled *Audit trail*, newest first, filtered by `visibleAuditTrailItems()`.
-**It is this module's own sheet, not the shared `RecordAuditDrawer`** (§7.5).
+The shared `RecordAuditDrawer`, opened from *View audit trail* beside the record header. Entries
+follow the house pattern: actor, then timestamp, then the action, then a `StateChange` pill for the
+transition. Still filtered by `visibleAuditTrailItems()`, so no entry shows a step past the
+record's current status. Direction comes from the lifecycle index, and the footer's *Export Audit
+Report* is the shared one.
 
 ### 5.8 Action bar, per status
 
@@ -283,7 +286,10 @@ for the full list (multi-select) or record only the one department it asks for.
 **7.4 `--` and `-` as empty values.** The stepper uses `--`, Details uses `-`, and the rest of the
 product uses `—`. Three conventions in one module.
 
-**7.5 The audit trail is a fourth implementation.** Deviations and Documents share
+**7.5 The audit trail is a fourth implementation. FIXED 2026-09-17** — the module's own sheet is
+gone; the detail page renders `RecordAuditDrawer` with the house entry (§4b of
+`accura-design-patterns.md`) and the `StateChange` pill. Its seeds carry zoneless display strings,
+so they are read as UTC before the drawer reformats them. Original finding: Deviations and Documents share
 `RecordAuditDrawer`; Training has its own; this is a fourth. Since 2026-09-16 the shared one renders
 the house entry (name · role · account · timestamp, action, `StateChange` pill) and takes a
 `transitionDirection`. This module's `from`/`to` maps onto that directly.
