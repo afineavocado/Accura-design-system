@@ -4,6 +4,8 @@ import * as React from "react"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import {
+  Building,
+  Building2,
   CalendarDays,
   CheckCircle2,
   ChevronLeft,
@@ -11,6 +13,8 @@ import {
   CornerDownLeft,
   Download,
   FileCheck2,
+  FileText,
+  List as ListIcon,
   MessageSquare,
   Paperclip,
   Pencil,
@@ -19,13 +23,6 @@ import {
   User,
   X,
 } from "lucide-react"
-import {
-  Attachment01,
-  Building05,
-  Container,
-  File05,
-  List as ListIcon,
-} from "@untitledui/icons"
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
@@ -416,15 +413,19 @@ function DetailsSection({ record }: { record: ChangeControlRecord }) {
   return (
     <SectionCard
       id="details"
-      icon={<File05 className="size-5" />}
+      icon={<FileText className="size-5" />}
       title="Details"
       action={
         record.status === "Draft" ? (
-          <Button asChild variant="ghost" size="sm">
+          /* Outline, not ghost: a ghost button is invisible until hovered, and
+             on the tinted header band its hover fill (#f4f4f5 grey) blooms
+             against the green. Outline is what Deviations and Documents use
+             for an action inside a card header. */
+          <Button asChild variant="outline" size="sm">
             <Link
               href={`/prototype/accura/change-control/new?mode=edit&id=${encodeURIComponent(record.id)}`}
             >
-              <Pencil className="h-4 w-4" />
+              <Pencil className="size-4" />
               Edit Details
             </Link>
           </Button>
@@ -572,7 +573,7 @@ function SignedDepartmentCard({
     <div className="rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-background-subtle)] p-[var(--spacing-component-md)]">
       <div className="flex flex-col gap-[var(--spacing-component-md)] lg:flex-row lg:items-center lg:justify-between">
         <div className="flex min-w-0 flex-wrap items-center gap-[var(--spacing-component-sm)]">
-          <Container className="h-6 w-6 shrink-0 text-[var(--color-icon-muted)]" />
+          <Building className="size-5 shrink-0 text-[var(--color-icon-muted)]" />
           <div className="min-w-0 text-sm font-medium uppercase leading-snug text-[var(--color-background-default-foreground)]">
             {department} Department
           </div>
@@ -587,11 +588,11 @@ function SignedDepartmentCard({
 
         <div className="flex flex-wrap items-center gap-[var(--spacing-component-lg)] text-sm font-medium leading-none text-[var(--color-text-secondary)]">
           <span className="flex items-center gap-[var(--spacing-component-sm)]">
-            <User className="h-5 w-5 shrink-0 text-[var(--color-icon-muted)]" />
+            <User className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
             {isImpacted ? "Impact owner" : "Declared by"}: {signer}
           </span>
           <span className="flex items-center gap-[var(--spacing-component-sm)]">
-            <CalendarDays className="h-5 w-5 shrink-0 text-[var(--color-icon-muted)]" />
+            <CalendarDays className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
             Signed: {signedAt}
           </span>
         </div>
@@ -794,7 +795,7 @@ function AssessmentCard({
       >
       <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-md)]">
         <div className="flex min-w-0 items-center gap-[var(--spacing-component-md)]">
-          <Container className="h-6 w-6 shrink-0 text-[var(--color-icon-muted)]" />
+          <Building className="size-5 shrink-0 text-[var(--color-icon-muted)]" />
           <div className="min-w-0 text-sm font-medium uppercase leading-5 text-[var(--color-background-default-foreground)]">
             {assessment.department} Department
           </div>
@@ -872,12 +873,12 @@ function AssessmentCard({
           </div>
 
           <div className="flex items-center gap-[var(--spacing-component-sm)] text-sm font-medium text-[var(--color-background-default-foreground)]">
-            <ListIcon className="h-5 w-5 text-[var(--color-icon-muted)]" />
+            <ListIcon className="size-5 text-[var(--color-icon-muted)]" />
             Change actions
           </div>
 
           {stage === "actions" && (
-            <div className="overflow-x-auto rounded-[var(--radius-base)] border border-[var(--color-border-default)]">
+            <div className="overflow-x-auto rounded-[var(--radius-lg)] border border-[var(--color-border-default)]">
               <Table className="min-w-[920px]">
                 <TableHeader>
                   <TableRow className="hover:bg-transparent">
@@ -910,7 +911,7 @@ function AssessmentCard({
                           disabled
                           aria-label="Remove action"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="size-4" />
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -989,7 +990,7 @@ function AssessmentCard({
                             onClick={() => removeAction(draft.id)}
                             aria-label={`Remove action ${index + 1}`}
                           >
-                            <Trash2 className="h-4 w-4" />
+                            <Trash2 className="size-4" />
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -1017,7 +1018,7 @@ function AssessmentCard({
       {impactedSelected && !readOnly && (
         <div className="mt-[var(--spacing-component-xl)] flex flex-wrap justify-between gap-[var(--spacing-component-sm)]">
           <Button variant="outline" onClick={addAction}>
-            <Plus className="h-4 w-4" />
+            <Plus className="size-4" />
             Add Action
           </Button>
           <div className="flex gap-[var(--spacing-component-sm)]">
@@ -1145,7 +1146,7 @@ function ImpactAssessmentSection({
   return (
     <SectionCard
       id="impact-assessment"
-      icon={<Building05 className="size-5" />}
+      icon={<Building2 className="size-5" />}
       title="Affected Departments & Impact Assessment"
       description={
         record.status === "Draft"
@@ -1260,7 +1261,7 @@ function ChangeActionsSection({
           >
             <div className="flex flex-col gap-[var(--spacing-component-md)] lg:flex-row lg:items-center lg:justify-between">
               <div className="flex min-w-0 items-center gap-[var(--spacing-component-sm)]">
-                <Container className="h-6 w-6 shrink-0 text-[var(--color-icon-muted)]" />
+                <Building className="size-5 shrink-0 text-[var(--color-icon-muted)]" />
                 <div className="min-w-0 text-sm font-medium uppercase leading-normal text-[var(--color-background-default-foreground)]">
                   {assessment.department} Department
                 </div>
@@ -1269,15 +1270,15 @@ function ChangeActionsSection({
               {!useActionCards && (
                 <div className="flex flex-wrap items-center gap-[var(--spacing-component-lg)] text-sm font-medium leading-none text-[var(--color-text-secondary)]">
                   <span className="flex items-center gap-[var(--spacing-component-sm)]">
-                    <ListIcon className="h-5 w-5 shrink-0 text-[var(--color-icon-muted)]" />
+                    <ListIcon className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
                     {formatActionCount(actions.length)}
                   </span>
                   <span className="flex items-center gap-[var(--spacing-component-sm)]">
-                    <CalendarDays className="h-5 w-5 shrink-0 text-[var(--color-icon-muted)]" />
+                    <CalendarDays className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
                     Signed Sep 15, 2026
                   </span>
                   <span className="flex items-center gap-[var(--spacing-component-sm)]">
-                    <User className="h-5 w-5 shrink-0 text-[var(--color-icon-muted)]" />
+                    <User className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
                     Impact owner: {assessment.signer ?? "Department owner"}
                   </span>
                 </div>
@@ -1297,7 +1298,7 @@ function ChangeActionsSection({
                 ))}
               </div>
             ) : (
-              <div className="overflow-x-auto rounded-[var(--radius-base)] border border-[var(--color-border-default)]">
+              <div className="overflow-x-auto rounded-[var(--radius-lg)] border border-[var(--color-border-default)]">
                 <Table className="min-w-[780px]">
                   <TableHeader>
                     <TableRow className="hover:bg-transparent">
@@ -1310,10 +1311,10 @@ function ChangeActionsSection({
                   </TableHeader>
                   <TableBody>
                     {actions.map((action, index) => (
-                      <TableRow key={action.id} className="h-12">
-                        <TableCell className="h-12 py-0">{index + 1}</TableCell>
-                        <TableCell className="h-12 py-0">{action.title}</TableCell>
-                        <TableCell className="h-12 py-0">
+                      <TableRow key={action.id}>
+                        <TableCell>{index + 1}</TableCell>
+                        <TableCell>{action.title}</TableCell>
+                        <TableCell>
                           <div className="flex items-center gap-[var(--spacing-component-sm)]">
                             <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-muted)] text-xs font-medium text-[var(--color-surface-muted-foreground)]">
                               {avatarFallback(action.owner)}
@@ -1321,10 +1322,10 @@ function ChangeActionsSection({
                             <span>{action.owner}</span>
                           </div>
                         </TableCell>
-                        <TableCell className="h-12 whitespace-nowrap py-0">
+                        <TableCell className="whitespace-nowrap">
                           {action.dueDate}
                         </TableCell>
-                        <TableCell className="h-12 py-0">
+                        <TableCell>
                           <PriorityBadge priority={action.priority} />
                         </TableCell>
                       </TableRow>
@@ -1485,16 +1486,16 @@ function ActionExecutionCard({
 
       <div className="mt-[var(--spacing-component-md)] flex flex-wrap items-center gap-[var(--spacing-component-lg)] text-sm text-[var(--color-text-secondary)]">
         <span className="flex items-center gap-[var(--spacing-component-sm)]">
-          <User className="h-4 w-4 shrink-0 text-[var(--color-icon-muted)]" />
+          <User className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
           Owner: {action.owner}
         </span>
         <span className="flex items-center gap-[var(--spacing-component-sm)]">
-          <CalendarDays className="h-4 w-4 shrink-0 text-[var(--color-icon-muted)]" />
+          <CalendarDays className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
           Due: {action.dueDate}
         </span>
         {action.completedAt && (
           <span className="flex items-center gap-[var(--spacing-component-sm)]">
-            <Clock3 className="h-4 w-4 shrink-0 text-[var(--color-icon-muted)]" />
+            <Clock3 className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
             Completed &amp; Signed: {action.completedAt}
           </span>
         )}
@@ -1502,7 +1503,7 @@ function ActionExecutionCard({
 
       <div className="mt-[var(--spacing-component-lg)] flex flex-col gap-[var(--spacing-component-sm)]">
         <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)] text-sm text-[var(--color-text-secondary)]">
-          <Paperclip className="h-4 w-4 shrink-0 text-[var(--color-icon-muted)]" />
+          <Paperclip className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
           Evidences:
           {evidenceFiles.map((file) => (
             <span
@@ -1517,7 +1518,7 @@ function ActionExecutionCard({
                   onClick={() => removeEvidenceFile(file)}
                   className="text-[var(--color-icon-muted)] hover:text-[var(--color-background-default-foreground)]"
                 >
-                  <X className="h-3 w-3" />
+                  <X className="size-3" />
                 </button>
               )}
             </span>
@@ -1526,7 +1527,7 @@ function ActionExecutionCard({
 
         <div className="flex flex-col gap-[var(--spacing-component-xs-plus)] text-sm text-[var(--color-text-secondary)]">
           <span className="flex items-center gap-[var(--spacing-component-sm)]">
-            <MessageSquare className="h-4 w-4 shrink-0 text-[var(--color-icon-muted)]" />
+            <MessageSquare className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
             Comments:
           </span>
           {comments.map((comment, commentIndex) => (
@@ -1568,7 +1569,7 @@ function ActionExecutionCard({
                     onClick={() => fileInputRef.current?.click()}
                     className="flex size-7 shrink-0 items-center justify-center text-[var(--color-icon-muted)] hover:text-[var(--color-background-default-foreground)]"
                   >
-                    <Plus className="h-4 w-4" />
+                    <Plus className="size-4" />
                   </button>
                 </TooltipTrigger>
                 <TooltipContent>Upload evidences</TooltipContent>
@@ -1589,7 +1590,7 @@ function ActionExecutionCard({
                     onClick={sendComment}
                     className="flex size-7 shrink-0 items-center justify-center text-[var(--color-icon-muted)] hover:text-[var(--color-background-default-foreground)]"
                   >
-                    <CornerDownLeft className="h-4 w-4" />
+                    <CornerDownLeft className="size-4" />
                   </button>
                 </TooltipTrigger>
                 <TooltipContent>Send</TooltipContent>
@@ -1669,7 +1670,7 @@ function ActionExecutionSection({
         {actionGroups.map(({ assessment, actions: groupActions }) => (
           <div key={assessment.department} className="flex flex-col gap-[var(--spacing-component-md)]">
             <div className="flex min-w-0 items-center gap-[var(--spacing-component-sm)]">
-              <Container className="h-6 w-6 shrink-0 text-[var(--color-icon-muted)]" />
+              <Building className="size-5 shrink-0 text-[var(--color-icon-muted)]" />
               <div className="min-w-0 text-sm font-medium uppercase leading-normal text-[var(--color-background-default-foreground)]">
                 {assessment.department} Department
               </div>
@@ -1719,7 +1720,7 @@ function EvidenceSection({ actions }: { actions: ChangeAction[] }) {
   return (
     <SectionCard
       id="evidence"
-      icon={<Attachment01 className="size-5" />}
+      icon={<Paperclip className="size-5" />}
       title="Evidence"
       description="Consolidated view of all evidence attached to Change Actions across departments."
     >
@@ -1727,10 +1728,10 @@ function EvidenceSection({ actions }: { actions: ChangeAction[] }) {
         {items.map((item, index) => (
           <div
             key={`${item.fileName}-${index}`}
-            className="flex items-center justify-between gap-[var(--spacing-component-sm)] rounded-[var(--radius-base)] border border-[var(--color-border-default)] p-[var(--spacing-component-md)]"
+            className="flex items-center justify-between gap-[var(--spacing-component-sm)] rounded-[var(--radius-lg)] border border-[var(--color-border-default)] p-[var(--spacing-component-md)]"
           >
             <div className="flex min-w-0 items-start gap-[var(--spacing-component-sm)]">
-              <FileCheck2 className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-icon-muted)]" />
+              <FileCheck2 className="mt-0.5 size-5 shrink-0 text-[var(--color-icon-muted)]" />
               <div className="min-w-0">
                 <div className="truncate text-sm font-medium text-[var(--color-background-default-foreground)]">
                   {item.fileName}
@@ -1740,7 +1741,7 @@ function EvidenceSection({ actions }: { actions: ChangeAction[] }) {
                 </div>
               </div>
             </div>
-            <Download className="h-4 w-4 shrink-0 text-[var(--color-icon-muted)]" />
+            <Download className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
           </div>
         ))}
       </div>
@@ -1918,7 +1919,7 @@ function ActionBar({
           Awaiting QA approval of the proposed change actions.
         </p>
         <div className="flex flex-wrap justify-end gap-[var(--spacing-component-sm)]">
-          <Button variant="destructive" onClick={onQaReject}>
+          <Button variant="destructiveSecondary" onClick={onQaReject}>
             QA Reject
           </Button>
           <Button onClick={onQaApprove}>QA Approve</Button>
@@ -1950,7 +1951,7 @@ function ActionBar({
           Awaiting final QA approval and closure.
         </p>
         <div className="flex flex-wrap justify-end gap-[var(--spacing-component-sm)]">
-          <Button variant="destructive" onClick={onFinalQaReject}>
+          <Button variant="destructiveSecondary" onClick={onFinalQaReject}>
             Reject
           </Button>
           <Button onClick={onFinalQaApprove}>Approve &amp; Close</Button>
@@ -2224,20 +2225,24 @@ export default function ChangeControlDetailPage() {
   }))
   const showActions =
     atOrAfter(currentRecord.status, "QA Approval") || visibleChangeActions.length > 0
-  const showEvidence = atOrAfter(currentRecord.status, "Action in Progress")
+  /* EvidenceSection renders nothing until an action completes with files, so
+     deriving the nav item from status alone left the rail's last button
+     pointing at an element that does not exist. */
+  const showEvidence =
+    evidenceEntriesFromActions(visibleChangeActions).length > 0
 
   const scrollItems = [
-    { id: "details", label: "Details", icon: File05 },
+    { id: "details", label: "Details", icon: FileText },
     {
       id: "impact-assessment",
       label: "Affected Departments & Impact Assessment",
-      icon: Building05,
+      icon: Building2,
     },
     ...(showActions
       ? [{ id: "change-actions", label: "Change Actions", icon: ListIcon }]
       : []),
     ...(showEvidence
-      ? [{ id: "evidence", label: "Evidence", icon: Attachment01 }]
+      ? [{ id: "evidence", label: "Evidence", icon: Paperclip }]
       : []),
   ]
 
@@ -2470,7 +2475,7 @@ export default function ChangeControlDetailPage() {
                   className="h-auto w-fit p-0 text-sm no-underline hover:no-underline"
                 >
                   <Link href="/prototype/accura/change-control">
-                    <ChevronLeft className="h-4 w-4" />
+                    <ChevronLeft className="size-4" />
                     Back to Change Controls
                   </Link>
                 </Button>
@@ -2505,7 +2510,7 @@ export default function ChangeControlDetailPage() {
                 </div>
               </div>
 
-              <Card className="overflow-x-auto rounded-[var(--radius-lg)] px-[var(--spacing-component-xl)] py-[var(--spacing-component-lg)]">
+              <Card className="overflow-x-auto rounded-[var(--radius-lg)] px-[var(--spacing-component-lg)] py-[var(--spacing-component-md)]">
                 <Stepper
                   steps={recordProgressSteps}
                   currentStep={currentStep}
@@ -2546,7 +2551,7 @@ export default function ChangeControlDetailPage() {
 
               {record.status === "Closed" && (
                 <div className="flex items-center gap-[var(--spacing-component-sm)] rounded-[var(--radius-lg)] border border-[var(--color-border-success)] bg-[var(--color-status-success-subtle)] p-[var(--spacing-component-lg)] text-sm font-medium text-[var(--color-status-success-subtle-foreground)]">
-                  <CheckCircle2 className="h-5 w-5 shrink-0" />
+                  <CheckCircle2 className="size-4 shrink-0" />
                   This Change Control is closed.
                 </div>
               )}
