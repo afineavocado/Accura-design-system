@@ -11,6 +11,22 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-17 — Three new checks, and the process each one encodes
+
+**Added**
+
+- **`docs/skills/accura-screen-audit/`** — how to audit a prototype screen: enumerate every state
+  before looking at any of them, grep for slot overrides (the highest-yield check, and the one no
+  token audit can see), one icon library, read each token name as a sentence and ask whether it is
+  true, and check hover, empty and long content in a browser. Written because three of my own
+  audits passed a page whose tables overrode `TableCell`'s padding four times.
+- **`docs/skills/accura-token-change/`** — the order a token has to land in: export first, runtime
+  second with a dark value, then all three documents, then `token-parity`. Five tokens were added
+  this week and each reached `tokens.css` and the CHANGELOG and nowhere else.
+- **`change-control/check-mock-data.mjs`** — turns each sentence of the Change Control process
+  brief into a rule the seed data must satisfy. Node imports the `.ts` directly, so it reads the
+  same module the screens do. Proved by planting three failures.
+
 ### 2026-09-17 — Label gets a spec, the pairing check runs both ways, `tokens/output/` stops pretending
 
 **Added**

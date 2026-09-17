@@ -18,7 +18,7 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 | **`CLAUDE.md`** | Agent instructions — where values come from, how to verify, what not to touch. Deliberately does not repeat this file. |
 | **`accura-decisions.md`** | The theme reference — every token value, every deviation from Agentic, the reasoning, and 12 logged questions — 4 now decided. |
 | **`docs/design-system-rules.md`** | The design rules, with Accura's values inline. Reasoning and open questions live in `accura-decisions.md`. |
-| `docs/skills/` | 7 process skills — audit, build, token binding, documentation, Storybook, component implementation, prototype build. |
+| `docs/skills/` | 9 process skills — component audit, build, token binding, documentation, Storybook, component implementation, prototype build (patterns + execution), **screen audit**, **token change**. |
 | `docs/component-specs/` | 39 spec files — 37 components, plus `_template.md` and `Form-shared.md`. |
 | `docs/machine-readable/` | 38 `meta.json` artifacts, component directory, quick reference, validation scripts. |
 | `docs/tracking/` | Storybook and audit status. ⚠️ Reflects Agentic's status, not Accura's. |
@@ -56,10 +56,10 @@ Storybook uses 6007 because Agentic's uses 6006, so both can run side by side.
 
 | | |
 |---|---|
-| **Every component** | Storybook, **:6007** — 37 stories. This is the design system. |
-| **The prototypes** | **:3001** — three modules, one app. `/` redirects to CAPA. |
+| **Every component** | Storybook, **:6007** — 38 stories. This is the design system. |
+| **The prototypes** | **:3001** — seven modules, one app. `/` redirects to CAPA. |
 
-**All three share one sidebar**, so you can click between them. Add a module to `platformNav`
+**They share one sidebar**, so you can click between them. Add a module to `platformNav`
 in `prototype/accura/app-sidebar.tsx`, never in a page.
 
 ```
@@ -70,6 +70,10 @@ in `prototype/accura/app-sidebar.tsx`, never in a page.
 /prototype/accura/training/courses         Courses — list, detail, create, edit
 /prototype/accura/training/assessments     Assessments — list, detail
 /prototype/accura/training/review          Review queue — approve / reject with e-signature
+/prototype/accura/deviations               Deviations — listing, create, detail across seven states
+/prototype/accura/change-control           Change Control — listing, create, detail across seven states
+/prototype/accura/settings                 Settings — organisation, record numbering, users
+/prototype/accura/knowledge-hub            Knowledge Hub
 ```
 
 | Module | Spec | State |
@@ -77,6 +81,9 @@ in `prototype/accura/app-sidebar.tsx`, never in a page.
 | **CAPA** | `flow/capa-prototype-spec.md` | listing, create, detail |
 | **Training** | `flow/training-module.md` | five tabs built. Trainee screens and the workflow behind Review are not |
 | **Documents** | `accura-ui/src/app/prototype/accura/documents/README.md` | one happy path: Draft → In Review → In Approval → Approved |
+| **Deviations** | `flow/deviation-spec.md` | listing, create, detail across seven states, transitions signed at two gates |
+| **Change Control** | `flow/change-control-spec.md` | listing, create, detail across seven states. `check-mock-data.mjs` validates the seed data against the process brief |
+| **Settings** | `flow/Setting Module/` | organisation settings, record numbering, users |
 
 **Before extending any prototype, read both skill files in
 [`docs/skills/accura-prototype-build/`](docs/skills/accura-prototype-build/):

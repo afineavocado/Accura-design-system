@@ -53,7 +53,19 @@ and report numbers rather than impressions.**
 - ⚠️ `npm run build` deletes `.next/dev` under a running dev server. Stop dev first, or every
   route 500s with `ENOENT … routes-manifest.json`, which reads like a code error and is not.
 
-Audit against what rendered, not against what you wrote, and compare with the sibling screen that already does the same job.
+Audit against what rendered, not against what you wrote, and compare with the sibling screen that
+already does the same job. The process is
+`docs/skills/accura-screen-audit/accura-screen-audit.md` — it exists because three of my own audits
+passed a page whose tables overrode the component's padding four times.
+
+The gates, and what each one cannot see:
+
+| Command | Checks | Blind to |
+|---|---|---|
+| `node docs/machine-readable/drift-check.mjs` | 6 rules: llms.txt paths · component counts · ramp tables · Figma dark · components↔stories↔specs↔meta · restated px | anything not restated in prose |
+| `node tokens/token-parity.mjs` | export vs `tokens.css`, aliases resolved, plus CSS-only tokens | whether a token is *used* correctly |
+| `node accura-ui/audit-styles.mjs <urls>` | every rendered **text** style, side by side | padding, radius, borders, gaps, icons, structure |
+| `node src/app/prototype/accura/change-control/check-mock-data.mjs` | seed data against that module's process brief | the other modules — only Change Control has one |
 
 ## Scope
 
@@ -127,12 +139,15 @@ Desktop stashed it on a branch switch. If it matters, commit it.
 
 ## Known debt — do not restate it as done
 
-- **Verification:** `0` `.examples.tsx` · `4 of 37` stories verified · `0` R1–R8 audits ·
-  `chat-bubble.meta.json` orphan. Full picture in `docs/tracking/AI-Readiness.md`.
+- **Verification:** `0` `.examples.tsx` · `3 of 38` stories verified · `0` R1–R8 audits.
+  Full picture in `docs/tracking/AI-Readiness.md`.
 - **Fork drift:** 11 of 39 components differ from `agentic-ui` and only `label.tsx` has a known
   reason. The rest are unaudited — diff before assuming one matches.
-- `RecordRowAction.stories.tsx` has no `meta.json`, so `drift-check` rule 5 fails. Deferred
-  deliberately until the modules are finished.
+- **Two orphans in `drift-check` rule 5**, both real: `RecordRowAction.stories.tsx` has no
+  `meta.json` (deferred deliberately until the modules are finished), and `chat-bubble` has a
+  component and a `meta.json` but **no story** — the story was deleted and the metadata outlived it.
+- **One date format is written down and not yet applied** — `accura-design-patterns.md` → *Data ·
+  Dates and times*, marked for a single pass once the prototypes are done. Four renderings ship today.
 
 > **Accura scores 9 ✅ · 3 🟡 · 1 ❌ — it does not pass.** Agentic's 13 ✅ certifies *Agentic's*
 > file. Never restate an inherited ✅ as if it were earned here.
