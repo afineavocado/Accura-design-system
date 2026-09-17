@@ -31,6 +31,18 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 **Note.** The merge notes for Change Control also asked for `success` and `blue` to be rewired to
 `color/border/success` and `color/border/info`. Not done: unlike the above, that changes badges
 already rendering in every module, and it needs a decision rather than an import.
+### 2026-09-17 — Settings item in the shared sidebar now links to the Setting Module
+
+**Changed**
+
+- **`prototype/accura/app-sidebar.tsx`: the footer item was `"Setting"` with `href: "#"`; it is
+  now `"Settings"` with `href: "/prototype/accura/settings"`.** The label now matches the page
+  title, and the item opens the new Setting Module prototype instead of doing nothing. Its active
+  state follows the existing rule (the href and everything under it), so it stays lit on every
+  settings page. Any module sharing the sidebar picks this up; nothing else in the file changed.
+- The Setting Module keeps its own log at `flow/Setting Module/Setting_Module_Log.md`. It includes
+  a prototype-only row menu (`settings/row-menu.tsx`) — **not** a design-system component. If a
+  second screen needs it, it becomes a `DropdownMenu` in `components/ui/` and gets an entry here.
 ### 2026-09-16 — One audit trail, and a state-change pill that knows which way the record moved
 
 **Added**
