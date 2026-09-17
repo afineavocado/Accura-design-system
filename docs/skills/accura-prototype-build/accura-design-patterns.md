@@ -229,6 +229,42 @@ The hook clamps `page` into range when a filtered set shrinks.
 - Comment *why* a row exists when it demonstrates something — a role with `0` users, a
   self-signed record.
 
+### Dates and times — one format
+
+**Store ISO 8601.** `YYYY-MM-DD` for a date, `2026-09-20T08:45:00Z` for a timestamp. It sorts, it
+is unambiguous, and it is the only form a view can reformat. This is the *"store data, not
+display"* rule above, stated for the case that keeps breaking it.
+
+| | Format | Example |
+|---|---|---|
+| Date | `en-US`, short month, numeric day | `Oct 1, 2026` |
+| Timestamp | the same date, then 24-hour time, seconds, explicit zone | `Sep 20, 2026, 08:45:00 UTC` |
+| Empty | the em dash | `—` |
+
+A **named month** rather than digits: `03/04/2026` reads as two different days depending on which
+side of the Atlantic the auditor sits, and these are regulated records. **Seconds and the zone
+label** stay on timestamps — Part 11 §11.50 wants the execution time legible. Numeric day rather
+than `01`, because a leading zero buys nothing in prose.
+
+Use `en-US`, not `en-GB`: en-GB abbreviates September to `Sept` and en-US to `Sep`, which is why
+the same month is spelled two ways today depending on which function rendered it.
+
+> ⚠️ **Not yet applied. Fix when the prototypes are done, in one pass** — it touches four modules
+> and two shared components, so doing it mid-build means re-measuring screens that are still
+> moving. As of 2026-09-17 the product has four renderings and two storage shapes:
+>
+> | Where | Renders | Change |
+> |---|---|---|
+> | Deviations `displayDate` | `Oct 01, 2026` | `day: "2-digit"` → `"numeric"` |
+> | Documents `displayDate` | `Oct 1, 2026` | ✓ already correct |
+> | Documents `displayTime` | `20 Sept 2026, 08:45` | → `en-US`, add seconds |
+> | `RecordAuditDrawer` | `20 Sept 2026, 08:45:00 UTC` | → `en-US` (shared: moves three modules) |
+> | Documents empty date | `Not set` | → `—` |
+> | CAPA, Change Control | store `"Oct 1, 2026"` | → store ISO |
+>
+> Change Control's 28 **audit timestamps** were converted to ISO on 2026-09-17; its display dates
+> and its seven comment timestamps were not.
+
 ---
 
 ## Record masters

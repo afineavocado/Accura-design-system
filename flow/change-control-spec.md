@@ -285,7 +285,8 @@ cut. A one-line treatment (first chip + `+N more`) was mocked up and deferred.
 the user never selected. Fine as seeding, wrong as behaviour — the create form should either ask
 for the full list (multi-select) or record only the one department it asks for.
 
-**7.4 `--` and `-` as empty values.** The stepper uses `--`, Details uses `-`, and the rest of the
+**7.4 `--` and `-` as empty values. FIXED 2026-09-17** — both now render `—`, and empty optional
+fields save as `undefined` rather than `"-"`. Original finding: The stepper uses `--`, Details uses `-`, and the rest of the
 product uses `—`. Three conventions in one module.
 
 **7.5 The audit trail is a fourth implementation. FIXED 2026-09-17** — the module's own sheet is
@@ -319,6 +320,12 @@ is the fix; it is how the signature dialog's reset was written.
 **7.10 No rejection destination.** QA Reject and final Reject exist as buttons, but no status
 represents a rejected record and no code moves one backwards. Where does a rejected change control
 go? *Likely answered in `backlog.md`.*
+
+**7.14 Display dates are stored, not derived.** `dateRaised` and `targetImplementationDate` hold
+`"Aug 28, 2026"`, so they cannot be sorted or reformatted. The audit timestamps were converted to
+ISO on 2026-09-17; these were not. One format for the whole product is now written down in
+`accura-design-patterns.md` → *Data · Dates and times*, **marked to apply in one pass once the
+prototypes are finished** — it moves four modules and two shared components.
 
 **7.11 Six duplicate `Anna Hoang` entries** in the create form's owner list — three identical
 labels with different values and mismatched initials (`CH` for Anna Hoang).
