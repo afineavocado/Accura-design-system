@@ -6,21 +6,17 @@ import { useParams, useRouter } from "next/navigation"
 import {
   Building,
   Building2,
-  CalendarDays,
   CheckCircle2,
   ChevronLeft,
-  Clock3,
   CornerDownLeft,
   Download,
   FileCheck2,
   FileText,
   List as ListIcon,
-  MessageSquare,
   Paperclip,
   Pencil,
   Plus,
   Trash2,
-  User,
   X,
 } from "lucide-react"
 
@@ -211,10 +207,6 @@ function visibleAuditTrailItems(record: ChangeControlRecord) {
 
     return (statusOrder.get(item.to) ?? 0) <= currentStatusIndex
   })
-}
-
-function avatarFallback(name: string) {
-  return name.trim().slice(0, 2).toUpperCase()
 }
 
 function priorityDotColor(priority?: string) {
@@ -572,7 +564,7 @@ function SignedDepartmentCard({
   const isImpacted = type === "impacted"
 
   return (
-    <Card className="gap-[var(--spacing-component-sm)] bg-[var(--color-background-subtle)]">
+    <Card className="gap-[var(--spacing-component-sm)]">
       <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
         <Building className="size-5 shrink-0 text-[var(--color-icon-muted)]" />
         {/* Sentence case, and no "Department" suffix — the section is already
@@ -585,7 +577,10 @@ function SignedDepartmentCard({
             word the UI invented that claims more than what happened: the
             department declared an impact and signed its assessment, it did not
             approve the change. Impacted is also not a success, so no green. */}
-        <Badge variant={isImpacted ? "secondary" : "outline"} shape="pill" size="md">
+        {/* Option B: opposite weights. These were `secondary` and `outline` —
+            a #f4f4f5 fill against a transparent one, same border, same text,
+            indistinguishable at a glance. */}
+        <Badge variant={isImpacted ? "blue" : "dashed"} shape="pill" size="md">
           {isImpacted ? "Impacted" : "Not impacted"}
         </Badge>
         {isImpacted && !!actionCount && (
@@ -1281,14 +1276,14 @@ function ChangeActionsSection({
              that no table row can hold. */
           <Card
             key={assessment.department}
-            className="gap-[var(--spacing-component-sm)] bg-[var(--color-background-subtle)]"
+            className="gap-[var(--spacing-component-sm)]"
           >
             <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
               <Building className="size-5 shrink-0 text-[var(--color-icon-muted)]" />
               <span className="min-w-0 text-[15px] font-medium leading-snug text-[var(--color-background-default-foreground)]">
                 {assessment.department}
               </span>
-              <Badge variant="secondary" shape="pill" size="md">
+              <Badge variant="blue" shape="pill" size="md">
                 Impacted
               </Badge>
               <span className="ml-auto text-xs text-[var(--color-text-secondary)]">
@@ -1304,11 +1299,10 @@ function ChangeActionsSection({
 
             {useActionCards ? (
               <div className="mt-[var(--spacing-component-sm)] flex flex-col gap-[var(--spacing-component-md)]">
-                {actions.map((action, index) => (
+                {actions.map((action) => (
                   <ActionExecutionCard
                     key={action.id}
                     action={action}
-                    index={index}
                     recordId={recordId}
                     onChange={() => {}}
                   />
@@ -1316,13 +1310,13 @@ function ChangeActionsSection({
               </div>
             ) : (
               <div className="flex flex-col">
-                {actions.map((action, index) => (
+                {actions.map((action) => (
                   <div
                     key={action.id}
                     className="flex items-start gap-[var(--spacing-component-md)] border-t border-[var(--color-border-default)] py-[var(--spacing-component-md)]"
                   >
-                    <span className="min-w-4 text-sm text-[var(--color-text-secondary)]">
-                      {index + 1}
+                    <span className="shrink-0 text-sm font-medium text-[var(--color-brand-primary)]">
+                      {action.id}
                     </span>
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
@@ -1409,12 +1403,10 @@ function ActionExecutionSignatureDialog({
 
 function ActionExecutionCard({
   action,
-  index,
   recordId,
   onChange,
 }: {
   action: ChangeAction
-  index: number
   recordId: string
   onChange: (next: ChangeAction) => void
 }) {
@@ -1497,8 +1489,13 @@ function ActionExecutionCard({
       ].join(" ")}
     >
       <div className="flex flex-wrap items-start justify-between gap-[var(--spacing-component-sm)]">
-        <div className="min-w-0 text-sm font-medium leading-normal text-[var(--color-background-default-foreground)]">
-          {index + 1}. {action.title}
+        <div className="flex min-w-0 items-baseline gap-[var(--spacing-component-sm)]">
+          <span className="shrink-0 text-sm font-medium text-[var(--color-brand-primary)]">
+            {action.id}
+          </span>
+          <span className="min-w-0 text-sm font-medium leading-normal text-[var(--color-background-default-foreground)]">
+            {action.title}
+          </span>
         </div>
         <div className="flex shrink-0 items-center gap-[var(--spacing-component-xs)]">
           <PriorityBadge priority={action.priority} />
@@ -1506,65 +1503,57 @@ function ActionExecutionCard({
         </div>
       </div>
 
-      <div className="mt-[var(--spacing-component-md)] flex flex-wrap items-center gap-[var(--spacing-component-lg)] text-sm text-[var(--color-text-secondary)]">
-        <span className="flex items-center gap-[var(--spacing-component-sm)]">
-          <User className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
-          Owner: {action.owner}
-        </span>
-        <span className="flex items-center gap-[var(--spacing-component-sm)]">
-          <CalendarDays className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
-          Due: {action.dueDate}
-        </span>
-        {action.completedAt && (
-          <span className="flex items-center gap-[var(--spacing-component-sm)]">
-            <Clock3 className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
-            Completed &amp; Signed: {action.completedAt}
-          </span>
-        )}
-      </div>
+      {/* One byline. Owner, Due and Completed & Signed each used to carry a
+          label the value already implies, and an icon competing with the
+          status badge. */}
+      <p className="text-xs text-[var(--color-text-secondary)]">
+        {action.owner} · due {action.dueDate}
+        {action.completedAt && ` · completed ${action.completedAt}`}
+      </p>
 
       <div className="mt-[var(--spacing-component-lg)] flex flex-col gap-[var(--spacing-component-sm)]">
-        <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)] text-sm text-[var(--color-text-secondary)]">
-          <Paperclip className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
-          Evidences:
-          {evidenceFiles.map((file) => (
-            <span
-              key={file}
-              className="inline-flex items-center gap-[var(--spacing-component-xs-plus)] rounded-full border border-[var(--color-border-default)] bg-[var(--color-background-default)] px-[var(--spacing-component-sm)] py-[var(--spacing-component-xs)] text-xs font-medium text-[var(--color-background-default-foreground)]"
-            >
-              {file}
-              {!readOnly && (
-                <button
-                  type="button"
-                  aria-label={`Remove ${file}`}
-                  onClick={() => removeEvidenceFile(file)}
-                  className="text-[var(--color-icon-muted)] hover:text-[var(--color-background-default-foreground)]"
-                >
-                  <X className="size-3" />
-                </button>
-              )}
-            </span>
-          ))}
-        </div>
+        {evidenceFiles.length > 0 && (
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
+            {evidenceFiles.map((file) => (
+              <div
+                key={file}
+                className="flex items-center gap-[var(--spacing-component-sm)] rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-background-default)] px-[var(--spacing-component-md)] py-[var(--spacing-component-sm)]"
+              >
+                <FileCheck2 className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
+                <span className="min-w-0 flex-1 truncate text-sm text-[var(--color-background-default-foreground)]">
+                  {file}
+                </span>
+                {readOnly ? (
+                  <Download className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
+                ) : (
+                  <button
+                    type="button"
+                    aria-label={`Remove ${file}`}
+                    onClick={() => removeEvidenceFile(file)}
+                    className="shrink-0 text-[var(--color-icon-muted)] hover:text-[var(--color-background-default-foreground)]"
+                  >
+                    <X className="size-4" />
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
 
-        <div className="flex flex-col gap-[var(--spacing-component-xs-plus)] text-sm text-[var(--color-text-secondary)]">
-          <span className="flex items-center gap-[var(--spacing-component-sm)]">
-            <MessageSquare className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
-            Comments:
-          </span>
-          {comments.map((comment, commentIndex) => (
-            <p
-              key={`${comment.author}-${commentIndex}`}
-              className="pl-6 text-sm leading-normal text-[var(--color-background-default-foreground)]"
-            >
-              <span className="font-medium">{comment.author}</span>
-              {" · "}
-              {comment.timestamp}
-              {": "}
-              {comment.text}
-            </p>
-          ))}
-        </div>
+        {comments.length > 0 && (
+          <div className="flex flex-col gap-[var(--spacing-component-md)] border-l-2 border-[var(--color-border-default)] pl-[var(--spacing-component-md)]">
+            {comments.map((comment, commentIndex) => (
+              <div key={`${comment.author}-${commentIndex}`}>
+                <p className="text-xs text-[var(--color-text-secondary)]">
+                  {comment.author} · {comment.timestamp}
+                </p>
+                <p className="mt-[var(--spacing-component-xs)] text-sm leading-normal text-[var(--color-background-default-foreground)]">
+                  {comment.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {!readOnly && (
@@ -1695,14 +1684,14 @@ function ActionExecutionSection({
              comments and a signature. */
           <Card
             key={assessment.department}
-            className="gap-[var(--spacing-component-sm)] bg-[var(--color-background-subtle)]"
+            className="gap-[var(--spacing-component-sm)]"
           >
             <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
               <Building className="size-5 shrink-0 text-[var(--color-icon-muted)]" />
               <span className="min-w-0 text-[15px] font-medium leading-snug text-[var(--color-background-default-foreground)]">
                 {assessment.department}
               </span>
-              <Badge variant="secondary" shape="pill" size="md">
+              <Badge variant="blue" shape="pill" size="md">
                 Impacted
               </Badge>
               <span className="ml-auto text-xs text-[var(--color-text-secondary)]">
@@ -1713,11 +1702,10 @@ function ActionExecutionSection({
             </div>
 
             <div className="flex flex-col gap-[var(--spacing-component-md)]">
-              {groupActions.map((action, index) => (
+              {groupActions.map((action) => (
                 <ActionExecutionCard
                   key={action.id}
                   action={action}
-                  index={index}
                   recordId={recordId}
                   onChange={handleActionChange}
                 />
