@@ -332,11 +332,12 @@ function SectionHeader({
        name that means "a brand-tinted surface" rather than "this succeeded".
        The token was added for this on 2026-09-17. */
     <div className={`flex ${description ? "items-start" : "items-center"} gap-[var(--spacing-component-lg)] border-b border-[var(--color-border-default)] bg-[var(--color-surface-brand-subtle)] px-[var(--spacing-component-xl)] py-[var(--spacing-component-md)]`}>
-      {/* 20px glyph in a 32px tile, the same footprint as Avatar sm, at
-          radius/md like every other small control. It was a 24px glyph in a
-          40px tile at radius/base (12px), which read as a button and set the
-          header's height above its own title. */}
-      <div className="flex size-8 shrink-0 items-center justify-center rounded-[var(--radius-md)] border border-[var(--color-brand-secondary-hover)] bg-[var(--color-surface-default)] text-[var(--color-icon-brand)]">
+      {/* 20px glyph in a 32px tile at radius/sm. It was a 24px glyph in a 40px
+          tile at radius/base, which read as a button and set the header's
+          height above its own title. radius/md was tried in between and still
+          read too round at this size — nothing documents what a small icon
+          container should use, so this is a judgement, not a rule. */}
+      <div className="flex size-8 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-[var(--color-brand-secondary-hover)] bg-[var(--color-surface-default)] text-[var(--color-icon-brand)]">
         {icon}
       </div>
       <div className="min-w-0 flex-1">
