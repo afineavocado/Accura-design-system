@@ -47,7 +47,7 @@ L1 keeps cards anyway. The reasoning:
 - Seven curated folders is a fixed entry point, not a set of rows worth comparing or sorting.
 - The card is no longer a bare label — it carries a description and two counts, which is what made
   the earlier card grids fail review.
-- `demo-scope.md` locks scope to one happy path per module, and Knowledge Hub sits in the footer
+- Scope is locked to one happy path per module (`CLAUDE.md` → Scope), and Knowledge Hub sits in the footer
   navigation as a reference utility. Rebuilding its entry point as a table is post-demo work.
 
 Revisit if the folder set grows past roughly a dozen, or if folders gain a sortable attribute.

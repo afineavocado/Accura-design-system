@@ -69,6 +69,11 @@ The gates, and what each one cannot see:
 
 ## Scope
 
+**One agreed happy path per module.** Confirmed 2026-09-12. Do not draw every state of every
+screen; rejection, wrong-user actions, exceptions and alternative routes are deferred by decision,
+not forgotten. Capture at most one short note and carry on — do not investigate, ask follow-ups or
+design the branch. Each module's deferred list lives in its own `flow/<module>-spec.md`.
+
 - Build what was asked. Do not add screens, actions, data or flows nobody requested, and do not commit, push or deploy unless asked.
 - No em dash in the copywriting
 - When i said audit tokens, i mean all tokens : spacing, color, text style, font weight, typeface, components,.... everything must be correct and follow design system.
@@ -96,7 +101,7 @@ Work is not finished when the code runs. Each row is a thing that has gone stale
 | **How to work** — an order, a gate, a trap | `docs/skills/accura-prototype-build/accura-prototype-build.md` | — |
 | A **file's name or purpose** | `llms.txt` · `README.md` table | `drift-check` rule 1 (dead paths) |
 | A **decision on an open question** | the `accura-decisions.md` entry · every file quoting it | grep the old value repo-wide before assuming one copy |
-| **Scope** — what the demo covers | `docs/demo-scope.md` | — |
+| **Scope** — what a module covers or defers | that module's `flow/<module>-spec.md` | — |
 
 ### CHANGELOG
 

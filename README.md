@@ -25,7 +25,6 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 | `tokens/` | DTCG export of Accura's tokens, plus `token-parity.mjs` — the check that says whether it still matches what ships. See `tokens/README.md`. |
 | **`accura-ui/`** | Component library + Storybook. Same components as `agentic-ui`, Accura tokens. |
 | **`flow/`** | **One spec per module**, all in the same shape — what the module is, its data model, its screens, then numbered questions: `capa-spec.md` · `change-control-spec.md` · `deviation-spec.md` · `documents-spec.md` · `knowledge-hub-spec.md` · `settings-spec.md` · `training-spec.md`. Supplied briefs stay separate in `flow/brief/`. |
-| `docs/demo-scope.md` | What the demo covers and what is deferred. Component patterns live in the prototype-build skill. |
 | `docs/team-workflow.md` | **(Tiếng Việt)** Branch + PR workflow for two people working on different modules. Daily routine, shared-file list, conflict handling. |
 | `CHANGELOG.md` | Every Accura-specific change, breaking ones called out. |
 

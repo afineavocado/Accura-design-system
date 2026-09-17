@@ -11,6 +11,26 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-17 — `docs/demo-scope.md` folded into the module specs and deleted
+
+**Changed**
+
+- **Documents' confirmed rules moved to `flow/documents-spec.md` §4** — effective date at approval
+  + 14 days with QA override, conversion to PDF on submission rather than approval, five
+  pre-approved attachments, one reviewer and one QA approver, `Pending effective` as a derived
+  label, the 70/30 layout with a persistent bottom action bar, and the audit drawer as the single
+  history surface. They were the only copy: the discovery folder that also held them was deleted
+  earlier the same day.
+- **The deferred list moved to `flow/documents-spec.md` §5**, recovered from the deleted
+  `post-demo-backlog.md` — rejection and resubmission, external intake, supersession, obsolete
+  workflows, multi-reviewer, and the production conversion pipeline. Deferred by decision, not
+  forgotten.
+- **The scope lock moved into `CLAUDE.md` → Scope**: one agreed happy path per module, edge cases
+  captured in a line and carried past rather than investigated.
+- Four files referenced `demo-scope.md` — `README.md`, `CLAUDE.md`, `accura-ui/AGENTS.md` and the
+  Knowledge Hub README. All updated; the "what else has to change" table now sends scope questions
+  to the module's own spec.
+
 ### 2026-09-17 — Three new checks, and the process each one encodes
 
 **Added**

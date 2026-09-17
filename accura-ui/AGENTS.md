@@ -6,7 +6,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Accura demo scope — 2026-09-12
 
-Before module UI work, read `../docs/demo-scope.md` for scope, then both skill files in
+Before module UI work, read that module's `../flow/<module>-spec.md` for scope and what is
+deferred, then both skill files in
 `../docs/skills/accura-prototype-build/`: `accura-design-patterns.md` for what to build, and
 `accura-prototype-build.md` for how to work.
 The user has locked the demo to one happy path per module. Prioritize the shared phase-gate stepper, electronic-signature modal, and 65/35 detail layout. Keep global notification/account, module heading + create CTA, desktop search/filter at 70–80% of its content column, and common record-link/menu/hover behavior.
