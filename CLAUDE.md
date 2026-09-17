@@ -14,11 +14,26 @@ does not.
 | Does the export still agree? | `node tokens/token-parity.mjs` |
 | Do the docs still agree? | `node docs/machine-readable/drift-check.mjs` |
 | What does a component actually do? | `accura-ui/src/components/ui/<name>.tsx`, then its story |
+| Does this *pattern* already exist? | grep `accura-ui/src/app/prototype/accura/` for the nouns |
 
 Resolve any conflict in that order: **component → story → spec → meta.json.** The last two are
 hand-written and have been wrong. On 2026-09-15 a form label gap was read from `Input.md`,
 defended across three rounds of "this looks odd", and the answer was in the Storybook story the
 whole time. When they disagree, say so out loud and fix the written one.
+
+**That order only answers "does this component exist". It does not answer "does this pattern
+exist."** Every path in it points at `components/ui/`, the stories and the specs — and a
+composition assembled *out of* components (an audit entry, a state-change pill, a signature card,
+a field description) almost always lives in whichever module needed it first, as a private helper
+with no spec, no story and no entry anywhere. A component search comes back empty and reads like
+permission to design one.
+
+So before designing any multi-element pattern, grep the whole prototype for the nouns —
+`audit`, `signature`, `status changed`, `line-through`, `description` — not just the component
+directory. On 2026-09-16 the audit trail was redesigned from scratch while Training had been
+rendering the product's own version for weeks; `StateChange`, `RequiredLabel` and
+`FieldDescription` were all private helpers, and two of the three were reinvented before anyone
+noticed. **"No component" and "no pattern" are different findings.**
 
 Never hardcode a hex, px or radius. Use `var(--...)` from `tokens.css`.
 
@@ -38,8 +53,13 @@ and report numbers rather than impressions.**
 - ⚠️ `npm run build` deletes `.next/dev` under a running dev server. Stop dev first, or every
   route 500s with `ENOENT … routes-manifest.json`, which reads like a code error and is not.
 
-Audit against what rendered, not against what you wrote, and compare with the sibling screen that
-already does the same job.
+Audit against what rendered, not against what you wrote, and compare with the sibling screen that already does the same job.
+
+## Scope
+
+- Build what was asked. Do not add screens, actions, data or flows nobody requested, and do not commit, push or deploy unless asked.
+- No em dash in the copywriting
+- When i said audit tokens, i mean all tokens : spacing, color, text style, font weight, typeface, components,.... everything must be correct and follow design system.
 
 ## Do not silently resolve open questions
 
@@ -116,7 +136,4 @@ Desktop stashed it on a branch switch. If it matters, commit it.
 > **Accura scores 9 ✅ · 3 🟡 · 1 ❌ — it does not pass.** Agentic's 13 ✅ certifies *Agentic's*
 > file. Never restate an inherited ✅ as if it were earned here.
 
-## Scope
 
-Build what was asked. Do not add screens, actions, data or flows nobody requested, and do not
-commit, push or deploy unless asked.

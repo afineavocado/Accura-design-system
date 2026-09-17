@@ -23,6 +23,44 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 - The Setting Module keeps its own log at `flow/Setting Module/Setting_Module_Log.md`. It includes
   a prototype-only row menu (`settings/row-menu.tsx`) — **not** a design-system component. If a
   second screen needs it, it becomes a `DropdownMenu` in `components/ui/` and gets an entry here.
+### 2026-09-16 — One audit trail, and a state-change pill that knows which way the record moved
+
+**Added**
+
+- **`components/state-change.tsx`** — `Status  ~~old~~ → new` in one tinted pill. It was a private
+  helper inside Training's `history-panel.tsx`, invisible from outside, so when the shared audit
+  drawer needed the same thing it was designed from scratch instead. Same reinvention the
+  `RequiredLabel` helpers caused.
+- **`direction` on `StateChange`** — `forward` (success, the previous and default behaviour),
+  `backward` (warning), `cancel` (danger). Training's version hardcoded success because training
+  only moves forward. Deviations rejects records back a stage, and a return rendered green with
+  the stage it returned to struck out in red reads as an approval.
+
+**Changed**
+
+- **`RecordAuditDrawer` gained `transitionDirection`** and dropped the bare `from → to` text line
+  in favour of the pill. Callers that omit it render every transition as forward, which is what
+  Documents does today. Each entry also stops repeating the record ID the sheet header already
+  names.
+- **`ElectronicSignatureModal` accepts any non-empty password.** It required the literal string
+  `demo`, and the only place that said so was a 12px line under the field — a filled-in form sat
+  there with the confirm button disabled. Nothing was ever authenticated either way. Affects every
+  module's signing dialog, Documents included.
+- **`ElectronicSignatureModal` gained `description`, `reasonLabel`, `reasonPlaceholder`,
+  `recordLabel` and `attestationSubject`,** all defaulting to the existing wording. `recordLabel`
+  and `attestationSubject` were hardcoded to Documents' own copy — "Document · revision" and "I
+  have reviewed this revision" — and appeared above a deviation ID.
+- **The audit trail entry is now written down**, in `docs/skills/accura-prototype-build/accura-design-patterns.md` §4b.
+
+**Correction, 2026-09-16** — this entry, and the guardrail it shipped in
+`accura-prototype-build.md`, said a Combobox description had been overridden to `text-sm` from a
+prototype page. That did not happen: no page passes a class to `ComboboxField`, and the fix was
+made in the component (`d2a3d41`). What actually went wrong with that field was two different
+things — `type="tag-input"` and `multiple` were used together, which are different controls and
+the component silently prefers `type`; and the multi-select input inside `combobox.tsx` was
+`text-xs` while the single-select branch of the same component was `text-sm`. The guardrail about
+not styling a component's slots from the page still stands on its own; its example has been
+replaced with the real one.
 
 ### 2026-09-15 — The rules moved into the repo, and say when to update what
 

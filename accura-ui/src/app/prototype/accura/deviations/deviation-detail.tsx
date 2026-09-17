@@ -13,7 +13,10 @@ import {
 } from "lucide-react"
 
 import { RecordAuditDrawer } from "@/components/record-audit-drawer"
-import { RecordSection } from "@/components/record-workflow"
+import {
+  ElectronicSignatureModal,
+  RecordSection,
+} from "@/components/record-workflow"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -25,21 +28,29 @@ import { Label } from "@/components/ui/label"
 import { Stepper } from "@/components/ui/stepper"
 import { Textarea } from "@/components/ui/textarea"
 
+import { allDeviations, saveDeviation } from "./store"
 import {
+  advance,
   auditEvents,
   basePath,
+  cancelRecord,
+  currentUser,
   capaCatalogue,
   display,
   displayDate,
   displayId,
   isOverdue,
   lifecycle,
+  reject,
   signatures,
+  statements,
   statusVariants,
   stepIndex,
   visibleBlocks,
   type CapaLink,
   type DeviationRecord,
+  type DeviationStatus,
+  type LifecycleStatus,
   type ImpactedProduct,
 } from "./mock-data"
 
@@ -213,6 +224,72 @@ function CapaSearch({
 
 
 export function DeviationDetail({ record }: { record: DeviationRecord }) {
+  /* Which decision is being signed, if any. The transitions themselves live in
+     mock-data.ts beside the lifecycle; this only decides who acted, collects
+     the signature, and pushes the result into the store. */
+  const [signing, setSigning] = useState<null | "advance" | "reject" | "cancel">(
+    null
+  )
+
+  const signature = {
+    advance: {
+      /* Brief §13.7 — legal commitment copy is not paraphrased. */
+      meaning: statements.department,
+      actionLabel: "Sign and approve",
+      description:
+        "Approving advances this deviation to the next stage and requires your electronic signature.",
+      reasonRequired: false,
+      reasonLabel: "Reason",
+    },
+    reject: {
+      meaning:
+        "I am returning this deviation for further work. It has not been approved.",
+      actionLabel: "Sign & reject",
+      description:
+        "Rejecting sends this deviation back one stage for rework and requires a mandatory reason and your electronic signature.",
+      reasonRequired: true,
+      reasonLabel: "Reason for rejection",
+    },
+    cancel: {
+      meaning:
+        "I am cancelling this deviation as invalid, duplicate or out of scope.",
+      actionLabel: "Sign & cancel",
+      description:
+        "Cancelling requires a mandatory comment and your electronic signature.",
+      reasonRequired: true,
+      reasonLabel: "Reason for cancellation",
+    },
+  }[signing ?? "advance"]
+
+  const onSigned = (reasonText: string) => {
+    if (signing === "reject") saveDeviation(reject(record, currentUser, reasonText))
+    else if (signing === "cancel")
+      saveDeviation(cancelRecord(record, currentUser, reasonText))
+    else saveDeviation(advance(record, currentUser, allDeviations()))
+    setSigning(null)
+  }
+
+  /* Draft has nothing to sign — Submit for Review runs validation and mints the
+     ID, it is not a signed decision (brief §5 Step 1). */
+  /* The brief signs two gates and only two: `In Review` (§13.9, "Approve &
+     sign — advance to investigation") and `In Approval` (Step 5's
+     multi-signature gateway, each signature carrying a legal commitment
+     statement). Step 3 closes on "RCA & Impact Analysis complete" and Step 4 on
+     "Action plan defined and CAPA linked" — neither mentions a signature.
+
+     `Done` at Investigation In Progress and CAPA Pending therefore advances
+     directly. The transition is still logged with actor and timestamp, which is
+     what §11.10(e) asks of an audit trail; a signature belongs where the
+     process defines a signed act, not on every button. Spec §10.32. */
+  const signedGates: DeviationStatus[] = ["In Review", "In Approval"]
+
+  const onAdvance = () =>
+    signedGates.includes(record.status)
+      ? setSigning("advance")
+      : saveDeviation(advance(record, currentUser, allDeviations()))
+  const onReject = () => setSigning("reject")
+  const onCancel = () => setSigning("cancel")
+
   const blocks = visibleBlocks(record)
   const { captured, pending } = signatures(record)
   const overdue = isOverdue(record)
@@ -585,25 +662,37 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
     .filter((block) => !inWorkspace.has(block.key))
     .map((block) => <Fragment key={block.key}>{block.node}</Fragment>)
 
-  /* Copy and placement follow the product: two text-style actions on the
-     left, the primary on the right (spec §5.7). Reject is a real transition
-     there — sending a record back one stage — not a route to Cancelled, which
-     is what the briefs describe (spec §12.2). */
+  /* Reject is a real transition in the product — it sends a record back one
+     stage — not a route to Cancelled, which is what the briefs describe
+     (spec §12.2). */
+  /* Reject and Cancel sit on the left, primary on the right — the split the
+     product uses (spec §5.7), so the destructive pair is nowhere near the
+     control people reach for by habit. Reject leads: it is the decision a
+     reviewer actually makes, while cancelling kills the record outright.
+
+     Reject is `destructiveSecondary` — Button.md names this exact case, "a
+     destructive action beside a primary one that must stay dominant (CAPA
+     Reject next to Approve & Sign)", and both CAPA and Training's review queue
+     already use it. Cancel stays `outline`: its weight belongs to the
+     confirmation, not to the control that opens it.
+
+     The left group renders even when empty (Draft has neither action) so the
+     primary stays pinned right rather than sliding over. */
   const actionBar = closed ? null : (
     <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
       <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
         {record.status !== "Draft" && (
           <>
-            <Button variant="ghost" size="sm">
-              Reject — send back one stage
+            <Button variant="destructiveSecondary" onClick={onReject}>
+              Reject and send back one stage
             </Button>
-            <Button variant="ghost" size="sm">
+            <Button variant="outline" onClick={onCancel}>
               Cancel deviation
             </Button>
           </>
         )}
       </div>
-      <Button>{primaryAction(record)}</Button>
+      <Button onClick={onAdvance}>{primaryAction(record)}</Button>
     </div>
   )
 
@@ -661,6 +750,15 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
           <RecordAuditDrawer
             record={displayId(record)}
             events={auditEvents(record)}
+            /* Direction is read off the lifecycle array rather than stored:
+               reject moves a record to a lower index, cancel leaves the
+               sequence entirely. */
+            transitionDirection={(from, to) => {
+              if (to === "Cancelled") return "cancel"
+              const a = lifecycle.indexOf(from as LifecycleStatus)
+              const b = lifecycle.indexOf(to as LifecycleStatus)
+              return a > -1 && b > -1 && b < a ? "backward" : "forward"
+            }}
           />
         </div>
       </div>
@@ -725,7 +823,6 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
               {column.map((block) => (
                 <Fragment key={block.key}>{block.node}</Fragment>
               ))}
-              {i === 1 && actionBar}
             </div>
           ))}
         </div>
@@ -734,28 +831,57 @@ export function DeviationDetail({ record }: { record: DeviationRecord }) {
           {present.map((block) => (
             <Fragment key={block.key}>{block.node}</Fragment>
           ))}
-          {actionBar}
         </div>
       )}
 
-      {/* In the dossier layout the action belongs to the Signatures block it
-          acts on, so it sits at the foot of that column. Left where it was, it
-          hung 181px below the card because the grid is as tall as its tallest
-          column. */}
-      {workspace && !closed && (
+      {/* One row across the full width, below whichever layout ran. It used to
+          sit inside the second dossier column, which buried the decision in a
+          half-width rail and changed where it landed from state to state. */}
+      {!closed && (
         <div className="mt-[var(--spacing-layout-sm)]">{actionBar}</div>
       )}
+
+      {/* One dialog for all three decisions — the shared component already
+          carries the Part 11 title, the identity block, the attestation and
+          the demo credential. Only the copy differs per action.
+
+          Identity comes from the app's own user rather than the raw account:
+          the product renders an email under "Full Name" and leaves "Role at
+          Sign-off" blank (spec §10.29, §10.30), which is the field a regulator
+          reads to know who signed. */}
+      <ElectronicSignatureModal
+        open={signing !== null}
+        onOpenChange={(next) => !next && setSigning(null)}
+        title={record.title}
+        record={displayId(record)}
+        recordLabel="Deviation"
+        attestationSubject="deviation"
+        signer={{
+          name: currentUser.name,
+          role: currentUser.role,
+          account: `${currentUser.name.toLowerCase().replace(" ", ".")}@accura.one`,
+        }}
+        meaning={signature.meaning}
+        actionLabel={signature.actionLabel}
+        description={signature.description}
+        reasonRequired={signature.reasonRequired}
+        reasonLabel={signature.reasonLabel}
+        reasonPlaceholder="Add a comment..."
+        onSign={(receipt) => onSigned(receipt.meaning)}
+      />
     </>
   )
 }
 
-/* Button copy is verbatim from brief §13.9 where it specifies one. */
+/* Button copy follows brief §13.9 where it specifies one. The In Review label
+   is the one deliberate departure: the brief writes it with an em dash
+   ("Approve & sign — advance to investigation"); we spell it out. */
 function primaryAction(record: DeviationRecord): string {
   switch (record.status) {
     case "Draft":
       return "Submit for Review"
     case "In Review":
-      return "Approve & sign — advance to investigation"
+      return "Approve and sign to advance to investigation"
     case "Investigation In Progress":
     case "CAPA Pending":
       /* The product labels both of these "Done" rather than naming the

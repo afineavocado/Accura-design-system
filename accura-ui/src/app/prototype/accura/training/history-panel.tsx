@@ -4,6 +4,7 @@ import * as React from "react"
 import { AlertTriangle, ChevronDown, Check, Download, FileText } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
+import { StateChange } from "@/components/state-change"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -34,19 +35,6 @@ function Section({
       </div>
       {children}
     </div>
-  )
-}
-
-/* A state change renders as `old → new` with the old value struck through —
-   the pattern the product's own Assessment Audit Trail already uses. */
-function StateChange({ from, to }: { from: string; to: string }) {
-  return (
-    <span className="mt-1.5 inline-flex items-center gap-1.5 rounded-full border border-[var(--color-border-success)] bg-[var(--color-status-success-subtle)] px-2 py-0.5 text-xs">
-      <span className="text-[var(--color-text-secondary)]">Status</span>
-      <s className="text-[var(--color-status-danger-subtle-foreground)]">{from}</s>
-      <span aria-hidden="true" className="text-[var(--color-text-secondary)]">→</span>
-      <span className="text-[var(--color-status-success-subtle-foreground)]">{to}</span>
-    </span>
   )
 }
 

@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/table"
 
 import { ListSummary } from "../list-summary"
+import { useDeviations } from "./store"
 import { useRowClick } from "../row-click"
 import { TablePagination, usePagination } from "../table-pagination"
 import {
@@ -34,7 +35,6 @@ import {
   isOverdue,
   lifecycle,
   nextAction,
-  seeds,
   severities,
   statusVariants,
   type DeviationRecord,
@@ -106,6 +106,7 @@ function DeviationRow({ record }: { record: DeviationRecord }) {
 }
 
 export default function DeviationsPage() {
+  const seeds = useDeviations()
   const [search, setSearch] = useState("")
   const [status, setStatus] = useState("All")
   const [severity, setSeverity] = useState("All")
