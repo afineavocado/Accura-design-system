@@ -25,7 +25,7 @@ import {
 } from "lucide-react"
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Badge } from "@/components/ui/badge"
+import { Badge, type BadgeProps } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardTitle } from "@/components/ui/card"
 import { DatePicker } from "@/components/ui/date-picker"
@@ -1228,6 +1228,12 @@ function signedAssessmentsFromSavedState(
   )
 }
 
+const actionStatusVariant: Record<ChangeAction["status"], BadgeProps["variant"]> = {
+  Open: "secondary",
+  "In Progress": "warning",
+  Done: "success",
+}
+
 function ChangeActionsSection({
   assessments,
   actions,
@@ -1263,40 +1269,41 @@ function ChangeActionsSection({
       title="Change Actions"
       description="Each affected department defines and executes its own actions. Every action has its own status: Draft → In Review → Implementation in Progress → Completed. The Action Owner need not be the Impact Owner."
     >
-      <div className="flex flex-col gap-[var(--spacing-component-xl)]">
+      <div className="flex flex-col gap-[var(--spacing-component-lg)]">
         {actionGroups.map(({ assessment, actions }) => (
-          <div
+          /* One department block for both states. This section used to render
+             a department as a bare uppercase header plus a five-column table
+             at QA Approval, and as a bare header plus stacked cards at Action
+             in Progress — the same concept drawn two ways, and neither
+             matching the department card in the section above. The card and
+             its header are now shared; only what sits inside differs, because
+             an action in progress carries evidence, comments and a signature
+             that no table row can hold. */
+          <Card
             key={assessment.department}
-            className="flex flex-col gap-[var(--spacing-component-md)]"
+            className="gap-[var(--spacing-component-sm)] bg-[var(--color-background-subtle)]"
           >
-            <div className="flex flex-col gap-[var(--spacing-component-md)] lg:flex-row lg:items-center lg:justify-between">
-              <div className="flex min-w-0 items-center gap-[var(--spacing-component-sm)]">
-                <Building className="size-5 shrink-0 text-[var(--color-icon-muted)]" />
-                <div className="min-w-0 text-sm font-medium uppercase leading-normal text-[var(--color-background-default-foreground)]">
-                  {assessment.department} Department
-                </div>
-              </div>
-
-              {!useActionCards && (
-                <div className="flex flex-wrap items-center gap-[var(--spacing-component-lg)] text-sm font-medium leading-none text-[var(--color-text-secondary)]">
-                  <span className="flex items-center gap-[var(--spacing-component-sm)]">
-                    <ListIcon className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
-                    {formatActionCount(actions.length)}
-                  </span>
-                  <span className="flex items-center gap-[var(--spacing-component-sm)]">
-                    <CalendarDays className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
-                    Signed Sep 15, 2026
-                  </span>
-                  <span className="flex items-center gap-[var(--spacing-component-sm)]">
-                    <User className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
-                    Impact owner: {assessment.signer ?? "Department owner"}
-                  </span>
-                </div>
-              )}
+            <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
+              <Building className="size-5 shrink-0 text-[var(--color-icon-muted)]" />
+              <span className="min-w-0 text-[15px] font-medium leading-snug text-[var(--color-background-default-foreground)]">
+                {assessment.department}
+              </span>
+              <Badge variant="secondary" shape="pill" size="md">
+                Impacted
+              </Badge>
+              <span className="ml-auto text-xs text-[var(--color-text-secondary)]">
+                {formatActionCount(actions.length)}
+                {actions.some((action) => action.status === "Done") &&
+                  ` · ${actions.filter((action) => action.status === "Done").length} done`}
+              </span>
             </div>
 
+            <p className="text-xs text-[var(--color-text-secondary)]">
+              {assessment.signer ?? "Department owner"} · signed Sep 15, 2026
+            </p>
+
             {useActionCards ? (
-              <div className="flex flex-col gap-[var(--spacing-component-md)]">
+              <div className="mt-[var(--spacing-component-sm)] flex flex-col gap-[var(--spacing-component-md)]">
                 {actions.map((action, index) => (
                   <ActionExecutionCard
                     key={action.id}
@@ -1308,43 +1315,48 @@ function ChangeActionsSection({
                 ))}
               </div>
             ) : (
-              <div className="overflow-x-auto rounded-[var(--radius-lg)] border border-[var(--color-border-default)]">
-                <Table className="min-w-[780px]">
-                  <TableHeader>
-                    <TableRow className="hover:bg-transparent">
-                      <TableHead className="w-10">#</TableHead>
-                      <TableHead>Description</TableHead>
-                      <TableHead className="w-[180px]">Action Owner</TableHead>
-                      <TableHead className="w-[160px]">Due Date</TableHead>
-                      <TableHead className="w-[160px]">Priority</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {actions.map((action, index) => (
-                      <TableRow key={action.id}>
-                        <TableCell>{index + 1}</TableCell>
-                        <TableCell>{action.title}</TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-[var(--spacing-component-sm)]">
-                            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-muted)] text-xs font-medium text-[var(--color-surface-muted-foreground)]">
-                              {avatarFallback(action.owner)}
-                            </span>
-                            <span>{action.owner}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="whitespace-nowrap">
-                          {action.dueDate}
-                        </TableCell>
-                        <TableCell>
-                          <PriorityBadge priority={action.priority} />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+              <div className="flex flex-col">
+                {actions.map((action, index) => (
+                  <div
+                    key={action.id}
+                    className="flex items-start gap-[var(--spacing-component-md)] border-t border-[var(--color-border-default)] py-[var(--spacing-component-md)]"
+                  >
+                    <span className="min-w-4 text-sm text-[var(--color-text-secondary)]">
+                      {index + 1}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
+                        <span className="text-sm font-medium text-[var(--color-background-default-foreground)]">
+                          {action.title}
+                        </span>
+                        {/* The data's own words — Open · In Progress · Done.
+                            The section description above still narrates a
+                            different set (Draft → In Review → Implementation
+                            in Progress → Completed); spec §7.15. */}
+                        <Badge
+                          variant={actionStatusVariant[action.status]}
+                          shape="pill"
+                          size="md"
+                        >
+                          {action.status}
+                        </Badge>
+                        <PriorityBadge priority={action.priority} />
+                      </div>
+                      <p className="mt-[var(--spacing-component-xs)] text-xs text-[var(--color-text-secondary)]">
+                        {action.owner} · due {action.dueDate}
+                        {action.evidenceFiles?.length
+                          ? ` · ${action.evidenceFiles.length} file${action.evidenceFiles.length > 1 ? "s" : ""}`
+                          : ""}
+                        {action.comments?.length
+                          ? ` · ${action.comments.length} comment${action.comments.length > 1 ? "s" : ""}`
+                          : ""}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
-          </div>
+          </Card>
         ))}
       </div>
     </SectionCard>
@@ -1676,14 +1688,28 @@ function ActionExecutionSection({
       title="Change Actions"
       description="Each affected department defines and executes its own actions. Every action has its own status: Draft → In Review → Implementation in Progress → Completed. The Action Owner need not be the Impact Owner."
     >
-      <div className="flex flex-col gap-[var(--spacing-component-xl)]">
+      <div className="flex flex-col gap-[var(--spacing-component-lg)]">
         {actionGroups.map(({ assessment, actions: groupActions }) => (
-          <div key={assessment.department} className="flex flex-col gap-[var(--spacing-component-md)]">
-            <div className="flex min-w-0 items-center gap-[var(--spacing-component-sm)]">
+          /* Same department block as the read-only state — only the rows
+             inside differ, because an action in progress carries evidence,
+             comments and a signature. */
+          <Card
+            key={assessment.department}
+            className="gap-[var(--spacing-component-sm)] bg-[var(--color-background-subtle)]"
+          >
+            <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
               <Building className="size-5 shrink-0 text-[var(--color-icon-muted)]" />
-              <div className="min-w-0 text-sm font-medium uppercase leading-normal text-[var(--color-background-default-foreground)]">
-                {assessment.department} Department
-              </div>
+              <span className="min-w-0 text-[15px] font-medium leading-snug text-[var(--color-background-default-foreground)]">
+                {assessment.department}
+              </span>
+              <Badge variant="secondary" shape="pill" size="md">
+                Impacted
+              </Badge>
+              <span className="ml-auto text-xs text-[var(--color-text-secondary)]">
+                {formatActionCount(groupActions.length)}
+                {groupActions.some((action) => action.status === "Done") &&
+                  ` · ${groupActions.filter((action) => action.status === "Done").length} done`}
+              </span>
             </div>
 
             <div className="flex flex-col gap-[var(--spacing-component-md)]">
@@ -1697,7 +1723,7 @@ function ActionExecutionSection({
                 />
               ))}
             </div>
-          </div>
+          </Card>
         ))}
       </div>
     </SectionCard>

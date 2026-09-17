@@ -327,6 +327,12 @@ ISO on 2026-09-17; these were not. One format for the whole product is now writt
 `accura-design-patterns.md` → *Data · Dates and times*, **marked to apply in one pass once the
 prototypes are finished** — it moves four modules and two shared components.
 
+**7.15 Two vocabularies for an action's status.** The data says `Open · In Progress · Done`
+(`ChangeAction.status`); the Change Actions section's own description text narrates
+`Draft → In Review → Implementation in Progress → Completed`. The UI renders the data's words as
+of 2026-09-17; the description was left alone rather than silently picking a winner. **Which set is
+the product's?**
+
 **7.11 Six duplicate `Anna Hoang` entries** in the create form's owner list — three identical
 labels with different values and mismatched initials (`CH` for Anna Hoang).
 
