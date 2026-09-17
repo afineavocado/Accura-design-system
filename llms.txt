@@ -27,6 +27,24 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 - `docs/content-guidelines.md`: Voice-neutral UX writing — capitalisation, button labels, error messages, empty states.
 - `docs/team-workflow.md`: **(Tiếng Việt)** How the two people working on this repo share it — branch per module, PR before merging to `main`, which files both touch, what to do on conflict. Process for humans, not a spec.
 
+## Module specs — `flow/`
+
+One document per prototype module, all in the same shape: what the module is, its data model, its
+screens, then numbered questions. Written from the code, so they say what shipped rather than what
+was intended.
+
+| Module | File |
+|---|---|
+| CAPA | `flow/capa-spec.md` |
+| Change Control | `flow/change-control-spec.md` |
+| Deviations | `flow/deviation-spec.md` |
+| Documents | `flow/documents-spec.md` |
+| Knowledge Hub | `flow/knowledge-hub-spec.md` |
+| Settings | `flow/settings-spec.md` |
+| Training | `flow/training-spec.md` |
+
+Supplied briefs stay separate in `flow/brief` — they are inputs, not documentation of what exists.
+
 ## Skills — read before the matching task
 
 | Task | Read |

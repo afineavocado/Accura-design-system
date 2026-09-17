@@ -80,10 +80,11 @@ in `prototype/accura/app-sidebar.tsx`, never in a page.
 |---|---|---|
 | **CAPA** | `flow/capa-spec.md` | listing, create, detail |
 | **Training** | `flow/training-spec.md` | five tabs built. Trainee screens and the workflow behind Review are not |
-| **Documents** | `accura-ui/src/app/prototype/accura/documents/README.md` | one happy path: Draft → In Review → In Approval → Approved |
+| **Documents** | `flow/documents-spec.md` | one happy path: Draft → In Review → In Approval → Approved, plus a derived use status |
 | **Deviations** | `flow/deviation-spec.md` | listing, create, detail across seven states, transitions signed at two gates |
 | **Change Control** | `flow/change-control-spec.md` | listing, create, detail across seven states. `check-mock-data.mjs` validates the seed data against the process brief |
 | **Settings** | `flow/settings-spec.md` | organisation settings, record numbering, users |
+| **Knowledge Hub** | `flow/knowledge-hub-spec.md` | folder index, resource table, resource detail. Built for review, not a confirmed spec |
 
 **Before extending any prototype, read both skill files in
 [`docs/skills/accura-prototype-build/`](docs/skills/accura-prototype-build/):

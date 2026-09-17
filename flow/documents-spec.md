@@ -4,8 +4,10 @@
 2026-09-14 and realigned to the house patterns the same week. The discovery material it was built
 from — a functional specification PDF, product knowledge, a session log and a post-demo backlog —
 lived in `flow/documents-discovery/` and was **removed on 2026-09-17** once this file existed; it is
-recoverable from git history. Two mapping documents still sit beside the code
-(`FUNCTIONAL-SPEC-MAPPING.md`, `TRAINING-MAPPING.md`).
+recoverable from git history. Three documents still sit beside the code and
+overlap this one: `README.md` (55 lines), `FUNCTIONAL-SPEC-MAPPING.md` (31) and `TRAINING-MAPPING.md`
+(38). They are Chi's, they predate this file, and whether they fold in here is hers to decide —
+see §4.7.
 
 Files — `accura-ui/src/app/prototype/accura/documents/` (2,639 lines):
 
@@ -111,6 +113,11 @@ primary display state, so those badges are hard to review.
 **4.5 Two statuses on one record is the module's best idea and its least documented one.** Nothing
 outside the code explains that `getUseStatus()` is derived, which is exactly the kind of rule that
 gets re-implemented differently in a second module.
+
+**4.7 Three documents beside the code overlap this one.** `documents/README.md` describes the same
+routes and states; the two mapping files trace this prototype against the functional spec and
+against Training. They are Chi's work and predate this spec. Fold them in, or keep them as the
+code-adjacent record and let this file point at them?
 
 **4.6 The client's functional specification was a PDF and is now only in git history.** It was
 deleted with the rest of `flow/documents-discovery/` when this file replaced it. If the PDF is still
