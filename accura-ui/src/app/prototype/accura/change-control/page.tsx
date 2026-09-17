@@ -3,8 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import * as Popover from "@radix-ui/react-popover"
-import { Eye, MoreHorizontal, Pencil, Plus, Search, Trash2 } from "lucide-react"
+import { Plus, Search } from "lucide-react"
 
 import { Avatar } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -247,75 +246,6 @@ function readDeletedRecordIds() {
   }
 }
 
-function ChangeControlRowActions({
-  record,
-  onDelete,
-}: {
-  record: ChangeControlRecord
-  onDelete: (record: ChangeControlRecord) => void
-}) {
-  const detailHref = `/prototype/accura/change-control/${record.id}`
-  const editHref = `/prototype/accura/change-control/new?mode=edit&id=${encodeURIComponent(record.id)}`
-  const isDraft = record.status === "Draft"
-
-  return (
-    <Popover.Root>
-      <Popover.Trigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-sm"
-          aria-label={`More actions for ${record.id}`}
-        >
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </Popover.Trigger>
-      <Popover.Portal>
-        <Popover.Content
-          align="end"
-          sideOffset={4}
-          className="z-50 flex min-w-[160px] flex-col gap-0.5 rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-overlay)] p-1 shadow-[var(--shadow-md)]"
-        >
-          <Button
-            asChild
-            variant="ghost"
-            className="h-8 justify-start rounded-[var(--radius-md)] px-2 text-sm"
-          >
-            <Link href={detailHref}>
-              <Eye className="h-4 w-4" />
-              View
-            </Link>
-          </Button>
-
-          {isDraft && (
-            <>
-              <Button
-                asChild
-                variant="ghost"
-                className="h-8 justify-start rounded-[var(--radius-md)] px-2 text-sm"
-              >
-                <Link href={editHref}>
-                  <Pencil className="h-4 w-4" />
-                  Edit
-                </Link>
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                className="h-8 justify-start rounded-[var(--radius-md)] px-2 text-sm text-[var(--color-text-invalid)] hover:text-[var(--color-text-invalid)]"
-                onClick={() => onDelete(record)}
-              >
-                <Trash2 className="h-4 w-4" />
-                Delete
-              </Button>
-            </>
-          )}
-        </Popover.Content>
-      </Popover.Portal>
-    </Popover.Root>
-  )
-}
-
 /* One row. A component rather than JSX inside the map because `useRowClick` is
    a hook — and the row-click rule is the shared one: the row is a convenience
    target, the ID cell keeps the real link for keyboard and middle-click.
@@ -324,13 +254,7 @@ function ChangeControlRowActions({
    design (table.tsx:130); this listing used to pass `px-4 py-2` on all eight
    cells and `text-xs font-medium` on the ID, which made its rows 8px tighter
    and its body text a size smaller than every other listing in the product. */
-function ChangeControlRow({
-  record,
-  onDelete,
-}: {
-  record: ChangeControlRecord
-  onDelete: (record: ChangeControlRecord) => void
-}) {
+function ChangeControlRow({ record }: { record: ChangeControlRecord }) {
   const router = useRouter()
   const href = `/prototype/accura/change-control/${record.id}`
   const onClick = useRowClick<HTMLTableRowElement>(() => router.push(href))
@@ -372,9 +296,6 @@ function ChangeControlRow({
       <TableCell>
         <StatusBadge record={record} />
       </TableCell>
-      <TableCell className="sticky right-0 bg-[var(--color-surface-default)] text-right shadow-[-1px_0_0_var(--color-border-default)]">
-        <ChangeControlRowActions record={record} onDelete={onDelete} />
-      </TableCell>
     </TableRow>
   )
 }
@@ -408,21 +329,6 @@ export default function ChangeControlListingPage() {
       ),
     ]
   }, [deletedRecordIds, storedRecords])
-
-  function deleteRecord(record: ChangeControlRecord) {
-    const nextStoredRecords = storedRecords.filter((item) => item.id !== record.id)
-    const nextDeletedRecordIds = Array.from(
-      new Set([...deletedRecordIds, record.id])
-    )
-
-    setStoredRecords(nextStoredRecords)
-    setDeletedRecordIds(nextDeletedRecordIds)
-    window.localStorage.setItem(storedRecordsKey, JSON.stringify(nextStoredRecords))
-    window.localStorage.setItem(
-      deletedRecordIdsKey,
-      JSON.stringify(nextDeletedRecordIds)
-    )
-  }
 
   const departments = React.useMemo(
     () =>
@@ -588,18 +494,11 @@ export default function ChangeControlListingPage() {
                         <TableHead className="w-[150px] bg-[var(--color-surface-default)]">
                           STATUS
                         </TableHead>
-                        <TableHead className="sticky right-0 z-10 w-12 bg-[var(--color-surface-default)] shadow-[-1px_0_0_var(--color-border-default)]">
-                          <span className="sr-only">Actions</span>
-                        </TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {visibleRecords.map((record) => (
-                        <ChangeControlRow
-                          key={record.key}
-                          record={record}
-                          onDelete={deleteRecord}
-                        />
+                        <ChangeControlRow key={record.key} record={record} />
                       ))}
                     </TableBody>
                   </Table>
