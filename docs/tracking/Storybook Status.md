@@ -92,7 +92,7 @@ Accura's deviations are concentrated in a few places. Verify these before the re
 
 ## Known state
 
-- **ChatBubble** — story removed by decision. `chat-bubble.tsx` and its spec still exist; `chat-bubble.meta.json` still references the deleted story and fails `validate-artifacts.mjs`.
+- **ChatBubble** — removed entirely on 2026-09-17: story (earlier, by decision), then the component, its spec and its `meta.json`. Nothing in the app or the prototypes used it.
 - **`button.figma.tsx`** — a Code Connect stub, not a component. No story expected.
 - ~~**`label`** — a shared sub-component documented in `Form-shared.md`. No story expected.~~
   **Superseded 2026-09-14.** `Label` now implements `required` and the three `label state`

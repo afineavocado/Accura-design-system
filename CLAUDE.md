@@ -143,9 +143,8 @@ Desktop stashed it on a branch switch. If it matters, commit it.
   Full picture in `docs/tracking/AI-Readiness.md`.
 - **Fork drift:** 11 of 39 components differ from `agentic-ui` and only `label.tsx` has a known
   reason. The rest are unaudited — diff before assuming one matches.
-- **Two orphans in `drift-check` rule 5**, both real: `RecordRowAction.stories.tsx` has no
-  `meta.json` (deferred deliberately until the modules are finished), and `chat-bubble` has a
-  component and a `meta.json` but **no story** — the story was deleted and the metadata outlived it.
+- `RecordRowAction.stories.tsx` has no `meta.json`, so `drift-check` rule 5 fails. Deferred
+  deliberately until the modules are finished.
 - **One date format is written down and not yet applied** — `accura-design-patterns.md` → *Data ·
   Dates and times*, marked for a single pass once the prototypes are done. Four renderings ship today.
 

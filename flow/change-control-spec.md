@@ -95,6 +95,13 @@ process brief — run `node src/app/prototype/accura/change-control/check-mock-d
 | CC-2026-002 | QA Approval | Revise purified water sampling point | Anna Hoang | 2 |
 | CC-2026-003 | Draft | Update tablet coating process parameters | John Baker | 3 |
 | CC-2026-004 | Action in Progress | Qualify backup incubator for microbiology | Lisa Tran | 3 |
+
+Enriched 2026-09-17 so each section shows every situation it can be in: Microbiology owns **three**
+actions across `Open`, `In Progress` and `Done` (no department owned more than one before, so the
+numbered rows never showed a second), one of them with two comments and two evidence files, and
+priorities now span `Low` to `Critical`. CC-2026-003 has **no risk assessment**, so the optional
+field's empty state renders — it had been stored as a literal `"-"`, which is why it printed a
+hyphen where every other empty value prints an em dash.
 | CC-2026-005 | Pending Closure | Retire temporary gowning room procedure | John Smith | 2 |
 | CC-2026-006 | Final QA Approval | Approve new balance calibration interval | Priya Shah | 2 |
 | CC-2026-007 | Closed | Close cold-room alarm threshold update | Anna Hoang | 3 |
@@ -329,7 +336,9 @@ ISO on 2026-09-17; these were not. One format for the whole product is now writt
 `accura-design-patterns.md` → *Data · Dates and times*, **marked to apply in one pass once the
 prototypes are finished** — it moves four modules and two shared components.
 
-**7.15 Two vocabularies for an action's status.** The data says `Open · In Progress · Done`
+**7.15 Two vocabularies for an action's status, now visible side by side.** At `Action in Progress`
+the read-only rows render the data's words while `ActionExecutionCard` renders the description's —
+so CC-2026-004 shows `A-201 … In Review` in a card and `A-202 … Done` as a row in the same section. The data says `Open · In Progress · Done`
 (`ChangeAction.status`); the Change Actions section's own description text narrates
 `Draft → In Review → Implementation in Progress → Completed`. The UI renders the data's words as
 of 2026-09-17; the description was left alone rather than silently picking a winner. **Which set is

@@ -29,7 +29,7 @@ values.
 
 | # | Factor | Status | State in Accura |
 |---|---|---|---|
-| 1 | Machine-readable metadata | 🟡 | 37 `.meta.json` present, but **inherited from Agentic** and re-verified only for the components touched since the fork. One orphan: `chat-bubble.meta.json` points at a deleted story. |
+| 1 | Machine-readable metadata | 🟡 | 37 `.meta.json` present, but **inherited from Agentic** and re-verified only for the components touched since the fork. |
 | 2 | Code-first usage examples | ❌ | **None.** Agentic has 33 `.examples.tsx`; Accura has 0. Largest single gap. |
 | 3 | Design decisions with rationale | ✅ | Inherited docs plus `accura-decisions.md` §1–§8, which records *why* each value moved and logs 11 open questions. |
 | 4 | `llms.txt` | ✅ | Present and accurate as of this assessment (counts corrected 2026-09-08). |
@@ -108,7 +108,7 @@ node docs/machine-readable/drift-check.mjs
 1. **F2 — no `.examples.tsx`.** 0 of 39. This is what an agent reads to learn correct composition; specs describe, examples demonstrate.
 2. **F11 — 33 stories unverified against Accura.** Tracked in `docs/tracking/Storybook Status.md`.
 3. **R1–R8 audits — zero run against Accura's Figma file.** Tracked in `docs/tracking/Audit Status.md`.
-4. **F1 — `chat-bubble.meta.json` orphan.** The one error `validate-artifacts.mjs` still reports.
+4. ~~**F1 — `chat-bubble.meta.json` orphan.**~~ **Resolved 2026-09-17** — the component, its spec and its meta.json were deleted. The story had been removed by decision; nothing used the component.
 5. **11 open questions** in `accura-decisions.md` (Q1–Q11) remain unresolved by design.
 
 ---

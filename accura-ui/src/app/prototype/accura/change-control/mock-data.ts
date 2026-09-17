@@ -268,7 +268,6 @@ export const initialChangeControlRecords: ChangeControlRecord[] = [
     category: "Major",
     description:
       "Adjust spray rate and inlet air temperature for the tablet coating process to improve coating uniformity following recent batch variability.",
-    riskAssessment: "-",
     departmentAssessments: [],
     changeActions: [],
     auditTrail: [
@@ -346,11 +345,35 @@ export const initialChangeControlRecords: ChangeControlRecord[] = [
       },
       {
         id: "A-202",
+        department: "Microbiology",
+        title: "Update the micro testing SOP with the backup incubator location",
+        owner: "Priya Shah",
+        dueDate: "Sep 22, 2026",
+        priority: "Low",
+        status: "Done",
+        evidenceStatus: "Attached",
+        evidenceFiles: ["SOP-MB-014 rev 3.pdf", "Training acknowledgement log.pdf"],
+        completedAt: "Sep 19, 2026 · 10:20 AM",
+        comments: [
+          {
+            author: "Priya Shah",
+            timestamp: "Sep 19, 2026 · 9:05 AM",
+            text: "SOP revised and routed for approval.",
+          },
+          {
+            author: "Lisa Tran",
+            timestamp: "Sep 19, 2026 · 10:20 AM",
+            text: "Reviewed the revision against the mapping report — consistent. Marking done.",
+          },
+        ],
+      },
+      {
+        id: "A-203",
         department: "Facilities",
         title: "Install calibrated monitoring point for backup incubator",
         owner: "David Lee",
         dueDate: "Sep 28, 2026",
-        priority: "Medium",
+        priority: "Critical",
         status: "Open",
         evidenceStatus: "Missing",
       },
