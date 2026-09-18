@@ -3,16 +3,12 @@
 import * as React from "react"
 import Link from "next/link"
 import {
-  AtSign,
   Check,
   CheckCircle2,
-  Clock,
   Eye,
   FileText,
-  PenLine,
   Search,
   TriangleAlert,
-  User,
   X,
 } from "lucide-react"
 
@@ -55,6 +51,7 @@ import {
 } from "@/components/ui/table"
 import { Textarea } from "@/components/ui/textarea"
 
+import { ElectronicSignatureModal } from "@/components/record-workflow"
 import { ListEmptySearch, ListEmptySet } from "../../list-empty-state"
 import { ListSummary } from "../../list-summary"
 import { TrainingShell, TrainingTabs } from "../training-shell"
@@ -69,33 +66,7 @@ import {
 type Decision = "approved" | "rejected"
 type Pending = { kind: Decision; ids: string[]; reason?: string }
 
-const stampNow = () =>
-  new Date().toISOString().replace("T", " ").slice(0, 19) + " UTC"
 
-function SignerIdentity({ signedAt }: { signedAt: string }) {
-  return (
-    <div className="grid gap-[var(--spacing-component-lg)] sm:grid-cols-2">
-      {[
-        { icon: User, label: "Full name", value: currentUser.name },
-        { icon: AtSign, label: "Email", value: currentUser.email },
-        { icon: PenLine, label: "Role at sign-off", value: currentUser.roleAtSignOff },
-        { icon: Clock, label: "Timestamp UTC", value: signedAt },
-      ].map(({ icon: Icon, label, value }) => (
-        <div key={label} className="flex items-center gap-[var(--spacing-component-sm)]">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[var(--color-background-muted)]">
-            <Icon className="size-4 text-[var(--color-icon-muted)]" aria-hidden="true" />
-          </span>
-          <span className="min-w-0">
-            <span className="block text-xs text-[var(--color-text-secondary)]">{label}</span>
-            <span className="block truncate text-sm text-[var(--color-surface-default-foreground)]">
-              {value}
-            </span>
-          </span>
-        </div>
-      ))}
-    </div>
-  )
-}
 
 export default function ReviewQueuePage() {
   const [query, setQuery] = React.useState("")
@@ -110,8 +81,6 @@ export default function ReviewQueuePage() {
   const [rejectingIds, setRejectingIds] = React.useState<string[] | null>(null)
   const [reason, setReason] = React.useState("")
   const [pending, setPending] = React.useState<Pending | null>(null)
-  const [attested, setAttested] = React.useState(false)
-  const [signedAt, setSignedAt] = React.useState("")
 
   const methods = React.useMemo(
     () => Array.from(new Set(reviewItems.map((item) => item.method))),
@@ -145,9 +114,9 @@ export default function ReviewQueuePage() {
       return next
     })
 
+  /* The shared modal resets its own fields and stamps its own timestamp when
+     it opens, so this only has to say what is being signed. */
   const startSigning = (p: Pending) => {
-    setAttested(false)
-    setSignedAt(stampNow())
     setPending(p)
   }
 
@@ -564,73 +533,32 @@ export default function ReviewQueuePage() {
           writes to a permanent history, exactly as approving does.
           Part 11 §11.200 allows one signature to cover the batch; §11.50
           requires its meaning to be recorded with it. */}
-      <Dialog open={pending !== null} onOpenChange={(v) => !v && setPending(null)}>
-        <DialogContent className="sm:max-w-[560px]">
-          <DialogHeader>
-            <DialogTitle>Electronic Signature — 21 CFR Part 11</DialogTitle>
-            <DialogDescription>
-              Verify your identity to sign {pending?.ids.length}{" "}
-              {pending?.ids.length === 1 ? "training record" : "training records"}.
-            </DialogDescription>
-          </DialogHeader>
-
-          <div
-            className={
-              pending?.kind === "rejected"
-                ? "rounded-[var(--radius-md)] border border-[var(--color-border-error)] bg-[var(--color-status-danger-subtle)] p-[var(--spacing-component-md)] text-sm"
-                : "rounded-[var(--radius-md)] border border-[var(--color-border-default)] p-[var(--spacing-component-md)] text-sm"
-            }
-          >
-            Meaning:{" "}
-            <strong>
-              {pending?.kind === "rejected" ? "Reject" : "Approve"}{" "}
-              {pending?.ids.length}{" "}
-              {pending?.ids.length === 1
-                ? "training completion"
-                : "training completions"}
-            </strong>
-            {pending?.reason && <> — {pending.reason}</>}.
-          </div>
-
-          <SignerIdentity signedAt={signedAt} />
-
-          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
-            <Label required htmlFor="signature-password">
-              Re-enter password
-            </Label>
-            <Input
-              id="signature-password"
-              type="password"
-              autoComplete="off"
-              placeholder="Re-enter your password"
-            />
-          </div>
-
-          <div className="flex items-start gap-[var(--spacing-component-sm)]">
-            <Checkbox
-              id="attest"
-              checked={attested}
-              onCheckedChange={(c) => setAttested(c === true)}
-            />
-            <Label
-              htmlFor="attest"
-              className="text-sm font-normal leading-snug text-[var(--color-text-secondary)]"
-            >
-              By entering my credentials, I confirm that this review complies with
-              formal requirements as equivalent to my handwritten signature.
-            </Label>
-          </div>
-
-          <DialogFooter>
-            <Button variant="ghost" onClick={() => setPending(null)}>
-              Cancel
-            </Button>
-            <Button disabled={!attested} onClick={commit}>
-              Sign &amp; submit
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <ElectronicSignatureModal
+        open={pending !== null}
+        onOpenChange={(v) => !v && setPending(null)}
+        title=""
+        record={`${pending?.ids.length ?? 0} ${
+          pending?.ids.length === 1 ? "training record" : "training records"
+        }`}
+        recordLabel="Records"
+        tone={pending?.kind === "rejected" ? "danger" : "default"}
+        signer={{
+          name: currentUser.name,
+          role: currentUser.roleAtSignOff,
+          account: currentUser.email,
+        }}
+        meaning={`${pending?.kind === "rejected" ? "Reject" : "Approve"} ${
+          pending?.ids.length ?? 0
+        } training ${
+          pending?.ids.length === 1 ? "completion" : "completions"
+        }${pending?.reason ? ` - ${pending.reason}` : ""}`}
+        description={`Verify your identity to sign ${pending?.ids.length ?? 0} ${
+          pending?.ids.length === 1 ? "training record" : "training records"
+        }.`}
+        attestationSubject="review"
+        actionLabel="Sign &amp; submit"
+        onSign={commit}
+      />
     </TrainingShell>
   )
 }

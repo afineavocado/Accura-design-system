@@ -7,14 +7,12 @@ import {
   ChevronLeft,
   CircleCheck,
   Clock3,
-  Mail,
-  PenTool,
-  UserRound,
 } from "lucide-react"
 
 import { Avatar } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { ElectronicSignatureModal } from "@/components/record-workflow"
 import {
   Card,
   CardContent,
@@ -22,19 +20,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import {
   Sheet,
@@ -77,37 +62,12 @@ const statusStep: Record<CapaStatus, number> = {
 }
 
 
-function IdentityField({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode
-  label: string
-  value: string
-}) {
-  return (
-    <div className="flex min-w-0 items-center gap-[var(--spacing-component-md)]">
-      <div className="flex size-9 shrink-0 items-center justify-center rounded-full border border-[var(--color-border-default)] bg-[var(--color-surface-muted)] text-[var(--color-surface-muted-foreground)]">
-        {icon}
-      </div>
-      <div className="min-w-0">
-        <p className="text-sm leading-normal text-[var(--color-text-secondary)]">{label}</p>
-        <p className="truncate text-sm leading-normal text-[var(--color-surface-default-foreground)]" title={value}>
-          {value}
-        </p>
-      </div>
-    </div>
-  )
-}
 
 export default function CapaDetailPage() {
   const { id } = useParams<{ id: string }>()
   const capa = getCapaRecord(id)
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false)
   const [signatureOpen, setSignatureOpen] = React.useState(false)
-  const [password, setPassword] = React.useState("")
-  const [attested, setAttested] = React.useState(false)
   const [isApproved, setIsApproved] = React.useState(false)
 
   if (!capa || !canViewCapaDetail(capa)) notFound()
@@ -127,22 +87,6 @@ export default function CapaDetailPage() {
     { label: "Date Raised", value: capa.dateRaised },
     { label: "Due Date", value: capa.dueDate },
   ]
-
-  function handleSignatureOpenChange(open: boolean) {
-    setSignatureOpen(open)
-    if (!open) {
-      setPassword("")
-      setAttested(false)
-    }
-  }
-
-  function handleSignatureSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    if (!password || !attested) return
-
-    if (effectiveStatus === "In Review") setIsApproved(true)
-    handleSignatureOpenChange(false)
-  }
 
   return (
     <SidebarProvider>
@@ -283,83 +227,35 @@ export default function CapaDetailPage() {
                 </p>
                 <div className="flex shrink-0 items-center gap-[var(--spacing-component-md)] self-end sm:self-auto">
                   <Button variant="destructiveSecondary" size="sm">Reject</Button>
-                  <Dialog open={signatureOpen} onOpenChange={handleSignatureOpenChange}>
-                    <DialogTrigger asChild>
-                      <Button size="sm">Approve &amp; Sign</Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Electronic Signature — 21 CFR Part 11</DialogTitle>
-                        <DialogDescription>
-                          Verify your identity to approve this regulated record.
-                        </DialogDescription>
-                      </DialogHeader>
-
-                      <form className="flex flex-col gap-[var(--spacing-component-lg)]" onSubmit={handleSignatureSubmit}>
-                        <div className="flex flex-col gap-[var(--spacing-component-sm)] rounded-[var(--radius-lg)] border border-[var(--color-border-success)] bg-[var(--color-status-success-subtle)] p-[var(--spacing-component-lg)] text-sm text-[var(--color-text-secondary)]">
-                          <div className="flex items-center justify-between gap-[var(--spacing-component-md)]">
-                            <span>Record</span>
-                            <span className="font-medium">{capa.id}</span>
-                          </div>
-                          <div className="flex items-center justify-between gap-[var(--spacing-component-md)]">
-                            <span>Signature meaning</span>
-                            <span className="text-right font-medium">Approve CAPA review</span>
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-[var(--spacing-component-lg)] sm:grid-cols-2">
-                          <IdentityField icon={<UserRound className="size-4" />} label="Full name" value={signerIdentity.fullName} />
-                          <IdentityField icon={<Mail className="size-4" />} label="Email" value={signerIdentity.email} />
-                          <IdentityField icon={<PenTool className="size-4" />} label="Role at sign-off" value={signerIdentity.role} />
-                          <IdentityField icon={<Clock3 className="size-4" />} label="Timestamp UTC" value={signerIdentity.timestamp} />
-                        </div>
-
-                        <div className="flex flex-col gap-[var(--spacing-component-sm)]">
-                          <Label htmlFor="signature-password">Re-enter Password</Label>
-                          <Input
-                            id="signature-password"
-                            type="password"
-                            placeholder="Re-enter your password"
-                            value={password}
-                            onChange={(event) => setPassword(event.target.value)}
-                            autoComplete="current-password"
-                            required
-                          />
-                        </div>
-
-                        <div className="flex min-h-11 items-start gap-[var(--spacing-component-sm)]">
-                          <Checkbox
-                            id="signature-attestation"
-                            checked={attested}
-                            onCheckedChange={(checked) => setAttested(checked === true)}
-                            className="mt-[var(--spacing-component-xxs)]"
-                            required
-                          />
-                          <Label
-                            htmlFor="signature-attestation"
-                            className="cursor-pointer text-sm font-normal leading-normal text-[var(--color-surface-default-foreground)]"
-                          >
-                            By entering my credentials, I confirm that this review complies with formal requirements as equivalent to my handwritten signature.
-                          </Label>
-                        </div>
-
-                        <DialogFooter>
-                          <DialogClose asChild>
-                            <Button type="button" variant="outline">Cancel</Button>
-                          </DialogClose>
-                          <Button type="submit" disabled={!password || !attested}>
-                            Submit
-                          </Button>
-                        </DialogFooter>
-                      </form>
-                    </DialogContent>
-                  </Dialog>
+                  <Button size="sm" onClick={() => setSignatureOpen(true)}>
+                    Approve &amp; Sign
+                  </Button>
                 </div>
               </div>
             </div>
           </section>
         </main>
       </div>
+
+      <ElectronicSignatureModal
+        open={signatureOpen}
+        onOpenChange={setSignatureOpen}
+        title={capa.title}
+        record={capa.id}
+        recordLabel="Record"
+        signer={{
+          name: signerIdentity.fullName,
+          role: signerIdentity.role,
+          account: signerIdentity.email,
+        }}
+        meaning="Approve CAPA review"
+        description="Verify your identity to approve this regulated record."
+        attestationSubject="review"
+        actionLabel="Submit"
+        onSign={() => {
+          if (effectiveStatus === "In Review") setIsApproved(true)
+        }}
+      />
     </SidebarProvider>
   )
 }

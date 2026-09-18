@@ -8,7 +8,6 @@ import {
   Building2,
   CheckCircle2,
   ChevronLeft,
-  CornerDownLeft,
   Download,
   FileCheck2,
   FileText,
@@ -1430,8 +1429,11 @@ function ActionExecutionCard({
     setCommentDraft("")
   }
 
-  function handleComposerKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === "Enter") {
+  /* Enter sends, Shift+Enter breaks the line — the textarea is multi-line now,
+     so Enter cannot mean "newline" and "send" at once. The visible Comment
+     button carries the affordance; this is only a shortcut. */
+  function handleComposerKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault()
       sendComment()
     }
@@ -1497,25 +1499,39 @@ function ActionExecutionCard({
                 <span className="min-w-0 flex-1 truncate text-sm text-[var(--color-background-default-foreground)]">
                   {file}
                 </span>
-                {readOnly ? (
-                  <Download className="size-4 shrink-0 text-[var(--color-icon-muted)]" />
-                ) : (
-                  <button
-                    type="button"
+                {/* Remove sits before Download rather than in its slot. The two
+                    used to share one position and swap on state, so the control
+                    under the pointer changed from "download" to "delete"
+                    without moving. */}
+                {!readOnly && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-8 shrink-0"
                     aria-label={`Remove ${file}`}
                     onClick={() => removeEvidenceFile(file)}
-                    className="shrink-0 text-[var(--color-icon-muted)] hover:text-[var(--color-background-default-foreground)]"
                   >
                     <X className="size-4" />
-                  </button>
+                  </Button>
                 )}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-8 shrink-0"
+                  aria-label={`Download ${file}`}
+                >
+                  <Download className="size-4" />
+                </Button>
               </div>
             ))}
           </div>
         )}
 
+        {/* No left rail. accura-design-patterns.md already removed decorative
+            timeline borders from audit events; the same reasoning applies to a
+            comment list. */}
         {comments.length > 0 && (
-          <div className="flex flex-col gap-[var(--spacing-component-md)] border-l-2 border-[var(--color-border-default)] pl-[var(--spacing-component-md)]">
+          <div className="flex flex-col gap-[var(--spacing-component-md)]">
             {comments.map((comment, commentIndex) => (
               <div key={`${comment.author}-${commentIndex}`}>
                 <p className="text-xs text-[var(--color-text-secondary)]">
@@ -1544,48 +1560,41 @@ function ActionExecutionCard({
               event.target.value = ""
             }}
           />
-          <TooltipProvider>
-            <div className="mt-[var(--spacing-component-lg)] flex items-center gap-[var(--spacing-component-sm)] rounded-full border border-[var(--color-border-default)] bg-[var(--color-background-default)] pl-2 pr-1.5">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    type="button"
-                    aria-label="Upload evidence"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="flex size-7 shrink-0 items-center justify-center text-[var(--color-icon-muted)] hover:text-[var(--color-background-default-foreground)]"
-                  >
-                    <Plus className="size-4" />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent>Upload evidences</TooltipContent>
-              </Tooltip>
-              <input
-                value={commentDraft}
-                onChange={(event) => setCommentDraft(event.target.value)}
-                onKeyDown={handleComposerKeyDown}
-                placeholder="Upload evidences or leave comments"
-                aria-label="Upload evidences or leave comments"
-                className="h-8 flex-1 min-w-0 bg-transparent text-sm text-[var(--color-background-default-foreground)] outline-none placeholder:text-[var(--color-text-tertiary)]"
-              />
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    type="button"
-                    aria-label="Send comment"
-                    onClick={sendComment}
-                    className="flex size-7 shrink-0 items-center justify-center text-[var(--color-icon-muted)] hover:text-[var(--color-background-default-foreground)]"
-                  >
-                    <CornerDownLeft className="size-4" />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent>Send</TooltipContent>
-              </Tooltip>
+          {/* Two controls, two labels, two jobs. This was one pill with a `+`,
+              a bare <input> and a `↵`, placeholdered "Upload evidences or leave
+              comments" — one field described as doing something it cannot do,
+              and the same string handed to a screen reader as the text input's
+              accessible name. */}
+          <div className="mt-[var(--spacing-component-lg)] flex flex-col gap-[var(--spacing-component-sm)]">
+            <Textarea
+              rows={2}
+              value={commentDraft}
+              onChange={(event) => setCommentDraft(event.target.value)}
+              onKeyDown={handleComposerKeyDown}
+              placeholder="Leave a comment"
+              aria-label={`Comment on ${action.id}`}
+            />
+            <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <Paperclip className="size-4" />
+                Attach evidence
+              </Button>
+              <Button size="sm" disabled={!commentDraft.trim()} onClick={sendComment}>
+                Comment
+              </Button>
             </div>
-          </TooltipProvider>
+          </div>
 
-          <Button className="mt-[var(--spacing-component-lg)]" onClick={() => setSignatureOpen(true)}>
-            Marked as completed
-          </Button>
+          {/* Right-aligned, imperative. It read "Marked as completed" across the
+              full card width, which states a status the record has not reached
+              — and it opens a signature dialog. */}
+          <div className="mt-[var(--spacing-component-lg)] flex justify-end">
+            <Button onClick={() => setSignatureOpen(true)}>Mark as completed</Button>
+          </div>
 
           <ActionExecutionSignatureDialog
             open={signatureOpen}

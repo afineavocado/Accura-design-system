@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Clock3, Mail, PenTool, UserRound } from "lucide-react";
 import { Stepper } from "@/components/ui/stepper";
+import { cn } from "@/lib/utils";
 import {
   Card,
   CardHeader,
@@ -161,6 +162,41 @@ export type SignatureReceipt = {
   invalidatedAt?: string;
 };
 
+/* One line of signer identity: a circular icon, a label, and a read-only value.
+ *
+ * Read-only identity used to be three disabled <Input>s, which said "you could
+ * type here" about facts the signer cannot change, and cost a full field's
+ * height each. This is the presentation CAPA arrived at and the one adopted
+ * system-wide on 2026-09-22. */
+function IdentityField({
+  icon,
+  label,
+  value,
+}: {
+  icon: ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex min-w-0 items-center gap-[var(--spacing-component-md)]">
+      <div className="flex size-9 shrink-0 items-center justify-center rounded-full border border-[var(--color-border-default)] bg-[var(--color-surface-muted)] text-[var(--color-surface-muted-foreground)]">
+        {icon}
+      </div>
+      <div className="min-w-0">
+        <p className="text-sm leading-normal text-[var(--color-text-secondary)]">
+          {label}
+        </p>
+        <p
+          className="truncate text-sm leading-normal text-[var(--color-surface-default-foreground)]"
+          title={value}
+        >
+          {value}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 /** Demo presentation only. Production must authenticate and bind immutable signatures server-side. */
 export function ElectronicSignatureModal({
   open,
@@ -177,6 +213,7 @@ export function ElectronicSignatureModal({
   reasonPlaceholder = "Explain this decision",
   recordLabel = "Document · revision",
   attestationSubject = "revision",
+  tone = "default",
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -196,8 +233,12 @@ export function ElectronicSignatureModal({
   /** What `record` is. Was hardcoded to Documents' own wording, which read
    *  "Document · revision" above a deviation ID. */
   recordLabel?: string;
-  /** The noun in the attestation line: "I have reviewed this ___". */
+  /** The noun in the attestation line. */
   attestationSubject?: string;
+  /** `danger` tints the record panel for a rejection. A reject signature that
+   *  looks exactly like an approve signature is the wrong affordance on a
+   *  regulated record. */
+  tone?: "default" | "danger";
 }) {
   const [confirmation, setConfirmation] = useState(false);
   const [credential, setCredential] = useState("");
@@ -219,8 +260,19 @@ export function ElectronicSignatureModal({
       setConfirmation(false);
       setCredential("");
       setReason("");
+      /* House format — accura-design-patterns.md → Dates and times. Was
+         `2026-09-22 09:42:18 UTC`, an ISO string with the T swapped out. */
       setDisplayTime(
-        new Date().toISOString().replace("T", " ").replace(/\.\d+Z$/, " UTC")
+        new Date().toLocaleString("en-US", {
+          timeZone: "UTC",
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        }) + " UTC"
       );
     }
   }
@@ -228,48 +280,66 @@ export function ElectronicSignatureModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Electronic Signature — 21 CFR Part 11</DialogTitle>
+          <DialogTitle>Electronic Signature - 21 CFR Part 11</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <div className="grid grid-cols-2 gap-[var(--spacing-component-md)]">
-          <div className="space-y-[var(--spacing-component-sm)]">
-            <Label htmlFor="signature-name">Full Name</Label>
-            <Input
-              id="signature-name"
-              value={signer.name}
-              readOnly
-              className="bg-[var(--color-background-accent)]"
-            />
+
+        {/* What is being signed, and what signing it means. Stated once, at the
+            top, on its own surface — the two facts a signature is worthless
+            without. */}
+        <div
+          className={cn(
+            "flex flex-col gap-[var(--spacing-component-sm)] rounded-[var(--radius-lg)] border p-[var(--spacing-component-lg)] text-sm text-[var(--color-text-secondary)]",
+            tone === "danger"
+              ? "border-[var(--color-border-error)] bg-[var(--color-status-danger-subtle)]"
+              : "border-[var(--color-border-success)] bg-[var(--color-status-success-subtle)]"
+          )}
+        >
+          <div className="flex items-center justify-between gap-[var(--spacing-component-md)]">
+            <span>{recordLabel}</span>
+            <span
+              className={cn(
+                "text-right font-medium",
+                tone === "danger"
+                  ? "text-[var(--color-text-invalid)]"
+                  : "text-[var(--color-text-success)]"
+              )}
+              title={title}
+            >
+              {record}
+            </span>
           </div>
-          <div className="space-y-[var(--spacing-component-sm)]">
-            <Label htmlFor="signature-role">Role at Sign-off</Label>
-            <Input
-              id="signature-role"
-              value={signer.role}
-              readOnly
-              className="bg-[var(--color-background-accent)]"
-            />
-          </div>
-          <div className="col-span-2 space-y-[var(--spacing-component-sm)]">
-            <Label htmlFor="signature-time">Time and Date</Label>
-            <Input
-              id="signature-time"
-              value={displayTime}
-              readOnly
-              className="bg-[var(--color-background-accent)]"
-            />
+          <div className="flex items-center justify-between gap-[var(--spacing-component-md)]">
+            <span>Signature meaning</span>
+            <span className="text-right font-medium text-[var(--color-surface-default-foreground)]">
+              {meaning}
+            </span>
           </div>
         </div>
-        <dl className="space-y-[var(--spacing-component-sm)] text-xs text-[var(--color-text-secondary)]">
-          <div>
-            <dt className="text-[var(--color-text-secondary)]">{recordLabel}</dt>
-            <dd className="font-medium">{record}</dd>
-          </div>
-          <div>
-            <dt className="text-[var(--color-text-secondary)]">{title}</dt>
-            <dd>{meaning}</dd>
-          </div>
-        </dl>
+
+        <div className="grid grid-cols-1 gap-[var(--spacing-component-lg)] sm:grid-cols-2">
+          <IdentityField
+            icon={<UserRound className="size-4" />}
+            label="Full name"
+            value={signer.name}
+          />
+          <IdentityField
+            icon={<Mail className="size-4" />}
+            label="Email"
+            value={signer.account}
+          />
+          <IdentityField
+            icon={<PenTool className="size-4" />}
+            label="Role at sign-off"
+            value={signer.role}
+          />
+          <IdentityField
+            icon={<Clock3 className="size-4" />}
+            label="Timestamp UTC"
+            value={displayTime}
+          />
+        </div>
+
         {reasonRequired && (
           <div className="space-y-[var(--spacing-component-sm)]">
             <Label required htmlFor="decision-reason">{reasonLabel}</Label>
@@ -283,16 +353,22 @@ export function ElectronicSignatureModal({
           </div>
         )}
         <div className="space-y-[var(--spacing-component-sm)]">
-          <Label htmlFor="demo-credential">Enter password</Label>
+          <Label required htmlFor="demo-credential">
+            Re-enter password
+          </Label>
           <Input
             id="demo-credential"
             type="password"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
-            placeholder="Type anything"
+            placeholder="Re-enter your password"
             autoComplete="off"
             aria-describedby="demo-auth-note"
+            required
           />
+          {/* The only one of the three signature dialogs that said the
+              credential is fake. Kept: a password field with no such note asks
+              for a real password. */}
           <p
             id="demo-auth-note"
             className="text-xs text-[var(--color-text-secondary)]"
@@ -311,13 +387,14 @@ export function ElectronicSignatureModal({
             htmlFor="signature-intent"
             className="text-sm font-normal leading-normal"
           >
-            I have reviewed this {attestationSubject} and intend to sign with
-            the meaning stated above.
+            By entering my credentials, I confirm that this {attestationSubject}{" "}
+            complies with formal requirements as equivalent to my handwritten
+            signature.
           </Label>
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="ghost">Cancel</Button>
+            <Button variant="outline">Cancel</Button>
           </DialogClose>
           <Button
             disabled={

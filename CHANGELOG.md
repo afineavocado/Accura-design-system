@@ -11,6 +11,39 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-22 — One electronic signature modal, with CAPA's presentation
+
+**Changed**
+
+- **`ElectronicSignatureModal` is now the only signature dialog.** CAPA and Training's review queue
+  each had their own; both are deleted and rewired. Identity is four icon rows — Full name · Email ·
+  Role at sign-off · Timestamp UTC, each a 36px circle in a two-column grid — above a record panel
+  carrying the record and its signature meaning. The shared modal previously rendered read-only
+  `<Input>`s for identity, which said *you could type here* about facts the signer cannot change.
+
+  New `tone="danger"` tints the record panel for a rejection, because a reject signature that looks
+  identical to an approve signature is the wrong affordance on a regulated record.
+
+  Settled in the merge: `Re-enter password` and `required` · the prototype "do not enter a real
+  password" warning **kept**, since the other two dialogs had none · CAPA's attestation sentence ·
+  `Cancel` as `outline` · the title's em dash replaced with a hyphen · the timestamp moved to the
+  house format. `actionLabel` still varies by gate; only the presentation was unified.
+
+**Fixed**
+
+- **Training's review queue could complete a signature with the password blank.** Its field was
+  marked `required` and its confirm button checked the attestation only. Closed by the rewiring —
+  the shared gate requires attestation **and** a non-empty credential.
+
+- **Change Control's department action card.** Its composer was one pill containing a `+`, a bare
+  `<input>` and a `↵`, placeholdered *Upload evidences or leave comments* — one field described as
+  doing something it cannot do, and that string was also its accessible name. Now a `Textarea` with
+  a separate **Attach evidence** button and a **Comment** button. `Marked as completed` (past tense,
+  full card width) is now `Mark as completed`, right-aligned. The evidence chip's `Download` no
+  longer swaps position with a destructive `Remove`. The comment list's decorative left rail is
+  gone. Raw `<button>`s are `Button variant="ghost" size="icon"`.
+
+
 ### 2026-09-18 — R1–R8 auditing retired
 
 **Removed**

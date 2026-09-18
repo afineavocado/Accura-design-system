@@ -286,6 +286,33 @@ password and a confirmation checkbox, and refuses to submit until all three are 
 
 ---
 
+## 5b. Department action card — evidence and comments
+
+`ActionExecutionCard` in `[id]/page.tsx`. Revised 2026-09-22 after the card was flagged as the
+least consistent surface in the module. Fixed in place, not extracted — CAPA and Deviations have
+similar needs but nobody asked for a shared component yet.
+
+| Was | Now | Why |
+|---|---|---|
+| One pill: `+`, a bare `<input>` with `outline-none`, `↵`, placeholdered *Upload evidences or leave comments* | `Textarea` + an outline **Attach evidence** button + a primary **Comment** button | One field was described as doing something it cannot do, and that same string was the text input's accessible name. Two controls, two labels, two jobs |
+| `Marked as completed`, a full-width primary button | `Mark as completed`, right-aligned | Past tense states a status the record has not reached, and the button opens a signature dialog. No other card in the prototype has a full-bleed footer button |
+| Evidence chip: `X` when editable, `Download` when done, same position | `Download` always, `Remove` **before** it when editable | The control under the pointer changed from *download* to *delete* without moving |
+| Comments behind a `border-l-2` rail | no rail | The same decorative timeline border already removed from audit events |
+| Raw `<button>` elements throughout | `Button variant="ghost" size="icon"` | They were not the component |
+
+Enter sends the comment, Shift+Enter breaks the line. The visible `Comment` button carries the
+affordance; the key is a shortcut, not the only route.
+
+**Removing an attached evidence file before completion stays** — confirmed 2026-09-22. Worth
+knowing that this is a demo affordance: in a validated system evidence is normally append-only,
+superseded rather than deleted.
+
+Not changed: `PriorityBadge` is still a hand-rolled span pair with an inline `backgroundColor`,
+and it renders as a pill beside the status `Badge`, so an attribute and a state read as the same
+kind of thing. Left alone deliberately; it is a pattern question, not this card's.
+
+---
+
 ## 6. Identity
 
 The header hardcodes **Sarah Johnson · QA Approver · SJ** as the signed-in user, and the dialogs
