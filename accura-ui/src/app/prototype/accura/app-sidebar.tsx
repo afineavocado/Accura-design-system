@@ -35,7 +35,7 @@ import {
    own, so CAPA's sidebar had no Training item and the module vanished on
    navigation. Add a module here, not in a page. */
 export const platformNav = [
-  { label: "Dashboard", icon: LayoutDashboard, href: "#" },
+  { label: "Dashboard", icon: LayoutDashboard, href: "/prototype/accura/dashboard" },
   { label: "Documents", icon: FileText, href: "/prototype/accura/documents" },
   { label: "CAPA", icon: ClipboardCheck, href: "/prototype/accura/capa" },
   { label: "Change Control", icon: RefreshCw, href: "#" },
