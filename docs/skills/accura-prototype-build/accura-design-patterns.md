@@ -201,6 +201,62 @@ rows, that is a `density` variant on the component — not markup in one module.
 **Pagination**: `TablePagination` + `usePagination` from `prototype/accura/table-pagination.tsx`.
 The hook clamps `page` into range when a filtered set shrinks.
 
+### Empty state — one pattern, and it is Change Control's
+
+**When a filtered list comes back with nothing, replace the table with `Empty`.** Not a row
+spanning the columns, not a paragraph under a header with no rows beneath it, and never nothing at
+all.
+
+```tsx
+{visibleRecords.length ? (
+  <Table>…</Table>
+) : (
+  <Empty
+    className="min-h-80 justify-center"
+    icon={<Search className="size-5 text-[var(--color-icon-muted)]" />}
+    title="No change controls found"
+    description="Try changing your search or filter selections."
+    primaryAction={<Button onClick={clearFilters}>Clear filters</Button>}
+  />
+)}
+```
+
+Five things make it the pattern, and each is the part a re-implementation drops:
+
+- **The table goes away.** A header row with nothing under it reads as *loading*, or as a table
+  that failed. `Empty` replaces it.
+- **`Clear filters` is a `Button`, in the empty state itself** — default variant, not `outline`.
+  The reader is at the point of failure; the way out belongs where they are looking. `ListSummary`
+  also offers a clear affordance above the table, and that one is not a substitute: several
+  listings have it and still leave the reader staring at an empty table.
+- **`min-h-80 justify-center`**, so the block does not collapse to a thin strip where the table was.
+- **The icon is `Search`, `size-5`, `color/icon/muted`.** Never `h-5 w-5` — one icon unit.
+- **Two lines: a title that names what was not found, and a description that says what to try.**
+  `No <plural noun> found` · `Try changing your search or filter selections.`
+
+Keep `TablePagination` out of the empty state — it renders only when the filtered set is non-empty.
+
+**An empty *set* is not an empty *search*.** A list with no records at all and no filters applied
+wants different copy (`Nothing awaiting your review.`) and usually a create action rather than
+`Clear filters`. Training's review queue already branches on this; it is the one thing its version
+gets right.
+
+#### Inventory — measured in the browser 2026-09-18, filtered to zero results
+
+| Listing | What renders | Clear button in the empty state |
+|---|---|---|
+| **Change Control** | `Empty` — the pattern above | ✅ |
+| CAPA | `Empty`, identical but for copy | ✅ |
+| Knowledge Hub | `Empty` with `variant="background"`, an unsized icon, no `min-h`, and an `outline` button | ✅, wrong variant |
+| Documents | table header stays, a `div` of bold + secondary text below it | ❌ |
+| Training — Users · Roles · Courses · Assessments | a `<tr>` with a `colSpan` cell, one line of secondary text | ❌ |
+| Training — Review queue | same `<tr>`, but correctly branches empty-set vs empty-search | ❌ |
+| Settings — lookup tables · Users | same `<tr>`, and also branches on the empty set | ❌ |
+| **Deviations** | **nothing** — a bare table header, no message, pagination still rendered | ❌ |
+
+Change Control itself has one defect against its own rule: its icon is `h-5 w-5`, missed by the
+`size-N` pass. CAPA's is `size-5`.
+
 ---
 
 ## Cards

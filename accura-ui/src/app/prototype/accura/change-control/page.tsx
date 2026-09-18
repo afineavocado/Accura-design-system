@@ -361,7 +361,7 @@ export default function ChangeControlListingPage() {
             <div className="flex w-full flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
               <div className="flex min-w-0 flex-1 flex-wrap items-center gap-[var(--spacing-component-sm)]">
                 <div className="relative min-w-[240px] flex-1 sm:max-w-[380px]">
-                  <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
+                  <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
                   <Input
                     type="search"
                     value={query}
@@ -418,7 +418,7 @@ export default function ChangeControlListingPage() {
 
               <Button asChild className="shrink-0">
                 <Link href="/prototype/accura/change-control/new">
-                  <Plus className="h-4 w-4" />
+                  <Plus className="size-4" />
                   Create Change Control
                 </Link>
               </Button>
@@ -475,7 +475,7 @@ export default function ChangeControlListingPage() {
               ) : (
                 <Empty
                   className="min-h-80 justify-center"
-                  icon={<Search className="h-5 w-5 text-[var(--color-icon-muted)]" />}
+                  icon={<Search className="size-5 text-[var(--color-icon-muted)]" />}
                   title="No change controls found"
                   description="Try changing your search or filter selections."
                   primaryAction={

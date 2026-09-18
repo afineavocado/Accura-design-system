@@ -11,6 +11,35 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-18 — One empty state for filtered lists, and it is Change Control's
+
+**Added**
+
+- **`accura-design-patterns.md` → Tables and lists → Empty state.** A filtered list that comes back
+  with nothing replaces the table with `Empty`: `min-h-80 justify-center`, a `size-5` `Search` icon
+  in `color/icon/muted`, a title naming what was not found, a description saying what to try, and
+  **`Clear filters` as a default-variant `Button` inside the empty state**. `ListSummary`'s clear
+  affordance above the table is not a substitute — several listings have it and still leave the
+  reader facing an empty table.
+
+  The section also separates an empty **set** from an empty **search**: no records at all wants
+  different copy and usually a create action, which Training's review queue is alone in getting
+  right.
+
+  Eight listings were measured in the browser at zero results and the inventory is in the section.
+  Four treatments ship today: `Empty` (Change Control, CAPA), `Empty` with the wrong variant and an
+  `outline` button (Knowledge Hub), a `colSpan` row of secondary text (Training ×5, Settings ×2), a
+  `div` under a still-visible table header (Documents), and **nothing at all** in Deviations — a
+  bare header with pagination still rendered beneath it.
+
+**Fixed**
+
+- **Change Control's own empty-state icon was `h-5 w-5`**, missed by the `size-N` pass, against the
+  one-icon-unit rule it is now the reference for. That and the module's three other square
+  `h-N w-N` classes converted. Eight remained repo-wide before this; the four left are in
+  `app-sidebar.tsx`, which is shared with Chi and untouched.
+
+
 ### 2026-09-18 — Seeded Change Control records always come from the seeds
 
 **Changed**

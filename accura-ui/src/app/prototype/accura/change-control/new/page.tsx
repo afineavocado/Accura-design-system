@@ -370,7 +370,7 @@ export default function NewChangeControlPage() {
                   className="h-auto w-fit p-0 text-sm no-underline hover:no-underline"
                 >
                   <Link href="/prototype/accura/change-control">
-                    <ChevronLeft className="h-4 w-4" />
+                    <ChevronLeft className="size-4" />
                     Back to Change Controls
                   </Link>
                 </Button>
@@ -573,7 +573,7 @@ export default function NewChangeControlPage() {
                         className="w-fit"
                         onClick={() => fileInputRef.current?.click()}
                       >
-                        <Upload className="h-4 w-4" />
+                        <Upload className="size-4" />
                         Upload file
                       </Button>
                       {selectedFiles.length > 0 && (
