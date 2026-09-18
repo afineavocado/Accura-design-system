@@ -147,11 +147,14 @@ Desktop stashed it on a branch switch. If it matters, commit it.
 - **Verification:** `0` `.examples.tsx` · `2 of 38` stories verified.
   Full picture in `docs/tracking/AI-Readiness.md`. **R1–R8 audits are not debt** — the process is
   Figma-only and retired here, see `docs/tracking/Audit Status.md`.
-- **Fork drift:** 11 of the 37 inherited components differ from `agentic-ui` and only `label.tsx`
-  has a known reason. `record-row-action` is not inherited — it was written here.
-  The rest are unaudited — diff before assuming one matches.
-- **One date format is written down and not yet applied** — `accura-design-patterns.md` → *Data ·
-  Dates and times*, marked for a single pass once the prototypes are done. Four renderings ship today.
+- **Fork drift:** 11 of the 37 inherited components differ from `agentic-ui`, and only `label.tsx`
+  has a known reason; the rest are unaudited, so diff before assuming one matches.
+  `record-row-action` is the 38th and is **not** inherited — it was written here.
+- **Dates: the formatters agree, the stored data does not.** Every function that *formats* a date
+  renders the house format since 2026-09-17. What remains is data stored as display strings, which
+  bypasses them entirely: ~30 in Change Control, 6 in CAPA, 63 in Training (23 of those
+  timestamps). Listed in `accura-design-patterns.md` → *Data · Dates and times*; converting them is
+  a single pass once the prototypes are done.
 
 > **Accura scores 9 ✅ · 3 🟡 · 1 ❌ — it does not pass.** Agentic's 13 ✅ certifies *Agentic's*
 > file. Never restate an inherited ✅ as if it were earned here.
