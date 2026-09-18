@@ -43,6 +43,8 @@ import {
   initialCapaRecords,
   type CapaRecord,
 } from "./mock-data"
+// Same frozen "today" as the Dashboard, so its CAPA card and this filter agree.
+import { daysUntil } from "../dashboard/mock-data"
 
 
 function StatusBadge({ record }: { record: CapaRecord }) {
@@ -57,11 +59,29 @@ function StatusBadge({ record }: { record: CapaRecord }) {
   )
 }
 
-export default function CapaListingPage() {
+type SearchParams = Promise<Record<string, string | string[] | undefined>>
+const param = (v: string | string[] | undefined) => (typeof v === "string" ? v : undefined)
+
+/* Filters can be pre-set from the URL (the Dashboard cards link here).
+   Read from page props, not useSearchParams: that hook needs a Suspense
+   boundary, and inside one the Select triggers rendered blank. */
+export default function CapaListingPage({ searchParams }: { searchParams: SearchParams }) {
+  const params = React.use(searchParams)
+  return <CapaListing initialStatus={param(params.status)} initialDue={param(params.due)} />
+}
+
+const dueOptions = [
+  { value: "all", label: "All due dates" },
+  { value: "14d", label: "Due within 14 days" },
+] as const
+
+function CapaListing({ initialStatus, initialDue }: { initialStatus?: string; initialDue?: string }) {
   const router = useRouter()
   const records = initialCapaRecords
   const [query, setQuery] = React.useState("")
-  const [status, setStatus] = React.useState("all")
+  const [status, setStatus] = React.useState(initialStatus ?? "all")
+  // ?due=14d — the Dashboard CAPA card lands on the open CAPAs it counts.
+  const [due, setDue] = React.useState(initialDue ?? "all")
   const [source, setSource] = React.useState("all")
   const [pageSize, setPageSize] = React.useState(10)
   const [page, setPage] = React.useState(1)
@@ -82,9 +102,12 @@ export default function CapaListingPage() {
         )
       const matchesStatus = status === "all" || record.status === status
       const matchesSource = source === "all" || record.source === source
-      return matchesQuery && matchesStatus && matchesSource
+      const matchesDue =
+        due === "all" ||
+        (record.status !== "Close" && daysUntil(record.dueDate) <= 14)
+      return matchesQuery && matchesStatus && matchesSource && matchesDue
     })
-  }, [query, records, source, status])
+  }, [due, query, records, source, status])
 
   const totalPages = Math.max(1, Math.ceil(filteredRecords.length / pageSize))
   const safePage = Math.min(page, totalPages)
@@ -147,6 +170,23 @@ export default function CapaListingPage() {
                   </Select>
 
                   <Select
+                    value={due}
+                    onValueChange={(value) => {
+                      setDue(value)
+                      setPage(1)
+                    }}
+                  >
+                    <SelectTrigger className="w-[180px]" aria-label="Filter by due date">
+                      <SelectValue placeholder="All due dates" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {dueOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <Select
                     value={source}
                     onValueChange={(value) => {
                       setSource(value)
@@ -180,6 +220,7 @@ export default function CapaListingPage() {
                 onClear={() => {
                   setQuery("")
                   setStatus("all")
+                  setDue("all")
                   setSource("all")
                   setPage(1)
                 }}
