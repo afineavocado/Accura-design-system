@@ -167,6 +167,19 @@ no separator — but CAPA has not been changed.
 
 ---
 
+**One control per job.** Change Control's action card had a single pill holding a `+`, a bare
+`<input>` and a `↵`, placeholdered *Upload evidences or leave comments* — a text field described as
+doing something it cannot do, and that same string was its accessible name. Split it: a `Textarea`
+for the comment, an `Attach evidence` button for the file, a `Comment` button to send. A key
+shortcut may exist on top (Enter sends, Shift+Enter breaks the line) but never as the only route.
+
+**A destructive control never shares a position with a benign one.** The same card's evidence chip
+rendered `Remove` while editable and `Download` when complete, in the same slot — the thing under
+the pointer changed from *download* to *delete* without moving. Give each its own place and hide
+the one that does not apply.
+
+---
+
 ## Tables and lists
 
 **Default to a table.** Cards earn their place only when the object has an image, a status
@@ -200,6 +213,13 @@ rows, that is a `density` variant on the component — not markup in one module.
 
 **Pagination**: `TablePagination` + `usePagination` from `prototype/accura/table-pagination.tsx`.
 The hook clamps `page` into range when a filtered set shrinks.
+
+**`<Table>` brings its own scroll container.** It wraps the `<table>` in
+`relative w-full overflow-auto`, which is also what `useTableOverflow()` measures for
+`RecordRowAction`. If the screen already owns a scroll viewport — Change Control's registry
+constrains the table's height so its header can pin — pass **`scroll={false}`**, or the two
+containers nest and the same table renders **two scrollbars**. The wrapper is never removed, only
+un-scrolled, so overflow detection keeps working.
 
 ### Empty state — one pattern, and it is Change Control's
 
@@ -293,6 +313,20 @@ sites.
   `accura-decisions.md` **Q12**.
 - A table **inside** a card gets its own surface: `radius/md` + `border/default` on `CardContent`
   — **one step below the parent's `radius/lg`**. A table on the page background takes `radius/lg`.
+- **One primary button per card.** Whatever ends the thing is primary; everything else is `outline`
+  or `ghost`. Change Control's action card had `Comment` and `Mark as completed` both primary, so
+  nothing said which control finished the action. Three jobs, three levels: `Attach evidence`
+  ghost, `Comment` outline, `Mark as completed` primary.
+- **A button label is imperative.** `Mark as completed`, not `Marked as completed` — past tense
+  states a status the record has not reached, and this one opens a signature dialog.
+- **Never let a border carry state a `Badge` already carries.** The same card marked itself open
+  with a 4px brand-green left rail, which was the *only* difference from a completed one: same
+  fill, same border otherwise. Status is the `Badge`'s job.
+- ⚠️ **Spacing compounds.** `Card` sets `gap-[var(--spacing-component-lg)]` between its children.
+  An `mt-*` on a child adds to it — three blocks carrying `mt-lg` on a card whose gap was
+  overridden to `md` sat **28px** apart, not 12 or 16. Set the container's `gap` and leave the
+  children alone. If two children belong together, wrap them in their own tighter `gap` rather
+  than fighting the parent's.
 
 ---
 
@@ -554,8 +588,9 @@ module files are invisible to every documented lookup path.
 **Row overflow menu** — *View / Edit / Delete on a table row.*
 
 - Built on raw `@radix-ui/react-popover` in Change Control, and again as `settings/row-menu.tsx` in
-  Chi's Settings module, whose own log calls it prototype-only. `RecordRowAction` only opens a
-  record, so it does not cover this.
+  Chi's Settings module, whose own log calls it prototype-only. **`RecordRowAction` is a design
+  system component as of 2026-09-18** — `components/ui/record-row-action.tsx`, with a spec and a
+  `meta.json` — but it renders exactly one action, so it does not close this gap.
 - **Two modules have now hand-rolled it.** That is the threshold Settings' log itself names: if a
   second screen needs it, it becomes a `DropdownMenu` in `components/ui/`.
 - ⚠️ Change Control's copy was removed on 2026-09-17 when the actions column was dropped, so the
@@ -591,7 +626,10 @@ module files are invisible to every documented lookup path.
 Anything used twice lives in `prototype/accura/`, not in a page:
 
 `app-sidebar.tsx` · `row-click.ts` · `table-pagination.tsx` · `list-summary.tsx` ·
-`capa/capa-header.tsx` · `components/state-change.tsx`
+`list-empty-state.tsx` · `capa/capa-header.tsx` · `components/state-change.tsx`
+
+Promoted out of the prototype and into the design system: **`record-row-action.tsx`**
+(`components/ui/`, 2026-09-18). A shared prototype component that stabilises belongs there.
 
 **A convention that lives only as a local helper cannot be reused; it gets reinvented.**
 `RequiredLabel` existed as six identical private helpers, invisible from outside — which is how
