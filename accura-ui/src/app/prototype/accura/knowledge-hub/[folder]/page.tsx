@@ -27,7 +27,7 @@ import {
 import {
   RecordRowAction,
   RecordRowActionHeading,
-} from "@/components/record-row-action"
+} from "@/components/ui/record-row-action"
 import { ListSummary } from "../../list-summary"
 import { useRowClick } from "../../row-click"
 import {

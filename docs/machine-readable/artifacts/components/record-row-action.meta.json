@@ -1,0 +1,155 @@
+{
+  "name": "record-row-action",
+  "figmaNodeId": null,
+  "description": "The last column of a record listing: one ghost icon button that opens the row's record. Pins itself to the right edge of the scrollport when the table overflows horizontally, on an overlay surface with a shadow, revealed by row hover or focus on fine pointers and always visible on coarse ones. Exports RecordRowAction (the cell) and RecordRowActionHeading (its header cell). Renders exactly one action — there is no overflow menu in this system.",
+  "category": "data-display",
+  "shadcnBase": null,
+  "primitiveBase": "button",
+  "variants": {},
+  "tokens": {
+    "cell": {
+      "width": "button/size/button-height-default + 2 × spacing/component/md",
+      "minWidth": "button/size/button-height-default + 2 × spacing/component/md",
+      "padding": "spacing/component/md",
+      "fill": "transparent",
+      "stroke": "none",
+      "radius": "none",
+      "gaps": {
+        "container": "0 — the container centres a single child"
+      }
+    },
+    "container": {
+      "note": "Applied only when the table overflows; inline tables render an unstyled flex container.",
+      "fill": "color/surface/overlay",
+      "foreground": "color/surface/overlay/foreground",
+      "padding": "spacing/component/md",
+      "shadow": "shadow/md",
+      "radius": "none",
+      "stroke": "none",
+      "pairedSurface": "color/surface/overlay and color/surface/overlay/foreground are a pair — never set one without the other. The container floats above rows whose background it does not control."
+    },
+    "heading": {
+      "note": "Applied only when the table overflows.",
+      "fill": "color/surface/raised",
+      "reason": "Matches the header row, which already renders surface/raised, so the pin is invisible until a row scrolls under it."
+    },
+    "button": {
+      "variant": "ghost",
+      "size": "icon",
+      "icon": "lucide Eye, aria-hidden"
+    }
+  },
+  "composition": {
+    "assembly": "RecordRowAction renders a TableCell; RecordRowActionHeading renders a TableHead. They are used as a pair in the same Table.",
+    "structure": "TableCell[data-record-row-action] → div[data-record-action-container] → Button variant=ghost size=icon asChild → next/link → Eye",
+    "dataAttributes": "data-record-row-action and data-record-action-container carry no styling. They exist so a screen audit can find every instance in rendered DOM — which is how two hand-rolled copies were found in the prototype.",
+    "placement": "Last column only, with RecordRowActionHeading in the header row. One without the other misaligns the columns."
+  },
+  "behavior": {
+    "overflowDetection": "useTableOverflow() from components/ui/table.tsx. The caller cannot force either appearance — two listings side by side would otherwise disagree about whether the action floats.",
+    "pinned": "sticky right-0 z-10 with the overlay surface and shadow.",
+    "hoverReveal": "Progressive enhancement, and must stay that way. The cell renders opacity-100 and pointer-events-auto; only @media (hover: hover) and (pointer: fine) opts into hiding it, revealed by tr:hover and tr:focus-within. Inverting this makes the action unreachable by touch and keyboard.",
+    "clickIsolation": "The link calls event.stopPropagation(). These listings make the whole row clickable with useRowClick; without the stop, the row handler would also fire and the two could disagree about the destination.",
+    "motion": "None bound. The reveal is an opacity change with no declared transition."
+  },
+  "accessibility": {
+    "role": "native <a> inside <td> — no added role",
+    "accessibleName": "the label prop, as both aria-label and title. The Eye icon is aria-hidden.",
+    "columnHeader": "<th scope='col'> containing visually hidden text 'Open record', so the column is announced rather than read as blank",
+    "focusIndicator": "Button's own ring, not suppressed by the hover reveal",
+    "keyboard": [
+      "Tab reaches the link in row order",
+      "tr:focus-within reveals the pinned cell, so tabbing to it never focuses something invisible"
+    ],
+    "touch": "The hover reveal is behind a fine-pointer media query. Coarse pointers always see the action."
+  },
+  "constraints": [
+    "Always pair RecordRowAction with RecordRowActionHeading in the same table.",
+    "Always use it as the last column.",
+    "The label must name the record, not the verb alone — 'Open SOP-002 · v3.0', never 'Open'. A screen reader listing the page's links otherwise reads the same word once per row.",
+    "Never make this the only route into the record — the record's name in the first column is the primary link.",
+    "Never render more than one action from it; it has room for exactly one.",
+    "Never override the column width — it is sized to its button plus padding."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "A document or record registry wide enough to scroll horizontally, where the row's name has scrolled out of sight by the time the reader reaches the right edge",
+      "A folder listing whose columns vary with content, so overflow cannot be predicted at design time",
+      "Any listing already using useRowClick, where a visible affordance is needed to say the row is openable"
+    ],
+    "comparedTo": [
+      {
+        "situation": "One row action, and the table may overflow",
+        "use": "record-row-action",
+        "notInstead": "a bare Button in a TableCell"
+      },
+      {
+        "situation": "One row action, table can never overflow",
+        "use": "button in a table-cell",
+        "notInstead": "record-row-action — the hook and overlay buy nothing"
+      },
+      {
+        "situation": "Two or more row actions",
+        "use": "an overflow menu",
+        "notInstead": "record-row-action — it renders exactly one, and no menu exists yet"
+      },
+      {
+        "situation": "The action changes the record rather than opening it",
+        "use": "a button in the row, labelled with the verb",
+        "notInstead": "record-row-action — the eye icon means view"
+      }
+    ],
+    "references": {
+      "shadcn": null,
+      "radix": null
+    }
+  },
+  "relationships": {
+    "dependsOn": ["table", "button"],
+    "usedBy": [
+      "src/app/prototype/accura/documents/page.tsx",
+      "src/app/prototype/accura/knowledge-hub/[folder]/page.tsx"
+    ]
+  },
+  "meta": {
+    "sourceMarkdown": "docs/component-specs/RecordRowAction.md",
+    "storyFile": "src/stories/RecordRowAction.stories.tsx",
+    "artifactStatus": "needs audit",
+    "lastAuditDate": null,
+    "auditRules": null,
+    "version": "1.0",
+    "openQuestions": [
+      "There is still no row overflow menu in the system. accura-design-patterns.md logs it as a gap and two modules hand-rolled one before this component existed; RecordRowAction renders one action and does not close it. If a menu is built, does it replace this component or sit beside it as a second column?",
+      "The pinned appearance has never been audited at 390px. Both consumers were checked on desktop; a narrow viewport, where every table overflows, is the case most likely to look wrong and has not been measured."
+    ],
+    "notes": [
+      "Promoted from components/ to components/ui/ on 2026-09-18. Before that it had a story and no meta.json, which is why drift-check rule 5 failed against it.",
+      "No Figma node and never had one — it was written in the prototype. Stage 1 of generation-rules.md is a Figma inspection, which does not apply: every token here was read from record-row-action.tsx.",
+      "artifactStatus is 'needs audit' rather than 'ready' because no R1–R8 audit has been run — that process is Figma-only and is an open question for the repository, not a gap specific to this component."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      "1.0 (2026-09-18) — first artifact, written on promotion to components/ui/."
+    ],
+    "darkMode": {
+      "notes": "All four bindings are semantic and mode-aware: surface/overlay, surface/overlay/foreground, surface/raised and shadow/md.",
+      "pairedSurfaceRisk": "surface/overlay must keep its own /foreground. The container floats over rows whose background it does not control, so taking the foreground from the page would invert in dark mode."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/record-row-action.tsx",
+    "packageDeps": ["next", "lucide-react"],
+    "exports": ["RecordRowAction", "RecordRowActionHeading"],
+    "notes": [
+      "'use client' — useTableOverflow reads layout.",
+      "Uses next/link, so it is coupled to Next's router in a way the rest of components/ui is not."
+    ]
+  },
+  "storybook": {
+    "file": "src/stories/RecordRowAction.stories.tsx",
+    "title": "Data/RecordRowAction",
+    "stories": ["ScrollableListing", "FittingListing"],
+    "decorators": ["none"],
+    "notes": "Two stories, one per appearance: ScrollableListing forces overflow with min-w-[1000px] in a narrower container; FittingListing renders a table that fits. Title was 'Patterns/RecordRowAction' before promotion — the only Patterns/ entry in the library."
+  }
+}

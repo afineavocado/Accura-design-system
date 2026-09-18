@@ -11,6 +11,44 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-18 — `RecordRowAction` promoted into the design system
+
+**Added**
+
+- **`accura-ui/src/components/ui/record-row-action.tsx`**, moved from `components/`, with
+  `docs/component-specs/RecordRowAction.md` and
+  `docs/machine-readable/artifacts/components/record-row-action.meta.json`. Story title moved from
+  `Patterns/RecordRowAction` — the library's only `Patterns/` entry — to `Data/RecordRowAction`,
+  beside `Data/Table`.
+
+  It is the last column of a record listing: one ghost `Eye` button that opens the row's record,
+  pinning itself to the right edge on an overlay surface when the table overflows. Two consumers,
+  Documents and Knowledge Hub, were already importing it.
+
+  **`drift-check` now reports no drift for the first time.** Rule 5 keys on story files, so a
+  component sitting outside `components/ui/` with a story and no `meta.json` failed it; that red had
+  been carried deliberately since it was raised. Confirmed the rule is genuinely looking by moving
+  the new `meta.json` aside and watching rule 5 fail, then restoring it.
+
+**Changed**
+
+- **Component counts corrected across five files.** 38 components, 38 stories, 38 `.meta.json`, 40
+  spec files. The counts in `docs/tracking/AI-Readiness.md` were **already wrong before this
+  change** — it claimed 36 stories and 39 `.tsx` against 37 and 38 — so do not read the correction
+  as caused by the promotion.
+- **`README.md` no longer says all components are forked from `agentic-ui`.** 37 of 38 are;
+  `record-row-action` was written here and has no upstream, which is also why its `meta.json` has a
+  null `figmaNodeId` and skips Stage 1 of `generation-rules.md`.
+
+**Known issue recorded, not fixed**
+
+- **Three documents disagreed about how many stories are verified** — the `Storybook Status` table
+  counts 2, `CLAUDE.md` said 3, `llms.txt` said 4 and named `AlertDialog` and `Label`. The prose has
+  been set to the table's 2 and the disagreement written into `docs/tracking/Storybook Status.md`.
+  It is likelier that the table is missing two ticks than that `llms.txt` invented the names, but
+  ticking a verification column is not something to guess at.
+
+
 ### 2026-09-18 — Documents' three code-adjacent files folded into its spec and deleted
 
 **Removed**

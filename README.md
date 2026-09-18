@@ -19,7 +19,7 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 | **`accura-decisions.md`** | The theme reference — every token value, every deviation from Agentic, the reasoning, and 12 logged questions — 4 now decided. |
 | **`docs/design-system-rules.md`** | The design rules, with Accura's values inline. Reasoning and open questions live in `accura-decisions.md`. |
 | `docs/skills/` | 8 process skills — component audit, component documentation, component implementation, Storybook build, prototype build (patterns + execution), screen audit, token change. Token Binding was removed on 2026-09-17: a figma-cli workflow, and this repo does not work in Figma. |
-| `docs/component-specs/` | 39 spec files — 37 components, plus `_template.md` and `Form-shared.md`. |
+| `docs/component-specs/` | 40 spec files — 38 components, plus `_template.md` and `Form-shared.md`. |
 | `docs/machine-readable/` | 38 `meta.json` artifacts, component directory, quick reference, validation scripts. |
 | `docs/tracking/` | Storybook and audit status. ⚠️ Reflects Agentic's status, not Accura's. |
 | `tokens/` | DTCG export of Accura's tokens, plus `token-parity.mjs` — the check that says whether it still matches what ships. See `tokens/README.md`. |
@@ -157,7 +157,7 @@ Green is intrinsically lighter than blue at the same ramp step, so `/500` can't 
 
 ## Two things to know before contributing
 
-**1. `accura-ui` is a fork.** All 39 components are duplicated from `agentic-ui`, and 11 of them have already diverged. A fix here does not reach Agentic, and vice versa. Only tokens were meant to differ — see `accura-ui/README.md` for which components drifted.
+**1. `accura-ui` is a fork.** 37 of the 38 components are duplicated from `agentic-ui`, and 11 of them have already diverged. `record-row-action` is the exception — it was written here and has no upstream. A fix here does not reach Agentic, and vice versa. Only tokens were meant to differ — see `accura-ui/README.md` for which components drifted.
 
 **2. `accura-ui/src/app/tokens.css` is what ships.** It was originally generated from a Figma
 file, but that is provenance rather than process — nothing here requires opening Figma. The DTCG

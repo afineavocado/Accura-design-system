@@ -29,12 +29,13 @@ Tracks the Storybook pipeline per component **for Accura**. Update after complet
 
 ---
 
-## Status — 37 stories
+## Status — 38 stories
 
 | Component | .tsx tokens | Figma parity | Story written | Story verified |
 |---|---|---|---|---|
 | **Sidebar** | ✅ | ✅ | ✅ | ✅ |
 | **Stepper** | ✅ | — | ✅ | ✅ |
+| **RecordRowAction** | ✅ | — | ✅ | ❌ |
 | Accordion | ✅ | ⚠️ | ✅ | ❌ |
 | Alert | ✅ | ⚠️ | ✅ | ❌ |
 | AlertDialog | ✅ | ⚠️ | ✅ | ❌ |
@@ -93,6 +94,10 @@ Accura's deviations are concentrated in a few places. Verify these before the re
 ## Known state
 
 - **ChatBubble** — removed entirely on 2026-09-17: story (earlier, by decision), then the component, its spec and its `meta.json`. Nothing in the app or the prototypes used it.
+- **RecordRowAction** — added 2026-09-18 on promotion from `components/` to `components/ui/`. No
+  Figma node and never had one, so **Figma parity is not applicable**, not outstanding. Its tokens
+  were read from the `.tsx`. Not verified in the browser: the pinned appearance at 390px has never
+  been measured, which is logged as an open question in its spec.
 - **`button.figma.tsx`** — a Code Connect stub, not a component. No story expected.
 - ~~**`label`** — a shared sub-component documented in `Form-shared.md`. No story expected.~~
   **Superseded 2026-09-14.** `Label` now implements `required` and the three `label state`
@@ -101,5 +106,24 @@ Accura's deviations are concentrated in a few places. Verify these before the re
 - **27 TypeScript errors** across story files, inherited from the fork (Storybook 10 made `args` required on `Story`). Excluded from the Next.js build; not yet fixed at source.
 
 ---
+
+---
+
+## ⚠️ Three documents disagree about how many stories are verified
+
+Recorded 2026-09-18, **not resolved** — the ticks are nobody's to change but the person who did or
+did not run the verification.
+
+| Says | Where |
+|---|---|
+| **2** — Sidebar and Stepper | the table above, counted from the `Story verified` column |
+| 3 | `CLAUDE.md` → Known debt |
+| 4 — Sidebar, Stepper, AlertDialog, Label | `llms.txt` |
+
+The table is the artifact and the prose is derived from it, so both prose counts have been set to
+**2 of 38**. But `AlertDialog` and `Label` are named specifically in `llms.txt`, and Label's note
+below says it was verified in-browser — so the likelier reading is that **the table is missing two
+ticks**, not that `llms.txt` invented them. Someone who knows whether those two were measured
+should either tick the table or drop the names.
 
 *Verify per `docs/skills/Storybook Build Process.md`. Storybook does not reliably hot-reload `.tsx` or token edits — fully restart and measure in the browser. Record numbers, not impressions.*

@@ -10,7 +10,7 @@ import { Search, ArrowDown, ArrowUp, Plus } from "lucide-react";
 import {
   RecordRowAction,
   RecordRowActionHeading,
-} from "@/components/record-row-action";
+} from "@/components/ui/record-row-action";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

@@ -14,9 +14,9 @@ values.
 | | Accura |
 |---|---|
 | Component specs (`docs/component-specs/*.md`) | 39 |
-| `.meta.json` artifacts | 37 |
-| Storybook stories | 36 |
-| `.tsx` components | 39 |
+| `.meta.json` artifacts | 38 |
+| Storybook stories | 38 |
+| `.tsx` components | 38 |
 | `.examples.tsx` | **0** |
 | Tokens | 229 primitives · 115 semantics · 52 components = **396** |
 | CSS custom properties | 351 (456 declarations incl. `.dark`) |
@@ -29,7 +29,7 @@ values.
 
 | # | Factor | Status | State in Accura |
 |---|---|---|---|
-| 1 | Machine-readable metadata | 🟡 | 37 `.meta.json` present, but **inherited from Agentic** and re-verified only for the components touched since the fork. |
+| 1 | Machine-readable metadata | 🟡 | 38 `.meta.json` present, but **inherited from Agentic** and re-verified only for the components touched since the fork. |
 | 2 | Code-first usage examples | ❌ | **None.** Agentic has 33 `.examples.tsx`; Accura has 0. Largest single gap. |
 | 3 | Design decisions with rationale | ✅ | Inherited docs plus `accura-decisions.md` §1–§8, which records *why* each value moved and logs 11 open questions. |
 | 4 | `llms.txt` | ✅ | Present and accurate as of this assessment (counts corrected 2026-09-08). |
@@ -39,7 +39,7 @@ values.
 | 8 | Composition explicit | ✅ | Structure + slot sections in every spec. |
 | 9 | DTCG tokens | ✅ | 390 tokens across 3 DTCG files, Style Dictionary v5 → CSS + Tailwind v4 + ES module. |
 | 10 | Figma Code Connect | ✖ | Not applicable — needs a published npm package linked to the Figma file. Same as Agentic. |
-| 11 | Programmatically accessible examples | 🟡 | 37 stories build and run, but **only 4 verified against Accura's values**. The other 33 carry Agentic's verification, which does not transfer — the brand ramp, sidebar, button radius, status borders and now the radius scale and heading font all changed. |
+| 11 | Programmatically accessible examples | 🟡 | 38 stories build and run, but **only 2 verified against Accura's values**. The other 36 carry Agentic's verification, which does not transfer — the brand ramp, sidebar, button radius, status borders and now the radius scale and heading font all changed. |
 | 12 | Accessibility structured | ✅ | Accessibility sections in every spec. |
 | 13 | Usage tracking | 🟡 | **Now unblocked.** Agentic marked this ❌ "requires code repo"; Accura has one (public GitHub). Not built. |
 | 14 | Source of truth hierarchy | ✅ | `CLAUDE.md` + `llms.txt` + the override table at the top of `docs/design-system-rules.md`. |
@@ -105,7 +105,7 @@ node docs/machine-readable/drift-check.mjs
 
 ## Priority gaps
 
-1. **F2 — no `.examples.tsx`.** 0 of 39. This is what an agent reads to learn correct composition; specs describe, examples demonstrate.
+1. **F2 — no `.examples.tsx`.** 0 of 38. This is what an agent reads to learn correct composition; specs describe, examples demonstrate.
 2. **F11 — 33 stories unverified against Accura.** Tracked in `docs/tracking/Storybook Status.md`.
 3. **R1–R8 audits — zero run against Accura's Figma file.** Tracked in `docs/tracking/Audit Status.md`.
 4. ~~**F1 — `chat-bubble.meta.json` orphan.**~~ **Resolved 2026-09-17** — the component, its spec and its meta.json were deleted. The story had been removed by decision; nothing used the component.

@@ -23,12 +23,7 @@ There are two many documents in this folder Flow, and they dont follow anything.
 
 1. ~~**Record the mock data for Deviations and Training.**~~ — **DONE 2026-09-18.** `flow/deviation-spec.md` §15 and `flow/training-spec.md` §12, in the same shape as the other five. Three corrections came out of writing them, below.
 
-2. **Clear the `RecordRowAction` red — the only failure left in `drift-check`.** `RecordRowAction`
-   lives in `components/` (prototype-shared) not `components/ui/` (design system), so it has a story
-   and no `meta.json`, and rule 5 keys on stories. Three options: promote it to `components/ui/`
-   with a spec and meta (**recommended** — the patterns file already logs "no row overflow menu" as
-   a gap, and two modules hand-rolled one); delete the story; or teach rule 5 to skip stories whose
-   component sits outside `components/ui/`. Clearing it makes the check green for the first time.
+2. ~~**Clear the `RecordRowAction` red.**~~ **DONE 2026-09-18** — promoted to `components/ui/` with a spec and a `meta.json`. `drift-check` is green for the first time.
 
 3. Still open, both need your decision:
    - **R1–R8 component audits.** The skill that defines them is Figma-only and we do not work in
@@ -37,3 +32,5 @@ There are two many documents in this folder Flow, and they dont follow anything.
      can run.
    - ~~**Documents' three code-adjacent files.**~~ **ANSWERED 2026-09-18: folded in and deleted**,
      README kept as a stub for Chi. See `flow/documents-spec.md` §6.7.
+
+somehow, the prototype in localhost is not the updated one, its the old one, can you check pls ?

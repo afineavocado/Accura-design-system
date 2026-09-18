@@ -144,12 +144,11 @@ Desktop stashed it on a branch switch. If it matters, commit it.
 
 ## Known debt — do not restate it as done
 
-- **Verification:** `0` `.examples.tsx` · `3 of 38` stories verified · `0` R1–R8 audits.
+- **Verification:** `0` `.examples.tsx` · `2 of 38` stories verified · `0` R1–R8 audits.
   Full picture in `docs/tracking/AI-Readiness.md`.
-- **Fork drift:** 11 of 39 components differ from `agentic-ui` and only `label.tsx` has a known
-  reason. The rest are unaudited — diff before assuming one matches.
-- `RecordRowAction.stories.tsx` has no `meta.json`, so `drift-check` rule 5 fails. Deferred
-  deliberately until the modules are finished.
+- **Fork drift:** 11 of the 37 inherited components differ from `agentic-ui` and only `label.tsx`
+  has a known reason. `record-row-action` is not inherited — it was written here.
+  The rest are unaudited — diff before assuming one matches.
 - **One date format is written down and not yet applied** — `accura-design-patterns.md` → *Data ·
   Dates and times*, marked for a single pass once the prototypes are done. Four renderings ship today.
 

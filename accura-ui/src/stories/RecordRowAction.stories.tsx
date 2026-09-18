@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import {
   RecordRowAction,
   RecordRowActionHeading,
-} from "@/components/record-row-action";
+} from "@/components/ui/record-row-action";
 import {
   Table,
   TableHeader,
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 
 const meta = {
-  title: "Patterns/RecordRowAction",
+  title: "Data/RecordRowAction",
   component: RecordRowAction,
   parameters: { layout: "padded" },
 } satisfies Meta<typeof RecordRowAction>;
