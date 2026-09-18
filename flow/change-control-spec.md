@@ -299,6 +299,9 @@ similar needs but nobody asked for a shared component yet.
 | Evidence chip: `X` when editable, `Download` when done, same position | `Download` always, `Remove` **before** it when editable | The control under the pointer changed from *download* to *delete* without moving |
 | Comments behind a `border-l-2` rail | no rail | The same decorative timeline border already removed from audit events |
 | Raw `<button>` elements throughout | `Button variant="ghost" size="icon"` | They were not the component |
+| A 4px brand-green left rail on the open card | one border in both states | It was the only thing distinguishing open from completed — decoration standing in for the status `Badge` that already says so |
+| `Comment` and `Mark as completed` both primary | `Attach evidence` ghost · `Comment` outline · `Mark as completed` primary | Three levels, not two. Commenting is work on the action; `Mark as completed` is the one control that ends it, and two primaries side by side give no default path |
+| `mt-lg` on three blocks **on top of** the card's own `gap-md` | the card's `gap` alone | The two compounded to 28px between every section. Title and byline are now one block on `gap-xs`, so the card's gap spaces sections rather than lines |
 
 Enter sends the comment, Shift+Enter breaks the line. The visible `Comment` button carries the
 affordance; the key is a shortcut, not the only route.

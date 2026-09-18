@@ -43,6 +43,14 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
   longer swaps position with a destructive `Remove`. The comment list's decorative left rail is
   gone. Raw `<button>`s are `Button variant="ghost" size="icon"`.
 
+  Revised again the same day: the **4px brand-green left rail is gone** — it was the only thing
+  distinguishing an open card from a completed one, decoration doing the status `Badge`'s job.
+  Button hierarchy is now three levels rather than two — `Attach evidence` ghost, `Comment`
+  outline, `Mark as completed` primary; two primaries side by side gave no default path. And the
+  card's spacing was **compounding**: `mt-lg` on three blocks on top of the card's own `gap-md`
+  put 28px between every section. The `mt`s are gone and the title and byline are one block, so
+  the card's gap spaces sections rather than lines.
+
 
 ### 2026-09-18 — R1–R8 auditing retired
 

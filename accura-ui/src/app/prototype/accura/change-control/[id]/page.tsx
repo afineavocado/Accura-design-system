@@ -835,659 +835,657 @@ function AssessmentCard({
       {impactedSelected && (
         <div className="flex flex-col gap-[var(--spacing-component-lg)]">
           <div className="flex flex-col gap-[var(--spacing-component-xs)]">
-            <Label>Impact Assessment (optional)</Label>
-            <Textarea
-              value={readOnly ? assessment.impactSummary : impactSummary}
-              onChange={(event) => setImpactSummary(event.target.value)}
-              readOnly={readOnly}
-              className="min-h-[98px]"
-              placeholder="Summarize the impact of the change on this department"
-            />
-          </div>
+              <Label>Impact Assessment (optional)</Label>
+              <Textarea
+                value={readOnly ? assessment.impactSummary : impactSummary}
+                onChange={(event) => setImpactSummary(event.target.value)}
+                readOnly={readOnly}
+                className="min-h-[98px]"
+                placeholder="Summarize the impact of the change on this department"
+              />
+            </div>
 
-          <div className="flex items-center gap-[var(--spacing-component-sm)] text-sm font-medium text-[var(--color-background-default-foreground)]">
-            <ListIcon className="size-5 text-[var(--color-icon-muted)]" />
-            Change actions
-          </div>
+            <div className="flex items-center gap-[var(--spacing-component-sm)] text-sm font-medium text-[var(--color-background-default-foreground)]">
+              <ListIcon className="size-5 text-[var(--color-icon-muted)]" />
+              Change actions
+            </div>
 
-          {stage === "actions" && (
-            <div className="overflow-x-auto rounded-[var(--radius-lg)] border border-[var(--color-border-default)]">
-              <Table className="min-w-[920px]">
-                <TableHeader>
-                  <TableRow className="hover:bg-transparent">
-                    <TableHead className="w-10">#</TableHead>
-                    <TableHead className="min-w-[260px]">Description</TableHead>
-                    <TableHead className="min-w-[190px]">Action Owner</TableHead>
-                    <TableHead className="min-w-[180px]">Due Date</TableHead>
-                    <TableHead className="min-w-[150px]">Priority</TableHead>
-                    <TableHead className="w-12" />
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {readOnly ? (
-                    <TableRow>
-                      <TableCell>1</TableCell>
-                      <TableCell>
-                        Update controlled procedure and batch record instructions
-                      </TableCell>
-                      <TableCell>
-                        {assessment.signer ?? "Department owner"}
-                      </TableCell>
-                      <TableCell>Oct 02, 2026</TableCell>
-                      <TableCell>
-                        <PriorityBadge priority={assessment.priority} />
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="ghost"
-                          size="icon-sm"
-                          disabled
-                          aria-label="Remove action"
-                        >
-                          <Trash2 className="size-4" />
-                        </Button>
-                      </TableCell>
+            {stage === "actions" && (
+              <div className="overflow-x-auto rounded-[var(--radius-lg)] border border-[var(--color-border-default)]">
+                <Table className="min-w-[920px]">
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent">
+                      <TableHead className="w-10">#</TableHead>
+                      <TableHead className="min-w-[260px]">Description</TableHead>
+                      <TableHead className="min-w-[190px]">Action Owner</TableHead>
+                      <TableHead className="min-w-[180px]">Due Date</TableHead>
+                      <TableHead className="min-w-[150px]">Priority</TableHead>
+                      <TableHead className="w-12" />
                     </TableRow>
-                  ) : (
-                    actionDrafts.map((draft, index) => (
-                      <TableRow key={draft.id}>
-                        <TableCell>{index + 1}</TableCell>
+                  </TableHeader>
+                  <TableBody>
+                    {readOnly ? (
+                      <TableRow>
+                        <TableCell>1</TableCell>
                         <TableCell>
-                          <Input
-                            value={draft.description}
-                            onChange={(event) =>
-                              updateAction(draft.id, {
-                                description: event.target.value,
-                              })
-                            }
-                            placeholder="e.g Update SOP"
-                          />
+                          Update controlled procedure and batch record instructions
                         </TableCell>
                         <TableCell>
-                          <Select
-                            value={draft.owner}
-                            onValueChange={(owner) =>
-                              updateAction(draft.id, { owner })
-                            }
-                          >
-                            <SelectTrigger aria-label={`Action ${index + 1} owner`}>
-                              <SelectValue placeholder="Select owner" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="lisa-chen">Lisa Chen</SelectItem>
-                              <SelectItem value="michael-chen">
-                                Michael Chen
-                              </SelectItem>
-                              <SelectItem value="sarah-johnson">
-                                Sarah Johnson
-                              </SelectItem>
-                            </SelectContent>
-                          </Select>
+                          {assessment.signer ?? "Department owner"}
                         </TableCell>
+                        <TableCell>Oct 02, 2026</TableCell>
                         <TableCell>
-                          <DatePicker
-                            type="input"
-                            placeholder="Select date"
-                            value={draft.dueDate}
-                            onChange={(value) =>
-                              updateAction(draft.id, {
-                                dueDate: value instanceof Date ? value : undefined,
-                              })
-                            }
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Select
-                            value={draft.priority}
-                            onValueChange={(priority) =>
-                              updateAction(draft.id, { priority })
-                            }
-                          >
-                            <SelectTrigger
-                              aria-label={`Action ${index + 1} priority`}
-                            >
-                              <SelectValue placeholder="Select priority" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Low">Low</SelectItem>
-                              <SelectItem value="Medium">Medium</SelectItem>
-                              <SelectItem value="High">High</SelectItem>
-                              <SelectItem value="Critical">Critical</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <PriorityBadge priority={assessment.priority} />
                         </TableCell>
                         <TableCell>
                           <Button
                             variant="ghost"
                             size="icon-sm"
-                            onClick={() => removeAction(draft.id)}
-                            aria-label={`Remove action ${index + 1}`}
+                            disabled
+                            aria-label="Remove action"
                           >
                             <Trash2 className="size-4" />
                           </Button>
                         </TableCell>
                       </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-          )}
-
-          {error === "missing-action" && (
-            <p className="text-sm font-medium leading-none text-[var(--color-text-invalid)]">
-              Add at least one change action for this department before signing.
-            </p>
-          )}
-
-          {error === "incomplete-action" && (
-            <p className="text-sm font-medium leading-none text-[var(--color-text-invalid)]">
-              Each action needs a description, an action owner and a due date.
-            </p>
-          )}
-        </div>
-      )}
-
-      {impactedSelected && !readOnly && (
-        <div className="flex flex-wrap justify-between gap-[var(--spacing-component-sm)]">
-          <Button variant="outline" onClick={addAction}>
-            <Plus className="size-4" />
-            Add Action
-          </Button>
-          <div className="flex gap-[var(--spacing-component-sm)]">
-            <Button variant="ghost" onClick={() => setStage("default")}>
-              Cancel
-            </Button>
-            <Button onClick={saveImpacted}>Save & Sign (Impacted)</Button>
-          </div>
-        </div>
-      )}
-
-      {notImpactedSelected && !readOnly && (
-        <div className="flex flex-wrap justify-between gap-[var(--spacing-component-sm)]">
-          <div className="flex gap-[var(--spacing-component-sm)]">
-            <Button variant="ghost" onClick={() => setStage("default")}>
-              Cancel
-            </Button>
-            <Button onClick={saveNotImpacted}>Save & Sign (Not Impacted)</Button>
-          </div>
-        </div>
-      )}
-      </Card>
-
-      {signatureType && (
-        <DepartmentSignatureDialog
-          open={Boolean(signatureType)}
-          onOpenChange={(open) => {
-            if (!open) setSignatureType(null)
-          }}
-          recordId={recordId}
-          department={assessment.department}
-          type={signatureType}
-          onConfirm={confirmDepartmentSignature}
-        />
-      )}
-    </>
-  )
-}
-
-function ImpactAssessmentSection({
-  record,
-  onDeclarationStatusChange,
-  onGeneratedActionsChange,
-}: {
-  record: ChangeControlRecord
-  onDeclarationStatusChange?: (allDepartmentsDeclared: boolean) => void
-  onGeneratedActionsChange?: (state: ImpactAssessmentActionState) => void
-}) {
-  const assessments = record.departmentAssessments ?? []
-  const savedActions = record.changeActions ?? []
-  const readOnly = record.status !== "Impact Assessment"
-  const [signedAssessments, setSignedAssessments] = React.useState<
-    Record<string, SignedAssessmentState>
-  >(() => signedAssessmentsFromSavedState(assessments, savedActions))
-  const declaredDepartmentCount = Object.keys(signedAssessments).length
-  const allDepartmentsDeclared =
-    record.status === "Impact Assessment" &&
-    assessments.length > 0 &&
-    assessments.every((assessment) =>
-      Boolean(signedAssessments[assessment.department])
-    )
-
-  React.useEffect(() => {
-    setSignedAssessments(
-      signedAssessmentsFromSavedState(
-        record.departmentAssessments ?? [],
-        record.changeActions ?? []
-      )
-    )
-  }, [record.id, record.status, record.departmentAssessments, record.changeActions])
-
-  React.useEffect(() => {
-    onDeclarationStatusChange?.(allDepartmentsDeclared)
-  }, [allDepartmentsDeclared, onDeclarationStatusChange])
-
-  React.useEffect(() => {
-    const generatedAssessments = assessments.flatMap((assessment) => {
-      const signedAssessment = signedAssessments[assessment.department]
-
-      if (!signedAssessment) return []
-
-      return [
-        {
-          ...assessment,
-          impacted: signedAssessment.type === "impacted",
-          status:
-            signedAssessment.type === "impacted"
-              ? ("Signed" as const)
-              : ("Not Impacted" as const),
-          signer: signedAssessment.signer,
-          impactSummary:
-            signedAssessment.type === "impacted"
-              ? signedAssessment.assessmentText
-              : "",
-          reason:
-            signedAssessment.type === "not-impacted"
-              ? signedAssessment.assessmentText
-              : assessment.reason,
-        },
-      ]
-    })
-    const generatedActions = Object.values(signedAssessments).flatMap(
-      (signedAssessment) =>
-        signedAssessment.type === "impacted"
-          ? (signedAssessment.actions ?? [])
-          : []
-    )
-
-    onGeneratedActionsChange?.({
-      assessments: generatedAssessments,
-      actions: generatedActions,
-    })
-  }, [assessments, onGeneratedActionsChange, signedAssessments])
-
-  function handleSignedAssessmentChange(
-    department: string,
-    signedAssessment: SignedAssessmentState
-  ) {
-    setSignedAssessments((current) => ({
-      ...current,
-      [department]: signedAssessment,
-    }))
-  }
-
-  return (
-    <SectionCard
-      id="impact-assessment"
-      icon={<Building2 className="size-5" />}
-      title="Affected Departments & Impact Assessment"
-      description={
-        record.status === "Draft"
-          ? undefined
-          : "On submission, every department is notified. Each department declares whether it is impacted: impacted departments assess the impact, define change actions and sign; not-impacted departments record a reason and sign off."
-      }
-    >
-      <div className="flex flex-col gap-[var(--spacing-component-xl)]">
-        {assessments.length ? (
-          <>
-            <p className="text-sm leading-normal text-[var(--color-background-default-foreground)]">
-              {declaredDepartmentCount} of {assessments.length} departments have
-              declared.
-            </p>
-            {assessments.map((assessment) => (
-              <AssessmentCard
-                key={assessment.department}
-                assessment={assessment}
-                readOnly={readOnly}
-                recordId={record.id}
-                signedAssessment={signedAssessments[assessment.department]}
-                onSignedAssessmentChange={handleSignedAssessmentChange}
-                actionCount={
-                  savedActions.filter((action) =>
-                    departmentActionMatches(action, assessment)
-                  ).length
-                }
-              />
-            ))}
-          </>
-        ) : (
-          <p className="text-sm leading-normal text-[var(--color-background-default-foreground)]">
-            Departments are notified to declare their impact once this Change
-            Control is submitted for assessment.
-          </p>
-        )}
-      </div>
-    </SectionCard>
-  )
-}
-
-function departmentActionMatches(
-  action: ChangeAction,
-  assessment: DepartmentAssessment
-) {
-  if (action.department) return action.department === assessment.department
-
-  return Boolean(assessment.signer && action.owner === assessment.signer)
-}
-
-function signedAssessmentsFromSavedState(
-  assessments: DepartmentAssessment[],
-  actions: ChangeAction[]
-) {
-  return assessments.reduce<Record<string, SignedAssessmentState>>(
-    (signedState, assessment) => {
-      if (assessment.status === "Pending") return signedState
-
-      signedState[assessment.department] = {
-        type: assessment.impacted ? "impacted" : "not-impacted",
-        signer: assessment.signer ?? "Sarah Johnson",
-        signedAt: "Sep 15, 2026",
-        assessmentText: assessment.impacted
-          ? assessment.impactSummary
-          : (assessment.reason ?? ""),
-        actions: assessment.impacted
-          ? actions.filter((action) => departmentActionMatches(action, assessment))
-          : undefined,
-      }
-
-      return signedState
-    },
-    {}
-  )
-}
-
-const actionStatusVariant: Record<ChangeAction["status"], BadgeProps["variant"]> = {
-  Open: "secondary",
-  "In Progress": "warning",
-  Done: "success",
-}
-
-function ChangeActionsSection({
-  assessments,
-  actions,
-  recordId,
-  useActionCards = false,
-}: {
-  assessments: DepartmentAssessment[]
-  actions: ChangeAction[]
-  recordId: string
-  useActionCards?: boolean
-}) {
-  const actionGroups = assessments
-    .filter(
-      (assessment) =>
-        assessment.impacted &&
-        assessment.status !== "Pending" &&
-        assessment.status !== "Not Impacted"
-    )
-    .map((assessment) => ({
-      assessment,
-      actions: actions.filter((action) =>
-        departmentActionMatches(action, assessment)
-      ),
-    }))
-    .filter((group) => group.actions.length > 0)
-
-  if (!actionGroups.length) return null
-
-  return (
-    <SectionCard
-      id="change-actions"
-      icon={<ListIcon className="size-5" />}
-      title="Change Actions"
-      description="Each affected department defines and executes its own actions. Every action has its own status: Draft → In Review → Implementation in Progress → Completed. The Action Owner need not be the Impact Owner."
-    >
-      <div className="flex flex-col gap-[var(--spacing-component-lg)]">
-        {actionGroups.map(({ assessment, actions }) => (
-          /* One department block for both states. This section used to render
-             a department as a bare uppercase header plus a five-column table
-             at QA Approval, and as a bare header plus stacked cards at Action
-             in Progress — the same concept drawn two ways, and neither
-             matching the department card in the section above. The card and
-             its header are now shared; only what sits inside differs, because
-             an action in progress carries evidence, comments and a signature
-             that no table row can hold. */
-          <Card
-            key={assessment.department}
-            className="gap-[var(--spacing-component-sm)]"
-          >
-            <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
-              <Building className="size-5 shrink-0 text-[var(--color-icon-muted)]" />
-              <span className="min-w-0 text-[15px] font-medium leading-snug text-[var(--color-background-default-foreground)]">
-                {assessment.department}
-              </span>
-              <Badge variant="blue" shape="pill" size="md">
-                Impacted
-              </Badge>
-              <span className="ml-auto text-xs text-[var(--color-text-secondary)]">
-                {formatActionCount(actions.length)}
-                {actions.some((action) => action.status === "Done") &&
-                  ` · ${actions.filter((action) => action.status === "Done").length} done`}
-              </span>
-            </div>
-
-            <p className="text-xs text-[var(--color-text-secondary)]">
-              {assessment.signer ?? "Department owner"} · signed Sep 15, 2026
-            </p>
-
-            {useActionCards ? (
-              <div className="mt-[var(--spacing-component-sm)] flex flex-col gap-[var(--spacing-component-md)]">
-                {actions.map((action) => (
-                  <ActionExecutionCard
-                    key={action.id}
-                    action={action}
-                    recordId={recordId}
-                    onChange={() => {}}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col">
-                {actions.map((action) => (
-                  <div
-                    key={action.id}
-                    className="flex items-start gap-[var(--spacing-component-md)] border-t border-[var(--color-border-default)] py-[var(--spacing-component-md)]"
-                  >
-                    <span className="shrink-0 text-sm font-medium text-[var(--color-brand-primary)]">
-                      {action.id}
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
-                        <span className="text-sm font-medium text-[var(--color-background-default-foreground)]">
-                          {action.title}
-                        </span>
-                        {/* The data's own words — Open · In Progress · Done.
-                            The section description above still narrates a
-                            different set (Draft → In Review → Implementation
-                            in Progress → Completed); spec §7.15. */}
-                        <Badge
-                          variant={actionStatusVariant[action.status]}
-                          shape="pill"
-                          size="md"
-                        >
-                          {action.status}
-                        </Badge>
-                        <PriorityBadge priority={action.priority} />
-                      </div>
-                      <p className="mt-[var(--spacing-component-xs)] text-xs text-[var(--color-text-secondary)]">
-                        {action.owner} · due {action.dueDate}
-                        {action.evidenceFiles?.length
-                          ? ` · ${action.evidenceFiles.length} file${action.evidenceFiles.length > 1 ? "s" : ""}`
-                          : ""}
-                        {action.comments?.length
-                          ? ` · ${action.comments.length} comment${action.comments.length > 1 ? "s" : ""}`
-                          : ""}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                    ) : (
+                      actionDrafts.map((draft, index) => (
+                        <TableRow key={draft.id}>
+                          <TableCell>{index + 1}</TableCell>
+                          <TableCell>
+                            <Input
+                              value={draft.description}
+                              onChange={(event) =>
+                                updateAction(draft.id, {
+                                  description: event.target.value,
+                                })
+                              }
+                              placeholder="e.g Update SOP"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Select
+                              value={draft.owner}
+                              onValueChange={(owner) =>
+                                updateAction(draft.id, { owner })
+                              }
+                            >
+                              <SelectTrigger aria-label={`Action ${index + 1} owner`}>
+                                <SelectValue placeholder="Select owner" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="lisa-chen">Lisa Chen</SelectItem>
+                                <SelectItem value="michael-chen">
+                                  Michael Chen
+                                </SelectItem>
+                                <SelectItem value="sarah-johnson">
+                                  Sarah Johnson
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </TableCell>
+                          <TableCell>
+                            <DatePicker
+                              type="input"
+                              placeholder="Select date"
+                              value={draft.dueDate}
+                              onChange={(value) =>
+                                updateAction(draft.id, {
+                                  dueDate: value instanceof Date ? value : undefined,
+                                })
+                              }
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Select
+                              value={draft.priority}
+                              onValueChange={(priority) =>
+                                updateAction(draft.id, { priority })
+                              }
+                            >
+                              <SelectTrigger
+                                aria-label={`Action ${index + 1} priority`}
+                              >
+                                <SelectValue placeholder="Select priority" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Low">Low</SelectItem>
+                                <SelectItem value="Medium">Medium</SelectItem>
+                                <SelectItem value="High">High</SelectItem>
+                                <SelectItem value="Critical">Critical</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              variant="ghost"
+                              size="icon-sm"
+                              onClick={() => removeAction(draft.id)}
+                              aria-label={`Remove action ${index + 1}`}
+                            >
+                              <Trash2 className="size-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
               </div>
             )}
-          </Card>
-        ))}
-      </div>
-    </SectionCard>
-  )
-}
 
-function actionStatusBadge(state: "default" | "filled" | "completed") {
-  if (state === "completed") {
+            {error === "missing-action" && (
+              <p className="text-sm font-medium leading-none text-[var(--color-text-invalid)]">
+                Add at least one change action for this department before signing.
+              </p>
+            )}
+
+            {error === "incomplete-action" && (
+              <p className="text-sm font-medium leading-none text-[var(--color-text-invalid)]">
+                Each action needs a description, an action owner and a due date.
+              </p>
+            )}
+          </div>
+        )}
+
+        {impactedSelected && !readOnly && (
+          <div className="flex flex-wrap justify-between gap-[var(--spacing-component-sm)]">
+            <Button variant="outline" onClick={addAction}>
+              <Plus className="size-4" />
+              Add Action
+            </Button>
+            <div className="flex gap-[var(--spacing-component-sm)]">
+              <Button variant="ghost" onClick={() => setStage("default")}>
+                Cancel
+              </Button>
+              <Button onClick={saveImpacted}>Save & Sign (Impacted)</Button>
+            </div>
+          </div>
+        )}
+
+        {notImpactedSelected && !readOnly && (
+          <div className="flex flex-wrap justify-between gap-[var(--spacing-component-sm)]">
+            <div className="flex gap-[var(--spacing-component-sm)]">
+              <Button variant="ghost" onClick={() => setStage("default")}>
+                Cancel
+              </Button>
+              <Button onClick={saveNotImpacted}>Save & Sign (Not Impacted)</Button>
+            </div>
+          </div>
+        )}
+        </Card>
+
+        {signatureType && (
+          <DepartmentSignatureDialog
+            open={Boolean(signatureType)}
+            onOpenChange={(open) => {
+              if (!open) setSignatureType(null)
+            }}
+            recordId={recordId}
+            department={assessment.department}
+            type={signatureType}
+            onConfirm={confirmDepartmentSignature}
+          />
+        )}
+      </>
+    )
+  }
+
+  function ImpactAssessmentSection({
+    record,
+    onDeclarationStatusChange,
+    onGeneratedActionsChange,
+  }: {
+    record: ChangeControlRecord
+    onDeclarationStatusChange?: (allDepartmentsDeclared: boolean) => void
+    onGeneratedActionsChange?: (state: ImpactAssessmentActionState) => void
+  }) {
+    const assessments = record.departmentAssessments ?? []
+    const savedActions = record.changeActions ?? []
+    const readOnly = record.status !== "Impact Assessment"
+    const [signedAssessments, setSignedAssessments] = React.useState<
+      Record<string, SignedAssessmentState>
+    >(() => signedAssessmentsFromSavedState(assessments, savedActions))
+    const declaredDepartmentCount = Object.keys(signedAssessments).length
+    const allDepartmentsDeclared =
+      record.status === "Impact Assessment" &&
+      assessments.length > 0 &&
+      assessments.every((assessment) =>
+        Boolean(signedAssessments[assessment.department])
+      )
+
+    React.useEffect(() => {
+      setSignedAssessments(
+        signedAssessmentsFromSavedState(
+          record.departmentAssessments ?? [],
+          record.changeActions ?? []
+        )
+      )
+    }, [record.id, record.status, record.departmentAssessments, record.changeActions])
+
+    React.useEffect(() => {
+      onDeclarationStatusChange?.(allDepartmentsDeclared)
+    }, [allDepartmentsDeclared, onDeclarationStatusChange])
+
+    React.useEffect(() => {
+      const generatedAssessments = assessments.flatMap((assessment) => {
+        const signedAssessment = signedAssessments[assessment.department]
+
+        if (!signedAssessment) return []
+
+        return [
+          {
+            ...assessment,
+            impacted: signedAssessment.type === "impacted",
+            status:
+              signedAssessment.type === "impacted"
+                ? ("Signed" as const)
+                : ("Not Impacted" as const),
+            signer: signedAssessment.signer,
+            impactSummary:
+              signedAssessment.type === "impacted"
+                ? signedAssessment.assessmentText
+                : "",
+            reason:
+              signedAssessment.type === "not-impacted"
+                ? signedAssessment.assessmentText
+                : assessment.reason,
+          },
+        ]
+      })
+      const generatedActions = Object.values(signedAssessments).flatMap(
+        (signedAssessment) =>
+          signedAssessment.type === "impacted"
+            ? (signedAssessment.actions ?? [])
+            : []
+      )
+
+      onGeneratedActionsChange?.({
+        assessments: generatedAssessments,
+        actions: generatedActions,
+      })
+    }, [assessments, onGeneratedActionsChange, signedAssessments])
+
+    function handleSignedAssessmentChange(
+      department: string,
+      signedAssessment: SignedAssessmentState
+    ) {
+      setSignedAssessments((current) => ({
+        ...current,
+        [department]: signedAssessment,
+      }))
+    }
+
     return (
-      <Badge variant="success" shape="pill" size="md">
-        Completed
+      <SectionCard
+        id="impact-assessment"
+        icon={<Building2 className="size-5" />}
+        title="Affected Departments & Impact Assessment"
+        description={
+          record.status === "Draft"
+            ? undefined
+            : "On submission, every department is notified. Each department declares whether it is impacted: impacted departments assess the impact, define change actions and sign; not-impacted departments record a reason and sign off."
+        }
+      >
+        <div className="flex flex-col gap-[var(--spacing-component-xl)]">
+          {assessments.length ? (
+            <>
+              <p className="text-sm leading-normal text-[var(--color-background-default-foreground)]">
+                {declaredDepartmentCount} of {assessments.length} departments have
+                declared.
+              </p>
+              {assessments.map((assessment) => (
+                <AssessmentCard
+                  key={assessment.department}
+                  assessment={assessment}
+                  readOnly={readOnly}
+                  recordId={record.id}
+                  signedAssessment={signedAssessments[assessment.department]}
+                  onSignedAssessmentChange={handleSignedAssessmentChange}
+                  actionCount={
+                    savedActions.filter((action) =>
+                      departmentActionMatches(action, assessment)
+                    ).length
+                  }
+                />
+              ))}
+            </>
+          ) : (
+            <p className="text-sm leading-normal text-[var(--color-background-default-foreground)]">
+              Departments are notified to declare their impact once this Change
+              Control is submitted for assessment.
+            </p>
+          )}
+        </div>
+      </SectionCard>
+    )
+  }
+
+  function departmentActionMatches(
+    action: ChangeAction,
+    assessment: DepartmentAssessment
+  ) {
+    if (action.department) return action.department === assessment.department
+
+    return Boolean(assessment.signer && action.owner === assessment.signer)
+  }
+
+  function signedAssessmentsFromSavedState(
+    assessments: DepartmentAssessment[],
+    actions: ChangeAction[]
+  ) {
+    return assessments.reduce<Record<string, SignedAssessmentState>>(
+      (signedState, assessment) => {
+        if (assessment.status === "Pending") return signedState
+
+        signedState[assessment.department] = {
+          type: assessment.impacted ? "impacted" : "not-impacted",
+          signer: assessment.signer ?? "Sarah Johnson",
+          signedAt: "Sep 15, 2026",
+          assessmentText: assessment.impacted
+            ? assessment.impactSummary
+            : (assessment.reason ?? ""),
+          actions: assessment.impacted
+            ? actions.filter((action) => departmentActionMatches(action, assessment))
+            : undefined,
+        }
+
+        return signedState
+      },
+      {}
+    )
+  }
+
+  const actionStatusVariant: Record<ChangeAction["status"], BadgeProps["variant"]> = {
+    Open: "secondary",
+    "In Progress": "warning",
+    Done: "success",
+  }
+
+  function ChangeActionsSection({
+    assessments,
+    actions,
+    recordId,
+    useActionCards = false,
+  }: {
+    assessments: DepartmentAssessment[]
+    actions: ChangeAction[]
+    recordId: string
+    useActionCards?: boolean
+  }) {
+    const actionGroups = assessments
+      .filter(
+        (assessment) =>
+          assessment.impacted &&
+          assessment.status !== "Pending" &&
+          assessment.status !== "Not Impacted"
+      )
+      .map((assessment) => ({
+        assessment,
+        actions: actions.filter((action) =>
+          departmentActionMatches(action, assessment)
+        ),
+      }))
+      .filter((group) => group.actions.length > 0)
+
+    if (!actionGroups.length) return null
+
+    return (
+      <SectionCard
+        id="change-actions"
+        icon={<ListIcon className="size-5" />}
+        title="Change Actions"
+        description="Each affected department defines and executes its own actions. Every action has its own status: Draft → In Review → Implementation in Progress → Completed. The Action Owner need not be the Impact Owner."
+      >
+        <div className="flex flex-col gap-[var(--spacing-component-lg)]">
+          {actionGroups.map(({ assessment, actions }) => (
+            /* One department block for both states. This section used to render
+               a department as a bare uppercase header plus a five-column table
+               at QA Approval, and as a bare header plus stacked cards at Action
+               in Progress — the same concept drawn two ways, and neither
+               matching the department card in the section above. The card and
+               its header are now shared; only what sits inside differs, because
+               an action in progress carries evidence, comments and a signature
+               that no table row can hold. */
+            <Card
+              key={assessment.department}
+              className="gap-[var(--spacing-component-sm)]"
+            >
+              <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
+                <Building className="size-5 shrink-0 text-[var(--color-icon-muted)]" />
+                <span className="min-w-0 text-[15px] font-medium leading-snug text-[var(--color-background-default-foreground)]">
+                  {assessment.department}
+                </span>
+                <Badge variant="blue" shape="pill" size="md">
+                  Impacted
+                </Badge>
+                <span className="ml-auto text-xs text-[var(--color-text-secondary)]">
+                  {formatActionCount(actions.length)}
+                  {actions.some((action) => action.status === "Done") &&
+                    ` · ${actions.filter((action) => action.status === "Done").length} done`}
+                </span>
+              </div>
+
+              <p className="text-xs text-[var(--color-text-secondary)]">
+                {assessment.signer ?? "Department owner"} · signed Sep 15, 2026
+              </p>
+
+              {useActionCards ? (
+                <div className="mt-[var(--spacing-component-sm)] flex flex-col gap-[var(--spacing-component-md)]">
+                  {actions.map((action) => (
+                    <ActionExecutionCard
+                      key={action.id}
+                      action={action}
+                      recordId={recordId}
+                      onChange={() => {}}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col">
+                  {actions.map((action) => (
+                    <div
+                      key={action.id}
+                      className="flex items-start gap-[var(--spacing-component-md)] border-t border-[var(--color-border-default)] py-[var(--spacing-component-md)]"
+                    >
+                      <span className="shrink-0 text-sm font-medium text-[var(--color-brand-primary)]">
+                        {action.id}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-[var(--spacing-component-sm)]">
+                          <span className="text-sm font-medium text-[var(--color-background-default-foreground)]">
+                            {action.title}
+                          </span>
+                          {/* The data's own words — Open · In Progress · Done.
+                              The section description above still narrates a
+                              different set (Draft → In Review → Implementation
+                              in Progress → Completed); spec §7.15. */}
+                          <Badge
+                            variant={actionStatusVariant[action.status]}
+                            shape="pill"
+                            size="md"
+                          >
+                            {action.status}
+                          </Badge>
+                          <PriorityBadge priority={action.priority} />
+                        </div>
+                        <p className="mt-[var(--spacing-component-xs)] text-xs text-[var(--color-text-secondary)]">
+                          {action.owner} · due {action.dueDate}
+                          {action.evidenceFiles?.length
+                            ? ` · ${action.evidenceFiles.length} file${action.evidenceFiles.length > 1 ? "s" : ""}`
+                            : ""}
+                          {action.comments?.length
+                            ? ` · ${action.comments.length} comment${action.comments.length > 1 ? "s" : ""}`
+                            : ""}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Card>
+          ))}
+        </div>
+      </SectionCard>
+    )
+  }
+
+  function actionStatusBadge(state: "default" | "filled" | "completed") {
+    if (state === "completed") {
+      return (
+        <Badge variant="success" shape="pill" size="md">
+          Completed
+        </Badge>
+      )
+    }
+
+    return (
+      <Badge variant="warning" shape="pill" size="md">
+        In Review
       </Badge>
     )
   }
 
-  return (
-    <Badge variant="warning" shape="pill" size="md">
-      In Review
-    </Badge>
-  )
-}
-
-function ActionExecutionSignatureDialog({
-  open,
-  onOpenChange,
-  recordId,
-  actionTitle,
-  onConfirm,
-}: {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  recordId: string
-  actionTitle: string
-  onConfirm: (values: { note: string }) => void
-}) {
-  return (
-    <ChangeControlSignature
-      open={open}
-      onOpenChange={onOpenChange}
-      recordId={recordId}
-      title={`Complete action: ${actionTitle}`}
-      meaning="Complete action"
-      actionLabel="Sign & Complete"
-      reasonLabel="Completion note"
-      reasonRequired
-      onSigned={(note) => onConfirm({ note })}
-    />
-  )
-}
-
-function ActionExecutionCard({
-  action,
-  recordId,
-  onChange,
-}: {
-  action: ChangeAction
-  recordId: string
-  onChange: (next: ChangeAction) => void
-}) {
-  const [commentDraft, setCommentDraft] = React.useState("")
-  const [signatureOpen, setSignatureOpen] = React.useState(false)
-  const fileInputRef = React.useRef<HTMLInputElement>(null)
-
-  const evidenceFiles = action.evidenceFiles ?? []
-  const comments = action.comments ?? []
-  const state: "default" | "filled" | "completed" =
-    action.status === "Done"
-      ? "completed"
-      : evidenceFiles.length > 0 || comments.length > 0
-        ? "filled"
-        : "default"
-  const readOnly = state === "completed"
-
-  function addEvidenceFiles(files: FileList | null) {
-    if (!files || files.length === 0) return
-
-    const names = Array.from(files).map((file) => file.name)
-    onChange({
-      ...action,
-      evidenceFiles: [...evidenceFiles, ...names],
-      evidenceStatus: "Attached",
-    })
+  function ActionExecutionSignatureDialog({
+    open,
+    onOpenChange,
+    recordId,
+    actionTitle,
+    onConfirm,
+  }: {
+    open: boolean
+    onOpenChange: (open: boolean) => void
+    recordId: string
+    actionTitle: string
+    onConfirm: (values: { note: string }) => void
+  }) {
+    return (
+      <ChangeControlSignature
+        open={open}
+        onOpenChange={onOpenChange}
+        recordId={recordId}
+        title={`Complete action: ${actionTitle}`}
+        meaning="Complete action"
+        actionLabel="Sign & Complete"
+        reasonLabel="Completion note"
+        reasonRequired
+        onSigned={(note) => onConfirm({ note })}
+      />
+    )
   }
 
-  function removeEvidenceFile(name: string) {
-    const nextFiles = evidenceFiles.filter((file) => file !== name)
-    onChange({
-      ...action,
-      evidenceFiles: nextFiles,
-      evidenceStatus: nextFiles.length > 0 ? "Attached" : "Missing",
-    })
-  }
+  function ActionExecutionCard({
+    action,
+    recordId,
+    onChange,
+  }: {
+    action: ChangeAction
+    recordId: string
+    onChange: (next: ChangeAction) => void
+  }) {
+    const [commentDraft, setCommentDraft] = React.useState("")
+    const [signatureOpen, setSignatureOpen] = React.useState(false)
+    const fileInputRef = React.useRef<HTMLInputElement>(null)
 
-  function sendComment() {
-    if (!commentDraft.trim()) return
+    const evidenceFiles = action.evidenceFiles ?? []
+    const comments = action.comments ?? []
+    const state: "default" | "filled" | "completed" =
+      action.status === "Done"
+        ? "completed"
+        : evidenceFiles.length > 0 || comments.length > 0
+          ? "filled"
+          : "default"
+    const readOnly = state === "completed"
 
-    const nextComment: ChangeActionComment = {
-      author: "Sarah Johnson",
-      timestamp: "Sep 16, 2026 · 12:12 PM",
-      text: commentDraft.trim(),
-    }
-    onChange({ ...action, comments: [...comments, nextComment] })
-    setCommentDraft("")
-  }
+    function addEvidenceFiles(files: FileList | null) {
+      if (!files || files.length === 0) return
 
-  /* Enter sends, Shift+Enter breaks the line — the textarea is multi-line now,
-     so Enter cannot mean "newline" and "send" at once. The visible Comment
-     button carries the affordance; this is only a shortcut. */
-  function handleComposerKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault()
-      sendComment()
-    }
-  }
-
-  function confirmCompletion(values: { note: string }) {
-    const completedAt = "Sep 16, 2026 · 12:12 PM"
-    const nextComment: ChangeActionComment = {
-      author: "Sarah Johnson",
-      timestamp: completedAt,
-      text: values.note,
+      const names = Array.from(files).map((file) => file.name)
+      onChange({
+        ...action,
+        evidenceFiles: [...evidenceFiles, ...names],
+        evidenceStatus: "Attached",
+      })
     }
 
-    onChange({
-      ...action,
-      status: "Done",
-      completedAt,
-      comments: [...comments, nextComment],
-    })
-  }
+    function removeEvidenceFile(name: string) {
+      const nextFiles = evidenceFiles.filter((file) => file !== name)
+      onChange({
+        ...action,
+        evidenceFiles: nextFiles,
+        evidenceStatus: nextFiles.length > 0 ? "Attached" : "Missing",
+      })
+    }
 
-  return (
-    <Card
-      className={[
-        "gap-[var(--spacing-component-md)]",
-        readOnly
-          ? "border-[var(--color-border-default)] bg-[var(--color-background-subtle)]"
-          : "border-l-4 border-y border-r border-[var(--color-border-default)] border-l-[var(--color-brand-primary)] bg-[var(--color-background-subtle)]",
-      ].join(" ")}
-    >
-      <div className="flex flex-wrap items-start justify-between gap-[var(--spacing-component-sm)]">
-        <div className="flex min-w-0 items-baseline gap-[var(--spacing-component-sm)]">
-          <span className="shrink-0 text-sm font-medium text-[var(--color-brand-primary)]">
-            {action.id}
-          </span>
-          <span className="min-w-0 text-sm font-medium leading-normal text-[var(--color-background-default-foreground)]">
-            {action.title}
-          </span>
+    function sendComment() {
+      if (!commentDraft.trim()) return
+
+      const nextComment: ChangeActionComment = {
+        author: "Sarah Johnson",
+        timestamp: "Sep 16, 2026 · 12:12 PM",
+        text: commentDraft.trim(),
+      }
+      onChange({ ...action, comments: [...comments, nextComment] })
+      setCommentDraft("")
+    }
+
+    /* Enter sends, Shift+Enter breaks the line — the textarea is multi-line now,
+       so Enter cannot mean "newline" and "send" at once. The visible Comment
+       button carries the affordance; this is only a shortcut. */
+    function handleComposerKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault()
+        sendComment()
+      }
+    }
+
+    function confirmCompletion(values: { note: string }) {
+      const completedAt = "Sep 16, 2026 · 12:12 PM"
+      const nextComment: ChangeActionComment = {
+        author: "Sarah Johnson",
+        timestamp: completedAt,
+        text: values.note,
+      }
+
+      onChange({
+        ...action,
+        status: "Done",
+        completedAt,
+        comments: [...comments, nextComment],
+      })
+    }
+
+    return (
+      /* One border in both states. The open card used to carry a 4px brand-green
+         left rail, which was the only thing separating it from a completed one —
+         decoration standing in for the status Badge that already says so. */
+      <Card className="gap-[var(--spacing-component-md)] border-[var(--color-border-default)] bg-[var(--color-background-subtle)]">
+      <div className="flex flex-col gap-[var(--spacing-component-xs)]">
+        <div className="flex flex-wrap items-start justify-between gap-[var(--spacing-component-sm)]">
+          <div className="flex min-w-0 items-baseline gap-[var(--spacing-component-sm)]">
+            <span className="shrink-0 text-sm font-medium text-[var(--color-brand-primary)]">
+              {action.id}
+            </span>
+            <span className="min-w-0 text-sm font-medium leading-normal text-[var(--color-background-default-foreground)]">
+              {action.title}
+            </span>
+          </div>
+          <div className="flex shrink-0 items-center gap-[var(--spacing-component-xs)]">
+            <PriorityBadge priority={action.priority} />
+            {actionStatusBadge(state)}
+          </div>
         </div>
-        <div className="flex shrink-0 items-center gap-[var(--spacing-component-xs)]">
-          <PriorityBadge priority={action.priority} />
-          {actionStatusBadge(state)}
-        </div>
+
+        {/* One byline. Owner, Due and Completed & Signed each used to carry a
+            label the value already implies, and an icon competing with the
+            status badge. */}
+        <p className="text-xs text-[var(--color-text-secondary)]">
+          {action.owner} · due {action.dueDate}
+          {action.completedAt && ` · completed ${action.completedAt}`}
+        </p>
       </div>
 
-      {/* One byline. Owner, Due and Completed & Signed each used to carry a
-          label the value already implies, and an icon competing with the
-          status badge. */}
-      <p className="text-xs text-[var(--color-text-secondary)]">
-        {action.owner} · due {action.dueDate}
-        {action.completedAt && ` · completed ${action.completedAt}`}
-      </p>
-
-      <div className="mt-[var(--spacing-component-lg)] flex flex-col gap-[var(--spacing-component-sm)]">
+      <div className="flex flex-col gap-[var(--spacing-component-sm)]">
         {evidenceFiles.length > 0 && (
           <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             {evidenceFiles.map((file) => (
@@ -1565,7 +1563,7 @@ function ActionExecutionCard({
               comments" — one field described as doing something it cannot do,
               and the same string handed to a screen reader as the text input's
               accessible name. */}
-          <div className="mt-[var(--spacing-component-lg)] flex flex-col gap-[var(--spacing-component-sm)]">
+          <div className="flex flex-col gap-[var(--spacing-component-sm)]">
             <Textarea
               rows={2}
               value={commentDraft}
@@ -1576,14 +1574,22 @@ function ActionExecutionCard({
             />
             <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Paperclip className="size-4" />
                 Attach evidence
               </Button>
-              <Button size="sm" disabled={!commentDraft.trim()} onClick={sendComment}>
+              {/* Outline, not primary. Commenting is work on the action;
+                  Mark as completed is the one control that ends it, and two
+                  primaries side by side give no default path. */}
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={!commentDraft.trim()}
+                onClick={sendComment}
+              >
                 Comment
               </Button>
             </div>
@@ -1592,7 +1598,7 @@ function ActionExecutionCard({
           {/* Right-aligned, imperative. It read "Marked as completed" across the
               full card width, which states a status the record has not reached
               — and it opens a signature dialog. */}
-          <div className="mt-[var(--spacing-component-lg)] flex justify-end">
+          <div className="flex justify-end">
             <Button onClick={() => setSignatureOpen(true)}>Mark as completed</Button>
           </div>
 
