@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/table"
 
 import { useRowClick } from "../../row-click"
+import { ListEmptySearch } from "../../list-empty-state"
 import { ListSummary } from "../../list-summary"
 import { TablePagination, usePagination } from "../../table-pagination"
 import { TrainingShell, TrainingTabs } from "../training-shell"
@@ -118,6 +119,8 @@ export default function TrainingAssessmentsPage() {
 
   const paged = usePagination(visibleRounds)
 
+  const clearFilters = () => { setQuery(""); setStatus("all") }
+
   return (
     <TrainingShell>
       <TrainingTabs />
@@ -153,9 +156,14 @@ export default function TrainingAssessmentsPage() {
         showing={visibleRounds.length}
         total={assessmentRounds.length}
         noun="assessments"
-        onClear={() => { setQuery(""); setStatus("all") }}
+        onClear={clearFilters}
       />
 
+      {visibleRounds.length === 0 ? (
+        <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
+          <ListEmptySearch noun="assessments" onClear={clearFilters} />
+        </div>
+      ) : (
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
         <Table>
           <TableHeader>
@@ -171,21 +179,12 @@ export default function TrainingAssessmentsPage() {
             {paged.visible.map((round) => (
               <RoundRow key={round.id} round={round} router={router} />
             ))}
-            {visibleRounds.length === 0 && (
-              <TableRow>
-                <TableCell
-                  colSpan={5}
-                  className="py-[var(--spacing-layout-md)] text-center text-sm text-[var(--color-text-secondary)]"
-                >
-                  No assessments match this search.
-                </TableCell>
-              </TableRow>
-            )}
           </TableBody>
         </Table>
       </div>
+      )}
 
-      <TablePagination {...paged} noun="assessments" />
+      {visibleRounds.length > 0 && <TablePagination {...paged} noun="assessments" />}
     </TrainingShell>
   )
 }

@@ -7,7 +7,7 @@ import { ChevronLeft, FileText, Search } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Empty } from "@/components/ui/empty"
+import { ListEmptySearch, ListEmptySet } from "../../list-empty-state"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -163,11 +163,11 @@ export default function FolderContentsPage() {
       </div>
 
       {folder.resources.length === 0 ? (
-        <Empty
-          icon={<FileText />}
+        <ListEmptySet
+          icon={<FileText className="size-5 text-[var(--color-icon-muted)]" />}
           title="No resources published yet"
           description="This folder is prepared but its content is still being written. Check back, or browse another folder."
-          primaryAction={
+          action={
             <Button asChild variant="outline">
               <Link href={basePath}>Back to folders</Link>
             </Button>
@@ -238,17 +238,7 @@ export default function FolderContentsPage() {
             />
 
             {filtered.length === 0 ? (
-              <Empty
-                variant="background"
-                icon={<Search />}
-                title="No resources match your filters"
-                description="Try a different search term, or clear the filters to see everything in this folder."
-                primaryAction={
-                  <Button variant="outline" onClick={clearFilters}>
-                    Clear filters
-                  </Button>
-                }
-              />
+              <ListEmptySearch noun="resources" onClear={clearFilters} />
             ) : (
               <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
                 <Table className="min-w-[900px]">

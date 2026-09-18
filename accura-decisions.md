@@ -177,7 +177,7 @@ The border ladder has a genuine gap between `default` (`#e4e4e7`) and `strong` (
 add a semantic nobody else needed yet, or misuse a hover token on a static state, `stepper/border` aliases
 `color/zinc/300` directly.
 
-**Consequence:** an R1–R8 audit will flag this as a violation of the inherited rule. It is deliberate.
+**Consequence:** this violates the inherited rule, deliberately. It would have been flagged by an R1–R8 audit, which is a process this project retired on 2026-09-18 — so the deviation now stands on this entry alone.
 If the gap recurs for other components, promote it to a proper semantic instead of repeating the pattern.
 
 `button/destructive-secondary/*` follows the same pattern as every other button variant —

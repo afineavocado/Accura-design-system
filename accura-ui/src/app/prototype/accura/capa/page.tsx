@@ -7,7 +7,7 @@ import { Plus, Search } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Empty } from "@/components/ui/empty"
+import { ListEmptySearch } from "../list-empty-state"
 import { Input } from "@/components/ui/input"
 import {
   Pagination,
@@ -93,6 +93,14 @@ export default function CapaListingPage() {
     safePage * pageSize
   )
 
+
+  const clearFilters = () => {
+    setQuery("")
+    setStatus("all")
+    setSource("all")
+    setPage(1)
+  }
+
   return (
     <SidebarProvider>
         <div className="flex h-screen overflow-hidden bg-[var(--color-background-muted)]">
@@ -177,12 +185,7 @@ export default function CapaListingPage() {
                 showing={filteredRecords.length}
                 total={records.length}
                 noun="results"
-                onClear={() => {
-                  setQuery("")
-                  setStatus("all")
-                  setSource("all")
-                  setPage(1)
-                }}
+                onClear={clearFilters}
               />
 
               <div className="overflow-hidden rounded-[var(--radius-base)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
@@ -252,23 +255,7 @@ export default function CapaListingPage() {
                     </TableBody>
                   </Table>
                 ) : (
-                  <Empty
-                    className="min-h-80 justify-center"
-                    icon={<Search className="size-5 text-[var(--color-icon-muted)]" />}
-                    title="No CAPA records found"
-                    description="Try changing your search or filter selections."
-                    primaryAction={
-                      <Button
-                        onClick={() => {
-                          setQuery("")
-                          setStatus("all")
-                          setSource("all")
-                        }}
-                      >
-                        Clear filters
-                      </Button>
-                    }
-                  />
+                  <ListEmptySearch noun="CAPA records" onClear={clearFilters} />
                 )}
               </div>
 

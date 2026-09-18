@@ -147,7 +147,7 @@
     "storyFile": "src/stories/Stepper.stories.tsx",
     "artifactStatus": "ready",
     "lastAuditDate": null,
-    "auditRules": "not audited — code-only component, no Figma set",
+    "auditRules": null,
     "version": "3.0",
     "openQuestions": [
       "No Figma component set exists. If design needs to own this, build the set and record its node ID here."

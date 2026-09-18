@@ -34,6 +34,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
+import { ListEmptySearch, ListEmptySet } from "../list-empty-state"
 import type { LookupRow, LookupTab } from "./mock-data"
 import { RowMenu } from "./row-menu"
 import { ScreenHeading } from "./settings-shell"
@@ -112,6 +113,18 @@ export function LookupScreen({ tab }: { tab: LookupTab }) {
         </div>
       )}
 
+      {visible.length === 0 ? (
+        <div className="overflow-x-auto rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
+          {items.length === 0 ? (
+            <ListEmptySet
+              title={`No ${tab.noun} yet`}
+              description={`Add one to make it available in forms.`}
+            />
+          ) : (
+            <ListEmptySearch noun={tab.noun} onClear={() => setQuery("")} />
+          )}
+        </div>
+      ) : (
       <div className="overflow-x-auto rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
         <Table>
           <TableHeader>
@@ -159,18 +172,10 @@ export function LookupScreen({ tab }: { tab: LookupTab }) {
                 </TableCell>
               </TableRow>
             ))}
-            {visible.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={cols} className="py-[var(--spacing-layout-md)] text-center text-sm text-[var(--color-text-secondary)]">
-                  {items.length === 0
-                    ? `No ${tab.noun} yet. Add one to make it available in forms.`
-                    : `No ${tab.noun} match this search.`}
-                </TableCell>
-              </TableRow>
-            )}
           </TableBody>
         </Table>
       </div>
+      )}
 
       <LookupDialog
         key={editing === "new" ? "new" : editing?.id ?? "closed"}

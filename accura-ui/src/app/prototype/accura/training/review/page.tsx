@@ -5,6 +5,7 @@ import Link from "next/link"
 import {
   AtSign,
   Check,
+  CheckCircle2,
   Clock,
   Eye,
   FileText,
@@ -54,6 +55,7 @@ import {
 } from "@/components/ui/table"
 import { Textarea } from "@/components/ui/textarea"
 
+import { ListEmptySearch, ListEmptySet } from "../../list-empty-state"
 import { ListSummary } from "../../list-summary"
 import { TrainingShell, TrainingTabs } from "../training-shell"
 import {
@@ -160,6 +162,11 @@ export default function ReviewQueuePage() {
     setPending(null)
   }
 
+  const clearFilters = () => {
+    setQuery("")
+    setMethod("all")
+  }
+
   return (
     <TrainingShell>
       <TrainingTabs />
@@ -195,10 +202,7 @@ export default function ReviewQueuePage() {
         showing={visible.length}
         total={reviewItems.length}
         noun="records"
-        onClear={() => {
-          setQuery("")
-          setMethod("all")
-        }}
+        onClear={clearFilters}
       />
 
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
@@ -248,6 +252,17 @@ export default function ReviewQueuePage() {
           </div>
         )}
 
+        {visible.length === 0 ? (
+          reviewItems.length === 0 ? (
+            <ListEmptySet
+              icon={<CheckCircle2 className="size-5 text-[var(--color-icon-muted)]" />}
+              title="Nothing awaiting your review"
+              description="Records arrive here when a trainee completes an assessment that needs a manager's signature."
+            />
+          ) : (
+            <ListEmptySearch noun="records" onClear={clearFilters} />
+          )
+        ) : (
         <Table>
           <TableHeader>
             <TableRow>
@@ -390,20 +405,9 @@ export default function ReviewQueuePage() {
                 </TableRow>
               )
             })}
-            {visible.length === 0 && (
-              <TableRow>
-                <TableCell
-                  colSpan={6}
-                  className="py-10 text-center text-sm text-[var(--color-text-secondary)]"
-                >
-                  {reviewItems.length === 0
-                    ? "Nothing awaiting your review."
-                    : "No records match this search."}
-                </TableCell>
-              </TableRow>
-            )}
           </TableBody>
         </Table>
+        )}
       </div>
 
       <p className="text-xs text-[var(--color-text-secondary)]">

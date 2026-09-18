@@ -20,8 +20,7 @@ values.
 | `.examples.tsx` | **0** |
 | Tokens | 229 primitives · 115 semantics · 52 components = **396** |
 | CSS custom properties | 351 (456 declarations incl. `.dark`) |
-| Components audited R1–R8 **in Accura's Figma** | **0** |
-| Stories verified **against Accura** | 3 |
+| Stories verified **against Accura** | 2 |
 
 ---
 
@@ -107,7 +106,7 @@ node docs/machine-readable/drift-check.mjs
 
 1. **F2 — no `.examples.tsx`.** 0 of 38. This is what an agent reads to learn correct composition; specs describe, examples demonstrate.
 2. **F11 — 33 stories unverified against Accura.** Tracked in `docs/tracking/Storybook Status.md`.
-3. **R1–R8 audits — zero run against Accura's Figma file.** Tracked in `docs/tracking/Audit Status.md`.
+3. ~~**R1–R8 audits.**~~ **Closed 2026-09-18 — not a gap.** The process requires Figma and this project does not work in Figma, so it was never a thing this repo could fail at. See `docs/tracking/Audit Status.md`.
 4. ~~**F1 — `chat-bubble.meta.json` orphan.**~~ **Resolved 2026-09-17** — the component, its spec and its meta.json were deleted. The story had been removed by decision; nothing used the component.
 5. **11 open questions** in `accura-decisions.md` (Q1–Q11) remain unresolved by design.
 

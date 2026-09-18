@@ -113,6 +113,14 @@ Fills, strokes, and label colors are owned by the button source component — ne
 
 ---
 
+> **Bindings made real 2026-09-18.** The values in this section were correct and the component did
+> not use them: `empty.tsx` hardcoded `p-8`, `gap-4` and `gap-2` where the table says
+> `spacing/component/2xl`, `/lg` and `/sm`. Identical in pixels, which is why it went unnoticed —
+> and exactly the drift a token rename would have exposed. Now `var(--spacing-component-*)`. The
+> media square is `size-9`; 36px has no token and the spec says so.
+
+---
+
 ## Behavior
 
 ### Architecture

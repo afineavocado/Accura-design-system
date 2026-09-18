@@ -127,7 +127,7 @@ Both reset to Accura's real state on 2026-09-08. Agentic's ticks did not transfe
 
 - `docs/tracking/AI-Readiness.md` — 15-factor assessment **scored for Accura**, the measured counts, and the root-cause analysis of why docs drift (restated values and counts, not aliases). Read before trusting any inherited ✅.
 - `docs/tracking/Storybook Status.md` — **2 of 38 stories verified for Accura** (Sidebar, Stepper) — the table is the count. That file also records that `CLAUDE.md` and this line previously said 3 and 4; unresolved. Lists the highest-risk components to check first.
-- `docs/tracking/Audit Status.md` — **zero R1–R8 audits run against Accura's Figma file.** The largest gap in the system. Includes a suggested audit order.
+- `docs/tracking/Audit Status.md` — **R1–R8 auditing is retired** (2026-09-18): the process requires Figma and this project does not use it. Kept as the record of what the rules were and what was observed in the file before the decision.
 
 ## Changelog
 

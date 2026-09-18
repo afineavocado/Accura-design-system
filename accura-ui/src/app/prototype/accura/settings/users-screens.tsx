@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { ListEmptySearch } from "../list-empty-state"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
 import { globalRoles, initialUsers, moduleRoles, type FormTab, type SettingsUser } from "./mock-data"
@@ -62,6 +63,11 @@ export function UsersScreen({ tab }: { tab: FormTab }) {
         <Input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search by name or email..." aria-label="Search users" className="pl-9" />
       </div>
 
+      {visible.length === 0 ? (
+        <div className="overflow-x-auto rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
+          <ListEmptySearch noun="users" onClear={() => setQuery("")} />
+        </div>
+      ) : (
       <div className="overflow-x-auto rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
         <Table>
           <TableHeader>
@@ -112,16 +118,10 @@ export function UsersScreen({ tab }: { tab: FormTab }) {
                 </TableRow>
               )
             })}
-            {visible.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={4} className="py-[var(--spacing-layout-md)] text-center text-sm text-[var(--color-text-secondary)]">
-                  No users match this search.
-                </TableCell>
-              </TableRow>
-            )}
           </TableBody>
         </Table>
       </div>
+      )}
 
       <UserDialog
         key={editing === "new" ? "new" : editing?.id ?? "closed"}

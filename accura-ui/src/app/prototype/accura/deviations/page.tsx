@@ -24,6 +24,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
+import { ListEmptySearch } from "../list-empty-state"
 import { ListSummary } from "../list-summary"
 import { useDeviations } from "./store"
 import { useRowClick } from "../row-click"
@@ -222,6 +223,11 @@ export default function DeviationsPage() {
         onClear={clear}
       />
 
+      {paged.visible.length === 0 ? (
+        <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
+          <ListEmptySearch noun="deviations" onClear={clear} />
+        </div>
+      ) : (
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
         <Table>
           <TableHeader>
@@ -242,8 +248,9 @@ export default function DeviationsPage() {
           </TableBody>
         </Table>
       </div>
+      )}
 
-      <TablePagination {...paged} noun="deviations" />
+      {paged.visible.length > 0 && <TablePagination {...paged} noun="deviations" />}
     </div>
   )
 }

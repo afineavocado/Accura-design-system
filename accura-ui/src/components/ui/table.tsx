@@ -17,10 +17,16 @@ export const useTableOverflow = () => React.useContext(TableOverflowContext);
 // TableCell (<td>):  p-4 · color/surface/default/foreground
 // TableCaption:      color/text/secondary
 
+/* `scroll={false}` when the consumer already owns a scroll viewport around the
+   table. Without it the wrapper's own `overflow-auto` nests inside that
+   viewport and the composition renders two scrollbars — Change Control's
+   registry did, because it constrains the table's height and pins the header.
+   The wrapper stays in place either way: RecordRowAction's overflow detection
+   measures it. */
 const Table = React.forwardRef<
   HTMLTableElement,
-  React.HTMLAttributes<HTMLTableElement>
->(({ className, ...props }, ref) => {
+  React.HTMLAttributes<HTMLTableElement> & { scroll?: boolean }
+>(({ className, scroll = true, ...props }, ref) => {
   const container = React.useRef<HTMLDivElement>(null);
   const [overflow, setOverflow] = React.useState(false);
   React.useEffect(() => {
@@ -39,7 +45,7 @@ const Table = React.forwardRef<
       <div
         ref={container}
         data-overflow-x={overflow}
-        className="relative w-full overflow-auto"
+        className={cn("relative w-full", scroll && "overflow-auto")}
       >
         <table
           ref={ref}

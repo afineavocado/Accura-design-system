@@ -1,23 +1,32 @@
 # Audit Status — Accura
 
-Tracks which components have been audited **in Accura's Figma file**, what rules were active at the time, and what needs re-auditing when new rules are added.
+> ## ⛔ Retired 2026-09-18 — R1–R8 auditing is not part of this project
+>
+> The R1–R8 process in `docs/skills/Component Audit Skill.md` inspects **Figma** components and
+> compares their bound variables to the token set. **This project does not work in Figma**
+> (`CLAUDE.md` → *We do not work in Figma*), so the audit could never be run here and was never
+> debt this repo could clear. It had been carried as a ❌ and as "the largest gap in the system"
+> since 2026-09-08; both were wrong, because they measured the repo against a process that does
+> not apply to it.
+>
+> **Nothing replaces it, and nothing needs to.** What R1–R8 checked in Figma, this project checks
+> in the code and the browser:
+>
+> | R1–R8 checked | Here instead |
+> |---|---|
+> | unbound fills, strokes, radius | `node tokens/token-parity.mjs`, and the no-hardcoded-values rule |
+> | wrong semantic group, paired surfaces | `docs/skills/accura-screen-audit/` — read each token name as a sentence |
+> | restated values drifting from tokens | `node docs/machine-readable/drift-check.mjs` rule 6 |
+> | rendered text styles | `node accura-ui/audit-styles.mjs <urls>` |
+>
+> `meta.auditRules` and `meta.lastAuditDate` were cleared to `null` in all 38 `.meta.json` files on
+> the same day. Thirty-five carried `R1–R8` / `2026-05-28`, which were **Agentic's** audits against
+> **Agentic's** file — an audit only certifies the file it ran against, so they never applied here.
+>
+> The rest of this file is kept as the record: what the rules were, and what was observed in
+> Accura's Figma file before the decision. It is provenance, not a to-do list.
 
-> ⚠️ **Reset 2026-09-08.** This file previously carried Agentic's audit log. Those audits were run against Agentic's Figma file (`YWfTOUTpFZ0BNxHobfUqme`) and **do not transfer** — Accura is a different file with a different brand ramp, sidebar, button radius and status borders. An audit only certifies the file it ran against.
-
-**Accura's Figma file:** `32llw6anFsjPISJrrp1and` — `[Accura] Agentic Design System`
-
----
-
-## Current state: no components audited
-
-**Zero R1–R8 audits have been run against Accura's Figma file.**
-
-This is the largest gap in the system. The component *specs* are complete and the *code* is token-bound, but nothing has verified that Accura's Figma components are correctly bound to Accura's tokens.
-
-| Audited | Count |
-|---|---|
-| Components in Accura's Figma | ~36 |
-| Audited under Accura | **0** |
+**Accura's Figma file, for reference:** `32llw6anFsjPISJrrp1and` — `[Accura] Agentic Design System`
 
 ---
 
@@ -34,9 +43,9 @@ Observed while working in the file, not from a systematic pass:
 
 ---
 
-## Rule set in force
+## Rule set that was in force — reference only
 
-Audits run against `docs/skills/Component Audit Skill.md` (R1–R8), inherited unchanged from Agentic. The rules are system-agnostic; only the token *values* they check against are Accura's.
+Audits ran against `docs/skills/Component Audit Skill.md` (R1–R8), inherited unchanged from Agentic. Recorded here because the *reasoning* in the rules is still worth reading when auditing a screen; the process that applied them is retired.
 
 | # | Rule | What it catches |
 |---|---|---|
@@ -51,25 +60,7 @@ Audits run against `docs/skills/Component Audit Skill.md` (R1–R8), inherited u
 
 ---
 
-## Suggested audit order
+## ~~Suggested audit order~~ · ~~Before starting an audit~~ — removed 2026-09-18
 
-Start where Accura deviates most from the inherited defaults — those are the components most likely to be wrong:
-
-1. **`button`** — pill radius plus the full brand ramp across 6 types × 5 states
-2. **`input` / `select` / `combobox`** — the pale status borders and the focus ring
-3. **`sidebar`** — partially verified; finish it and resolve the `ring` divergence
-4. **`badge` / `alert` / `toast`** — status fills and paired foregrounds
-5. Everything else
-
----
-
-## Before starting an audit
-
-1. Read `docs/skills/Component Audit Skill.md` — the full R1–R8 process and report format.
-2. Confirm figma-cli is connected to **Accura's** file, not Agentic's:
-   ```bash
-   cd ~/figma-cli && node src/index.js eval "return figma.root.name"
-   ```
-   It must print `[Accura] Agentic Design System`.
-3. Check token values against `accura-decisions.md`, **not** `docs/design-system-rules.md` — the latter carries Agentic's values.
-4. Record findings here as you go. Never fix without showing the report first.
+Both sections described how to start a process this project does not run. They are in git history
+if the decision is ever reversed.

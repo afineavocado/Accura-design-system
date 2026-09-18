@@ -271,8 +271,8 @@
     "sourceMarkdown": "Component Markdown/Radio.md",
     "storyFile": "src/stories/RadioGroup.stories.tsx",
     "artifactStatus": "ready",
-    "lastAuditDate": "2026-05-28",
-    "auditRules": "R1–R8",
+    "lastAuditDate": null,
+    "auditRules": null,
     "version": "3.0",
     "openQuestions": [
       "Radio.md Token Bindings says Invalid text uses color/text/invalid, while Behavior says text stays default. Confirm the correct Invalid text behavior."

@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/table"
 
 import { useRowClick } from "../row-click"
+import { ListEmptySearch } from "../list-empty-state"
 import { ListSummary } from "../list-summary"
 import { TablePagination, usePagination } from "../table-pagination"
 import { TrainingShell, TrainingTabs } from "./training-shell"
@@ -88,6 +89,8 @@ export default function TrainingUsersPage() {
 
   const paged = usePagination(visibleUsers)
 
+  const clearFilters = () => { setQuery(""); setStatus("all") }
+
   return (
     <TrainingShell>
       <TrainingTabs />
@@ -123,9 +126,14 @@ export default function TrainingUsersPage() {
         showing={visibleUsers.length}
         total={trainingUsers.length}
         noun="users"
-        onClear={() => { setQuery(""); setStatus("all") }}
+        onClear={clearFilters}
       />
 
+      {visibleUsers.length === 0 ? (
+        <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
+          <ListEmptySearch noun="users" onClear={clearFilters} />
+        </div>
+      ) : (
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
         <Table>
           <TableHeader>
@@ -140,21 +148,12 @@ export default function TrainingUsersPage() {
             {paged.visible.map((user) => (
               <UserRow key={user.id} user={user} router={router} />
             ))}
-            {visibleUsers.length === 0 && (
-              <TableRow>
-                <TableCell
-                  colSpan={4}
-                  className="py-[var(--spacing-layout-md)] text-center text-sm text-[var(--color-text-secondary)]"
-                >
-                  No users match this search.
-                </TableCell>
-              </TableRow>
-            )}
           </TableBody>
         </Table>
       </div>
+      )}
 
-      <TablePagination {...paged} noun="users" />
+      {visibleUsers.length > 0 && <TablePagination {...paged} noun="users" />}
     </TrainingShell>
   )
 }

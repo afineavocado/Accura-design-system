@@ -188,7 +188,8 @@
     "rowSelectionNotes": "State=Selected is visual only — selection logic lives in parent state.",
     "hoverNotes": "State=Hover is Figma-only. In code use CSS :hover pseudo-class.",
     "inlineEditing": "Type=Input renders <input> inside <td>; Type=Select renders <select> inside <td>.",
-    "dragReorder": "Type=Drag shows drag handle — wire to dnd-kit or similar for actual reordering."
+    "dragReorder": "Type=Drag shows drag handle — wire to dnd-kit or similar for actual reordering.",
+    "scrollProp": "Code-only prop, no Figma equivalent. The <table> sits in a wrapper div with overflow-auto; scroll={false} drops the overflow while keeping the wrapper, for consumers that already own a scroll viewport. Change Control's registry is the only one — its own container plus the wrapper rendered two scrollbars. The wrapper stays so useTableOverflow, and therefore RecordRowAction, keeps working."
   },
   "accessibility": {
     "tableRole": "native <table> landmark — no additional role needed",
@@ -341,8 +342,8 @@
     "sourceMarkdown": "Component Markdown/Table.md",
     "storyFile": "src/stories/Table.stories.tsx",
     "artifactStatus": "ready",
-    "lastAuditDate": "2026-05-28",
-    "auditRules": "R1–R8",
+    "lastAuditDate": null,
+    "auditRules": null,
     "version": "3.0",
     "openQuestions": [],
     "notes": [
@@ -361,7 +362,9 @@
     "exports": [
       "Table"
     ],
-    "notes": []
+    "notes": [
+      "scroll?: boolean prop added 2026-09-18."
+    ]
   },
   "storybook": {
     "file": "src/stories/Table.stories.tsx",

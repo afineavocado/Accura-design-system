@@ -8,7 +8,6 @@ import { Plus, Search } from "lucide-react"
 import { Avatar } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Empty } from "@/components/ui/empty"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -42,6 +41,7 @@ import {
   changeControlStatusVariant,
   type ChangeControlRecord,
 } from "./mock-data"
+import { ListEmptySearch } from "../list-empty-state"
 import { mergeWithSeeds, readStoredRecords } from "./storage"
 
 function StatusBadge({ record }: { record: ChangeControlRecord }) {
@@ -434,7 +434,7 @@ export default function ChangeControlListingPage() {
             <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-[var(--radius-base)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
               {visibleRecords.length ? (
                 <div className="min-h-0 flex-1 overflow-auto">
-                  <Table className="[table-layout:fixed]">
+                  <Table scroll={false} className="[table-layout:fixed]">
                     <TableHeader className="sticky top-0 z-20 bg-[var(--color-surface-default)] shadow-[0_1px_0_var(--color-border-default)]">
                       <TableRow className="hover:bg-transparent">
                         <TableHead className="w-[130px] whitespace-nowrap bg-[var(--color-surface-default)]">
@@ -473,15 +473,7 @@ export default function ChangeControlListingPage() {
                   </Table>
                 </div>
               ) : (
-                <Empty
-                  className="min-h-80 justify-center"
-                  icon={<Search className="size-5 text-[var(--color-icon-muted)]" />}
-                  title="No change controls found"
-                  description="Try changing your search or filter selections."
-                  primaryAction={
-                    <Button onClick={clearFilters}>Clear filters</Button>
-                  }
-                />
+                <ListEmptySearch noun="change controls" onClear={clearFilters} />
               )}
             </div>
 

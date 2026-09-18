@@ -13,7 +13,11 @@
   "variants": {
     "label state": {
       "type": "enum",
-      "values": ["Default", "Disabled", "Invalid"],
+      "values": [
+        "Default",
+        "Disabled",
+        "Invalid"
+      ],
       "default": "Default"
     }
   },
@@ -63,8 +67,8 @@
     "sourceMarkdown": "docs/component-specs/Form-shared.md",
     "storyFile": "src/stories/Label.stories.tsx",
     "artifactStatus": "ready",
-    "lastAuditDate": "2026-09-14",
-    "auditRules": "not yet audited R1–R8 against Accura's Figma",
+    "lastAuditDate": null,
+    "auditRules": null,
     "version": "1.0",
     "openQuestions": [
       "Figma specified label-required from the start; the code shipped a bare Radix wrapper with no asterisk and no states. Every consumer invented its own marker — six copies in the prototypes, one of which rendered black. Implemented 2026-09-14; not yet verified against Figma 150:569.",
@@ -73,8 +77,13 @@
   },
   "implementation": {
     "tsxFile": "src/components/ui/label.tsx",
-    "packageDeps": ["@radix-ui/react-label"],
-    "exports": ["Label", "labelVariants"],
+    "packageDeps": [
+      "@radix-ui/react-label"
+    ],
+    "exports": [
+      "Label",
+      "labelVariants"
+    ],
     "notes": [
       "state and required are separate: required controls whether the asterisk renders, state controls the colour of both parts.",
       "Adding an explicit label-text colour is a no-op in light mode — labels already computed to #18181b by inheritance — but it makes the binding explicit and correct in dark mode."
@@ -83,6 +92,13 @@
   "storybook": {
     "file": "src/stories/Label.stories.tsx",
     "title": "Forms/Label",
-    "stories": ["Default", "Required", "Disabled", "Invalid", "AllStates", "WithField"]
+    "stories": [
+      "Default",
+      "Required",
+      "Disabled",
+      "Invalid",
+      "AllStates",
+      "WithField"
+    ]
   }
 }

@@ -102,7 +102,7 @@ Accura's deviations are concentrated in a few places. Verify these before the re
 - ~~**`label`** — a shared sub-component documented in `Form-shared.md`. No story expected.~~
   **Superseded 2026-09-14.** `Label` now implements `required` and the three `label state`
   variants, and has `Label.stories.tsx` + `label.meta.json`. Verified in-browser against the
-  spec's token bindings; **not yet audited R1–R8 against Figma `150:569`**.
+  spec's token bindings. (It carried a "not yet audited R1–R8" note until 2026-09-18, when that process was retired.)
 - **27 TypeScript errors** across story files, inherited from the fork (Storybook 10 made `args` required on `Story`). Excluded from the Next.js build; not yet fixed at source.
 
 ---

@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils"
 // content: gap spacing/component/sm (8px)
 
 const emptyVariants = cva(
-  "flex flex-col items-center text-center p-8 gap-4",
+  "flex flex-col items-center text-center p-[var(--spacing-component-2xl)] gap-[var(--spacing-component-lg)]",
   {
     variants: {
       variant: {
@@ -65,11 +65,11 @@ const Empty = React.forwardRef<HTMLDivElement, EmptyProps>(
     return (
       <div ref={ref} className={cn(emptyVariants({ variant }), className)} {...props}>
         {/* header — media + title + description */}
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col items-center gap-[var(--spacing-component-sm)]">
           {icon && (
             <div
               className={cn(
-                "flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-lg)]",
+                "flex size-9 shrink-0 items-center justify-center rounded-[var(--radius-lg)]",
                 mediaClass
               )}
               aria-hidden="true"
@@ -90,7 +90,7 @@ const Empty = React.forwardRef<HTMLDivElement, EmptyProps>(
 
         {/* content — action buttons */}
         {hasActions && (
-          <div className="flex flex-row items-center gap-2">
+          <div className="flex flex-row items-center gap-[var(--spacing-component-sm)]">
             {primaryAction}
             {secondaryAction}
           </div>

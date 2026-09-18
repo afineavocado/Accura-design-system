@@ -3,6 +3,7 @@
 import { useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useRowClick } from "../row-click";
+import { ListEmptySearch } from "../list-empty-state";
 import { ListSummary } from "../list-summary";
 import { TablePagination, usePagination } from "../table-pagination";
 import Link from "next/link";
@@ -47,6 +48,7 @@ function DocumentRow({
 }) {
   const router = useRouter();
   const onClick = useRowClick<HTMLTableRowElement>(() => router.push(href));
+
   return (
     <TableRow
       className="cursor-pointer focus-within:bg-[var(--color-background-accent)]"
@@ -81,6 +83,16 @@ export default function DocumentListing() {
     .sort((a, b) => a.name.localeCompare(b.name) * (ascending ? 1 : -1));
   const paged = usePagination(filtered);
   const { setPage } = paged;
+  const clearFilters = () => {
+    setSearch("");
+    setType("All");
+    setDepartment("All");
+    setWorkflow("All");
+    setAvailability("All");
+    setCategory("All");
+    setPage(1);
+  };
+
   return (
     /* One vertical rhythm for the listing rather than a margin on whichever
        child happened to need one. Matches the deviation registry and CAPA;
@@ -183,16 +195,13 @@ export default function DocumentListing() {
         showing={filtered.length}
         total={docs.length}
         noun="revision records"
-        onClear={() => {
-          setSearch("");
-          setType("All");
-          setDepartment("All");
-          setWorkflow("All");
-          setAvailability("All");
-          setCategory("All");
-          setPage(1);
-        }}
+        onClear={clearFilters}
       />
+      {paged.visible.length === 0 ? (
+        <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
+          <ListEmptySearch noun="revision records" onClear={clearFilters} />
+        </div>
+      ) : (
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
         <Table className="min-w-[1100px]">
           <TableHeader>
@@ -298,16 +307,11 @@ export default function DocumentListing() {
             ))}
           </TableBody>
         </Table>
-        {paged.visible.length === 0 && (
-          <div className="p-[var(--spacing-layout-lg)] text-center">
-            <p className="font-medium">No matching documents</p>
-            <p className="text-sm text-[var(--color-text-secondary)]">
-              Try a different keyword or clear your filters.
-            </p>
-          </div>
-        )}
       </div>
-      <TablePagination {...paged} noun="revision records" />
+      )}
+      {paged.visible.length > 0 && (
+        <TablePagination {...paged} noun="revision records" />
+      )}
     </div>
   );
 }

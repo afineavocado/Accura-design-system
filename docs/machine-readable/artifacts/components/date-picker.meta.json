@@ -170,8 +170,8 @@
     "sourceMarkdown": "Component Markdown/Date-picker.md",
     "storyFile": "src/stories/DatePicker.stories.tsx",
     "artifactStatus": "ready",
-    "lastAuditDate": "2026-05-28",
-    "auditRules": "R1–R8",
+    "lastAuditDate": null,
+    "auditRules": null,
     "version": "3.0",
     "openQuestions": [],
     "notes": [

@@ -167,15 +167,18 @@
     "sourceMarkdown": "Component Markdown/Empty.md",
     "storyFile": "src/stories/Empty.stories.tsx",
     "artifactStatus": "ready",
-    "lastAuditDate": "2026-05-28",
-    "auditRules": "R1–R8",
+    "lastAuditDate": null,
+    "auditRules": null,
     "version": "3.0",
     "openQuestions": [],
     "notes": [
-      "empty is a custom design system component — implementation is a custom React component, not a shadcn base."
+      "empty is a custom design system component — implementation is a custom React component, not a shadcn base.",
+      "2026-09-18: padding and gaps were hardcoded as Tailwind p-8/gap-4/gap-2 while the spec documented spacing/component/2xl, /lg and /sm. Same pixels, no binding. Now bound to the token vars; the 36px media square is size-9 and has no token."
     ],
     "knownIssues": [],
-    "changelog": [],
+    "changelog": [
+      "2026-09-18 — token bindings made real; no visual change."
+    ],
     "darkMode": {
       "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
       "pairedSurfaceRisk": "None identified."

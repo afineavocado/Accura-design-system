@@ -203,7 +203,24 @@ The hook clamps `page` into range when a filtered set shrinks.
 
 ### Empty state — one pattern, and it is Change Control's
 
-**When a filtered list comes back with nothing, replace the table with `Empty`.** Not a row
+**Use `ListEmptySearch` from `prototype/accura/list-empty-state.tsx`.** All eleven listings render
+it as of 2026-09-18; before that they rendered four different things and one rendered nothing.
+
+```tsx
+{visible.length === 0 ? (
+  <div className="…the table's own container…">
+    <ListEmptySearch noun="change controls" onClear={clearFilters} />
+  </div>
+) : (
+  <Table>…</Table>
+)}
+{visible.length > 0 && <TablePagination {...paged} noun="change controls" />}
+```
+
+`ListEmptySet` is the sibling for a list with nothing in it at all — different copy, and the caller
+supplies the way forward, because `Clear filters` would be a dead end.
+
+**What it renders, and why each part is there.** Replace the table with `Empty`; not a row
 spanning the columns, not a paragraph under a header with no rows beneath it, and never nothing at
 all.
 
@@ -243,7 +260,10 @@ gets right.
 
 #### Inventory — measured in the browser 2026-09-18, filtered to zero results
 
-| Listing | What renders | Clear button in the empty state |
+**All eleven now render `ListEmptySearch`.** The table below is what they rendered before, kept
+because it is the argument for having one component: four treatments, none of them agreed on.
+
+| Listing | What it rendered before 2026-09-18 | Clear button |
 |---|---|---|
 | **Change Control** | `Empty` — the pattern above | ✅ |
 | CAPA | `Empty`, identical but for copy | ✅ |
@@ -254,8 +274,10 @@ gets right.
 | Settings — lookup tables · Users | same `<tr>`, and also branches on the empty set | ❌ |
 | **Deviations** | **nothing** — a bare table header, no message, pagination still rendered | ❌ |
 
-Change Control itself has one defect against its own rule: its icon is `h-5 w-5`, missed by the
-`size-N` pass. CAPA's is `size-5`.
+`min-h-80` is the one value in the component with no token behind it. It is a block height, not a
+spacing step: 320px keeps the empty state roughly where the table was so the page does not jump
+when the last row filters out. It lives in `list-empty-state.tsx` alone rather than at eleven call
+sites.
 
 ---
 

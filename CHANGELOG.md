@@ -11,6 +11,54 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-18 — R1–R8 auditing retired
+
+**Removed**
+
+- **R1–R8 is no longer carried as debt anywhere.** The process inspects **Figma** components, and
+  this project does not work in Figma, so it was never something this repo could fail at — yet it
+  had been a ❌ in `AI-Readiness.md` and "the largest gap in the system" in `Audit Status.md` since
+  2026-09-08.
+
+  Cleared in `CLAUDE.md`, `llms.txt`, `AI-Readiness.md` (inventory row and priority gap),
+  `Storybook Status.md`, `accura-decisions.md`, and `meta.auditRules` / `meta.lastAuditDate` in all
+  38 `.meta.json` files. **Thirty-five of those carried `R1–R8` / `2026-05-28`, which were
+  Agentic's audits against Agentic's file** — an audit certifies only the file it ran against, so
+  they never applied here.
+
+  `Audit Status.md` is kept as provenance: the rules, and what was observed in the Figma file
+  before the decision. Its "suggested audit order" and "before starting an audit" sections are
+  gone. Nothing replaces the process — `token-parity`, `drift-check`, `audit-styles` and the screen
+  audit skill already check in code and browser what R1–R8 checked in Figma.
+
+### 2026-09-18 — One empty state, shared, across all eleven listings
+
+**Added**
+
+- **`prototype/accura/list-empty-state.tsx`** — `ListEmptySearch` (a filtered list with no matches)
+  and `ListEmptySet` (nothing to filter). Every listing now renders it: Change Control, Deviations,
+  CAPA, Documents, Training's five, Knowledge Hub and Settings' two. Nine were verified in the
+  browser at zero results and render identically — title, `20×20` icon, `320px` block, `Clear
+  filters`. Knowledge Hub and Settings are converted and typecheck but were not reachable by the
+  verification script.
+
+  Before: four treatments. `Empty` (Change Control, CAPA) · `Empty` with the wrong variant and an
+  outline button (Knowledge Hub) · a `colSpan` row of grey text (Training ×5, Settings ×2) · a
+  `div` under a still-visible header (Documents) · **nothing at all** in Deviations.
+
+**Changed**
+
+- **`Table` takes `scroll?: boolean`** (default `true`). `false` drops `overflow-auto` from the
+  wrapper while keeping the wrapper, so `useTableOverflow` and `RecordRowAction` still work.
+  Change Control's registry owns its own scroll viewport so the header can pin, and the two
+  containers **rendered two scrollbars on the same table**. It is the only listing that does this.
+
+- **`Empty`'s token bindings are real.** It hardcoded `p-8`, `gap-4` and `gap-2` where `Empty.md`
+  documented `spacing/component/2xl`, `/lg` and `/sm`. Identical in pixels, which is why nobody
+  caught it, and exactly the drift a token rename would have exposed. The 36px media square is
+  `size-9`; 36px has no token and the spec now says so.
+
+
 ### 2026-09-18 — One empty state for filtered lists, and it is Change Control's
 
 **Added**

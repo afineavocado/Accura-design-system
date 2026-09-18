@@ -275,6 +275,28 @@ _table-row                      — H AUTO-LAYOUT, fill: varies, stroke: color/b
 
 ---
 
+## Code-only prop — `scroll`
+
+Not a Figma variant; the wrapper it controls does not exist in Figma.
+
+`<Table>` renders its `<table>` inside `<div className="relative w-full overflow-auto">`. That
+wrapper is what makes a wide table scroll, and it is what `useTableOverflow()` measures, so
+`RecordRowAction` depends on it.
+
+| Prop | Type | Default | Use |
+|---|---|---|---|
+| `scroll` | `boolean` | `true` | `false` drops `overflow-auto` from the wrapper, keeping the wrapper itself |
+
+**Pass `scroll={false}` only when the consumer already owns a scroll viewport around the table.**
+Change Control's registry constrains the table's height so the header can pin; its own
+`overflow-auto` container plus the wrapper's produced **two scrollbars** on the same table. It is
+the only listing that does this — everywhere else the wrapper is the viewport and the default is
+correct.
+
+The wrapper is never removed, only un-scrolled, so overflow detection keeps working.
+
+---
+
 ## Behavior
 
 ### Architecture

@@ -54,7 +54,11 @@
     "interactionModel": "stateless",
     "openState": {
       "trigger": "hover or keyboard focus on trigger element",
-      "closeTriggers": ["mouse leaves trigger and content", "Escape key", "trigger loses focus"],
+      "closeTriggers": [
+        "mouse leaves trigger and content",
+        "Escape key",
+        "trigger loses focus"
+      ],
       "delay": "300ms show delay (system default — overrides Radix's 700ms). Set delayDuration={300} on TooltipProvider at app root.",
       "skipDelay": "300ms — if user moves to a second trigger within 300ms, it opens immediately (skipDelayDuration=300).",
       "hoverableContent": "true — tooltip stays open when mouse moves from trigger into content (disableHoverableContent=false default)"
@@ -65,7 +69,11 @@
       "returnFocus": "none"
     },
     "animation": {
-      "dataAttributes": ["data-state=open", "data-state=closed", "data-side=top/bottom/left/right"],
+      "dataAttributes": [
+        "data-state=open",
+        "data-state=closed",
+        "data-side=top/bottom/left/right"
+      ],
       "description": "Fades in with zoom-in-95. Slides in from opposite direction of Side variant."
     },
     "scrollBehavior": "none — tooltip closes on scroll by default"
@@ -166,8 +174,8 @@
     "sourceMarkdown": "Component Markdown/Tooltip.md",
     "storyFile": "src/stories/Tooltip.stories.tsx",
     "artifactStatus": "ready",
-    "lastAuditDate": "2026-05-28",
-    "auditRules": "R1–R8",
+    "lastAuditDate": null,
+    "auditRules": null,
     "version": "3.0",
     "openQuestions": [],
     "notes": [

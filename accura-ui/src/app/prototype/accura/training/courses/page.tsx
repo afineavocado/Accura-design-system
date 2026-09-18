@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/table"
 
 import { useRowClick } from "../../row-click"
+import { ListEmptySearch } from "../../list-empty-state"
 import { ListSummary } from "../../list-summary"
 import { TablePagination, usePagination } from "../../table-pagination"
 import { TrainingShell, TrainingTabs } from "../training-shell"
@@ -129,6 +130,8 @@ export default function TrainingCoursesPage() {
 
   const paged = usePagination(visibleCourses)
 
+  const clearFilters = () => { setQuery(""); setTrigger("all") }
+
   return (
     <TrainingShell>
       <TrainingTabs />
@@ -178,9 +181,14 @@ export default function TrainingCoursesPage() {
         showing={visibleCourses.length}
         total={allCourses.length}
         noun="courses"
-        onClear={() => { setQuery(""); setTrigger("all") }}
+        onClear={clearFilters}
       />
 
+      {visibleCourses.length === 0 ? (
+        <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
+          <ListEmptySearch noun="courses" onClear={clearFilters} />
+        </div>
+      ) : (
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
         <Table>
           <TableHeader>
@@ -199,21 +207,12 @@ export default function TrainingCoursesPage() {
             {paged.visible.map((course) => (
               <CourseRow key={course.id} course={course} router={router} />
             ))}
-            {visibleCourses.length === 0 && (
-              <TableRow>
-                <TableCell
-                  colSpan={6}
-                  className="py-[var(--spacing-layout-md)] text-center text-sm text-[var(--color-text-secondary)]"
-                >
-                  No courses match this search.
-                </TableCell>
-              </TableRow>
-            )}
           </TableBody>
         </Table>
       </div>
+      )}
 
-      <TablePagination {...paged} noun="courses" />
+      {visibleCourses.length > 0 && <TablePagination {...paged} noun="courses" />}
     </TrainingShell>
   )
 }

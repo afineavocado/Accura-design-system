@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table"
 
 import { useRowClick } from "../../row-click"
+import { ListEmptySearch } from "../../list-empty-state"
 import { ListSummary } from "../../list-summary"
 import { TablePagination, usePagination } from "../../table-pagination"
 import { TrainingShell, TrainingTabs } from "../training-shell"
@@ -77,6 +78,8 @@ export default function TrainingRolesPage() {
 
   const paged = usePagination(visibleRoles)
 
+  const clearFilters = () => { setQuery("") }
+
   return (
     <TrainingShell>
       <TrainingTabs />
@@ -108,9 +111,14 @@ export default function TrainingRolesPage() {
         showing={visibleRoles.length}
         total={trainingRoles.length}
         noun="training roles"
-        onClear={() => { setQuery("") }}
+        onClear={clearFilters}
       />
 
+      {visibleRoles.length === 0 ? (
+        <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
+          <ListEmptySearch noun="training roles" onClear={clearFilters} />
+        </div>
+      ) : (
       <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-default)]">
         <Table>
           <TableHeader>
@@ -125,21 +133,12 @@ export default function TrainingRolesPage() {
             {paged.visible.map((role) => (
               <RoleRow key={role.id} role={role} router={router} />
             ))}
-            {visibleRoles.length === 0 && (
-              <TableRow>
-                <TableCell
-                  colSpan={4}
-                  className="py-[var(--spacing-layout-md)] text-center text-sm text-[var(--color-text-secondary)]"
-                >
-                  No roles match this search.
-                </TableCell>
-              </TableRow>
-            )}
           </TableBody>
         </Table>
       </div>
+      )}
 
-      <TablePagination {...paged} noun="training roles" />
+      {visibleRoles.length > 0 && <TablePagination {...paged} noun="training roles" />}
 
     </TrainingShell>
   )
