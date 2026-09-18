@@ -11,6 +11,34 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-18 — Dashboard prototype, and list filters that can be set from the URL
+
+**Added**
+
+- **`prototype/accura/dashboard/`** — the Dashboard module prototype: notification, six Overview
+  metric cards, and a Records table (My actions | Upcoming). Design decisions and open questions
+  are logged in `flow/Dashboard Module 2026-Sep-17/Dashboard_Module_Changelog.md` (ADR D6–D9,
+  v1.1).
+- **CAPA list: a *Due date* filter** (*All due dates* / *Due within 14 days*), so the Dashboard's
+  CAPA card can land on the same records it counts.
+
+**Changed**
+
+- **`prototype/accura/app-sidebar.tsx`: *Dashboard* now links to `/prototype/accura/dashboard`**
+  (was `#`). Nothing else in the file changed.
+- **`prototype/accura/page.tsx`: the root now redirects to the Dashboard**, not CAPA. This
+  contradicts `accura-ui/CLAUDE.md` ("there is no home screen… do not build a landing page") —
+  flagged for sign-off before merge.
+- **Training, CAPA and Documents lists accept a pre-set filter from the URL** (`?status=`,
+  `?due=`, `?workflow=`). Read from page `searchParams` props rather than `useSearchParams`, which
+  needs a Suspense boundary — and inside one, every `Select` trigger rendered blank.
+
+**Known issue**
+
+- The Dashboard's icon circle uses brand /50, which has **no semantic token**; it borrows the
+  component token `button/secondary/bg-hover` and fails contrast in dark mode. Needs a Figma
+  variable before this ships.
+
 ### 2026-09-17 — Settings item in the shared sidebar now links to the Setting Module
 
 **Changed**
