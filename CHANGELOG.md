@@ -11,6 +11,35 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-18 — Documents' three code-adjacent files folded into its spec and deleted
+
+**Removed**
+
+- **`accura-ui/src/app/prototype/accura/documents/FUNCTIONAL-SPEC-MAPPING.md` and
+  `TRAINING-MAPPING.md` are gone**, and `documents/README.md` is now a fourteen-line stub pointing
+  at `flow/documents-spec.md`. They were Chi's, written during the 2026-09-12 integration and last
+  touched 2026-09-14, and they described the same module as the spec.
+
+  The reason for deleting rather than leaving them: **three of their facts had gone stale and they
+  read as current.** All three stated a 65:35 detail layout where `document-detail.tsx` passes
+  `ratio="70/30"`; all three pointed at `docs/demo-design-contract.md`, and
+  `FUNCTIONAL-SPEC-MAPPING.md` also at `post-demo-backlog.md` — neither file exists.
+
+**Changed**
+
+- **The functional-specification trace moved to `flow/documents-spec.md` §7** — eight rows mapping
+  the client's six-page PDF to the prototype, plus the not-implemented list and the explicit
+  statement that none of it is a 21 CFR Part 11 control. This matters because **the PDF itself is
+  only in git history**: the trace cannot be re-derived, so §7 now says so at the top.
+- **Documents' deliberate divergences from the house patterns moved to §4.1**, corrected against
+  the code. Two of the five claims are retracted there rather than dropped: the 65:35 layout, and
+  a Card-density comparison written before the September spacing passes.
+- **The `localStorage` key `accura-documents-demo-v1` and the IndexedDB file store are recorded in
+  §2**, which is why demo records survived the `documents-demo` → `documents` migration.
+- Dropped, not moved: two verification logs (2026-09-12, 2026-09-14 — the second is kept in §7 as
+  history, marked as not re-run), the happy-path walkthrough, and the promotion history.
+
+
 ### 2026-09-17 — `docs/demo-scope.md` folded into the module specs and deleted
 
 **Changed**

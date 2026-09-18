@@ -35,6 +35,5 @@ There are two many documents in this folder Flow, and they dont follow anything.
      Figma. If they are permanently out of scope, the verification debt in `CLAUDE.md` and
      `docs/tracking/AI-Readiness.md` should say so rather than carry a ❌ against a process nobody
      can run.
-   - **Documents' three code-adjacent files** — `README.md`, `FUNCTIONAL-SPEC-MAPPING.md`,
-     `TRAINING-MAPPING.md`. They overlap `flow/documents-spec.md` and are Chi's. Fold in or keep?
-     Logged as §6.7 in that spec.
+   - ~~**Documents' three code-adjacent files.**~~ **ANSWERED 2026-09-18: folded in and deleted**,
+     README kept as a stub for Chi. See `flow/documents-spec.md` §6.7.
