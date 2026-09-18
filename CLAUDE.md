@@ -103,6 +103,10 @@ Work is not finished when the code runs. Each row is a thing that has gone stale
 | A **decision on an open question** | the `accura-decisions.md` entry · every file quoting it | grep the old value repo-wide before assuming one copy |
 | **Scope** — what a module covers or defers | that module's `flow/<module>-spec.md` | — |
 
+**At the end of a session**, when the user says *wrap the session* / *wrap up* / *we're done
+today*, run `docs/skills/accura-session-wrap/accura-session-wrap.md`. It walks the table above
+against `git diff` so nobody has to name the documents by hand.
+
 ### CHANGELOG
 
 Add an entry when the change **affects someone who did not make it**: a token value, a component's

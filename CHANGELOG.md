@@ -11,6 +11,20 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-18 — A session-wrap procedure, so documents stop depending on someone asking
+
+**Added**
+
+- **`docs/skills/accura-session-wrap/`** — run when the user says *wrap the session*. It finds what
+  changed from git rather than from memory, walks `CLAUDE.md`'s *what else has to change* table
+  against it, updates each document concisely in its own template, greps for stale counts, paths
+  and reversed rules, gates, and commits. Pointed to from `CLAUDE.md` so Chi's agent runs it too.
+
+  The rules for what to update were already written down; nothing ran them. The day it was added,
+  an end-of-day check that only happened because the user asked found five stale facts, including
+  `llms.txt` warning about a component deleted the day before.
+
+
 ### 2026-09-18 — `chi-dashboard` merged, and the no-home-screen rule retired
 
 **Changed**
