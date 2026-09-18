@@ -150,6 +150,12 @@ Desktop stashed it on a branch switch. If it matters, commit it.
 - **Fork drift:** 11 of the 37 inherited components differ from `agentic-ui`, and only `label.tsx`
   has a known reason; the rest are unaudited, so diff before assuming one matches.
   `record-row-action` is the 38th and is **not** inherited — it was written here.
+- **`token-parity.mjs` is red on two tokens, and has been for a while.** `color.brand.secondary`
+  ships `#b5e5d1` where the export resolves `{color.brand.25}` = `#f0faf4`; `-secondary-hover`
+  ships `#9cddbb` where the export gives `#b5e5d1`. Both values predate `main` as it stood on
+  2026-09-18, so this is inherited, not introduced. **Nobody has established which side is right**,
+  which is why it is not in `KNOWN` with a reason: an unexplained difference should stay loud.
+  It is the only failing gate in the repo.
 - **Dates: the formatters agree, the stored data does not.** Every function that *formats* a date
   renders the house format since 2026-09-17. What remains is data stored as display strings, which
   bypasses them entirely: ~30 in Change Control, 6 in CAPA, 63 in Training (23 of those
