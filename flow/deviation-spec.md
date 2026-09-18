@@ -791,3 +791,164 @@ properly, §11 is the design; nothing here forecloses it.
 **§11.6 stands and is not a design question.** If reviewers today cancel deviations in order to
 send them back, production `Cancelled` records include records that were never invalid — and any
 trend analysis on that field is wrong. For the brief's author, whatever the prototype does.
+
+---
+
+## 15. Data model — `mock-data.ts`
+
+`accura-ui/src/app/prototype/accura/deviations/mock-data.ts`, 848 lines, one file on purpose: the
+lifecycle rules live beside the seeds so the module's behaviour can be reviewed against the brief
+without opening a screen. **Nothing is persisted** — state is in memory for the session, unlike
+Change Control, which writes to `localStorage`.
+
+`today` is hardcoded to `2026-09-15`. Overdue is a function of the date, so a fixed "today" keeps
+the seeded set stable; without it the two overdue records stop being overdue a week later and the
+screenshots in this spec stop matching the screen.
+
+### Lifecycle
+
+`lifecycle` is the six sequential states in order — `Draft` · `In Review` ·
+`Investigation In Progress` · `CAPA Pending` · `In Approval` · `Approved`. **The array is the
+order**: `stepIndex()` and the stepper both read from it, so there is no second list to keep in
+sync. `Cancelled` is terminal, sits outside the sequence, and has no step. `Overdue` is not a
+status at all — see `isOverdue()` below.
+
+`statusVariants` maps each of the seven to a `Badge` variant, so status colour is data rather than
+markup.
+
+### Enums
+
+Brief §13, all `as const`:
+
+| Enum | Values |
+|---|---|
+| `departments` | Quality Assurance · Quality Control · Manufacturing · Packaging · Engineering · Cold Chain Storage · Supply Chain · Regulatory Affairs |
+| `classifications` | Planned · Unplanned |
+| `categories` | Major · Minor · Critical |
+| `severities` | High · Medium · Low |
+| `incidentTypes` | Document · Process · Equipment · Facility · Utility · Computer System · Material · Supplier · Regulatory · Planned · Analytical Method |
+
+### People
+
+`Person` is `name` · `role` · `initials`. Five: Amit Kothari (Production Lead) · Sarah Johnson (QA,
+and `currentUser`) · John Baker (Dept Owner) · Lisa Chen (QC Lead) · Maria Santos (QA Manager).
+`display()` renders `Name (Role)`. The live product prints raw `auth0|…` identifiers in Raised By
+and in every signature while resolving reviewers to a name on the same screen (§10.8); the
+prototype resolves everywhere.
+
+### `DeviationRecord`
+
+Always present: `id: string | null` · `key` · `title` · `status` · `dateRaised` · `raisedBy` ·
+`dueDate` · `department` · `departmentOwner` · `owner` · `classification` · `category` ·
+`severity` · `incidentType` · `productImpacted` · `details` · `reviewers[]` ·
+`impactedProducts[]`.
+
+Optional, populated as the record travels: `qaReviewer` · `immediateAction` · `riskAnalysis` ·
+`rootCauseAnalysis` · `impactAnalysis` · `capaRefs[]` · `activity[]` · `cancelled`.
+
+Three of those fields carry a finding:
+
+- **`id` is nullable by design.** Submit for Review mints it, Save as Draft does not (brief §5
+  Step 1), so a Draft genuinely has none and `displayId()` renders `Not assigned`.
+- **`dueDate` has no origin.** Neither brief supplies one, it is not a field on Create, yet every
+  record has one and Overdue depends on it. Seeded. §8.2.
+- **`departmentOwner` is not `owner`.** The head of the originating department signs the triage
+  gate; the owner runs the record and signs the investigation.
+
+`ImpactedProduct` is `product` · `batch` · `description`. `CapaLink` is `id` · `title` ·
+`status: "In progress" | "Completed"`, and `capaRefs` appends — more than one CAPA can be linked.
+
+### `capaCatalogue`
+
+Seven CAPAs backing the *Associate a CAPA* combobox. ⚠️ **Seeded in the deviation module and not
+reconciled with the CAPA prototype**: these are `ACME/CAPA/2026/000019`, CAPA's own seeds are
+`CAPA-0003`. Linking the two modules needs one ID format first (§10.12).
+
+### Seed records — ten, all seven statuses
+
+Every status appears at least once, and the two exception conditions are **crossed with** a
+lifecycle status rather than standing alone: an overdue record is still `In Review`, which is the
+whole point of Overdue being a flag.
+
+| Key | ID | Status | Title | Department | Owner |
+|---|---|---|---|---|---|
+| `draft-1` | *none* | Draft | Chilled room 3 temperature excursion during night shift | Cold Chain Storage | Amit |
+| `dev-0001` | ACME/DEV/2026/000001 | In Review | Batch record page missing operator signature | Quality Control | Amit |
+| `dev-0002` | ACME/DEV/2026/000002 | In Review · **overdue** | Capping torque out of specification on line 2 | Packaging | John |
+| `dev-0003` | ACME/DEV/2026/000003 | Investigation In Progress | Production staff fall near machine that makes Pizza | Manufacturing | Amit |
+| `dev-0004` | ACME/DEV/2026/000004 | Investigation In Progress · **overdue** | Autoclave cycle aborted mid-run | Engineering | Lisa |
+| `dev-0005` | ACME/DEV/2026/000005 | CAPA Pending | Supplier certificate of analysis missing two assay results | Supply Chain | John |
+| `dev-0006` | ACME/DEV/2026/000006 | In Approval | Cleaning validation swab taken from the wrong port | Manufacturing | Amit |
+| `dev-0007` | ACME/DEV/2026/000007 | Approved | Planned maintenance overran into production window | Engineering | Amit |
+| `dev-0008` | ACME/DEV/2026/000008 | Approved | Label reconciliation discrepancy of 40 labels | Packaging | Lisa |
+| `dev-0009` | ACME/DEV/2026/000009 | Cancelled | Duplicate report of the chilled room excursion | Cold Chain Storage | Lisa |
+
+What the set is built to exercise, beyond one row per status:
+
+- `dev-0002` and `dev-0004` are overdue against `today` — one early in the lifecycle, one late.
+- `draft-1` has no `id`, no reviewers and no impacted products: the emptiest possible record.
+- `dev-0002` and `dev-0008` carry **two** reviewers, so the Signatures block shows more than one
+  pending and more than one captured signature.
+- `dev-0009` was cancelled **out of `In Review`**, so `cancelled.from` drives the stepper — a
+  Cancelled record still shows where it stopped.
+- `dev-0001`/`dev-0002` mirror the live records. The live set uses two ID formats (§8.1); the
+  prototype normalises to one.
+- `classification` is `Planned` on exactly one record (`dev-0007`), and `category` reaches
+  `Critical` on two.
+
+### Derived logic — nothing hand-written that can be computed
+
+The file's organising rule: anything that could drift from the record it describes is derived
+from the record.
+
+| Function | What it does |
+|---|---|
+| `isOverdue(record, asOf)` | `asOf > dueDate`, and never for `Approved` or `Cancelled`. A flag, never a status — brief §6 is explicit that the lifecycle status is not altered. The live product nonetheless lists Overdue among its Status filter options (§8.13) |
+| `nextAction(record)` | Whose move it is, for the registry's secondary line. `null` for both terminal states — a closed record has no next move, and a dash is noise |
+| `stepIndex(status)` | 1-based stepper position, `null` for Cancelled |
+| `displayDate(date)` | `en-US`, `Sep 15, 2026` |
+| `displayId(record)` | the ID, or `Not assigned` |
+| `signatures(record)` | `{ captured, pending }`, computed from how far the record travelled |
+| `auditEvents(record)` | the full trail, derived history plus anything the session did |
+| `visibleBlocks(record)` | which blocks the detail page shows, and which one is editable |
+| `mintId(existing)` | continues the seeded `ACME/DEV/2026/NNNNNN` sequence |
+
+**Signatures are a function of progress, not a stored list**, so the two cannot disagree:
+department owner at `In Review → Investigation`, deviation owner at `CAPA Pending → In Approval`,
+every named reviewer at `In Approval → Approved`. Statements in `statements` are verbatim from
+brief §13.7 — legal commitment copy is not paraphrased. The department owner's statement is
+captured at step 2 but only surfaces in the Signatures block, which is a lifetime ledger rather
+than a list of approval-stage signatures (§8.10).
+
+**The audit trail is derived for the same reason.** `auditEvents()` emits creation, each
+transition the record travelled, each captured signature, then folds in `activity` — the entries
+written by this session's own transitions. A transition present in `activity` is skipped by the
+derived pass, so it is never logged twice. The live product shows each transition twice at an
+identical timestamp (§8.5); that is a defect under an append-only policy and is not reproduced.
+
+**`visibleBlocks()` encodes that the detail page is one accumulating page, not six layouts.** Each
+state locks what came before and reveals one more block. Two deliberate divergences from the live
+product: the CAPA block opens at `Investigation In Progress` rather than `CAPA Pending`, because
+linking a CAPA is what advances the record (§5.5); and Signatures appear as soon as one exists
+rather than only from `In Approval`.
+
+### Transitions
+
+`advance()` · `reject()` · `cancelRecord()`, kept beside the lifecycle array so what a button does
+can be read without opening a component. Each appends an `ActivityEntry` (`by` · `action` ·
+`reason?` · `fromStatus` · `toStatus`) — append-only is the one thing brief §9.7 is unambiguous
+about. `advance()` from `Draft` mints the ID and logs `Submitted for review`. `reject()` moves one
+stage back (brief §5.7). `cancelRecord()` refuses on `Approved` and `Cancelled`, and records the
+state it was cancelled out of.
+
+`deviation-detail.tsx` calls all three: the signature dialog's confirm routes to `reject()`,
+`cancelRecord()` or `advance()` depending on which action opened it, and the result goes to
+`saveDeviation()`. **The transitions are wired, not inert** — an earlier note saying the actions
+only render was wrong, and the code is where that was settled.
+
+### Store — `store.ts`
+
+Seeds plus anything the session created or changed, **in memory only and deliberately so**: a
+reload returns the demo to the seeded set. Documents and Change Control use `localStorage`
+instead, and Change Control also keeps a tombstone list, which is what once hid its Draft record
+with no way back.

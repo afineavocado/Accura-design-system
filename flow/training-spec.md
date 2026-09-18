@@ -691,3 +691,155 @@ shows `… - Assessment -1`. The name the user approved is not the name stored.
 | **Trainee screens** | the whole other role (**Q6**) |
 | **The workflow behind Review** | no approval event in the data model, and `Awaiting review` is not a state records enter. §5.7 is a design of the target state |
 | **Role-scoped rollup** | `Outstanding` and role-scoped `Status` (§5.4) and the removal-dialog counts all need the same per-user, per-role query |
+
+---
+
+## 12. Data model — `mock-data.ts`
+
+`accura-ui/src/app/prototype/accura/training/mock-data.ts`, 854 lines. Worth reading carefully for
+one reason: **the seeds are spread across five arrays and use four separate status vocabularies.**
+That is not an accident of the mock — it is §6's status inventory made concrete, and the collisions
+recorded there (Q18 in particular) are visible here as two maps holding the same words.
+
+In memory only. No store, no `localStorage`: every screen imports the arrays directly, so nothing
+a user does survives a navigation.
+
+### The four status vocabularies
+
+| Union | Values | Variants | Applies to |
+|---|---|---|---|
+| `userStatuses` | Up to date · Pending · Overdue | success · warning · error | a person's overall training standing (§6 · the Users filter) |
+| `assignmentStatuses` | Assigned · In progress · Awaiting review | secondary · blue · warning | unfinished work on the user detail rail. **`Completed` is absent on purpose** — a finished assignment belongs in history |
+| `historyStatuses` | Approved · Completed · Superseded · Rejected | success · secondary · warning · error | terminal participant records. `Completed` here means *finished but never reviewed*, which is every record in the product today |
+| `roundStatuses` | Assigned · In progress · Completed | secondary · blue · success | an assessment **round** — level 2 |
+
+`assignmentStatuses` and `roundStatuses` share `Assigned` and `In progress` with different
+meanings, and `Completed` appears in both `historyStatuses` and `roundStatuses` at different
+levels. The maps are kept separate deliberately: a round is `Completed` when every participant is,
+which is not the same event as one person completing.
+
+A fifth, unnamed union sits inline on `Participant` — `"Assigned" | "In progress" | "Completed"`.
+
+### The five seed arrays
+
+| Array | Type | Count | Feeds |
+|---|---|---|---|
+| `trainingUsers` | `TrainingUser` | 5 | Users tab, user detail |
+| `trainingRoles` | `TrainingRole` | 5 | Roles tab, role detail |
+| `allCourses` | `Course` | 8 | Courses tab, course detail, the Roles form's picker |
+| `assessmentRounds` | `AssessmentListRow` | 8 | Assessments tab, round detail |
+| `reviewItems` | `ReviewItem` | 4 | the Review queue |
+
+Plus three that hang off a single user — Amit Kothari, who is the one fully built user detail:
+`assignedRoles` (2, **derived** by filtering `trainingRoles`), `assignedAssessments` (4) and
+`trainingHistory` (4).
+
+### `trainingUsers` — 5
+
+Amit Kothari (QA, Trainee, **Overdue**) · Sarah Johnson (QA, Training Manager, Up to date, and the
+signed-in `currentUser`) · Lena Fischer (Manufacturing, Trainee, **Pending**) · Tom Reilly
+(Manufacturing, Trainee, Up to date) · Priya Nair (Engineering, Trainee, Up to date). All three
+user statuses appear; three departments; both access levels.
+
+### `trainingRoles` — 5
+
+`id` · `name` · `description` · `courses` · `users` · `assessments` · `courseList[]` ·
+`memberSample[]`.
+
+| Role | Courses | Users | What it exists to show |
+|---|---|---|---|
+| QA analyst | 4 | 12 | the full case — four courses, four members, one course with `supersededFrom: "v1.0"` |
+| Cleanroom access | 2 | 28 | a large membership against a small course list |
+| Admin role | 1 | 1 | the minimum |
+| Test training role | 2 | 1 | two courses sharing a document, one with none |
+| Warehouse operative | 3 | **0** | **courses but nobody in the role** — a real finding, and the reason the count is a column rather than card-footer prose |
+
+`memberSample` is **a page of members, not all of them**; `users` holds the true count, which is
+why Cleanroom access shows 28 users and one sample row. Each `RoleMember` carries `outstanding`
+(that role's courses only, not overall) and `impact: { notStarted, inProgress, completed }` — what
+removing the user would affect. Completed records are never deleted; they are evidence (§9 Q27).
+
+`RoleCourse.document` is nullable: `null` means the course binds no controlled document, which is
+how a quiz or a practical is represented.
+
+### `allCourses` — 8
+
+`methods[]` are assessment **methods** — the course definition. `assessments` counts **rounds**
+sent from the course. The two are different things and §9 Q28 is about exactly that confusion.
+
+`trigger` is one of `triggerModes`: `Specific date` (blue) · `Recurring period` (success) ·
+`No automatic trigger` (secondary), with `triggerDetail` set only for the first two. It is rendered
+as a badge rather than grey footer prose because this is the mechanism that makes Training a system
+rather than a list.
+
+`methodDetail` binds a method to a document **version** — `SOP-002 v3.0`, not `SOP-002`. A course
+bound to a document rather than a version cannot evidence what anyone was trained on (Q29).
+
+Only `document-control` carries `rounds[]`, and it carries two: one `Completed` (12 of 12) and one
+`In progress` (3 of 12). Two *open* rounds of the same course would mean a person owing it twice —
+Q33. `goods-in` has `roles: 0`: nobody is trained on it, visible as a zero.
+
+### `assessmentRounds` — 8
+
+`AssessmentListRow` = `AssessmentRound` + `courseId` · `course` · `overdue?` · `notes?` ·
+`created?` · `participants?` · `auditTrail?`.
+
+Six `In progress`, two `Completed`; two flagged `overdue` (`asmt-0007`, `asmt-0012`). Only
+**`asmt-0007`** — Equipment calibration Assessment 2 — is built out: it has `notes` explaining it
+was triggered by SOP-001 moving to v2.0, a `created` date, a three-entry round-level `auditTrail`,
+and five `participants` (one `In progress`, four `Completed`, one with a `comment`). Every other
+round is a list row only. Whether the product's trail belongs to the round or the participant is
+unresolved — Q20.
+
+Note `asmt-0004` and `asmt-0009` appear **twice**: once in `assessmentRounds` and again inside
+`document-control.rounds`. The two copies agree today and nothing enforces that they keep agreeing.
+
+### `trainingHistory` — 4, Amit's record
+
+One per `historyStatus`, and each is there for a specific situation:
+
+| Key | Status | Shows |
+|---|---|---|
+| `document-control` | Approved | the complete case — evidence file, two signatures, a four-entry audit trail |
+| `how-to-use-eqms` | Completed | **`selfSigned: true`** — the trainee signed their own completion with no independent review, one signature only |
+| `equipment-calibration-v1` | Superseded | `supersededBy: "v2.0"` and `retrainingAssigned: "6 Sep 2026"` — the retraining trigger §7 says the brief never settles |
+| `waste-segregation` | Rejected | a failed quiz, `score: "scored 4 of 10"`, rejected by the manager with a reason in the trail |
+
+`AuditEvent.change` renders as `old → new` with the old value struck through. `supersededBy: null`
+means still current.
+
+### `reviewItems` — 4
+
+Only methods that are **not** self-evidencing reach the queue (Q10): Practical, Written, and
+failed quizzes. Acknowledge, Read & acknowledge and passed quizzes never enter it, which is what
+stops it filling with records nobody needs to read.
+
+Two Practical with file evidence (one overdue at 9 days waiting), one Written, one failed Quiz
+carrying `score: "scored 4 of 10, failed"` — the Q14 case with no defined route. `waitingDays` is
+the primary sort. `ownRecordsAwaitingOtherManager = 2` is a count, not a list: a manager signing
+off their own training is an audit finding in a GxP system (Q6), so those records are excluded from
+Sarah's own queue and only their number is shown. `rejectionReasons` are structured, not free text,
+because an auditor seeing *rejected then approved* will ask what changed (Q15).
+
+### Derived, never re-typed
+
+`courseOptions`, `userOptions` and `roleOptions` are built from `allCourses`, `trainingUsers` and
+`trainingRoles`; `assignedRoles` filters `trainingRoles`. The user detail rail and the Roles tab
+therefore cannot drift apart.
+
+`documentOptions` is the exception — six controlled documents typed out independently, each pinned
+to a version. There is no Documents-module import behind it, so the two modules' document lists are
+unreconciled in the same way Deviations' and CAPA's IDs are.
+
+### ⚠️ Dates are display strings
+
+Every date in this file is stored formatted — `"8 Sep 2026"`, `"9 Sep 2026, 14:02"` — not ISO. They
+bypass the shared formatters entirely, so the one-date-format pass cannot reach them.
+
+**63 date literals**, 23 of them timestamps, across `assignedAssessments`, `trainingHistory`
+(`assignedDate`, `dueDate`, `completedDate`, every signature timestamp, every audit timestamp) and
+`assessmentRounds` — counting the dates written into audit `note` prose, which have the same
+problem and no field to convert. They print exactly as typed, which is why they look right today and will not
+survive a locale or a sort — the same defect already logged against Change Control and CAPA.
+**Training was missing from that list**; added to *Dates and times* in
+`accura-design-patterns.md` on 2026-09-18.

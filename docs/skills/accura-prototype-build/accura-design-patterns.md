@@ -262,7 +262,9 @@ the same month is spelled two ways today depending on which function rendered it
 >
 > ⚠️ **Still stored as display strings, so they bypass every formatter:** Change Control's
 > `dateRaised`, `targetImplementationDate`, `dueDate` and `completedAt` (24 values plus 7
-> completions), its action **comment** timestamps, and CAPA's 6 `dueDate` values. These print
+> completions), its action **comment** timestamps, CAPA's 6 `dueDate` values, and **every date in
+> Training** — 63 literals, 23 of them timestamps, across `assignedAssessments`, `trainingHistory`
+> and `assessmentRounds` (`"9 Sep 2026, 14:02"`). These print
 > exactly as typed, which is why they happen to look right today and will not survive a locale or
 > a sort. Converting them is the remaining half of this pass.
 
