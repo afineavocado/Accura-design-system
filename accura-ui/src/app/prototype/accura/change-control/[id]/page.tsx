@@ -63,7 +63,6 @@ import {
   changeControlStatusVariant,
   changeControlStatuses,
   changeControlWorkflowSteps,
-  initialChangeControlRecords,
   pendingAssessmentsFor,
   type AuditTrailItem,
   type ChangeAction,
@@ -72,9 +71,7 @@ import {
   type ChangeControlStatus,
   type DepartmentAssessment,
 } from "../mock-data"
-
-
-const storedRecordsKey = "accura-change-control-records"
+import { readStoredRecords, resolveRecord, writeStoredRecord } from "../storage"
 
 // Kept in sync with the people/departments already used as real signers
 // across the Change Control table's seed records (mock-data.ts) — e.g.
@@ -264,29 +261,6 @@ function PriorityBadge({ priority }: { priority?: string }) {
       {priority ?? "Medium"}
     </span>
   )
-}
-
-function readStoredRecords() {
-  if (typeof window === "undefined") return []
-
-  try {
-    const parsed = JSON.parse(window.localStorage.getItem(storedRecordsKey) ?? "[]")
-    return Array.isArray(parsed) ? (parsed as ChangeControlRecord[]) : []
-  } catch {
-    return []
-  }
-}
-
-function writeStoredRecord(record: ChangeControlRecord) {
-  if (typeof window === "undefined") return []
-
-  const records = readStoredRecords()
-  const nextRecords = records.some((item) => item.id === record.id)
-    ? records.map((item) => (item.id === record.id ? record : item))
-    : [record, ...records]
-
-  window.localStorage.setItem(storedRecordsKey, JSON.stringify(nextRecords))
-  return nextRecords
 }
 
 function DetailField({ label, value }: { label: string; value: string }) {
@@ -2108,10 +2082,7 @@ export default function ChangeControlDetailPage() {
     []
   )
 
-  const record =
-    storedRecords.find((item) => item.id === recordId) ??
-    initialChangeControlRecords.find((item) => item.id === recordId) ??
-    null
+  const record = resolveRecord(storedRecords, recordId)
 
   // Self-heals records that reached "Impact Assessment" or later without ever
   // getting Pending assessments generated for their affected departments (e.g.

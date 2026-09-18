@@ -40,11 +40,9 @@ import { ChangeControlHeader } from "./change-control-header"
 import {
   changeControlStatuses,
   changeControlStatusVariant,
-  initialChangeControlRecords,
   type ChangeControlRecord,
 } from "./mock-data"
-
-const storedRecordsKey = "accura-change-control-records"
+import { mergeWithSeeds, readStoredRecords } from "./storage"
 
 function StatusBadge({ record }: { record: ChangeControlRecord }) {
   return (
@@ -287,26 +285,14 @@ export default function ChangeControlListingPage() {
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false)
 
   React.useEffect(() => {
-    try {
-      const parsed = JSON.parse(window.localStorage.getItem(storedRecordsKey) ?? "[]")
-      setStoredRecords(Array.isArray(parsed) ? (parsed as ChangeControlRecord[]) : [])
-    } catch {
-      setStoredRecords([])
-    }
+    setStoredRecords(readStoredRecords())
   }, [])
 
-  /* Tombstones are gone. The row menu that wrote them was removed on
-     2026-09-17, so nothing has created one since — but a browser that deleted a
-     record while the menu existed kept hiding it, with no way to bring it back.
-     A seed record disappearing for one person and not another is not a state
-     this prototype should be able to reach. */
-  const records = React.useMemo(() => {
-    const storedIds = new Set(storedRecords.map((record) => record.id))
-    return [
-      ...storedRecords,
-      ...initialChangeControlRecords.filter((record) => !storedIds.has(record.id)),
-    ]
-  }, [storedRecords])
+  /* Seeded records always come from the seeds — see storage.ts. Tombstones are
+     gone too: the row menu that wrote them was removed on 2026-09-17. Between
+     them, a seed record can no longer disappear or go stale for one person and
+     not another, which is not a state this prototype should be able to reach. */
+  const records = React.useMemo(() => mergeWithSeeds(storedRecords), [storedRecords])
 
   const departments = React.useMemo(
     () =>
@@ -469,7 +455,12 @@ export default function ChangeControlListingPage() {
                         <TableHead className="w-auto bg-[var(--color-surface-default)]">
                           AFFECTED DEPTS
                         </TableHead>
-                        <TableHead className="w-[150px] bg-[var(--color-surface-default)]">
+                        {/* 168px, not 150: table-layout is fixed, so this column
+                            cannot grow to its content. The widest status pill,
+                            "Impact Assessment", measures 131px, and 131 + 2 ×
+                            16px cell padding = 163. At 150 the pill overflowed
+                            the cell and sat 3px from the table border. */}
+                        <TableHead className="w-[168px] bg-[var(--color-surface-default)]">
                           STATUS
                         </TableHead>
                       </TableRow>

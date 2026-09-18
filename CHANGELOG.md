@@ -11,6 +11,41 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-18 — Seeded Change Control records always come from the seeds
+
+**Changed**
+
+- **`accura-ui/src/app/prototype/accura/change-control/storage.ts`** is new and owns the module's
+  persistence. The registry, the detail page and the create/edit page each carried their own copy
+  of the read and write helpers; all three now import from it.
+
+  **The rule: a seeded record is never written to `localStorage` and never read back from it.**
+  Before, stored records were merged ahead of the seeds by id, so a stored copy of a seeded record
+  shadowed the seed permanently, in one browser, with no way back. That hid `CC-2026-003` — the
+  only `Draft` in the set — so the list appeared to have no Draft at all. It is the same defect as
+  the tombstone list removed on 2026-09-17, in a different shape.
+
+  Reading also **heals**: a seeded id still sitting in storage from before the rule is dropped on
+  the next load, so nobody has to clear their browser by hand. Verified by planting a stored
+  `CC-2026-003` titled "POISONED COPY" with status `Closed`, reloading, and watching the seed's
+  real title and `Draft` come back with 0 records left in storage.
+
+  **What it costs:** editing a seeded record works for the session but does not survive a reload —
+  the screens hold the edited record in React state, and nothing persists it. Deliberate, and the
+  same choice Deviations already made: refreshing is how the demo resets. Records you create are
+  not seeded and persist exactly as before.
+
+**Fixed**
+
+- **The Change Control `STATUS` column was 150px against a 131px pill.** The table is
+  `table-layout: fixed`, so the column could not grow to its content: `Impact Assessment` measured
+  130.9px inside a 118px content box, overflowed its cell by 12.9px and sat **3.1px** from the
+  table border instead of 16px. `Action in Progress` and `Final QA Approval` overflowed by 4.7px
+  and 2.3px. Column widened to 168px — 131 + 2 × 16px padding, rounded up — and every pill now
+  clears its padding, the tightest by 5.1px. Measured in the browser before and after; the other
+  four listings were checked at the same time and are clear.
+
+
 ### 2026-09-18 — `RecordRowAction` promoted into the design system
 
 **Added**

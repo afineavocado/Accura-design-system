@@ -110,12 +110,27 @@ CC-2026-001 and CC-2026-003 share a title deliberately — the same change at tw
 
 ### Persistence
 
-`localStorage`, unlike Deviations which is in-memory by choice:
+`localStorage`, unlike Deviations which is in-memory by choice. All of it now lives in
+`storage.ts` beside `mock-data.ts`; the three screens had their own copies of the read and write
+helpers until 2026-09-18.
 
-- `accura-change-control-records` — records created or edited, read by all three screens
-- `accura-deleted-change-control-record-ids` — tombstones, **written by nothing any more** (§7.1)
+- `accura-change-control-records` — records **created** here
+- ~~`accura-deleted-change-control-record-ids`~~ — tombstones, removed 2026-09-17 (§7.1)
 
-Stored records are merged ahead of the seeds by id, then tombstones are subtracted.
+**A seeded record always comes from the seeds.** It is never written to `localStorage` and never
+read back from it, so the seven seeds render identically in every browser.
+
+That rule replaced "stored records merged ahead of the seeds by id" on 2026-09-18, after the same
+defect as the tombstones surfaced again in a different shape: a stored copy of `CC-2026-003`
+shadowed the seed permanently, in one browser, with no way back — and `CC-2026-003` is the only
+`Draft` in the set, so the list looked as though it had no Draft at all. Reading also **heals**: a
+seeded id still sitting in storage from before the rule is dropped on the next load, so nobody has
+to clear anything by hand.
+
+What it costs: editing a seeded record works for the session, because the screens hold the edited
+record in React state, but it does not survive a reload. That is deliberate and matches Deviations.
+Refreshing is how the demo resets, which is why there is no reset button to build. Records you
+create are not seeded and persist as before.
 
 ---
 

@@ -28,13 +28,13 @@ import { Textarea } from "@/components/ui/textarea"
 import { AppNavItems, AppSidebar } from "../../app-sidebar"
 import { ChangeControlHeader } from "../change-control-header"
 import {
-  initialChangeControlRecords,
   pendingAssessmentsFor,
   type ChangeControlRecord,
   type ChangeControlStatus,
+  initialChangeControlRecords,
 } from "../mock-data"
+import { readStoredRecords, resolveRecord, writeStoredRecord } from "../storage"
 
-const storedRecordsKey = "accura-change-control-records"
 
 const changeOwnerOptions = [
   { value: "john-baker", label: "John Baker", fallback: "JB" },
@@ -148,32 +148,8 @@ function parseDisplayDate(value?: string) {
   return Number.isNaN(date.getTime()) ? undefined : date
 }
 
-function readStoredRecords() {
-  if (typeof window === "undefined") return []
-
-  try {
-    const parsed = JSON.parse(window.localStorage.getItem(storedRecordsKey) ?? "[]")
-    return Array.isArray(parsed) ? (parsed as ChangeControlRecord[]) : []
-  } catch {
-    return []
-  }
-}
-
-function writeStoredRecord(record: ChangeControlRecord) {
-  const records = readStoredRecords()
-  const nextRecords = [
-    record,
-    ...records.filter((item) => item.id !== record.id),
-  ]
-
-  window.localStorage.setItem(storedRecordsKey, JSON.stringify(nextRecords))
-}
-
 function findChangeControlRecord(id: string) {
-  return (
-    readStoredRecords().find((item) => item.id === id) ??
-    initialChangeControlRecords.find((item) => item.id === id)
-  )
+  return resolveRecord(readStoredRecords(), id) ?? undefined
 }
 
 function recordToFormValues(record?: ChangeControlRecord): FormValues {
