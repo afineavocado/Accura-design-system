@@ -56,7 +56,7 @@ Storybook uses 6007 because Agentic's uses 6006, so both can run side by side.
 | | |
 |---|---|
 | **Every component** | Storybook, **:6007** — 38 stories. This is the design system. |
-| **The prototypes** | **:3001** — seven modules, one app. `/` redirects to CAPA. |
+| **The prototypes** | **:3001** — eight modules, one app. `/` redirects to the Dashboard. |
 
 **They share one sidebar**, so you can click between them. Add a module to `platformNav`
 in `prototype/accura/app-sidebar.tsx`, never in a page.
@@ -97,9 +97,10 @@ are knowingly hand-rolled, with the reason.
 > Documents persists to `localStorage` and `IndexedDB`, so it seeds fresh in a new browser and
 > keeps anything you create. Training and CAPA are mock data only, reset on reload.
 
-> There is **no home screen** beyond that redirect. The app exists to host the
-> prototype; the component library lives in Storybook. If `/` 404s, you are on a
-> commit before this was added — it is not a missing feature to build.
+> The **Dashboard** is the home screen, added 2026-09-18. Before then `/` redirected to CAPA and
+> there was deliberately nothing at the root. The component library still lives in Storybook, not
+> here. If `/` 404s, you are on a commit before the redirect existed — not a missing feature to
+> build.
 
 ### Deploying
 

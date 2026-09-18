@@ -70,10 +70,23 @@ function UserRow({
   )
 }
 
-export default function TrainingUsersPage() {
+/* ?status= pre-sets the filter (the Dashboard Training card links here). Read
+   from page props, not useSearchParams: that hook needs a Suspense boundary,
+   and inside one the Select triggers rendered blank. */
+export default function TrainingUsersPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}) {
+  const status = React.use(searchParams).status
+  return <TrainingUsers initialStatus={typeof status === "string" ? status : undefined} />
+}
+
+function TrainingUsers({ initialStatus }: { initialStatus?: string }) {
   const router = useRouter()
   const [query, setQuery] = React.useState("")
-  const [status, setStatus] = React.useState("all")
+  // ?status=Overdue — the Dashboard Training tile lands on the users it counts.
+  const [status, setStatus] = React.useState(initialStatus ?? "all")
 
   const visibleUsers = React.useMemo(() => {
     const q = query.trim().toLowerCase()

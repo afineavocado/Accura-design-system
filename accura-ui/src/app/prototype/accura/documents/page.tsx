@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { use, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useRowClick } from "../row-click";
 import { ListEmptySearch } from "../list-empty-state";
@@ -59,12 +59,29 @@ function DocumentRow({
   );
 }
 
-export default function DocumentListing() {
+/* ?workflow= pre-sets the filter (the Dashboard Documents card links here).
+   Read from page props, not useSearchParams: that hook needs a Suspense
+   boundary, and inside one the Select triggers rendered blank. */
+export default function DocumentListingPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const workflow = use(searchParams).workflow;
+  return (
+    <DocumentListing
+      initialWorkflow={typeof workflow === "string" ? workflow : undefined}
+    />
+  );
+}
+
+function DocumentListing({ initialWorkflow }: { initialWorkflow?: string }) {
   const docs = useDocuments();
   const [search, setSearch] = useState("");
   const [type, setType] = useState("All");
   const [department, setDepartment] = useState("All");
-  const [workflow, setWorkflow] = useState("All");
+  // ?workflow=In QA Approval — the Dashboard Documents tile lands on the records it counts.
+  const [workflow, setWorkflow] = useState(initialWorkflow ?? "All");
   const [availability, setAvailability] = useState("All");
   const [category, setCategory] = useState("All");
   const [ascending, setAscending] = useState(true);

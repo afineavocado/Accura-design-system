@@ -43,10 +43,12 @@ npm run dev         # the prototypes    → :3001
 **Deploying:** the deploy platform's root directory must be `accura-ui`, not the repo root.
 The root has no `package.json`, so a platform pointed there builds nothing and every route 404s.
 
-`/` redirects to `/prototype/accura/capa` — that is a default landing route, not a CAPA-only app.
-**There is no home screen**; the app hosts three prototypes (CAPA, Documents, Training), reached
-from the shared sidebar in
-`prototype/accura/app-sidebar.tsx`. Do not build a landing page.
+`/` redirects to `/prototype/accura/dashboard`. **There is a home screen as of 2026-09-18** — the
+Dashboard module, reached from the shared sidebar in `prototype/accura/app-sidebar.tsx` along with
+the other seven. This file said *"there is no home screen… do not build a landing page"* until that
+day; the rule was written when the app hosted three module prototypes and nothing that spanned
+them. Chi's branch flagged the contradiction rather than merging past it, and the redirect was
+signed off on merge.
 
 ---
 

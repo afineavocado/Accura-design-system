@@ -11,6 +11,28 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-18 — `chi-dashboard` merged, and the no-home-screen rule retired
+
+**Changed**
+
+- **`/` redirects to the Dashboard**, not CAPA. Signed off on merge. Three files carried a rule
+  saying the opposite — `accura-ui/CLAUDE.md` (*"There is no home screen… Do not build a landing
+  page"*), `llms.txt` and `README.md` — all written when the app hosted three module prototypes and
+  nothing that spanned them. All three updated. Chi's branch **flagged the contradiction rather
+  than merging past it**, which is the reason it was a decision and not a surprise.
+
+**Merge notes**
+
+- Two conflicts, both resolved so that neither side lost anything. `CHANGELOG.md` was additive —
+  both entries kept. `capa/page.tsx` had one hunk: `clearFilters`, extracted here so the empty
+  state and `ListSummary` share it, against Chi's inline reset that also cleared her new `due`
+  filter. `clearFilters` kept, `setDue("all")` added to it.
+- **One break git could not see.** `dashboard/inbox/page.tsx` imports
+  `@/components/record-row-action`; that component moved to `@/components/ui/` on 2026-09-18, on
+  the other branch. No conflict, no textual overlap — the merge was clean and the build was broken.
+  Import corrected. A clean merge is not a working merge.
+
+
 ### 2026-09-22 — One electronic signature modal, with CAPA's presentation
 
 **Changed**
@@ -344,6 +366,34 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 **Note.** The merge notes for Change Control also asked for `success` and `blue` to be rewired to
 `color/border/success` and `color/border/info`. Not done: unlike the above, that changes badges
 already rendering in every module, and it needs a decision rather than an import.
+### 2026-09-18 — Dashboard prototype, and list filters that can be set from the URL
+
+**Added**
+
+- **`prototype/accura/dashboard/`** — the Dashboard module prototype: notification, six Overview
+  metric cards, and a Records table (My actions | Upcoming). Design decisions and open questions
+  are logged in `flow/Dashboard Module 2026-Sep-17/Dashboard_Module_Changelog.md` (ADR D6–D9,
+  v1.1).
+- **CAPA list: a *Due date* filter** (*All due dates* / *Due within 14 days*), so the Dashboard's
+  CAPA card can land on the same records it counts.
+
+**Changed**
+
+- **`prototype/accura/app-sidebar.tsx`: *Dashboard* now links to `/prototype/accura/dashboard`**
+  (was `#`). Nothing else in the file changed.
+- **`prototype/accura/page.tsx`: the root now redirects to the Dashboard**, not CAPA. This
+  contradicts `accura-ui/CLAUDE.md` ("there is no home screen… do not build a landing page") —
+  flagged for sign-off before merge.
+- **Training, CAPA and Documents lists accept a pre-set filter from the URL** (`?status=`,
+  `?due=`, `?workflow=`). Read from page `searchParams` props rather than `useSearchParams`, which
+  needs a Suspense boundary — and inside one, every `Select` trigger rendered blank.
+
+**Known issue**
+
+- The Dashboard's icon circle uses brand /50, which has **no semantic token**; it borrows the
+  component token `button/secondary/bg-hover` and fails contrast in dark mode. Needs a Figma
+  variable before this ships.
+
 ### 2026-09-17 — Settings item in the shared sidebar now links to the Setting Module
 
 **Changed**

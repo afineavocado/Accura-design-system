@@ -82,7 +82,7 @@ npm run storybook   # component library → :6007   ← the design system lives 
 npm run dev         # prototypes        → :3001
 ```
 
-`/` redirects to `/prototype/accura/capa`. **There is no home screen** — the app hosts seven module prototypes (CAPA, Change Control, Deviations, Documents, Knowledge Hub, Settings, Training) reached from the shared sidebar. A 404 at `/` on an older commit is not a missing feature to build.
+`/` redirects to `/prototype/accura/dashboard`. The **Dashboard** is the home screen, added 2026-09-18; the other seven module prototypes (CAPA, Change Control, Deviations, Documents, Knowledge Hub, Settings, Training) are reached from the shared sidebar. Before that date `/` went to CAPA and the docs said there was no home screen — a 404 at `/` on an older commit is still not a missing feature to build.
 
 ⚠️ **Token names are `--color-*`, not shadcn's.** `--color-background-default`, not `--background`. `--radius-lg`, not `--radius`. There is no `--text-primary`. Guessed names fail *silently* — `var(--text-primary)` resolves to nothing rather than erroring. Confirm against `accura-ui/src/app/tokens.css` before writing a class. Full rule: `accura-ui/CLAUDE.md`.
 
