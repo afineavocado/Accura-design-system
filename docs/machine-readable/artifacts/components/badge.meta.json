@@ -1,5 +1,6 @@
 {
   "name": "badge",
+  "catalogId": "agt-cmp-badge",
   "figmaNodeId": "107:40465",
   "description": "A small status label used to categorise, tag, or communicate state. Supports 11 visual variants, 3 shapes, and 3 sizes.",
   "category": "display",

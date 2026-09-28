@@ -1,5 +1,6 @@
 {
   "name": "input",
+  "catalogId": "agt-cmp-input",
   "figmaNodeId": "49:10806",
   "description": "A single-line text input control. Built on the native HTML input element. Use for name, email, password, search, and any single-line text entry.",
   "category": "forms",

@@ -1,5 +1,6 @@
 {
   "name": "dialog",
+  "catalogId": "agt-cmp-dialog",
   "figmaNodeId": "266:131",
   "description": "A modal overlay that interrupts the user to present focused content or collect input. Built on Radix UI Dialog. Renders a full-screen backdrop with a centered popup; focus is trapped inside until dismissed.",
   "category": "overlay",

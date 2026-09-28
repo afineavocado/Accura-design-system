@@ -1,5 +1,6 @@
 {
   "name": "skeleton",
+  "catalogId": "agt-cmp-skeleton",
   "figmaNodeId": null,
   "description": "A loading placeholder that pulses while content is fetching. Code-only — no published Figma component. Compose multiple instances to mirror the real content layout.",
   "category": "feedback",

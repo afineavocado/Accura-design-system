@@ -1,5 +1,6 @@
 {
   "name": "label",
+  "catalogId": "agt-cmp-label",
   "figmaNodeId": "150:569",
   "description": "Field label with an optional required marker. Consumed by input-field, select-field and combobox-field; the parent field owns the state.",
   "category": "forms",

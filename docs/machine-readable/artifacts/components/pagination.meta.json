@@ -1,5 +1,6 @@
 {
   "name": "pagination",
+  "catalogId": "agt-cmp-pagination",
   "figmaNodeId": "59:18253",
   "description": "A navigation control for moving through multi-page data sets.",
   "category": "navigation",

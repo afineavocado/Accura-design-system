@@ -1,5 +1,6 @@
 {
   "name": "empty",
+  "catalogId": "agt-cmp-empty",
   "figmaNodeId": "97:34667",
   "description": "A placeholder displayed when a list, panel, or section has no content. Icon + title + description + optional action buttons. Three Variants control container surface. Purely presentational — no Radix primitive.",
   "category": "feedback",

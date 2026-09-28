@@ -31,6 +31,7 @@ src/stories/[Component].stories.tsx
 ```json
 {
   "name": "[component-name]",
+  "catalogId": "acc-cmp-[component-name]",
   "type": "component",
   "id": "[figma-node-id]",
 

@@ -1,5 +1,6 @@
 {
   "name": "item",
+  "catalogId": "agt-cmp-item",
   "figmaNodeId": "65:815",
   "description": "A compact, repeatable list-row component for a single entry in a list, feed, or menu. Six leading Types, three container Variants, and three Sizes. Always use 'item' — never '_item-image' standalone.",
   "category": "layout",

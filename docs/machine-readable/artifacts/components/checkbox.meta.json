@@ -1,5 +1,6 @@
 {
   "name": "checkbox",
+  "catalogId": "agt-cmp-checkbox",
   "figmaNodeId": "59:18336",
   "description": "A binary selection control used to toggle an option on or off, with optional description text.",
   "category": "forms",

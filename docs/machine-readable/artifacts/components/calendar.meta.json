@@ -1,5 +1,6 @@
 {
   "name": "calendar",
+  "catalogId": "agt-cmp-calendar",
   "figmaNodeId": "28:4073",
   "description": "A date and range selection control built from composable calendar-day, calendar-month, preset, and calendar component sets.",
   "category": "forms",

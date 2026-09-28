@@ -11,6 +11,49 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-09-28 — A catalog, and a permanent ID for every component, pattern, layout and template
+
+**Added**
+
+- **`/catalog`** (`accura-ui/src/app/catalog/`) — one page listing every layout, template, pattern
+  and component, rendered live, with its status and a **Copy ID** button. Components render their
+  own Storybook stories without Storybook running; templates render the real prototype route.
+- **Catalog IDs**, `{product}-{type}-{name}`: `agt-cmp-badge`, `acc-pat-audit-trail`,
+  `acc-tpl-record-list`. `agt` marks the inherited Agentic shell, `acc` what Accura wrote. Saying an
+  ID to an agent now names exactly one thing; `CLAUDE.md` tells the agent to look it up rather than
+  pick something similar.
+- **`catalogId` in every `meta.json`**, and in `meta-artifact-template.md` for new ones. Before
+  this, a component's only identity was its file name.
+- `docs/machine-readable/catalog-entries.json` (patterns, layouts, templates, hand-written) and
+  `build-catalog.mjs`, which merges it with `meta.json`, `Storybook Status.md` and the prototype's
+  imports into `catalog.json`. Statuses come from those files; the page does not hold any.
+
+- **The Accura mark is the app's tab icon** (`accura-ui/src/app/icon.png`, `favicon.ico`), white on
+  `--color-sidebar-background`. It was Next.js's default triangle.
+- **A catalog deployment.** `CATALOG_SITE=1` makes `/` open `/catalog` instead of the prototype, so
+  the same app can be deployed a second time as the catalog's own site. Storybook links show only
+  in development, or when `NEXT_PUBLIC_STORYBOOK_URL` names a deployed Storybook.
+
+**Fixed**
+
+The catalog imports the stories, so `next build` now type-checks them, and six had errors. Two were
+real bugs:
+
+- **Toast · Promise** threw when clicked: the story is exported as `Promise`, so `new Promise`
+  inside it constructed the story object. It now names `globalThis.Promise`.
+- **Card · SocialMedia and Table** passed `<AvatarFallback>` as children to `Avatar`, which takes
+  none, so the initials never rendered. They now pass `fallback` and `name`.
+- Accordion, Combobox and InputOTP type `Story` from the component rather than the meta. Their
+  stories supply their own render, and the meta type demanded the required props as args. No
+  rendered change.
+
+**Found while building it** (recorded as notes on the items, not fixed):
+
+- `PhaseGateStepper` is documented as the master but no module imports it.
+- `RecordDetailLayout` is used by Documents and Knowledge Hub only; the Change Control and CAPA
+  detail screens build their own.
+- `Storybook Status.md` has no row for Label, though its header counts 38 stories.
+
 ### 2026-09-18 — A session-wrap procedure, so documents stop depending on someone asking
 
 **Added**

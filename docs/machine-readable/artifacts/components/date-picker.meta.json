@@ -1,5 +1,6 @@
 {
   "name": "date-picker",
+  "catalogId": "agt-cmp-date-picker",
   "figmaNodeId": "58:15976",
   "description": "An input trigger that opens a calendar popup for selecting a single date, date range, or typed date input.",
   "category": "forms",

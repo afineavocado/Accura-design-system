@@ -1,5 +1,6 @@
 {
   "name": "drawer",
+  "catalogId": "agt-cmp-drawer",
   "figmaNodeId": "74:691",
   "description": "A sliding panel that emerges from an edge of the screen or centers responsively as an overlay.",
   "category": "overlay",

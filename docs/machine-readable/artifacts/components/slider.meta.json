@@ -1,5 +1,6 @@
 {
   "name": "slider",
+  "catalogId": "agt-cmp-slider",
   "figmaNodeId": "67:9199",
   "description": "A range input control that lets users select a value by dragging a thumb along a track.",
   "category": "forms",

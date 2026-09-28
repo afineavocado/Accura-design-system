@@ -1,5 +1,6 @@
 {
   "name": "card",
+  "catalogId": "agt-cmp-card",
   "figmaNodeId": "297:4933",
   "description": "A structured container for self-contained, independently meaningful blocks of information. Built on shadcn Card — purely presentational, no Radix primitive. A shell that owns surface, border, radius, and padding; content is freely composed inside.",
   "category": "layout",

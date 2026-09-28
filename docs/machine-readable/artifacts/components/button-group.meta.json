@@ -1,5 +1,6 @@
 {
   "name": "button-group",
+  "catalogId": "agt-cmp-button-group",
   "figmaNodeId": "52:11151",
   "description": "A bordered container that visually groups related ghost buttons into a connected control.",
   "category": "actions",

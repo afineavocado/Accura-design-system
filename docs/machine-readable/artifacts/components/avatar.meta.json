@@ -1,5 +1,6 @@
 {
   "name": "avatar",
+  "catalogId": "agt-cmp-avatar",
   "figmaNodeId": "60:18486",
   "description": "A circular user representation with image, initials fallback, 3 sizes, and optional online/offline status indicator.",
   "category": "display",

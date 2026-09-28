@@ -1,5 +1,6 @@
 {
   "name": "combobox",
+  "catalogId": "agt-cmp-combobox",
   "figmaNodeId": "75:9166",
   "description": "A searchable, filterable dropdown control — single selection, multi-selection, search-as-you-type, free-form tag entry, or time selection.",
   "category": "forms",

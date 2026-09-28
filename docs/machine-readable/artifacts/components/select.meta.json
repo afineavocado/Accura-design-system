@@ -1,5 +1,6 @@
 {
   "name": "select",
+  "catalogId": "agt-cmp-select",
   "figmaNodeId": "74:757",
   "description": "A dropdown control for choosing one option from a predefined fixed list.",
   "category": "forms",

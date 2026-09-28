@@ -1,5 +1,6 @@
 {
   "name": "radio-group",
+  "catalogId": "agt-cmp-radio-group",
   "figmaNodeId": "96:33437",
   "description": "A single-select control used within a radio group, with Basic row and Choice card layouts.",
   "category": "forms",

@@ -1,5 +1,6 @@
 {
   "name": "navigation-menu",
+  "catalogId": "agt-cmp-navigation-menu",
   "figmaNodeId": "127:193",
   "description": "A horizontal site navigation bar with dropdown panels. Built on Radix UI NavigationMenu. Three component sets: nav-button (trigger or link), nav-panel (dropdown panel), and nav-panel-link (link row inside panel).",
   "category": "navigation",

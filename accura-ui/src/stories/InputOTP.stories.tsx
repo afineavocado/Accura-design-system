@@ -31,7 +31,9 @@ const meta = {
 } satisfies Meta<typeof InputOTP>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+// Typed from the component, not the meta: these stories supply their own render,
+// and `typeof meta` would demand the component's required props as args on each one.
+type Story = StoryObj<typeof InputOTP>;
 
 // ─── Type=6-Slot — email/authenticator ────────────────────────────────────────
 

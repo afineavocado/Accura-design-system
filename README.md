@@ -21,6 +21,7 @@ Of those five levers, Accura moves **two**: the brand hue and the typeface.
 | `docs/skills/` | 8 process skills — component audit, component documentation, component implementation, Storybook build, prototype build (patterns + execution), screen audit, token change. Token Binding was removed on 2026-09-17: a figma-cli workflow, and this repo does not work in Figma. |
 | `docs/component-specs/` | 40 spec files — 38 components, plus `_template.md` and `Form-shared.md`. |
 | `docs/machine-readable/` | 38 `meta.json` artifacts, component directory, quick reference, validation scripts. |
+| **`/catalog`** | **Everything in one page** at `localhost:3001/catalog`: layouts, templates, patterns and components, live, with status and a **Copy ID** button. Give the ID to an agent. Index: `accura-ui/src/app/catalog/catalog.json`, built by `docs/machine-readable/build-catalog.mjs`. |
 | `docs/tracking/` | Storybook and audit status. ⚠️ Reflects Agentic's status, not Accura's. |
 | `tokens/` | DTCG export of Accura's tokens, plus `token-parity.mjs` — the check that says whether it still matches what ships. See `tokens/README.md`. |
 | **`accura-ui/`** | Component library + Storybook. Same components as `agentic-ui`, Accura tokens. |

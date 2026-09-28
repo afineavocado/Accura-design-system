@@ -1,5 +1,6 @@
 {
   "name": "record-row-action",
+  "catalogId": "acc-cmp-record-row-action",
   "figmaNodeId": null,
   "description": "The last column of a record listing: one ghost icon button that opens the row's record. Pins itself to the right edge of the scrollport when the table overflows horizontally, on an overlay surface with a shadow, revealed by row hover or focus on fine pointers and always visible on coarse ones. Exports RecordRowAction (the cell) and RecordRowActionHeading (its header cell). Renders exactly one action — there is no overflow menu in this system.",
   "category": "data-display",

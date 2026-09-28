@@ -6,7 +6,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar } from '@/components/ui/avatar';
 import { ArrowUp, ArrowDown, Ellipsis, TrendingUp, TrendingDown } from 'lucide-react';
 
 // Source: table.meta.json — Figma verified 124:8531 / 105:25960 / 105:29158
@@ -183,9 +183,7 @@ export const WithAvatars: Story = {
             <TableRow key={m.name}>
               <TableCell>
                 <div className="flex items-center gap-3">
-                  <Avatar size="sm" className="shrink-0">
-                    <AvatarFallback>{m.initials}</AvatarFallback>
-                  </Avatar>
+                  <Avatar size="sm" className="shrink-0" name={m.name} fallback={m.initials} />
                   <span className="font-medium">{m.name}</span>
                 </div>
               </TableCell>

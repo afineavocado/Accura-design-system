@@ -1,5 +1,6 @@
 {
   "name": "sheet",
+  "catalogId": "agt-cmp-sheet",
   "figmaNodeId": "98:57748",
   "description": "A slide-in panel from the viewport edge for secondary tasks — filters, navigation, detail panels, settings. Built on Radix UI Dialog with a side prop. Shares the same primitive as Dialog but is positional rather than centered.",
   "category": "overlay",

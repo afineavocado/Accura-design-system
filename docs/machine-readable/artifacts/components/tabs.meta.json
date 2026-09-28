@@ -1,5 +1,6 @@
 {
   "name": "tabs",
+  "catalogId": "agt-cmp-tabs",
   "description": "A navigation component for switching between content sections.",
   "category": "navigation",
   "shadcnBase": "tabs",

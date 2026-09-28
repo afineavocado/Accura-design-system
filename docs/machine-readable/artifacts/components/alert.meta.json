@@ -1,5 +1,6 @@
 {
   "name": "alert",
+  "catalogId": "agt-cmp-alert",
   "figmaNodeId": "74:1777",
   "description": "Inline feedback banners for system-level messages. Three variants: Default (neutral), Destructive (error), Warning (caution). Non-blocking — does not steal focus or require a decision.",
   "category": "feedback",

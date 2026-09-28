@@ -1,5 +1,6 @@
 {
   "name": "textarea",
+  "catalogId": "agt-cmp-textarea",
   "figmaNodeId": "49:10806",
   "description": "A multi-line text input for free-form prose. Built on the native HTML textarea element. Use for notes, comments, descriptions, and any content where the user needs more than one line.",
   "category": "forms",

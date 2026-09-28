@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar } from '@/components/ui/avatar';
 
 // Source: card.meta.json (category, variants, tokens)
 // Patterns: card.examples.tsx
@@ -164,9 +164,7 @@ export const SocialMedia: Story = {
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-[var(--spacing-component-sm)]">
-            <Avatar size="default">
-              <AvatarFallback>JD</AvatarFallback>
-            </Avatar>
+            <Avatar size="default" name="Jane Doe" fallback="JD" />
             <div className="flex flex-col gap-0.5">
               <span className="text-sm font-semibold text-[var(--color-surface-overlay-foreground)]">
                 Jane Doe

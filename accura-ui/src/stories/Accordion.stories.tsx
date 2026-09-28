@@ -20,7 +20,9 @@ const meta = {
 } satisfies Meta<typeof Accordion>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+// Typed from the component, not the meta: these stories supply their own render,
+// and `typeof meta` would demand the component's required props as args on each one.
+type Story = StoryObj<typeof Accordion>;
 
 // ─── State: Closed (default) ──────────────────────────────────────────────────
 

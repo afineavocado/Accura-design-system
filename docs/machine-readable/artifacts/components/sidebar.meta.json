@@ -1,5 +1,6 @@
 {
   "name": "sidebar",
+  "catalogId": "agt-cmp-sidebar",
   "figmaNodeId": "95:18202",
   "description": "A composable, themeable application sidebar for primary navigation with collapsible state, mobile overlay, and keyboard shortcut.",
   "category": "navigation",

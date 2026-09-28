@@ -119,7 +119,8 @@ export const Promise: Story = {
       variant="outline"
       onClick={() => {
         const uploadFile = () =>
-          new Promise<void>((resolve) => setTimeout(resolve, 2000));
+          // `Promise` is this story's own export name; the global has to be named explicitly.
+          new globalThis.Promise<void>((resolve) => setTimeout(resolve, 2000));
 
         toast.promise(uploadFile(), {
           loading: 'Uploading file…',

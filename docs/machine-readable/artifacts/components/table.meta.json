@@ -1,5 +1,6 @@
 {
   "name": "table",
+  "catalogId": "agt-cmp-table",
   "figmaNodeId": "105:25960",
   "description": "A semantic data table. Purely presentational — renders HTML table elements. Three component sets: table-head (header cells), table-cell (47 content types), and _table-row (rows with state). No built-in sorting or filtering — use TanStack Table for that.",
   "category": "data-display",

@@ -1,5 +1,6 @@
 {
   "name": "switch",
+  "catalogId": "agt-cmp-switch",
   "figmaNodeId": "67:88",
   "description": "A toggle control for binary on/off choices, with a visual switch and a labeled switch-item row.",
   "category": "forms",

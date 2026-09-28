@@ -63,7 +63,7 @@ Supplied briefs stay separate in `flow/brief` — they are inputs, not documenta
 ## Component documentation
 
 - `docs/component-specs/[Name].md` — **40 files**: 38 component specs, plus `docs/component-specs/_template.md` and `docs/component-specs/Form-shared.md` (shared `label`, `menu-dropdown`, `menu-dropdown-item`).
-- `docs/machine-readable/artifacts/components/[name].meta.json` — **38 files**, v3 schema: variants, tokens per state, storybook reference, known issues, dark-mode risks.
+- `docs/machine-readable/artifacts/components/[name].meta.json` — **38 files**, v3 schema: `catalogId`, variants, tokens per state, storybook reference, known issues, dark-mode risks.
 - `docs/machine-readable/component-quick-reference.md` — scan before building any screen.
 - `docs/machine-readable/component-directory.md` — Figma node ID ↔ Storybook title ↔ tsx file.
 - `docs/machine-readable/meta-artifact-template.md` — required fields for any new meta.json.
@@ -96,6 +96,18 @@ npm run dev         # prototypes        → :3001
 ~~⚠️ `chat-bubble.tsx` exists with no story~~ — **deleted 2026-09-17**: component, spec and `meta.json`. Nothing used it. The Screens/Northwind templates were also removed.
 
 - `accura-ui/src/app/prototype/accura/*.tsx` — shared **prototype** components, one level below the design system: `app-sidebar` · `row-click` · `table-pagination` · `list-summary` · `list-empty-state` · `components/state-change` · `components/record-workflow` (the signature modal and the detail layout). Anything used twice lives here, not in a page.
+
+## Catalog — `/catalog`
+
+Every layout, template, pattern and component, each with a permanent **catalog ID**. The user refers to items by ID (`acc-tpl-record-list`, `agt-cmp-badge#success`); look the ID up here instead of guessing what they mean.
+
+- `accura-ui/src/app/catalog/catalog.json` — **the index. Read this when given an ID.** Per item: type, status, files, import path, exports, props, stories, modules that use it, doc section. Generated; never edit.
+- `docs/machine-readable/catalog-entries.json` — hand-written source for patterns, layouts and templates. Components take their ID from `catalogId` in their `meta.json`.
+- `docs/machine-readable/build-catalog.mjs` — rebuilds `catalog.json` and `stories.generated.ts`. `--check` fails if either is stale. Rerun after adding or renaming a component, story, pattern or template.
+- `http://localhost:3001/catalog` — the page: live previews, status, **Copy ID**.
+- Deployed on its own as a second Vercel project on this repo with `CATALOG_SITE=1`, which makes `/` open the catalog. Storybook links appear only in development or when `NEXT_PUBLIC_STORYBOOK_URL` is set.
+
+ID format: `{product}-{type}-{name}`. `agt` = inherited Agentic shell, `acc` = Accura's own. `cmp` component · `pat` pattern · `lay` layout · `tpl` template. `#story` after the ID picks a story. IDs never change and are never reused.
 
 ## Tokens — `tokens/`
 

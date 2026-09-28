@@ -1,5 +1,6 @@
 {
   "name": "breadcrumb",
+  "catalogId": "agt-cmp-breadcrumb",
   "description": "Navigation trail showing the user's location within a hierarchy.",
   "category": "navigation",
   "shadcnBase": "breadcrumb",

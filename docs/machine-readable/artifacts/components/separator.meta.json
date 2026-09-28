@@ -1,5 +1,6 @@
 {
   "name": "separator",
+  "catalogId": "agt-cmp-separator",
   "figmaNodeId": "75:11717",
   "description": "A visual divider between sections of content. One token, two orientations, no states, no children.",
   "category": "layout",

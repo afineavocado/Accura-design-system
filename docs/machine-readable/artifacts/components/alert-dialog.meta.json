@@ -1,5 +1,6 @@
 {
   "name": "alert-dialog",
+  "catalogId": "agt-cmp-alert-dialog",
   "figmaNodeId": "152:3240",
   "description": "A modal overlay that requires an explicit user decision before the page can continue. Use when both confirm and cancel are real choices, not when cancel is simply 'close the modal'.",
   "category": "overlay",

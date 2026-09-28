@@ -1,5 +1,6 @@
 {
   "name": "stepper",
+  "catalogId": "agt-cmp-stepper",
   "figmaNodeId": null,
   "description": "Horizontal or vertical progress indicator for a multi-step process. Shows which steps are complete, which is current, and which remain. Also known as Progress Steps.",
   "category": "feedback",

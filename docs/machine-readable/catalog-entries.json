@@ -1,0 +1,192 @@
+{
+  "$comment": "Hand-written source for the catalog's patterns, layouts and templates. Components are not listed here: their IDs live in artifacts/components/*.meta.json (catalogId). build-catalog.mjs merges both into accura-ui/src/app/catalog/catalog.json. IDs never change and are never reused; a replaced entry keeps its ID with status \"deprecated\" and a replacedBy.",
+  "statuses": {
+    "draft": "Exists in the prototype, not written down as a shared pattern.",
+    "in-review": "Documented as the shared pattern, not yet measured in the browser.",
+    "stable": "Documented and verified in the browser for Accura.",
+    "deprecated": "Do not use. See replacedBy."
+  },
+  "entries": [
+    {
+      "id": "acc-lay-app-shell",
+      "type": "layout",
+      "name": "App shell",
+      "description": "Shared sidebar plus the application header bar that holds the module title, notifications and account. Every module page sits inside it; a page never builds its own sidebar.",
+      "files": [
+        "accura-ui/src/app/prototype/accura/app-sidebar.tsx",
+        "accura-ui/src/components/application-header.tsx"
+      ],
+      "exports": ["AppSidebar", "AppNavItems", "platformNav", "ApplicationHeader"],
+      "status": "in-review",
+      "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#page-anatomy",
+      "preview": "/prototype/accura/change-control",
+      "examples": ["/prototype/accura/change-control", "/prototype/accura/documents", "/prototype/accura/training"]
+    },
+    {
+      "id": "acc-tpl-record-list",
+      "type": "template",
+      "name": "Record list",
+      "description": "Listing screen: header title, full-width toolbar with search, filters and Create, the list summary row, the table with row actions, pagination, and the filtered empty state in place of the table.",
+      "files": ["accura-ui/src/app/prototype/accura/change-control/page.tsx"],
+      "uses": ["acc-pat-list-summary", "acc-pat-list-empty-state", "acc-pat-table-pagination", "acc-pat-row-click", "acc-cmp-record-row-action"],
+      "status": "in-review",
+      "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#tables-and-lists",
+      "preview": "/prototype/accura/change-control",
+      "examples": [
+        "/prototype/accura/change-control",
+        "/prototype/accura/capa",
+        "/prototype/accura/deviations",
+        "/prototype/accura/documents",
+        "/prototype/accura/training/courses",
+        "/prototype/accura/training/roles"
+      ]
+    },
+    {
+      "id": "acc-tpl-record-detail",
+      "type": "template",
+      "name": "Record detail",
+      "description": "Detail screen: phase gate stepper across the top, main column of record sections, side rail with the current gate and next action, audit trail in a drawer.",
+      "files": ["accura-ui/src/components/record-workflow.tsx"],
+      "exports": ["RecordDetailLayout"],
+      "uses": ["acc-pat-phase-gate-stepper", "acc-pat-record-section", "acc-pat-audit-trail", "acc-pat-electronic-signature"],
+      "status": "in-review",
+      "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#5-master-recorddetaillayout",
+      "note": "Only Documents and Knowledge Hub render RecordDetailLayout (checked 2026-09-28). The Change Control and CAPA detail screens build their own layout.",
+      "preview": "/prototype/accura/documents/SOP-001",
+      "examples": [
+        "/prototype/accura/documents/SOP-001",
+        "/prototype/accura/change-control/CC-2026-001",
+        "/prototype/accura/capa/CAPA-0003"
+      ]
+    },
+    {
+      "id": "acc-tpl-record-form",
+      "type": "template",
+      "name": "Create and edit form",
+      "description": "Create or edit screen: centred max-width column, page heading, form sections, one primary action.",
+      "files": ["accura-ui/src/app/prototype/accura/change-control/new/page.tsx"],
+      "status": "in-review",
+      "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#create-and-edit-screens",
+      "preview": "/prototype/accura/change-control/new",
+      "examples": [
+        "/prototype/accura/change-control/new",
+        "/prototype/accura/capa/new",
+        "/prototype/accura/deviations/new",
+        "/prototype/accura/training/courses/new",
+        "/prototype/accura/training/roles/new"
+      ]
+    },
+    {
+      "id": "acc-tpl-settings",
+      "type": "template",
+      "name": "Settings",
+      "description": "Settings area: section navigation with lookup tables, user screens and form screens inside the settings shell.",
+      "files": ["accura-ui/src/app/prototype/accura/settings/settings-shell.tsx"],
+      "status": "draft",
+      "preview": "/prototype/accura/settings",
+      "examples": ["/prototype/accura/settings"]
+    },
+    {
+      "id": "acc-tpl-dashboard",
+      "type": "template",
+      "name": "Dashboard",
+      "description": "Home screen: summary cards and the work inbox. The landing page of the product.",
+      "files": ["accura-ui/src/app/prototype/accura/dashboard/dashboard-shell.tsx"],
+      "status": "draft",
+      "preview": "/prototype/accura/dashboard",
+      "examples": ["/prototype/accura/dashboard", "/prototype/accura/dashboard/cards", "/prototype/accura/dashboard/inbox"]
+    },
+    {
+      "id": "acc-pat-phase-gate-stepper",
+      "type": "pattern",
+      "name": "Phase gate stepper",
+      "description": "Record progress across its stages, the current gate, and who the record is waiting for.",
+      "files": ["accura-ui/src/components/record-workflow.tsx"],
+      "exports": ["PhaseGateStepper"],
+      "status": "in-review",
+      "note": "Documented as the master but imported by no module (checked 2026-09-28). Detail screens render Stepper directly.",
+      "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#3-master-phasegatestepper"
+    },
+    {
+      "id": "acc-pat-record-section",
+      "type": "pattern",
+      "name": "Record section",
+      "description": "Titled card block on a detail screen, optionally collapsible for locked, read-once content.",
+      "files": ["accura-ui/src/components/record-workflow.tsx"],
+      "exports": ["RecordSection"],
+      "status": "in-review",
+      "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#5-master-recorddetaillayout"
+    },
+    {
+      "id": "acc-pat-electronic-signature",
+      "type": "pattern",
+      "name": "Electronic signature modal",
+      "description": "Signs a regulated record: signer identity, meaning, optional reason, attestation. One implementation shared by every module.",
+      "files": ["accura-ui/src/components/record-workflow.tsx"],
+      "exports": ["ElectronicSignatureModal", "SignatureReceipt"],
+      "status": "in-review",
+      "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#4-master-electronicsignaturemodal"
+    },
+    {
+      "id": "acc-pat-audit-trail",
+      "type": "pattern",
+      "name": "Audit trail drawer",
+      "description": "Sheet listing a record's audit entries, latest first: actor, role and time, action, state change pill, signature when taken.",
+      "files": ["accura-ui/src/components/record-audit-drawer.tsx"],
+      "exports": ["RecordAuditDrawer", "RecordAuditEvent"],
+      "uses": ["acc-pat-state-change"],
+      "status": "in-review",
+      "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#4b-master-the-audit-trail-entry"
+    },
+    {
+      "id": "acc-pat-state-change",
+      "type": "pattern",
+      "name": "State change pill",
+      "description": "Old value struck through, arrow, new value, in one tinted pill. Direction sets the tone: forward, backward or cancel.",
+      "files": ["accura-ui/src/components/state-change.tsx"],
+      "exports": ["StateChange", "StateChangeDirection"],
+      "status": "in-review",
+      "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#4b-master-the-audit-trail-entry"
+    },
+    {
+      "id": "acc-pat-list-summary",
+      "type": "pattern",
+      "name": "List summary",
+      "description": "Row between toolbar and table: the record count, or how many of how many while filtered, with Clear filters.",
+      "files": ["accura-ui/src/app/prototype/accura/list-summary.tsx"],
+      "exports": ["ListSummary"],
+      "status": "in-review",
+      "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#shared-prototype-components"
+    },
+    {
+      "id": "acc-pat-list-empty-state",
+      "type": "pattern",
+      "name": "List empty state",
+      "description": "Replaces the table when a list is empty. ListEmptySearch when filters matched nothing, ListEmptySet when there is nothing to filter.",
+      "files": ["accura-ui/src/app/prototype/accura/list-empty-state.tsx"],
+      "exports": ["ListEmptySearch", "ListEmptySet"],
+      "status": "in-review",
+      "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#empty-state--one-pattern-and-it-is-change-controls"
+    },
+    {
+      "id": "acc-pat-table-pagination",
+      "type": "pattern",
+      "name": "Table pagination",
+      "description": "Listing footer with page size and page controls, plus the usePagination hook that keeps the page in range as filters shrink the set.",
+      "files": ["accura-ui/src/app/prototype/accura/table-pagination.tsx"],
+      "exports": ["TablePagination", "usePagination"],
+      "status": "in-review",
+      "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#shared-prototype-components"
+    },
+    {
+      "id": "acc-pat-row-click",
+      "type": "pattern",
+      "name": "Row click",
+      "description": "Hook that makes a whole table row open its record while menus and links inside the row keep their own clicks. Behaviour only, nothing to render.",
+      "files": ["accura-ui/src/app/prototype/accura/row-click.ts"],
+      "exports": ["useRowClick"],
+      "status": "in-review",
+      "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#shared-prototype-components"
+    }
+  ]
+}

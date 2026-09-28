@@ -1,5 +1,6 @@
 {
   "name": "toast",
+  "catalogId": "agt-cmp-toast",
   "figmaNodeId": "105:666",
   "description": "A temporary floating notification for system feedback — confirmations, errors, warnings, and async status. Built on Sonner (imperative API); dismissed automatically after a timeout or by the user.",
   "category": "feedback",

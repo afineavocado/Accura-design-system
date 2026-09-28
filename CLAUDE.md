@@ -37,6 +37,19 @@ noticed. **"No component" and "no pattern" are different findings.**
 
 Never hardcode a hex, px or radius. Use `var(--...)` from `tokens.css`.
 
+## Catalog IDs
+
+When the user names an ID like `acc-tpl-record-list` or `agt-cmp-badge#success`, look it up in
+`accura-ui/src/app/catalog/catalog.json` and use exactly that item: its files, its import, its
+story. Never substitute something similar. If its status is `draft` or `deprecated`, or it carries
+a `note`, say so before building on it. An ID that is not in the file is an error to report, not a
+name to invent.
+
+A new component, pattern, layout or template gets an ID when it is added (`catalogId` in its
+`meta.json`, or an entry in `docs/machine-readable/catalog-entries.json`), then
+`node docs/machine-readable/build-catalog.mjs`. IDs are permanent: a replaced item keeps its ID,
+marked `deprecated` with a `replacedBy`.
+
 ## We do not work in Figma
 
 Tokens were originally generated from a Figma file and the history still mentions it. Treat that
@@ -95,9 +108,9 @@ Work is not finished when the code runs. Each row is a thing that has gone stale
 |---|---|---|
 | A **new token** | `tokens/*.json` first, then `tokens.css` (+ `.dark`) · `docs/design-system-rules.md` list **and** value table · `accura-decisions.md` §7 · CHANGELOG — the full order is `docs/skills/accura-token-change/` | `node tokens/token-parity.mjs` |
 | A **token value** in `tokens.css` | `tokens/*.json` export · any doc restating it | `node tokens/token-parity.mjs` · `node docs/machine-readable/sync-doc-values.mjs --write` |
-| A **component** in `accura-ui/src/components/ui/` | its story · `docs/component-specs/<Name>.md` · `docs/machine-readable/artifacts/components/<name>.meta.json` | `node docs/machine-readable/drift-check.mjs` |
+| A **component** in `accura-ui/src/components/ui/` | its story · `docs/component-specs/<Name>.md` · `docs/machine-readable/artifacts/components/<name>.meta.json` · the catalog | `node docs/machine-readable/drift-check.mjs` · `node docs/machine-readable/build-catalog.mjs --check` |
 | A **prototype screen** | the module's file in `flow/` | — |
-| A **pattern** other screens should follow | `docs/skills/accura-prototype-build/accura-design-patterns.md` | — |
+| A **pattern** other screens should follow | `docs/skills/accura-prototype-build/accura-design-patterns.md` · an entry in `docs/machine-readable/catalog-entries.json` | `node docs/machine-readable/build-catalog.mjs --check` |
 | **How to work** — an order, a gate, a trap | `docs/skills/accura-prototype-build/accura-prototype-build.md` | — |
 | A **file's name or purpose** | `llms.txt` · `README.md` table | `drift-check` rule 1 (dead paths) |
 | A **decision on an open question** | the `accura-decisions.md` entry · every file quoting it | grep the old value repo-wide before assuming one copy |

@@ -1,5 +1,6 @@
 {
   "name": "tooltip",
+  "catalogId": "agt-cmp-tooltip",
   "figmaNodeId": "74:1699",
   "description": "A floating label that appears on hover or focus to provide supplementary context.",
   "category": "overlay",

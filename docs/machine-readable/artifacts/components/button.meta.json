@@ -1,5 +1,6 @@
 {
   "name": "button",
+  "catalogId": "agt-cmp-button",
   "figmaNodeId": "12:2893",
   "description": "A clickable action element. Supports 6 visual types, 5 states, and 6 sizes including icon-only variants.",
   "category": "actions",

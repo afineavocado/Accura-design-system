@@ -1,5 +1,6 @@
 {
   "name": "accordion",
+  "catalogId": "agt-cmp-accordion",
   "figmaNodeId": "27:3059",
   "description": "A vertically stacked set of interactive headings that each reveal a section of content.",
   "category": "display",

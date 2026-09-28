@@ -1,5 +1,6 @@
 {
   "name": "progress",
+  "catalogId": "agt-cmp-progress",
   "figmaNodeId": "110:8283",
   "description": "A horizontal progress bar for communicating operation completion percentage or indeterminate loading state. Built on Radix UI Progress. Tracks with a fill indicator driven by value 0–100 or null for indeterminate.",
   "category": "feedback",
