@@ -56,6 +56,7 @@ Supplied briefs stay separate in `flow/brief` — they are inputs, not documenta
 | Build or extend a prototype — how to work | `docs/skills/accura-prototype-build/accura-prototype-build.md` |
 | Audit a prototype screen | `docs/skills/accura-screen-audit/accura-screen-audit.md` |
 | Add, rename or retire a token | `docs/skills/accura-token-change/accura-token-change.md` |
+| Build a catalog (here or in another project) | `docs/skills/catalog-build/catalog-build.md` + `docs/skills/catalog-build/templates/` — the process and portable copies of every catalog file |
 - `docs/skills/accura-session-wrap/accura-session-wrap.md` — the end-of-session procedure: find what changed from git, update every document that owns it in its own template, sweep for stale facts, gate, commit. Triggered by *wrap the session*.
 | Bind a token in Figma | — **removed 2026-09-17.** `Token Binding Skill.md` was a figma-cli workflow, and this repo does not work in Figma. In git history if the decision reverses. |
 | Implement a component in code | `docs/skills/Component implementation process.md` |

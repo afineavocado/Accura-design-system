@@ -1,0 +1,44 @@
+{
+  "$comment": "Hand-written source for the catalog's patterns, layouts and templates (and components, when the project has no meta.json). build-catalog.mjs merges it into catalog.json. IDs never change and are never reused: a replaced entry keeps its ID with status \"deprecated\" and a replacedBy. Delete the three example entries below.",
+  "statuses": {
+    "draft": "Exists in the product, not written down as a shared pattern.",
+    "in-review": "Documented as the shared pattern, not yet measured in the browser.",
+    "stable": "Documented and verified in the browser.",
+    "deprecated": "Do not use. See replacedBy."
+  },
+  "entries": [
+    {
+      "id": "xxx-lay-app-shell",
+      "type": "layout",
+      "name": "App shell",
+      "description": "What it is, in one sentence a designer would say.",
+      "files": ["app-ui/src/components/app-sidebar.tsx"],
+      "exports": ["AppSidebar"],
+      "status": "draft",
+      "doc": "docs/patterns.md#page-anatomy",
+      "preview": "/prototype/dashboard",
+      "examples": ["/prototype/dashboard", "/prototype/settings"]
+    },
+    {
+      "id": "xxx-tpl-record-list",
+      "type": "template",
+      "name": "Record list",
+      "description": "Listing screen: toolbar, summary row, table, pagination, empty state.",
+      "files": ["app-ui/src/app/prototype/orders/page.tsx"],
+      "uses": ["xxx-pat-status-pill"],
+      "status": "draft",
+      "note": "Optional. Anything a reader must know before reusing it; shown on the card.",
+      "preview": "/prototype/orders",
+      "examples": ["/prototype/orders", "/prototype/invoices"]
+    },
+    {
+      "id": "xxx-pat-status-pill",
+      "type": "pattern",
+      "name": "Status pill",
+      "description": "Old value struck through, arrow, new value.",
+      "files": ["app-ui/src/components/status-pill.tsx"],
+      "exports": ["StatusPill"],
+      "status": "draft"
+    }
+  ]
+}
