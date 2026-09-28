@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { format } from "date-fns"
 import { ChevronLeft, Upload } from "lucide-react"
 
@@ -218,13 +218,22 @@ function FieldError({ children }: { children: React.ReactNode }) {
   )
 }
 
-export default function NewChangeControlPage() {
+type SearchParams = Promise<Record<string, string | string[] | undefined>>
+const param = (v: string | string[] | undefined) => (typeof v === "string" ? v : undefined)
+
+/* ?mode=edit&id=… opens the form on an existing record.
+   Read from page props, not useSearchParams: that hook needs a Suspense
+   boundary, and without one `next build` fails to prerender this page. */
+export default function NewChangeControlPage({ searchParams }: { searchParams: SearchParams }) {
+  const params = React.use(searchParams)
+  return <NewChangeControlForm mode={param(params.mode)} id={param(params.id)} />
+}
+
+function NewChangeControlForm({ mode, id }: { mode?: string; id?: string }) {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false)
   const fileInputRef = React.useRef<HTMLInputElement>(null)
-  const mode = searchParams.get("mode")
-  const recordId = searchParams.get("id") ?? "CC-2026-001"
+  const recordId = id ?? "CC-2026-001"
   const isEdit = mode === "edit"
   const editRecord = isEdit ? findChangeControlRecord(recordId) : undefined
   const [validationAttempted, setValidationAttempted] = React.useState(false)
