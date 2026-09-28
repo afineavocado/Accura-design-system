@@ -1,14 +1,15 @@
 import { redirect } from "next/navigation"
 
-// The app hosts three prototypes — CAPA, Documents and Training — reachable
-// from the shared sidebar. There is no separate home screen; "/" lands on CAPA.
-// Without this redirect "/" returns 404, and an agent arriving at the dev
-// server reasonably concludes the app is broken and starts building a landing
-// page. Component documentation lives in Storybook (npm run storybook).
+// "/" lands on the Dashboard, the product's home screen (decided 2026-09-18 when
+// chi-dashboard merged; see CHANGELOG). Until 2026-09-28 this still sent "/" to
+// CAPA: the decision reached the docs but never this file. Without a redirect
+// "/" returns 404, and an agent arriving at the dev server reasonably concludes
+// the app is broken and starts building a landing page. Component documentation
+// lives in Storybook (npm run storybook) and the catalog (/catalog).
 //
 // CATALOG_SITE=1 is set only on the separate catalog deployment, which serves
 // this same app but should open on /catalog. The prototype routes stay
 // reachable there: the catalog's template previews load them.
 export default function RootPage() {
-  redirect(process.env.CATALOG_SITE === "1" ? "/catalog" : "/prototype/accura/capa")
+  redirect(process.env.CATALOG_SITE === "1" ? "/catalog" : "/prototype/accura/dashboard")
 }

@@ -47,6 +47,10 @@ real bugs:
   stories supply their own render, and the meta type demanded the required props as args. No
   rendered change.
 
+- **`/` now actually redirects to the Dashboard.** The 2026-09-18 entry below records that decision
+  and the docs were updated, but `accura-ui/src/app/page.tsx` still sent `/` to CAPA; it had never
+  changed on any branch.
+
 **Found while building it** (recorded as notes on the items, not fixed):
 
 - `PhaseGateStepper` is documented as the master but no module imports it.
