@@ -557,7 +557,8 @@ export function CatalogView() {
         </div>
         )}
 
-        <Tabs value={type} onValueChange={setType}>
+        {/* Scrolls on its own at phone width rather than pushing the page sideways. */}
+        <Tabs value={type} onValueChange={setType} className="max-w-full overflow-x-auto">
           <TabsList variant="line">
             <TabsTrigger variant="line" value={ALL}>
               All
