@@ -64,8 +64,9 @@ export const Complete: Story = {
 };
 
 // ─── State=Indeterminate (value=null) ─────────────────────────────────────────
-// Radix sets data-state="indeterminate". CSS animation needed for the sweep.
-// See Progress.md for the keyframe pattern.
+// Radix sets data-state="indeterminate". A 40%-wide fill sweeps the track
+// (animate-progress-indeterminate, keyframes in globals.css). Under
+// prefers-reduced-motion the sweep stops and the fill spans the track at 60%.
 
 export const Indeterminate: Story = {
   render: () => (

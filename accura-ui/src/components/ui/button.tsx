@@ -4,7 +4,10 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
+import { useDelayedLoading } from "@/hooks/use-delayed-loading";
 import { cn } from "@/lib/utils";
+
+import { Spinner } from "./spinner";
 
 type ActionSize = "default" | "sm" | "lg";
 const ActionSizeContext = React.createContext<ActionSize | undefined>(
@@ -84,10 +87,32 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  /**
+   * Work in flight. Disables the button at once (no double submit); after the
+   * shared 300ms delay a Spinner replaces the label, held for at least 500ms.
+   * The label keeps its space, so the button never changes width.
+   * Not supported with `asChild`.
+   */
+  loading?: boolean;
+  /** Screen-reader text while the spinner shows, e.g. "Saving changes". */
+  loadingLabel?: string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      loading = false,
+      loadingLabel,
+      disabled,
+      children,
+      ...props
+    },
+    ref
+  ) => {
     const groupSize = React.useContext(ActionSizeContext);
     const resolvedSize = groupSize
       ? ((size?.startsWith("icon")
@@ -97,14 +122,43 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           : groupSize) as ButtonProps["size"])
       : size;
     const Comp = asChild ? Slot : "button";
+    const showSpinner = useDelayedLoading(loading && !asChild);
+    const busy = !asChild && (loading || showSpinner);
     return (
       <Comp
         className={cn(
-          buttonVariants({ variant, size: resolvedSize, className })
+          buttonVariants({ variant, size: resolvedSize, className }),
+          busy && "relative"
         )}
         ref={ref}
+        disabled={disabled || busy || undefined}
+        aria-busy={busy || undefined}
         {...props}
-      />
+      >
+        {busy ? (
+          <>
+            {/* Same gap as the button itself, so wrapping changes no width.
+                `invisible` drops the label from the accessibility tree, so it
+                is only used when loadingLabel replaces it as the name. */}
+            <span
+              className={cn(
+                "inline-flex items-center gap-[var(--button-size-button-spacing)]",
+                showSpinner && (loadingLabel ? "invisible" : "opacity-0")
+              )}
+            >
+              {children}
+            </span>
+            {showSpinner && (
+              <span className="absolute inset-0 flex items-center justify-center">
+                <Spinner />
+                {loadingLabel && <span className="sr-only">{loadingLabel}</span>}
+              </span>
+            )}
+          </>
+        ) : (
+          children
+        )}
+      </Comp>
     );
   }
 );

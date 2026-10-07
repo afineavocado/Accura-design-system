@@ -1,9 +1,10 @@
 "use client"
 
 import { CircleAlert, TriangleAlert, CircleCheck, Info } from "lucide-react";
-import { Loading02 } from "@untitledui/icons";
 import { useTheme } from "next-themes"
 import { Toaster as Sonner } from "sonner"
+
+import { Spinner } from "./spinner"
 
 // ─── Toaster ──────────────────────────────────────────────────────────────────
 // Token bindings (per Toast spec):
@@ -16,7 +17,8 @@ import { Toaster as Sonner } from "sonner"
 //   icon/Success       = color/icon/success
 //   icon/Error         = color/icon/danger
 //   icon/Warning       = color/icon/warning
-//   icon/Loading       = color/surface/overlay/foreground
+//   icon/Loading       = color/surface/overlay/foreground · the shared Spinner
+//                        (same Loading02 icon; adds the reduced-motion stop)
 //   actionButton       = outline button style (color/background/default fg + border/default border)
 //   cancelButton       = color/surface/muted bg + color/surface/muted/foreground text
 
@@ -43,7 +45,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
           <CircleAlert className="h-4 w-4 text-[var(--color-icon-danger)]" />
         ),
         loading: (
-          <Loading02 className="h-4 w-4 animate-spin text-[var(--color-surface-overlay-foreground)]" />
+          <Spinner className="text-[var(--color-surface-overlay-foreground)]" />
         ),
       }}
       toastOptions={{

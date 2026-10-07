@@ -1,0 +1,146 @@
+{
+  "name": "spinner",
+  "catalogId": "acc-cmp-spinner",
+  "figmaNodeId": null,
+  "description": "An indeterminate activity indicator for small areas: inside a button, an input, a status pill. Code-only. The Loading02 icon spinning in currentColor; the same icon Toast uses, so there is one spinner in the system.",
+  "category": "feedback",
+  "shadcnBase": null,
+  "codeOnly": true,
+  "variants": {
+    "Size": {
+      "type": "enum",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md",
+      "dimensions": {
+        "sm": {
+          "box": 14,
+          "when": "Inside a pill or beside text-sm copy (PageBusy's Updating pill)."
+        },
+        "md": {
+          "box": 16,
+          "when": "Default. Matches Button's 16px icon slot."
+        },
+        "lg": {
+          "box": 24,
+          "when": "Standalone indicator in an empty area."
+        }
+      }
+    }
+  },
+  "tokens": {
+    "color": "currentColor",
+    "note": "No token of its own. Inherits the foreground of its container, so it is correct on every Button variant and in both themes."
+  },
+  "composition": {
+    "element": "svg (Loading02 from @untitledui/icons); wrapped in span[role=status] when label is passed",
+    "classes": [
+      "shrink-0",
+      "animate-spin",
+      "motion-reduce:animate-none",
+      "size-3.5 | size-4 | size-6"
+    ],
+    "sizing": "size prop only"
+  },
+  "accessibility": {
+    "role": "none by default (aria-hidden icon); role=status when label is set",
+    "screenReader": "Silent unless label is passed. Prefer visible text or aria-busy on the loading region.",
+    "reducedMotion": "motion-reduce:animate-none stops the rotation; the static icon remains."
+  },
+  "constraints": [
+    "Small areas only. Known layout -> Skeleton; measurable task -> Progress.",
+    "In a button use <Button loading>, never a hand-placed Spinner.",
+    "Show only after 300ms and keep at least 500ms (useDelayedLoading) - Button loading and PageBusy already do this.",
+    "One spinner per busy thing - not in the button and the area it updates.",
+    "Do not override its colour to signal state; it inherits."
+  ],
+  "bestPractice": {
+    "useCases": [
+      "A button whose action is in flight (via Button loading)",
+      "A combobox or search input fetching results",
+      "The Updating pill while a page refreshes (inside PageBusy)",
+      "Toast's loading state"
+    ],
+    "variantExamples": null,
+    "comparedTo": [
+      {
+        "situation": "A region's layout is known while its data loads",
+        "use": "skeleton",
+        "notInstead": "spinner (a spinner in a blank box shifts the layout)"
+      },
+      {
+        "situation": "The task has a known percentage",
+        "use": "progress",
+        "notInstead": "spinner"
+      },
+      {
+        "situation": "A page refreshes data already on screen",
+        "use": "PageBusy (src/components/page-busy.tsx)",
+        "notInstead": "a spinner placed over the table by hand"
+      },
+      {
+        "situation": "A long task the user can leave running",
+        "use": "toast.loading with Progress in the description",
+        "notInstead": "a spinning button held for the whole task"
+      }
+    ],
+    "references": {
+      "shadcn": null,
+      "radix": null
+    }
+  },
+  "meta": {
+    "sourceMarkdown": "docs/component-specs/Spinner.md",
+    "storyFile": "src/stories/Spinner.stories.tsx",
+    "artifactStatus": "ready",
+    "lastAuditDate": null,
+    "auditRules": null,
+    "version": "3.0",
+    "openQuestions": [
+      "Does Spinner get a Figma component, or stay code-only like Skeleton? See docs/handover/loading.md."
+    ],
+    "notes": [
+      "2026-10-07: Added. Promoted from the loader demo (prototype/accura/dashboard/loading). Toast's loading icon now renders this component."
+    ],
+    "knownIssues": [],
+    "changelog": [
+      {
+        "date": "2026-10-07",
+        "change": "Added as a code-only component.",
+        "breaking": false
+      }
+    ],
+    "darkMode": {
+      "notes": "currentColor - follows the container's mode-aware foreground. Verified in Storybook: white on the primary button in dark mode.",
+      "pairedSurfaceRisk": "None identified."
+    }
+  },
+  "implementation": {
+    "tsxFile": "src/components/ui/spinner.tsx",
+    "packageDeps": [
+      "@untitledui/icons"
+    ],
+    "exports": [
+      "Spinner",
+      "spinnerVariants"
+    ],
+    "notes": []
+  },
+  "storybook": {
+    "file": "src/stories/Spinner.stories.tsx",
+    "title": "Feedback/Spinner",
+    "stories": [
+      "Default",
+      "Sizes",
+      "InButtons",
+      "WithLabel"
+    ],
+    "decorators": [
+      "none"
+    ],
+    "notes": ""
+  }
+}

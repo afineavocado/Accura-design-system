@@ -184,7 +184,7 @@ Destructive uses the `focus/destructive` effect style instead (no ring stroke).
 | Screen reader name | Visible label text · Icon-only → tooltip text must serve as `aria-label` |
 | Disabled | Use `disabled` attribute — removes from tab order, browser handles announcement |
 | Discoverable disabled | Use `aria-disabled="true"` instead when the button should remain in the tab order (e.g. Submit inactive until form is valid — pair with a tooltip explaining why) |
-| Loading | `aria-busy="true"` + `disabled` during loading — prevents double-submit and announces busy state |
+| Loading | `loading` prop sets `disabled` + `aria-busy="true"` at once — prevents double-submit. Pass `loadingLabel` ("Saving changes"): while the spinner shows it replaces the label as the button's accessible name |
 | Opens a menu | Add `aria-haspopup="menu"` when the button triggers a dropdown or context menu |
 | Focus ring | `color/ring`, 2px, OUTSIDE on all types · Destructive Focus uses `focus/destructive` effect style instead |
 
@@ -201,6 +201,7 @@ Destructive uses the `focus/destructive` effect style instead (no ring stroke).
 | `Focus`    | Tab key or click          | `color/ring` stroke appears · Destructive: `focus/destructive` effect    |
 | `Active`   | Mouse/touch down          | Pressed fill, shadow removed                                             |
 | `Disabled` | `disabled` attribute      | Muted appearance · no hover/focus/active states · removed from tab order |
+| `Loading`  | `loading` prop            | Code-only. Disabled at once; Spinner replaces the label after 300ms; width unchanged — see *Loading state* |
 
 ### Width
 
@@ -216,12 +217,29 @@ Destructive uses the `focus/destructive` effect style instead (no ring stroke).
 
 ### Loading state
 
-No Figma variant — implementation concern only.
+No Figma variant — **code-only `loading` prop** (added 2026-10-07).
 
-- Replace label with spinner + short status text ("Saving…", "Generating…")
-- Set `aria-busy="true"` and `disabled` on the button during the operation
-- Restore both when the operation completes
-- Never leave a button in loading state indefinitely — always resolve to success, error, or restored state
+```tsx
+<Button loading={saving} loadingLabel="Saving changes" onClick={save}>
+  Save changes
+</Button>
+```
+
+| Moment | What happens |
+|---|---|
+| `loading` turns true | Button is `disabled` + `aria-busy="true"` **immediately** — no double submit. Nothing visible changes yet |
+| After 300ms | `Spinner` replaces the label. The label keeps its space (hidden, not removed), so **the width does not change** |
+| Spinner shown | It stays **at least 500ms**, even if the work ends sooner — no flicker |
+| `loading` turns false | Label returns; button re-enables |
+
+The 300ms / 500ms rule is the shared one (`@/hooks/use-delayed-loading`) — an action that finishes in under 300ms shows no spinner at all.
+
+- Pass `loadingLabel` with what is happening ("Saving changes", "Exporting records"). Without it the hidden label stays the accessible name.
+- `loading` is not supported with `asChild`.
+- **Short actions only.** For a long task the user can leave running (generate a report, a large upload), the button should not spin for the whole task — use a `toast.loading` with a `Progress` and give the result (and any Download action) only when it is done. See the Loading section of `docs/skills/accura-prototype-build/accura-design-patterns.md`.
+- Never leave a button in loading state indefinitely — always resolve to success, error, or restored state.
+
+> **Changed 2026-10-07.** This section used to say "replace label with spinner + short status text ('Saving…')". Status text changes the button's width, which shifts the layout around it. The spinner now replaces the label at the same width, and the status text goes to screen readers via `loadingLabel`.
 
 ### Focus management
 

@@ -1,4 +1,5 @@
 import { Ellipsis, Plus, Trash2 } from 'lucide-react';
+import * as React from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Button } from '@/components/ui/button';
 import {
@@ -39,6 +40,11 @@ const meta = {
       description: 'Size — sm / default / lg for text buttons; icon-sm / icon / icon-lg for icon-only',
     },
     disabled: { control: 'boolean' },
+    loading: {
+      control: 'boolean',
+      description: 'Disables at once; spinner replaces the label after 300ms, held ≥500ms; width never changes',
+    },
+    loadingLabel: { control: 'text', description: 'Screen-reader text while the spinner shows' },
   },
   args: {
     variant: 'default',
@@ -122,6 +128,32 @@ export const Large: Story = {
 
 export const Disabled: Story = {
   args: { disabled: true },
+};
+
+// Loading — the spinner appears after the shared 300ms delay, so it is not
+// there on first paint. Label keeps its space: the width does not change.
+export const Loading: Story = {
+  args: { loading: true, loadingLabel: 'Saving changes' },
+};
+
+// Click to run a 2s action. Disabled immediately; spinner from 300ms; a fast
+// action (< 300ms) would show no spinner at all.
+export const LoadingOnClick: Story = {
+  render: () => {
+    const [saving, setSaving] = React.useState(false);
+    return (
+      <Button
+        loading={saving}
+        loadingLabel="Saving changes"
+        onClick={() => {
+          setSaving(true);
+          setTimeout(() => setSaving(false), 2000);
+        }}
+      >
+        Save changes
+      </Button>
+    );
+  },
 };
 
 // --- Pattern stories (from button.examples.tsx) ---

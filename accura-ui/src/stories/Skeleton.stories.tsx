@@ -5,6 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 // Single token: color/background/muted (bg-[var(--color-background-muted)])
 // No variants, no props. Compose multiple instances to mirror real content layout.
 // Wrap loading region in aria-busy="true" — individual Skeleton elements are decorative.
+// Reduced motion: motion-reduce:animate-none stops the pulse (added 2026-10-07).
 //
 // Composition patterns (from meta.json compositionPatterns):
 //   Circle + text lines ✓  Full-width rectangle ✓
@@ -131,6 +132,28 @@ export const FormLayout: Story = {
         </div>
       ))}
       <Skeleton className="h-9 w-24 rounded-[var(--radius-md)]" />
+    </div>
+  ),
+};
+
+// ─── Inside a card ─────────────────────────────────────────────────────────────
+// ⚠️ Known contrast gap (open): the skeleton fill color/background/muted (#f4f4f5)
+// on a card's color/surface/overlay (#fff) is about 1.1:1 — barely visible. Fixing
+// it needs a Figma variable, not a code change. Compare with the canvas stories above.
+
+export const InsideCard: Story = {
+  render: () => (
+    <div
+      className="flex w-80 flex-col gap-[var(--spacing-component-sm)] rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-surface-overlay)] p-[var(--spacing-component-md)]"
+      aria-busy="true"
+      aria-label="Loading overview"
+    >
+      <div className="flex items-center gap-[var(--spacing-component-sm)]">
+        <Skeleton className="size-8 rounded-[var(--radius-full)]" />
+        <Skeleton className="h-4 w-24" />
+      </div>
+      <Skeleton className="h-9 w-12" />
+      <Skeleton className="h-4 w-44" />
     </div>
   ),
 };

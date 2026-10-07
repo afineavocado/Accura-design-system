@@ -219,6 +219,11 @@
         "date": "2026-06-04",
         "change": "Renamed sonner.tsx → toast.tsx for naming consistency with the design system component name.",
         "breaking": false
+      },
+      {
+        "date": "2026-10-07",
+        "change": "Loading icon is now the shared Spinner component (same Loading02 icon and colour) and stops under reduced motion.",
+        "breaking": false
       }
     ],
     "darkMode": {

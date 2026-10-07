@@ -34,7 +34,7 @@ A temporary notification component for system feedback — confirmations, errors
 
 **`Type=Warning`** — Warning icon (`color/icon/warning`). Use for cautionary feedback — an action completed with caveats, something that may have unintended consequences, or a condition that needs the user's attention soon.
 
-**`Type=Loading`** — Spinner icon (`color/surface/overlay/foreground`). Use for async operations in progress. Has no `action-btn` — only a `close-btn`. **Persists indefinitely** — must be programmatically dismissed when the operation completes. Always pair with `toast.promise()` or a manual `toast.dismiss(id)`.
+**`Type=Loading`** — Spinner icon (`color/surface/overlay/foreground`) — the shared `Spinner` component since 2026-10-07 (same `Loading02` icon; it now also stops under reduced motion). Use for async operations in progress. Has no `action-btn` — only a `close-btn`. **Persists indefinitely** — must be programmatically dismissed when the operation completes. Always pair with `toast.promise()` or a manual `toast.dismiss(id)`.
 
 ---
 
@@ -84,6 +84,8 @@ toast                           — same container
 ```
 
 > `Type=Loading` has **no `action-btn`** — the action is the async operation itself. Only the close-btn is shown.
+>
+> **Long tasks** (generate a report, a large upload): put a `Progress` with the percentage in the description, at the toast's full content width (`classNames: { content: "min-w-0 flex-1" }`). When it finishes, update the **same** toast to `Type=Success` — that is the only place a `Download`/`View` action appears. Use a **fresh id per task**: reusing an id makes Sonner merge the previous toast's options, so its action shows up mid-progress.
 
 ---
 
