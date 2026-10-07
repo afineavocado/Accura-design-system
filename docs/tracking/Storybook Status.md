@@ -29,7 +29,7 @@ Tracks the Storybook pipeline per component **for Accura**. Update after complet
 
 ---
 
-## Status — 38 stories
+## Status — 39 stories
 
 | Component | .tsx tokens | Figma parity | Story written | Story verified |
 |---|---|---|---|---|
@@ -64,6 +64,7 @@ Tracks the Storybook pipeline per component **for Accura**. Update after complet
 | Sheet | ✅ | ⚠️ | ✅ | ❌ |
 | Skeleton | ✅ | ⚠️ | ✅ | ❌ |
 | Slider | ✅ | ⚠️ | ✅ | ❌ |
+| **Spinner** | ✅ | — | ✅ | ✅ |
 | Switch | ✅ | ⚠️ | ✅ | ❌ |
 | Table | ✅ | ⚠️ | ✅ | ❌ |
 | Tabs | ✅ | ⚠️ | ✅ | ❌ |
@@ -71,7 +72,9 @@ Tracks the Storybook pipeline per component **for Accura**. Update after complet
 | Toast | ✅ | ⚠️ | ✅ | ❌ |
 | Tooltip | ✅ | ⚠️ | ✅ | ❌ |
 
-**Summary: 2 verified · 34 inherited-unverified · 0 missing stories.**
+**Summary: 3 verified · 34 inherited-unverified · 0 missing stories.**
+
+**Spinner** is code-only (no Figma set, so Figma parity reads `—`). Added and verified 2026-10-07: sizes measured at 14 / 16 / 24px, colour inherits in light (`rgb(24,24,27)`) and dark (`rgb(250,250,250)`), `role="status"` + screen-reader text with `label`, inside all four Button variants via `loading`. The same pass re-measured the stories touched for the loading work — Button `Loading` / `LoadingOnClick`, Progress `Indeterminate` (light + dark) and Skeleton `InsideCard` — but did not re-verify those components' other stories, so their rows stay ❌.
 
  is code-only — there is no Figma set, so Figma parity reads `—` rather than ✅. Built and verified for Accura 2026-09-08.
 
@@ -121,7 +124,7 @@ did not run the verification.
 | 4 — Sidebar, Stepper, AlertDialog, Label | `llms.txt` |
 
 The table is the artifact and the prose is derived from it, so both prose counts have been set to
-**2 of 38**. But `AlertDialog` and `Label` are named specifically in `llms.txt`, and Label's note
+**2 of 38**. *(2026-10-07: Spinner added and verified — the table now counts **3 of 39**; prose counts moved with it. The AlertDialog / Label question below is unchanged.)* But `AlertDialog` and `Label` are named specifically in `llms.txt`, and Label's note
 below says it was verified in-browser — so the likelier reading is that **the table is missing two
 ticks**, not that `llms.txt` invented them. Someone who knows whether those two were measured
 should either tick the table or drop the names.

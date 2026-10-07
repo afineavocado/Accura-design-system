@@ -148,7 +148,7 @@ Desktop stashed it on a branch switch. If it matters, commit it.
 
 ## Known debt — do not restate it as done
 
-- **Verification:** `0` `.examples.tsx` · `2 of 38` stories verified.
+- **Verification:** `0` `.examples.tsx` · `3 of 39` stories verified.
   Full picture in `docs/tracking/AI-Readiness.md`. **R1–R8 audits are not debt** — the process is
   Figma-only and retired here, see `docs/tracking/Audit Status.md`.
 - **Fork drift:** 11 of the 37 inherited components differ from `agentic-ui`, and only `label.tsx`
