@@ -19,6 +19,9 @@ pieces. The behaviour is written down in the **Loading** section of
 `docs/skills/accura-prototype-build/accura-design-patterns.md`; what it means for each module is in
 `docs/handover/loading.md`.
 
+*(2026-10-07, same day: the demo page was then removed from the repo — it is in git history at
+`509d2c2`. The rule lives in the patterns doc and the components in Storybook.)*
+
 **Added**
 
 - **`Spinner`** (`components/ui/spinner.tsx`) — code-only. The `Loading02` icon Toast already used,

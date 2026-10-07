@@ -332,9 +332,11 @@ sites.
 
 ## Loading
 
-Added 2026-10-07 from the loader demo, which runs every case below on the Dashboard:
-`/prototype/accura/dashboard/loading` (pick **Slow**, then a scenario). When this section and the demo
-disagree, this section is the rule and the demo is a bug.
+Added 2026-10-07. Every case below was built and measured on the Dashboard prototype first, then
+promoted into shared components. The code examples in this section are the reference implementation;
+the components themselves are in Storybook (`Feedback/Spinner`, `Actions/Button` → `Loading`,
+`Feedback/Progress` → `Indeterminate`, `Feedback/Skeleton` → `InsideCard`). How each module adopts it:
+`docs/handover/loading.md`.
 
 **Choose by how much of the layout is already known — never one spinner for everything.**
 
@@ -392,8 +394,8 @@ toast.success("Audit report ready", { id, description: "Q3-audit-report.pdf", ac
 ### Rules
 
 - **No layout shift.** A skeleton uses the same boxes and line heights as the content (wrap a bar in a
-  line box: `h-5` around an `h-4` bone for `text-sm`). Measured on the demo: tiles 131px and table 393px
-  before, during and after loading.
+  line box: `h-5` around an `h-4` bone for `text-sm`). Measured on the Dashboard prototype: tiles 131px and
+  table 393px before, during and after loading.
 - **Every data region has four states**: loading, empty (`Empty` / `ListEmptyState`), error with
   *Try again*, content.
 - **Mark the region**: `aria-busy` while loading, and one `role="status"` text ("Loading records").

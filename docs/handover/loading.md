@@ -17,7 +17,7 @@
 - **Shared components changed**: `Button` (new `loading` prop), `Progress` (indeterminate now animates), `Skeleton` and `Toast` (reduced motion). **None of these break existing code** — section 1 shows why.
 - **New**: `Spinner` (component library) and four app-level pieces — `PageBusy`, `RouteProgressBar`, `AppSplash`, `WidgetError`.
 - **Your module (Training) is untouched.** Nothing changes on screen until you adopt the pieces. Section 4 is the recipe; section 5 is a prompt you can give your agent.
-- To see everything working: `npm run dev` → `http://localhost:3001/prototype/accura/dashboard/loading`, pick **Slow**, click scenarios 1–6.
+- To see each piece: `npm run storybook` → `http://localhost:6007` — `Feedback/Spinner`, `Actions/Button` (`Loading`, `LoadingOnClick`), `Feedback/Progress` (`Indeterminate`), `Feedback/Skeleton` (`InsideCard`). The code examples for `PageBusy`, `useLoadPhase` and the long-task toast are in the patterns doc's **Loading** section.
 
 ---
 
@@ -86,13 +86,13 @@ Under 300ms nothing appears at all. That is intended.
 |---|---|---|---|
 | **Training** | `training/training-shell.tsx` — `<section … overflow-y-auto>` around `{children}` | that `<section>` | Inside the section around `{children}`, with `className="flex flex-col gap-[var(--spacing-component-lg)]"` (the section's own gap). Needs a `busy` prop on `TrainingShell`, set by the page |
 | Settings | `settings/settings-shell.tsx` — `<div className="mx-auto … max-w-[960px] …">` inside the scrolling `<section>` | that `<section>` | Replace that `div` with `PageBusy`, keeping its classes. `busy` prop on the shell |
-| Dashboard | `dashboard/dashboard-shell.tsx` — content column `div` (holds the greeting) | `<main>` | Replace the column `div` with `PageBusy`, keeping its classes — exactly as `dashboard/loading/demo-shell.tsx` does |
+| Dashboard | `dashboard/dashboard-shell.tsx` — content column `div` (holds the greeting) | `<main>` | Replace the column `div` with `PageBusy`, keeping its classes, so the greeting dims too. The *Page refresh* example in the patterns doc is this exact case |
 | Documents · Knowledge Hub · Deviations | `layout.tsx` renders `{children}` straight into the scrolling `<main>` | `<main>` | In each **page**, around what the page renders (the layout does not know the page's refresh state) |
 | CAPA · Change Control | Each page builds its own shell; content sits in a `<section>` after the header | the `<section>` (CAPA list) or `<main>` | In each page, around the section's contents, passing the section's `flex flex-col gap-…` |
 
 Line numbers drift — find the element by the description above, not by line.
 
-Then hold the old rows until new ones arrive: the tab/filter control updates at once, the table follows when the refresh lands (see `refresh()` in `dashboard/loading/page.tsx`).
+Then hold the old rows until new ones arrive: keep two pieces of state — the control's value (updates at once) and the value the table is rendered with (updates only when the refresh lands). The tab/filter changes immediately; the table follows.
 
 **Step 3 — First load of a region.** Use `useLoadPhase(isLoading)`: `"wait"` → render the skeleton with `className="invisible"`; `"loader"` → skeleton; `"content"` → content. Skeleton boxes must match the real line heights (wrap an `h-4` bone in an `h-5` line box for `text-sm`).
 
@@ -109,7 +109,7 @@ Then hold the old rows until new ones arrive: the tab/filter control updates at 
 Paste as-is, changing the module name:
 
 > Apply Accura's loading behaviour to the **Training** module only (`accura-ui/src/app/prototype/accura/training/`).
-> First read, in this order: `docs/handover/loading.md` (sections 1–4 and 7), the **Loading** section of `docs/skills/accura-prototype-build/accura-design-patterns.md`, and `accura-ui/src/app/prototype/accura/dashboard/loading/page.tsx` + `demo-shell.tsx` as the reference implementation.
+> First read, in this order: `docs/handover/loading.md` (sections 1–4 and 7), the **Loading** section of `docs/skills/accura-prototype-build/accura-design-patterns.md` (its code examples are the reference implementation), and the stories `accura-ui/src/stories/Spinner.stories.tsx` and the `Loading` stories in `Button.stories.tsx`.
 > Use only the shared pieces: `Button` `loading`, `Skeleton`, `Spinner`, `Progress`, `PageBusy`, `WidgetError`, and `useLoadPhase` / `useDelayedLoading` from `@/hooks/use-delayed-loading`. Do not write your own timers, spinners, overlays or opacity values. Do not edit anything in `components/ui/`, `components/*.tsx`, `hooks/` or `globals.css`. Do not add simulated delays — wire the loading states only.
 > Put `PageBusy` where section 4 of the handover says for Training, passing the layout classes of the element it wraps.
 > Before writing code, list every place you will change and what you will use there, and wait for my approval.
@@ -122,9 +122,9 @@ Paste as-is, changing the module name:
 - [ ] `npx tsc --noEmit -p .` in `accura-ui` — 0 errors
 - [ ] `node docs/machine-readable/validate-artifacts.mjs` and `node docs/machine-readable/drift-check.mjs` pass
 - [ ] Restarted the dev server after pulling (`rm -rf .next`)
-- [ ] Reference: on the demo page at **Fast**, no loader appears in any scenario; at **Slow**, each matches §3
-- [ ] Heights of a region are identical in loading and loaded states (demo: tiles 131px, table 393px)
-- [ ] A loading button keeps its width (demo: Export CSV 112px before and during)
+- [ ] A response under 300ms shows no loader at all; a slower one matches the case in §3
+- [ ] Heights of a region are identical in loading and loaded states (measured on the Dashboard prototype 2026-10-07: tiles 131px, table 393px)
+- [ ] A loading button keeps its width (measured: Export CSV 112px before and during; Button story 126px)
 - [ ] During refresh: sidebar and header **not** dimmed; content not focusable by Tab; pill centred on screen when scrolled
 - [ ] Long-task toast: no button while running; bar width = toast content width
 
@@ -153,21 +153,21 @@ Paste as-is, changing the module name:
 | D2 | **One "busy" dimming token** | `PageBusy` uses `opacity-50` (placeholder); disabled uses `--opacity-disabled` (60). A token, once agreed, replaces the 50 |
 | D3 | **Spinner in Figma** | Its own Figma component, or code-only like Skeleton? |
 | D4 | **Wiring `RouteProgressBar` and `AppSplash`** | Built, not mounted. App Router has no navigation events — needs a small "navigation start" hook. Only worth it once data is real |
-| D5 | **Long-task trigger button** | In the demo, *Generate audit report* also spins (`loading`) for the whole task while the toast shows progress — two indicators. Proposal: button returns at once, toast owns progress |
+| D5 | **Long-task trigger button** | In Chi's Dashboard prototype, *Generate audit report* also spins (`loading`) for the whole task while the toast shows progress — two indicators. Proposal: button returns at once, toast owns progress |
 | D6 | **Simulated latency in module prototypes** | Without it the loaders never show in modules. Options: none (current), a shared dev-only delay, or demo-only |
-| D7 | **Table counts and actions during loading** | Demo keeps tab counts "(5)" "(6)" and *Export CSV* live while the table is still loading |
+| D7 | **Table counts and actions during loading** | The prototype kept tab counts "(5)" "(6)" and *Export CSV* live while the table is still loading |
 
 ---
 
-## 9. Differences from the demo as Chi first showed it
+## 9. Differences from the prototype Chi first showed
 
-All deliberate. If you compare with an older screenshot, these are expected:
+The six cases were first built as a demo page on the Dashboard prototype. That page is **not in the repo** (removed 2026-10-07; it is in git history at commit `509d2c2` if ever needed). All differences below are deliberate. If you compare with an older screenshot, these are expected:
 
 | What | Before | Now | Why |
 |---|---|---|---|
 | Button spinner timing | Spinner at once | Disabled at once, spinner after 300ms | The shared timing rule (decided 2026-10-07) |
 | Refresh lock | Locked when the dim appeared (after 300ms) | Locked at once; dim + pill after 300ms | No input on stale data |
-| Widget error copy | *Couldn't load X · The rest of the page is unaffected. · Retry* | *Couldn't load X · Try again* | Content guidelines; the middle line was demo explanation. Also: the error tile no longer grows the row (154px → 131px like its neighbours) |
+| Widget error copy | *Couldn't load X · The rest of the page is unaffected. · Retry* | *Couldn't load X · Try again* | Content guidelines; the middle line was explanation for the demo, not product copy. Also: the error tile no longer grows the row (154px → 131px like its neighbours) |
 | *Updating…* centre | Centre of the visible content area | Centre of the visible part of the **content column** | Same when content is taller than the screen; differs only when content is shorter |
 
 Everything else was measured equal between the old prototype and the shared components (splash colours and sizes, route bar 2px, skeleton heights, pill 120×30 with the same colours, button widths, toast bar width).
@@ -218,7 +218,6 @@ accura-ui/src/stories/Spinner.stories.tsx          new
 accura-ui/src/stories/Button.stories.tsx           + Loading, LoadingOnClick
 accura-ui/src/stories/Skeleton.stories.tsx         + InsideCard
 accura-ui/src/stories/Progress.stories.tsx         comment
-accura-ui/src/app/prototype/accura/dashboard/loading/   demo: page.tsx, demo-shell.tsx
 docs/component-specs/Spinner.md                    new
 docs/component-specs/{Button,Progress,Skeleton,Toast}.md
 docs/machine-readable/artifacts/components/spinner.meta.json   new
