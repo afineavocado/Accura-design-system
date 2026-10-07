@@ -19,6 +19,7 @@
     "element": "div",
     "classes": [
       "animate-pulse",
+      "motion-reduce:animate-none",
       "rounded-md",
       "bg-muted"
     ],
@@ -27,7 +28,7 @@
   "accessibility": {
     "role": "none — decorative placeholder",
     "screenReader": "Mark the loading container with aria-busy=\"true\" while skeleton is shown. Do not add aria-label to individual Skeleton elements.",
-    "reducedMotion": "animate-pulse respects prefers-reduced-motion: reduce via Tailwind — animation stops automatically"
+    "reducedMotion": "motion-reduce:animate-none stops the pulse. Tailwind's animate-pulse does not respect reduced motion on its own — this field said it did until 2026-10-07."
   },
   "constraints": [
     "Code-only — do not publish as a Figma component set.",
@@ -121,8 +122,16 @@
     "notes": [
       "2026-05-28: Documented as code-only. shadcn skeleton is a single div with animate-pulse + bg-muted — no component tokens to manage. Figma page left as reference layout documentation."
     ],
-    "knownIssues": [],
-    "changelog": [],
+    "knownIssues": [
+      "Contrast on cards: color/background/muted (#f4f4f5) on color/surface/overlay (#fff) is ~1.1:1, barely visible. Needs a token decision and a Figma variable. Open — see docs/handover/loading.md."
+    ],
+    "changelog": [
+      {
+        "date": "2026-10-07",
+        "change": "Added motion-reduce:animate-none; the pulse previously kept running under reduced motion despite the docs saying otherwise.",
+        "breaking": false
+      }
+    ],
     "darkMode": {
       "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
       "pairedSurfaceRisk": "None identified."
@@ -146,7 +155,8 @@
       "ListRows",
       "CardGrid",
       "Widget",
-      "FormLayout"
+      "FormLayout",
+      "InsideCard"
     ],
     "decorators": [
       "none"

@@ -19,6 +19,11 @@ import { cn } from "@/lib/utils"
 // State in code is driven by value prop only:
 //   value 0–99 → Loading    value=100 → Complete    value=null → Indeterminate
 // Figma State/Size props are design documentation — no separate state prop in code.
+//
+// Indeterminate: a 40%-wide fill sweeps the track (animate-progress-indeterminate,
+// keyframes in globals.css). Under prefers-reduced-motion the sweep stops and
+// the fill spans the track at reduced opacity — still visibly "active", never
+// read as a percentage.
 
 const progressVariants = cva(
   "relative w-full overflow-hidden rounded-full bg-[var(--color-background-muted)]",
@@ -43,6 +48,7 @@ const Progress = React.forwardRef<
   ProgressProps
 >(({ className, value, size, ...props }, ref) => {
   const isComplete = value === 100;
+  const isIndeterminate = value === null || value === undefined;
 
   return (
     <ProgressPrimitive.Root
@@ -53,13 +59,16 @@ const Progress = React.forwardRef<
     >
       <ProgressPrimitive.Indicator
         className={cn(
-          "h-full w-full flex-1 rounded-full transition-all",
+          "h-full flex-1 rounded-full",
+          isIndeterminate
+            ? "w-2/5 animate-progress-indeterminate motion-reduce:w-full motion-reduce:animate-none motion-reduce:opacity-60"
+            : "w-full transition-all",
           // Complete → color/status/success · Loading/Indeterminate → color/brand/primary
           isComplete
             ? "bg-[var(--color-status-success)]"
             : "bg-[var(--color-brand-primary)]"
         )}
-        style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
+        style={isIndeterminate ? undefined : { transform: `translateX(-${100 - (value || 0)}%)` }}
       />
     </ProgressPrimitive.Root>
   );

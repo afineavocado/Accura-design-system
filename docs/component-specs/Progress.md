@@ -31,7 +31,7 @@ A horizontal progress bar for communicating operation completion percentage or i
 
 **`State=Complete`** — `value=100`. Fill bar spans the full track width. Use this state when the operation finishes — transition from Loading to Complete by setting `value={100}`.
 
-**`State=Indeterminate`** — `value` is `null` or `undefined`. Radix sets `data-state="indeterminate"` on the root and omits `aria-valuenow`. Use for operations with no measurable percentage — file processing, server-side jobs, unknown duration tasks. Requires a CSS animation on the indicator to communicate activity.
+**`State=Indeterminate`** — `value` is `null` or `undefined`. Radix sets `data-state="indeterminate"` on the root and omits `aria-valuenow`. Use for operations with no measurable percentage — file processing, server-side jobs, unknown duration tasks. A 40%-wide fill sweeps the track (built in since 2026-10-07 — before that the track rendered empty).
 
 ---
 
@@ -118,19 +118,17 @@ import { Progress } from "@/components/ui/progress"
 
 `State=Loading → State=Complete`: update `value` to `100`. No separate state prop needed — the Figma State dimension is for design documentation only; in code it is entirely driven by `value`.
 
-`State=Indeterminate`: pass `value={null}` (or omit `value`). Add a CSS keyframe animation to the indicator element — Radix does not include one by default. Target `[data-state="indeterminate"]` on the root or the indicator.
+`State=Indeterminate`: pass `value={null}` (or omit `value`). The component animates it — nothing to add.
 
-```css
-/* Example indeterminate animation */
-[data-state="indeterminate"] > [data-radix-progress-indicator] {
-  animation: progress-indeterminate 1.5s ease-in-out infinite;
-}
-@keyframes progress-indeterminate {
-  0%   { transform: translateX(-100%); }
-  50%  { transform: translateX(0%); }
-  100% { transform: translateX(100%); }
-}
-```
+| | |
+|---|---|
+| Fill | 40% of the track wide, `color/brand/primary` |
+| Motion | `animate-progress-indeterminate` — sweeps left to right, 1.1s, `ease-in-out`, infinite. Keyframes live in `globals.css` (`@theme`) |
+| Reduced motion | The sweep stops; the fill spans the whole track at 60% opacity — visibly active, never readable as a percentage |
+
+> **Fixed 2026-10-07.** Until then the code had no animation: `value={null}` translated the fill fully out of the track, so Indeterminate rendered as an empty bar. The story carried a note saying "CSS animation needed".
+
+Shared app-level uses: `RouteProgressBar` (2px, top of the window, during navigation) and `AppSplash` both render an indeterminate Progress.
 
 ### Value → width mapping
 
@@ -152,6 +150,7 @@ Shadcn adds a CSS `transition` on the indicator for smooth value changes (Radix 
 | `aria-valuenow` | `value` — omitted when `value` is `null` (indeterminate) |
 | `aria-valuetext` | Output of `getValueLabel(value, max)` — default: `"${value}%"` |
 | Indeterminate label | `aria-valuetext` is omitted; screen readers announce the `progressbar` role with no percentage — provide surrounding context text instead |
+| Reduced motion | Indeterminate sweep stops under `prefers-reduced-motion: reduce`; the fill spans the track at 60% opacity |
 
 ### Keyboard
 

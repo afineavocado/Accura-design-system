@@ -369,6 +369,11 @@
         "date": "2026-09-08",
         "change": "Added Type=Destructive Secondary (react variant destructiveSecondary), a low-emphasis destructive. Token structure mirrors Secondary on the red ramp: bg red/100, hover red/50, active red/200, label red/900, border red/500 via color/brand/destructive. Label is red/900 rather than the status/danger-subtle/foreground semantic (red/700) because red/700 on the pressed red/200 fill is 4.47:1 and misses AA. Border is red/500 rather than color/border/error (red/300) because red/300 is 1.90:1 on white and fails the 3:1 control-boundary floor -- this does not resolve Q10. Mode-invariant, like Secondary. Exists in code only; the Figma button set still has 6 Types.",
         "breaking": false
+      },
+      {
+        "date": "2026-10-07",
+        "change": "Added a code-only `loading` prop (+ `loadingLabel`). Disabled and aria-busy at once; a Spinner replaces the label after 300ms and stays at least 500ms (shared useDelayedLoading); the label keeps its space so the width never changes. Not supported with asChild. Default false, so existing buttons render unchanged. Replaces the spec's earlier guidance of 'spinner + short status text', which changed the width.",
+        "breaking": false
       }
     ],
     "darkMode": {
@@ -384,7 +389,8 @@
     ],
     "notes": [
       "Type=Destructive Secondary is CODE-ONLY -- the Figma button component set has 6 Types and does not include it. Build it in Figma before treating Figma as the source of truth for Button.",
-      "Use Destructive Secondary when a destructive action sits beside a primary one. Two solid fills measure 1.20:1 against each other (1.48:1 under deuteranopia) and leave no default path. Do not substitute Outline -- Outline already means navigation/dismiss on the same screens."
+      "Use Destructive Secondary when a destructive action sits beside a primary one. Two solid fills measure 1.20:1 against each other (1.48:1 under deuteranopia) and leave no default path. Do not substitute Outline -- Outline already means navigation/dismiss on the same screens.",
+      "`loading` / `loadingLabel` are code-only props (no Figma variant). Button imports Spinner and useDelayedLoading."
     ]
   },
   "storybook": {
@@ -402,7 +408,9 @@
       "Disabled",
       "WithLeadingIcon",
       "IconOnly",
-      "DestructiveWithConfirmation"
+      "DestructiveWithConfirmation",
+      "Loading",
+      "LoadingOnClick"
     ],
     "decorators": [
       "none"

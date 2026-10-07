@@ -18,7 +18,7 @@
       "intent": {
         "Loading": "Determinate progress — value is 0–99. Fill bar represents percentage complete.",
         "Complete": "value=100. Fill bar spans full track width.",
-        "Indeterminate": "value=null or undefined. No measurable percentage — use CSS animation on indicator."
+        "Indeterminate": "value=null or undefined. A 40%-wide fill sweeps the track (animate-progress-indeterminate, 1.1s). Reduced motion: no sweep, full-width fill at 60% opacity."
       },
       "reactMapping": {
         "Loading": "value={50} (any 0–99)",
@@ -201,10 +201,17 @@
     "version": "3.0",
     "openQuestions": [],
     "notes": [
-      "Figma State/Size variants are for design documentation only — in code everything is driven by value prop and className for height."
+      "Figma State/Size variants are for design documentation only — in code everything is driven by value prop and className for height.",
+      "RouteProgressBar and AppSplash (src/components/) render an indeterminate Progress."
     ],
     "knownIssues": [],
-    "changelog": [],
+    "changelog": [
+      {
+        "date": "2026-10-07",
+        "change": "Indeterminate now animates. Before, value=null translated the fill fully out of the track, so the state rendered as an empty bar. Keyframes added to globals.css (@theme). Determinate states unchanged.",
+        "breaking": false
+      }
+    ],
     "darkMode": {
       "notes": "No known dark mode differences — all tokens are semantic and mode-aware.",
       "pairedSurfaceRisk": "None identified."

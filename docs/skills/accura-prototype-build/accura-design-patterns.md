@@ -1,6 +1,6 @@
 ---
 name: accura-design-patterns
-description: The design patterns this prototype has settled on — page anatomy, create and edit screens, tables, cards, data shape, record masters, known component gaps and floors. Read before building any Accura prototype screen. Companion to accura-prototype-build, which covers how to work rather than what to build.
+description: The design patterns this prototype has settled on — page anatomy, create and edit screens, tables, cards, loading, data shape, record masters, known component gaps and floors. Read before building any Accura prototype screen. Companion to accura-prototype-build, which covers how to work rather than what to build.
 ---
 
 # Accura prototype — design patterns
@@ -327,6 +327,82 @@ sites.
   overridden to `md` sat **28px** apart, not 12 or 16. Set the container's `gap` and leave the
   children alone. If two children belong together, wrap them in their own tighter `gap` rather
   than fighting the parent's.
+
+---
+
+## Loading
+
+Added 2026-10-07 from the loader demo, which runs every case below on the Dashboard:
+`/prototype/accura/dashboard/loading` (pick **Slow**, then a scenario). When this section and the demo
+disagree, this section is the rule and the demo is a bug.
+
+**Choose by how much of the layout is already known — never one spinner for everything.**
+
+| Case | Use | What it looks like |
+|---|---|---|
+| **App load** — session check, before the shell can draw | `AppSplash` (`@/components/app-splash`) | Sidebar-teal screen, logo, indeterminate bar, *Signing you in…*. Only until the session is known — then the shell renders at once and regions show skeletons. Never keep the splash up for data |
+| **Page load** — navigation | `RouteProgressBar` (`@/components/route-progress-bar`) + `Skeleton` | Sidebar and header stay. 2px brand bar across the top edge of the window. Content area shows skeletons that **match the final layout**; table column headers are real |
+| **Widget load** — one region | `Skeleton` per widget · `WidgetError` (`@/components/widget-error`) | Each widget loads on its own. A failed widget shows *Couldn't load X* + **Try again** inside itself; the rest of the page keeps working |
+| **Refresh** — tab, filter, sort, reload on data already shown | `PageBusy` (`@/components/page-busy`) | Old data **stays** (no skeleton). The **whole page content** dims to 50% and locks (pointer and keyboard); an *Updating…* pill sits centred on the **visible** part of the content. Sidebar and header stay sharp. New data replaces old when it arrives |
+| **Button action** — Save, Export, Approve | `<Button loading loadingLabel="…">` | Disabled at once. After 300ms a Spinner replaces the label at the **same width**. A toast confirms when done |
+| **Long task** — generate a report, large upload | `toast.loading` + `Progress` | Percentage bar at the toast's full content width + *you can keep working*. **No action button while in progress**; the same toast becomes the result, and only then shows **Download** |
+
+**Timing — one rule, everywhere** (`@/hooks/use-delayed-loading`): show a loader only after **300ms**;
+once shown keep it at least **500ms**. Under 300ms nothing appears, which is correct. `Button` `loading`,
+`PageBusy`, `RouteProgressBar` and `AppSplash` already apply it — do not add your own timers.
+
+### How to apply it
+
+**Region with a skeleton** — `useLoadPhase` holds the layout invisibly during the delay:
+
+```tsx
+const phase = useLoadPhase(isLoading)            // "wait" | "loader" | "content"
+if (phase === "loader") return <TileSkeleton />
+if (phase === "wait")   return <TileSkeleton hidden />  // className="invisible" — same box, nothing shows
+return <Tile data={data} />
+```
+
+**Page refresh** — make the content column inside `<main>` the `PageBusy`, passing its layout classes so
+no wrapper is added. Works in every module shell, whatever scrolls:
+
+```tsx
+<main className="min-h-0 flex-1 overflow-y-auto …">
+  <PageBusy busy={isRefreshing} className="mx-auto flex w-full max-w-[1100px] flex-col gap-[var(--spacing-component-lg)]">
+    {/* page title, toolbar, tables — everything here dims */}
+  </PageBusy>
+</main>
+```
+
+Keep showing the **previous** rows until the new ones arrive: the tab or filter control changes at once,
+the table follows when the refresh lands.
+
+**Long task toast** — a fresh id per task, full-width bar, action only on success:
+
+```tsx
+const id = `export-${crypto.randomUUID()}`            // never reuse an id — Sonner merges options
+toast.loading("Generating audit report", {
+  id,
+  classNames: { content: "min-w-0 flex-1" },          // bar fills the toast
+  description: <><Progress value={pct} size="sm" aria-label="Audit report progress" /> {pct}% · you can keep working</>,
+})
+// when done:
+toast.success("Audit report ready", { id, description: "Q3-audit-report.pdf", action: { label: "Download", onClick } })
+```
+
+### Rules
+
+- **No layout shift.** A skeleton uses the same boxes and line heights as the content (wrap a bar in a
+  line box: `h-5` around an `h-4` bone for `text-sm`). Measured on the demo: tiles 131px and table 393px
+  before, during and after loading.
+- **Every data region has four states**: loading, empty (`Empty` / `ListEmptyState`), error with
+  *Try again*, content.
+- **Mark the region**: `aria-busy` while loading, and one `role="status"` text ("Loading records").
+  `PageBusy`, `Spinner label` and `AppSplash` do this for you.
+- **Reduced motion**: every loader stops animating under `prefers-reduced-motion`; the built-ins handle
+  it. Hand-written animation must add `motion-reduce:animate-none`.
+- **One indicator per busy thing** — not a spinning button *and* a toast for the same task.
+- ⚠️ **Open:** the skeleton is barely visible on cards (~1.1:1) and the 50% dim is not a token yet —
+  both wait on a token decision. See `docs/handover/loading.md`.
 
 ---
 

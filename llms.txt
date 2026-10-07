@@ -26,6 +26,7 @@ The override table at the top of `docs/design-system-rules.md` lists every known
 - `accura-decisions.md`: Accura's theme — brand ramp, neutral, radius, spacing, type, plus the semantic/component deviations and 12 logged questions. **The authority on values.**
 - `docs/content-guidelines.md`: Voice-neutral UX writing — capitalisation, button labels, error messages, empty states.
 - `docs/team-workflow.md`: **(Tiếng Việt)** How the two people working on this repo share it — branch per module, PR before merging to `main`, which files both touch, what to do on conflict. Process for humans, not a spec.
+- `docs/handover/loading.md`: The 2026-10-07 loading change explained for whoever applies it to a module — what changed in shared components (nothing breaks), where `PageBusy` goes in each module's shell, a ready-to-paste agent prompt, verification checklist, open decisions. The rule itself is the **Loading** section of `docs/skills/accura-prototype-build/accura-design-patterns.md`.
 
 ## Module specs — `flow/`
 
@@ -63,8 +64,8 @@ Supplied briefs stay separate in `flow/brief` — they are inputs, not documenta
 
 ## Component documentation
 
-- `docs/component-specs/[Name].md` — **40 files**: 38 component specs, plus `docs/component-specs/_template.md` and `docs/component-specs/Form-shared.md` (shared `label`, `menu-dropdown`, `menu-dropdown-item`).
-- `docs/machine-readable/artifacts/components/[name].meta.json` — **38 files**, v3 schema: `catalogId`, variants, tokens per state, storybook reference, known issues, dark-mode risks.
+- `docs/component-specs/[Name].md` — **41 files**: 39 component specs, plus `docs/component-specs/_template.md` and `docs/component-specs/Form-shared.md` (shared `label`, `menu-dropdown`, `menu-dropdown-item`).
+- `docs/machine-readable/artifacts/components/[name].meta.json` — **39 files**, v3 schema: `catalogId`, variants, tokens per state, storybook reference, known issues, dark-mode risks.
 - `docs/machine-readable/component-quick-reference.md` — scan before building any screen.
 - `docs/machine-readable/component-directory.md` — Figma node ID ↔ Storybook title ↔ tsx file.
 - `docs/machine-readable/meta-artifact-template.md` — required fields for any new meta.json.
@@ -89,8 +90,10 @@ npm run dev         # prototypes        → :3001
 ⚠️ **Token names are `--color-*`, not shadcn's.** `--color-background-default`, not `--background`. `--radius-lg`, not `--radius`. There is no `--text-primary`. Guessed names fail *silently* — `var(--text-primary)` resolves to nothing rather than erroring. Confirm against `accura-ui/src/app/tokens.css` before writing a class. Full rule: `accura-ui/CLAUDE.md`.
 
 - `accura-ui/src/app/tokens.css` — **360 CSS custom properties** (466 declarations, including `.dark` overrides), generated from Figma. `:root` light, `.dark` dark. **Not a plain copy of `tokens/output/css/variables.css`** — it carries a different ordering, extra descriptive comments, and the hand-applied `--font-family-sans: Inter` override. Change the Figma variable, rebuild with `tokens/sd.build.mjs`, then patch the changed properties into this file surgically. Copying the generated file over it wipes the overrides.
-- `accura-ui/src/components/ui/*.tsx` — 39 files: 38 components plus one `.figma.tsx`.
-- `accura-ui/src/stories/*.stories.tsx` — 38 story files.
+- `accura-ui/src/components/ui/*.tsx` — 40 files: 39 components plus one `.figma.tsx`.
+- `accura-ui/src/components/*.tsx` — app-level shared components, outside the component library (no spec or meta). Loading ones: `page-busy` (page-level refresh: dim + lock + centred *Updating…*), `route-progress-bar`, `app-splash`, `widget-error`. How to use them: the **Loading** section of `docs/skills/accura-prototype-build/accura-design-patterns.md`.
+- `accura-ui/src/hooks/use-delayed-loading.ts` — the one loading timing rule: show after **300ms**, keep at least **500ms**. Used by `Button` `loading`, `PageBusy` and the app-level loaders.
+- `accura-ui/src/stories/*.stories.tsx` — 39 story files.
 - `accura-ui/.storybook/preview.tsx` — light/dark via `withThemeByClassName`.
 - `accura-ui/CLAUDE.md` — agent rules for the code side. Read before writing any component.
 
@@ -142,7 +145,7 @@ cd tokens && npm install && node sd.build.mjs   # → output/css/, output/js/ (g
 Both reset to Accura's real state on 2026-09-08. Agentic's ticks did not transfer — the brand ramp, sidebar, button radius and status borders all changed, so its verification certified nothing here.
 
 - `docs/tracking/AI-Readiness.md` — 15-factor assessment **scored for Accura**, the measured counts, and the root-cause analysis of why docs drift (restated values and counts, not aliases). Read before trusting any inherited ✅.
-- `docs/tracking/Storybook Status.md` — **2 of 38 stories verified for Accura** (Sidebar, Stepper) — the table is the count. That file also records that `CLAUDE.md` and this line previously said 3 and 4; unresolved. Lists the highest-risk components to check first.
+- `docs/tracking/Storybook Status.md` — **3 of 39 stories verified for Accura** (Sidebar, Stepper, Spinner) — the table is the count. That file also records that `CLAUDE.md` and this line previously said 3 and 4; unresolved. Lists the highest-risk components to check first.
 - `docs/tracking/Audit Status.md` — **R1–R8 auditing is retired** (2026-09-18): the process requires Figma and this project does not use it. Kept as the record of what the rules were and what was observed in the file before the decision.
 
 ## Changelog

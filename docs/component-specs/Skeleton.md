@@ -13,7 +13,7 @@ A `<div>` with three CSS properties:
 | Property | Value |
 |---|---|
 | Background | `bg-muted` → `color/background/muted` |
-| Animation | `animate-pulse` — subtle opacity pulse |
+| Animation | `animate-pulse` — subtle opacity pulse · `motion-reduce:animate-none` stops it under reduced motion |
 | Border radius | `rounded-md` by default — overridable via `className` |
 
 No variants. No props. No tokens of its own.
@@ -111,13 +111,25 @@ Skeleton has no built-in size variants. Pass Tailwind size utilities via `classN
 
 ---
 
+## Known issue — contrast on cards
+
+⚠️ **Open.** The fill `color/background/muted` (`#f4f4f5`) on a card's `color/surface/overlay` (`#fff`) is about **1.1:1** — the placeholder is barely visible inside cards, which is where most skeletons sit. It reads well on the page canvas. Fixing it needs a token decision and a **Figma variable** (`tokens.css` is generated), not a code edit. See the story `InsideCard` and `docs/handover/loading.md`.
+
+---
+
+## Timing
+
+Show skeletons through the shared rule in `@/hooks/use-delayed-loading`: `useLoadPhase(loading)` returns `"wait"` for the first 300ms (render the skeleton **invisibly**, so the layout is held without a flash), then `"loader"` (show it, kept at least 500ms), then `"content"`.
+
+---
+
 ## Accessibility
 
 | Property | Value |
 |---|---|
 | Role | None — skeleton is decorative |
 | Screen reader | Hidden by default. Communicate loading state via `aria-busy="true"` on the parent container |
-| Reduced motion | shadcn's `animate-pulse` respects `prefers-reduced-motion: reduce` via Tailwind — animation stops automatically |
+| Reduced motion | `motion-reduce:animate-none` stops the pulse under `prefers-reduced-motion: reduce`. **Tailwind's `animate-pulse` does not do this on its own** — until 2026-10-07 this row said it did, and the pulse kept running |
 
 ---
 

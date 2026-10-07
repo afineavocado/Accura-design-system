@@ -11,6 +11,42 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-10-07 — Loading: one set of loaders and one timing rule for every module
+
+From Amit's question about loader components (app, page, widget). Built and tested first as a demo
+on the Dashboard (`/prototype/accura/dashboard/loading`), then promoted so every module uses the same
+pieces. The behaviour is written down in the **Loading** section of
+`docs/skills/accura-prototype-build/accura-design-patterns.md`; what it means for each module is in
+`docs/handover/loading.md`.
+
+**Added**
+
+- **`Spinner`** (`components/ui/spinner.tsx`) — code-only. The `Loading02` icon Toast already used,
+  in `currentColor`, sizes sm 14 / md 16 / lg 24. Spec, meta and story added.
+- **`useDelayedLoading` / `useLoadPhase`** (`src/hooks/use-delayed-loading.ts`) — show a loader only
+  after **300ms**, keep it at least **500ms**. Before this there was no rule; every loader appeared
+  instantly.
+- **App-level loaders** in `src/components/` (no spec — app shell, not library): `PageBusy`
+  (page-level refresh: content dims to 50% and locks, *Updating…* centred on the visible content),
+  `RouteProgressBar`, `AppSplash`, `WidgetError`. **Not wired into any module yet** — each module adopts
+  them on its own branch.
+
+**Changed**
+
+- **`Button`** — new `loading` + `loadingLabel` props. Disabled at once; Spinner replaces the label after
+  300ms at the same width. Default off: the 43 files using Button render exactly as before. `Button.md`
+  previously said "spinner + short status text"; that changed the width, so the text now goes to screen
+  readers only.
+- **`Progress`** — `value={null}` now animates (40% fill sweeping the track). Before, the fill was
+  translated fully out of the track and Indeterminate rendered as an **empty bar**. Determinate states
+  unchanged; Training's two Progress uses pass numbers and are unaffected.
+- **`Skeleton`** — stops pulsing under reduced motion. Its comment, spec and meta all said Tailwind did
+  this automatically; it does not.
+- **`Toast`** — loading icon is now `Spinner` (same icon and colour) and stops under reduced motion.
+
+**Open** — not changed, waiting on a decision (see `docs/handover/loading.md`): Skeleton is ~1.1:1 on
+cards; the 50% refresh dim is not a token; Spinner has no Figma component.
+
 ### 2026-09-28 — A catalog, and a permanent ID for every component, pattern, layout and template
 
 **Added**
