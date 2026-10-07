@@ -12,8 +12,8 @@
   },
   "variants": {},
   "tokens": {
-    "background": "color/background/muted",
-    "note": "Token is applied via Tailwind class bg-muted — not bound directly in Figma. Uses background (not surface) because skeleton sits on the page canvas."
+    "background": "color/background/skeleton",
+    "note": "Applied as bg-[var(--color-background-skeleton)]. zinc/200 in light, zinc/700 in dark. Was color/background/muted until 2026-10-07 (~1.1:1 on a card)."
   },
   "composition": {
     "element": "div",
@@ -21,7 +21,7 @@
       "animate-pulse",
       "motion-reduce:animate-none",
       "rounded-md",
-      "bg-muted"
+      "bg-[var(--color-background-skeleton)]"
     ],
     "sizing": "controlled entirely by className — pass h-*, w-*, rounded-* as needed"
   },
@@ -32,7 +32,7 @@
   },
   "constraints": [
     "Code-only — do not publish as a Figma component set.",
-    "Background must use bg-muted (color/background/muted) — not color/surface/muted.",
+    "Background must use color/background/skeleton — not color/background/muted, a surface or a border token.",
     "Match skeleton dimensions to the real content layout to avoid layout shift on load.",
     "Wrap loading region in aria-busy='true' on the parent container.",
     "Do not use skeleton for infinite scroll bottoms — use an indeterminate spinner instead.",
@@ -122,13 +122,16 @@
     "notes": [
       "2026-05-28: Documented as code-only. shadcn skeleton is a single div with animate-pulse + bg-muted — no component tokens to manage. Figma page left as reference layout documentation."
     ],
-    "knownIssues": [
-      "Contrast on cards: color/background/muted (#f4f4f5) on color/surface/overlay (#fff) is ~1.1:1, barely visible. Needs a token decision and a Figma variable. Open — see docs/handover/loading.md."
-    ],
+    "knownIssues": [],
     "changelog": [
       {
         "date": "2026-10-07",
         "change": "Added motion-reduce:animate-none; the pulse previously kept running under reduced motion despite the docs saying otherwise.",
+        "breaking": false
+      },
+      {
+        "date": "2026-10-07",
+        "change": "Fill changed from color/background/muted (#f4f4f5, ~1.1:1 on a card) to the new color/background/skeleton (zinc/200, ~1.27:1; dark zinc/700).",
         "breaking": false
       }
     ],

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Skeleton } from '@/components/ui/skeleton';
 
 // Source: skeleton.meta.json — code-only, no Figma component (figmaNodeId: null)
-// Single token: color/background/muted (bg-[var(--color-background-muted)])
+// Single token: color/background/skeleton (bg-[var(--color-background-skeleton)])
 // No variants, no props. Compose multiple instances to mirror real content layout.
 // Wrap loading region in aria-busy="true" — individual Skeleton elements are decorative.
 // Reduced motion: motion-reduce:animate-none stops the pulse (added 2026-10-07).
@@ -137,9 +137,9 @@ export const FormLayout: Story = {
 };
 
 // ─── Inside a card ─────────────────────────────────────────────────────────────
-// ⚠️ Known contrast gap (open): the skeleton fill color/background/muted (#f4f4f5)
-// on a card's color/surface/overlay (#fff) is about 1.1:1 — barely visible. Fixing
-// it needs a Figma variable, not a code change. Compare with the canvas stories above.
+// The fill color/background/skeleton (zinc/200) on a card's color/surface/overlay
+// (#fff) is about 1.27:1. It was color/background/muted (#f4f4f5), about 1.1:1 and
+// barely visible, until 2026-10-07. Compare with the canvas stories above.
 
 export const InsideCard: Story = {
   render: () => (

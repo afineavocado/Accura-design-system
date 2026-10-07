@@ -14,12 +14,17 @@
       "muted": {
         "$value": "{color.zinc.100}",
         "$type": "color",
-        "$description": "Intent:      A visible muted surface for de-emphasized sections or inactive areas\nUse when:    Disabled input backgrounds, skeleton loaders, code blocks, tag backgrounds\nDo not use:  Primary content areas or interactive surfaces\nUse instead: color/background/default for the main page, color/background/subtle for softer tints\nForeground:  color/background/muted/foreground\nStatus:      active"
+        "$description": "Intent:      A visible muted surface for de-emphasized sections or inactive areas\nUse when:    Disabled input backgrounds, code blocks, tag backgrounds\nDo not use:  Primary content areas or interactive surfaces\nUse instead: color/background/skeleton for loading placeholders, color/background/default for the main page, color/background/subtle for softer tints\nForeground:  color/background/muted/foreground\nStatus:      active"
       },
       "muted-foreground": {
         "$value": "{color.zinc.500}",
         "$type": "color",
         "$description": "Intent:      Text and icon color on muted background surfaces\nUse when:    Placeholder text, captions inside muted containers, secondary labels on muted bg\nDo not use:  Primary body text on the page canvas — contrast is intentionally reduced\nUse instead: color/background/default/foreground for full-strength text\nStatus:      active"
+      },
+      "skeleton": {
+        "$value": "{color.zinc.200}",
+        "$type": "color",
+        "$description": "Intent:      The fill of a loading placeholder (Skeleton bones)\nUse when:    A region is loading and shows the shape of its final layout\nDo not use:  Disabled fields, tags or any surface that stays on screen — use color/background/muted\nUse instead: color/background/muted for static muted fills; color/border/default for lines\nNote:        Accura-only; added 2026-10-07 because Skeleton used color/background/muted (zinc/100), about 1.1:1 on a white card and barely visible. Dark: zinc/700\nStatus:      active"
       },
       "inverted": {
         "$value": "{color.zinc.900}",

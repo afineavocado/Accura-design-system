@@ -149,7 +149,7 @@ Paste as-is, changing the module name:
 
 | # | Decision | Notes |
 |---|---|---|
-| D1 | **Skeleton contrast on cards** | `color/background/muted` `#f4f4f5` on `color/surface/overlay` `#fff` ≈ **1.1:1**. Needs a token decision and a **Figma variable** (`tokens.css` is generated). Story `Skeleton / InsideCard` shows it |
+| D1 | **Skeleton contrast on cards** | ✅ Resolved 2026-10-07: new token `color/background/skeleton` (zinc/200, dark zinc/700), ≈ 1.27:1 on a card. Was `color/background/muted` `#f4f4f5`, ≈ 1.1:1. Story `Skeleton / InsideCard` shows it |
 | D2 | **One "busy" dimming token** | `PageBusy` uses `opacity-50` (placeholder); disabled uses `--opacity-disabled` (60). A token, once agreed, replaces the 50 |
 | D3 | **Spinner in Figma** | Its own Figma component, or code-only like Skeleton? |
 | D4 | **Wiring `RouteProgressBar` and `AppSplash`** | Built, not mounted. App Router has no navigation events — needs a small "navigation start" hook. Only worth it once data is real |

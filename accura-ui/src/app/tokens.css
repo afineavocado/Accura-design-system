@@ -1465,6 +1465,10 @@
      is the same hex but means "this succeeded" — spending a status colour on
      decoration leaves the vocabulary unavailable when a section needs it. */
   --color-surface-brand-subtle: var(--color-green-50);
+  /* The fill of a loading placeholder (Skeleton). Aliases color/zinc/200.
+     Skeleton used color/background/muted (zinc/100), about 1.1:1 on a white
+     card and barely visible; this is about 1.27:1. Added 2026-10-07. */
+  --color-background-skeleton: var(--color-zinc-200);
   --color-text-tertiary: #71717a;
   --breadcrumb-breadcrumb: 4;
 
@@ -1551,6 +1555,8 @@
   --color-status-success: #4ade80;
   /* Dark counterpart of the light-mode alias: green/50 would glare here. */
   --color-surface-brand-subtle: var(--color-green-950);
+  /* Dark counterpart: zinc/700, about 1.7:1 on the dark card. */
+  --color-background-skeleton: var(--color-zinc-700);
   --color-status-success-subtle: #052e16;
   --color-status-success-subtle-foreground: #4ade80;
   --color-status-warning: #facc15;

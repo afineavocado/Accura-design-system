@@ -247,6 +247,7 @@ Forked from `agentic-ui`; identical components, Accura tokens.
 | 10  | `motion/easing/standard` differs                                | ⚠️ Unexplained (Q5)                                      |
 | 11  | `opacity/overlay` dark = 20 vs 50                               | ⚠️ Unexplained                                           |
 | 12  | Neutral · radius · spacing · status ramps · chart · type scale  | ✅ Identical — no drift                                   |
+| 13  | `color/background/skeleton` (zinc/200 · dark zinc/700) — Accura-only | ✅ Added 2026-10-07: Skeleton on `background/muted` was ~1.1:1 on a card |
 
 ---
 

@@ -401,8 +401,8 @@ toast.success("Audit report ready", { id, description: "Q3-audit-report.pdf", ac
 - **Reduced motion**: every loader stops animating under `prefers-reduced-motion`; the built-ins handle
   it. Hand-written animation must add `motion-reduce:animate-none`.
 - **One indicator per busy thing** — not a spinning button *and* a toast for the same task.
-- ⚠️ **Open:** the skeleton is barely visible on cards (~1.1:1) and the 50% dim is not a token yet —
-  both wait on a token decision. See `docs/handover/loading.md`.
+- ⚠️ **Open:** the 50% dim is not a token yet, and waits on a token decision. See
+  `docs/handover/loading.md`. Skeletons use `color/background/skeleton` (added 2026-10-07).
 
 ---
 

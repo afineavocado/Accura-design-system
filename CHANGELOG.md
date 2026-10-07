@@ -11,6 +11,24 @@ Accura is a re-theme of the Agentic Design System. Changes inherited from Agenti
 
 ## [Unreleased]
 
+### 2026-10-07 — `color/background/skeleton`: a Skeleton you can see on a card
+
+**Added**
+
+- **`--color-background-skeleton`** — zinc/200 (`#e4e4e7`) in light, zinc/700 (`#3f3f46`) in dark.
+  Accura-only, no `/foreground` pair.
+
+**Changed**
+
+- **`Skeleton`** fills with it. Before, it used `color/background/muted` (`#f4f4f5`), about **1.1:1** on a
+  white card, so placeholders inside cards were barely visible. Now about **1.27:1** on a card. This
+  closes D1 in `docs/handover/loading.md`, which the Loading entry below lists as open.
+- `color/background/muted` no longer lists "skeleton loaders" under *Use when*.
+
+**Why not an existing token:** no background or surface token is darker than `#f4f4f5`. The
+border tokens have the right values but mean *border*; a later border change would restyle every
+skeleton.
+
 ### 2026-10-07 — Loading: one set of loaders and one timing rule for every module
 
 From Amit's question about loader components (app, page, widget). Built and tested first as a demo
