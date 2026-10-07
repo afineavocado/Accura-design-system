@@ -35,6 +35,7 @@ import {
   type Status,
   type Step,
 } from "./catalog-types"
+import { LoadingPlayground } from "./loading-playground"
 import { patternPreviews } from "./pattern-previews"
 import { storyModules } from "./stories.generated"
 import { StoryPreview, storyLayout } from "./story-preview"
@@ -56,6 +57,8 @@ const statusVariant: Record<Status, "success" | "blue" | "secondary" | "error"> 
 
 const typeOrder: ItemType[] = ["layout", "template", "pattern", "component"]
 const ALL = "all"
+// Not an item type: a tab of its own that runs the loading demo with its controls.
+const LOADING = "loading"
 
 /* ── Copy ID ─────────────────────────────────────────────────────────────── */
 
@@ -402,6 +405,40 @@ function ItemCard({
   )
 }
 
+/* ── Loading tab ───────────────────────────────────────────────────────── */
+
+// Controls above a small scene that runs each loading case. The full Dashboard demo
+// stays one click away under Open.
+function LoadingTab() {
+  const item = catalog.items.find((i) => i.id === "acc-pat-loading")
+  if (!item?.preview) return null
+  return (
+    <section className="flex flex-col gap-[var(--spacing-component-sm)]">
+      <div className="flex flex-wrap items-start justify-between gap-[var(--spacing-component-sm)]">
+        <div className="flex max-w-3xl flex-col gap-[var(--spacing-component-xs)]">
+          <h2 className="text-base font-semibold">
+            {item.name}{" "}
+            <span className="font-mono text-xs font-normal text-[var(--color-text-secondary)]">
+              {item.id}
+            </span>
+          </h2>
+          <p className="text-sm text-[var(--color-text-secondary)]">{item.description}</p>
+        </div>
+        <div className="flex flex-wrap items-center gap-[var(--spacing-component-xs)]">
+          <CopyIdButton value={item.id} />
+          <Button variant="ghost" size="sm" asChild>
+            <a href={item.preview} target="_blank" rel="noreferrer">
+              Full demo
+              <ExternalLink />
+            </a>
+          </Button>
+        </div>
+      </div>
+      <LoadingPlayground />
+    </section>
+  )
+}
+
 /* ── Page ────────────────────────────────────────────────────────────────── */
 
 export function CatalogView() {
@@ -469,6 +506,7 @@ export function CatalogView() {
       </header>
 
       <main className="flex flex-col gap-[var(--spacing-component-md)] p-[var(--spacing-component-lg)] lg:p-[var(--spacing-component-xl)]">
+        {type !== LOADING && (
         <div className="flex w-full flex-wrap items-center gap-[var(--spacing-component-sm)]">
           <div className="relative min-w-[240px] flex-1 sm:max-w-[380px]">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
@@ -517,6 +555,7 @@ export function CatalogView() {
             </SelectContent>
           </Select>
         </div>
+        )}
 
         <Tabs value={type} onValueChange={setType}>
           <TabsList variant="line">
@@ -528,9 +567,16 @@ export function CatalogView() {
                 {typeLabels[t]}
               </TabsTrigger>
             ))}
+            <TabsTrigger variant="line" value={LOADING}>
+              Loading
+            </TabsTrigger>
           </TabsList>
         </Tabs>
 
+        {type === LOADING ? (
+          <LoadingTab />
+        ) : (
+        <>
         <p className="text-xs text-[var(--color-text-secondary)]" aria-live="polite">
           {visible.length === total ? `${total} items` : `${visible.length} of ${total} items`}
         </p>
@@ -567,6 +613,8 @@ export function CatalogView() {
               </div>
             </section>
           ))
+        )}
+        </>
         )}
       </main>
     </div>

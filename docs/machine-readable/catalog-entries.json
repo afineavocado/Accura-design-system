@@ -187,6 +187,25 @@
       "exports": ["useRowClick"],
       "status": "in-review",
       "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#shared-prototype-components"
+    },
+    {
+      "id": "acc-pat-loading",
+      "type": "pattern",
+      "name": "Loading",
+      "description": "One loader per case: app splash, route bar with skeletons, a skeleton and error per widget, a page refresh that dims and locks, a button's loading state, a long-task toast. Shown after 300ms, kept at least 500ms.",
+      "files": [
+        "accura-ui/src/components/page-busy.tsx",
+        "accura-ui/src/components/route-progress-bar.tsx",
+        "accura-ui/src/components/app-splash.tsx",
+        "accura-ui/src/components/widget-error.tsx",
+        "accura-ui/src/hooks/use-delayed-loading.ts"
+      ],
+      "exports": ["PageBusy", "RouteProgressBar", "AppSplash", "WidgetError", "useDelayedLoading", "useLoadPhase"],
+      "status": "in-review",
+      "note": "Not wired into any module yet; the Dashboard demo is the only consumer. The catalog's Loading tab runs the demo with its controls.",
+      "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#loading",
+      "preview": "/prototype/accura/dashboard/loading",
+      "examples": ["/prototype/accura/dashboard/loading"]
     }
   ]
 }

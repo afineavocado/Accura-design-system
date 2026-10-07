@@ -10,8 +10,8 @@
   "counts": {
     "layout": 1,
     "template": 5,
-    "pattern": 9,
-    "component": 38
+    "pattern": 10,
+    "component": 39
   },
   "items": [
     {
@@ -285,6 +285,39 @@
       ]
     },
     {
+      "id": "acc-pat-loading",
+      "type": "pattern",
+      "name": "Loading",
+      "description": "One loader per case: app splash, route bar with skeletons, a skeleton and error per widget, a page refresh that dims and locks, a button's loading state, a long-task toast. Shown after 300ms, kept at least 500ms.",
+      "files": [
+        "accura-ui/src/components/page-busy.tsx",
+        "accura-ui/src/components/route-progress-bar.tsx",
+        "accura-ui/src/components/app-splash.tsx",
+        "accura-ui/src/components/widget-error.tsx",
+        "accura-ui/src/hooks/use-delayed-loading.ts"
+      ],
+      "exports": [
+        "PageBusy",
+        "RouteProgressBar",
+        "AppSplash",
+        "WidgetError",
+        "useDelayedLoading",
+        "useLoadPhase"
+      ],
+      "status": "in-review",
+      "note": "Not wired into any module yet; the Dashboard demo is the only consumer. The catalog's Loading tab runs the demo with its controls.",
+      "doc": "docs/skills/accura-prototype-build/accura-design-patterns.md#loading",
+      "preview": "/prototype/accura/dashboard/loading",
+      "examples": [
+        "/prototype/accura/dashboard/loading"
+      ],
+      "layer": "local",
+      "import": "@/components/page-busy",
+      "usedIn": [
+        "dashboard"
+      ]
+    },
+    {
       "id": "acc-pat-phase-gate-stepper",
       "type": "pattern",
       "name": "Phase gate stepper",
@@ -431,6 +464,54 @@
         "knowledge-hub"
       ],
       "meta": "docs/machine-readable/artifacts/components/record-row-action.meta.json"
+    },
+    {
+      "id": "acc-cmp-spinner",
+      "type": "component",
+      "layer": "local",
+      "name": "Spinner",
+      "description": "An indeterminate activity indicator for small areas: inside a button, an input, a status pill. Code-only. The Loading02 icon spinning in currentColor; the same icon Toast uses, so there is one spinner in the system.",
+      "category": "feedback",
+      "status": "stable",
+      "pipeline": {
+        "tokens": "done",
+        "storyWritten": "done",
+        "storyVerified": "done"
+      },
+      "files": [
+        "accura-ui/src/components/ui/spinner.tsx",
+        "accura-ui/src/stories/Spinner.stories.tsx"
+      ],
+      "exports": [
+        "Spinner",
+        "spinnerVariants"
+      ],
+      "import": "@/components/ui/spinner",
+      "props": [],
+      "stories": [
+        {
+          "export": "Default",
+          "name": "Default",
+          "storybookId": "feedback-spinner--default"
+        },
+        {
+          "export": "Sizes",
+          "name": "Sizes",
+          "storybookId": "feedback-spinner--sizes"
+        },
+        {
+          "export": "InButtons",
+          "name": "In Buttons",
+          "storybookId": "feedback-spinner--in-buttons"
+        },
+        {
+          "export": "WithLabel",
+          "name": "With Label",
+          "storybookId": "feedback-spinner--with-label"
+        }
+      ],
+      "usedIn": [],
+      "meta": "docs/machine-readable/artifacts/components/spinner.meta.json"
     },
     {
       "id": "agt-cmp-accordion",
@@ -1159,6 +1240,16 @@
           "storybookId": "actions-button--disabled"
         },
         {
+          "export": "Loading",
+          "name": "Loading",
+          "storybookId": "actions-button--loading"
+        },
+        {
+          "export": "LoadingOnClick",
+          "name": "Loading On Click",
+          "storybookId": "actions-button--loading-on-click"
+        },
+        {
           "export": "WithLeadingIcon",
           "name": "With Leading Icon",
           "storybookId": "actions-button--with-leading-icon"
@@ -1177,6 +1268,7 @@
       "usedIn": [
         "capa",
         "change-control",
+        "dashboard",
         "deviations",
         "documents",
         "knowledge-hub",
@@ -3000,9 +3092,16 @@
           "export": "FormLayout",
           "name": "Form Layout",
           "storybookId": "feedback-skeleton--form-layout"
+        },
+        {
+          "export": "InsideCard",
+          "name": "Inside Card",
+          "storybookId": "feedback-skeleton--inside-card"
         }
       ],
-      "usedIn": [],
+      "usedIn": [
+        "dashboard"
+      ],
       "meta": "docs/machine-readable/artifacts/components/skeleton.meta.json"
     },
     {
@@ -3640,6 +3739,7 @@
         }
       ],
       "usedIn": [
+        "dashboard",
         "documents"
       ],
       "meta": "docs/machine-readable/artifacts/components/toast.meta.json"
