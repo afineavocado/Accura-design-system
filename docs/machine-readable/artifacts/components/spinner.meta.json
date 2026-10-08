@@ -103,7 +103,7 @@
       "Does Spinner get a Figma component, or stay code-only like Skeleton? See docs/handover/loading.md."
     ],
     "notes": [
-      "2026-10-07: Added. Promoted from the loader demo (prototype/accura/dashboard/loading). Toast's loading icon now renders this component."
+      "2026-10-07: Added. Promoted from the loading prototype built on the Dashboard (the demo page itself was not kept in the repo; git history 509d2c2). Toast's loading icon now renders this component."
     ],
     "knownIssues": [],
     "changelog": [
