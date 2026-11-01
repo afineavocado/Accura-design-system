@@ -312,6 +312,8 @@ export function LoadingPlayground() {
         </div>
         <div className="flex flex-col gap-[var(--spacing-component-xs)]">
           <span className="text-xs font-medium text-[var(--color-text-secondary)]">Case</span>
+          {/* Two columns while the control sits above the preview, so the preview starts sooner. */}
+          <div className="grid grid-cols-2 gap-[var(--spacing-component-xs)] lg:grid-cols-1">
           {scenarios.map((s, i) => (
             <Button
               key={s.id}
@@ -324,6 +326,7 @@ export function LoadingPlayground() {
               {i + 1} · {s.label}
             </Button>
           ))}
+          </div>
         </div>
         <p className="text-sm text-[var(--color-text-secondary)]" aria-live="polite">
           {note ?? "Pick a case. Clicking it again replays it."}
@@ -340,8 +343,9 @@ export function LoadingPlayground() {
             </Badge>
           )}
         </span>
-        <div className="rounded-[var(--radius-lg)] border border-dashed border-[var(--color-border-strong)] bg-[var(--color-surface-raised)] bg-[radial-gradient(var(--color-border-hover)_1px,transparent_1px)] [background-size:var(--spacing-component-lg)_var(--spacing-component-lg)] p-[var(--spacing-component-xl)]">
-          <div className="relative mx-auto flex h-[440px] w-full max-w-[880px] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-background-default)] [transform:translateZ(0)]">
+        <div className="rounded-[var(--radius-lg)] border border-dashed border-[var(--color-border-strong)] bg-[var(--color-surface-raised)] bg-[radial-gradient(var(--color-border-hover)_1px,transparent_1px)] [background-size:var(--spacing-component-lg)_var(--spacing-component-lg)] p-[var(--spacing-component-lg)] sm:p-[var(--spacing-component-xl)]">
+          {/* Below `sm` the scene grows with its content instead of scrolling inside a fixed frame. */}
+          <div className="relative mx-auto flex w-full sm:h-[448px] max-w-[880px] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-background-default)] [transform:translateZ(0)]">
             <AppSplash active={splash} />
             <RouteProgressBar active={routing} />
             <Toaster id={TOASTER} position="bottom-right" />
@@ -355,9 +359,9 @@ export function LoadingPlayground() {
                   busy={refreshing}
                   className="flex flex-col gap-[var(--spacing-component-md)] p-[var(--spacing-component-md)]"
                 >
-                  <div className="flex items-center justify-between gap-[var(--spacing-component-sm)]">
+                  <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
                     <span className="text-sm font-semibold">Overview</span>
-                    <span className="flex gap-[var(--spacing-component-xs)]">
+                    <span className="flex flex-wrap gap-[var(--spacing-component-xs)]">
                       <Button variant="outline" size="sm" loading={exporting} loadingLabel="Exporting" onClick={() => run("button")}>
                         Export CSV
                       </Button>
@@ -366,7 +370,7 @@ export function LoadingPlayground() {
                       </Button>
                     </span>
                   </div>
-                  <div className="grid grid-cols-3 gap-[var(--spacing-component-sm)]">
+                  <div className="grid gap-[var(--spacing-component-sm)] sm:grid-cols-3">
                     {tiles.map((t, i) => (
                       <TileRegion key={t.area} index={i} state={tileStates[i]} onRetry={() => retryTile(i)} />
                     ))}

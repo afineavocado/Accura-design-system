@@ -1,11 +1,12 @@
 "use client"
 
 import * as React from "react"
-import { Check, CircleDashed, Copy, ExternalLink, Search, TriangleAlert } from "lucide-react"
+import { Check, CircleDashed, Copy, ExternalLink, Search, SlidersHorizontal, TriangleAlert } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Select,
   SelectContent,
@@ -15,8 +16,10 @@ import {
 } from "@/components/ui/select"
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -405,6 +408,101 @@ function LoadingTab() {
   )
 }
 
+/* ── Filters ─────────────────────────────────────────────────────────────── */
+
+type Filter = {
+  id: string
+  label: string
+  width: string
+  value: string
+  onChange: (value: string) => void
+  options: [value: string, label: string][]
+}
+
+// Inline in the toolbar from `sm` up; stacked under a label in the sheet below it.
+function FilterSelect({ filter, stacked }: { filter: Filter; stacked?: boolean }) {
+  const id = `catalog-filter-${filter.id}`
+  const select = (
+    <Select value={filter.value} onValueChange={filter.onChange}>
+      <SelectTrigger
+        id={stacked ? id : undefined}
+        className={stacked ? "w-full" : filter.width}
+        aria-label={stacked ? undefined : `Filter by ${filter.label.toLowerCase()}`}
+      >
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {filter.options.map(([value, label]) => (
+          <SelectItem key={value} value={value}>
+            {label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+  if (!stacked) return select
+  return (
+    <div className="flex flex-col gap-[var(--spacing-component-sm)]">
+      <Label htmlFor={id}>{filter.label}</Label>
+      {select}
+    </div>
+  )
+}
+
+// Below `sm` the three selects do not fit beside the search, so they move into a sheet.
+function FilterSheet({
+  filters,
+  showing,
+  onClear,
+}: {
+  filters: Filter[]
+  showing: number
+  onClear: () => void
+}) {
+  const active = filters.filter((f) => f.value !== ALL).length
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          className="shrink-0 sm:hidden"
+          aria-label={active ? `Filters, ${active} applied` : "Filters"}
+        >
+          <SlidersHorizontal />
+          Filters
+          {active > 0 && (
+            <Badge variant="notification" shape="pill">
+              {active}
+            </Badge>
+          )}
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="right">
+        <SheetHeader>
+          <SheetTitle>Filters</SheetTitle>
+          <SheetDescription>Narrow the catalog by layer, module and status.</SheetDescription>
+        </SheetHeader>
+        <div className="flex flex-col gap-[var(--spacing-component-lg)] overflow-y-auto px-[var(--spacing-component-lg)] pb-[var(--spacing-component-lg)]">
+          {filters.map((f) => (
+            <FilterSelect key={f.id} filter={f} stacked />
+          ))}
+        </div>
+        <SheetFooter>
+          <SheetClose asChild>
+            <Button>Show {showing} items</Button>
+          </SheetClose>
+          {active > 0 && (
+            <Button variant="outline" onClick={onClear}>
+              Clear filters
+            </Button>
+          )}
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  )
+}
+
 /* ── Page ────────────────────────────────────────────────────────────────── */
 
 export function CatalogView() {
@@ -415,13 +513,47 @@ export function CatalogView() {
   const [status, setStatus] = React.useState<string>(ALL)
   const [highlight, setHighlight] = React.useState<string | null>(null)
 
-  const clear = () => {
-    setQuery("")
-    setType(ALL)
+  const clearFilters = () => {
     setLayer(ALL)
     setModuleFilter(ALL)
     setStatus(ALL)
   }
+  const clear = () => {
+    setQuery("")
+    setType(ALL)
+    clearFilters()
+  }
+
+  const filters: Filter[] = [
+    {
+      id: "layer",
+      label: "Layer",
+      width: "w-[160px]",
+      value: layer,
+      onChange: setLayer,
+      options: [
+        [ALL, "Shell and local"],
+        ["shell", "Shell (Agentic)"],
+        ["local", "Local (Accura)"],
+      ],
+    },
+    {
+      id: "module",
+      label: "Module",
+      width: "w-[180px]",
+      value: moduleFilter,
+      onChange: setModuleFilter,
+      options: [[ALL, "All modules"], ...Object.entries(moduleLabels)],
+    },
+    {
+      id: "status",
+      label: "Status",
+      width: "w-[160px]",
+      value: status,
+      onChange: setStatus,
+      options: [[ALL, "All statuses"], ...(Object.keys(statusLabels) as Status[]).map((s) => [s, statusLabels[s]] as [string, string])],
+    },
+  ]
 
   // Jump to an item from a "Built from" link: clear filters so it is on the page, then scroll.
   const pick = (id: string) => {
@@ -448,7 +580,7 @@ export function CatalogView() {
 
   return (
     <div className="min-h-screen bg-[var(--color-background-muted)]">
-      <header className="border-b border-[var(--color-border-default)] bg-[var(--color-background-default)] px-[var(--spacing-component-xl)] py-[var(--spacing-component-lg)]">
+      <header className="border-b border-[var(--color-border-default)] bg-[var(--color-background-default)] px-[var(--spacing-component-lg)] py-[var(--spacing-component-lg)] lg:px-[var(--spacing-component-xl)]">
         <div className="flex flex-wrap items-center justify-between gap-[var(--spacing-component-sm)]">
           <div>
             <h1 className="text-lg font-semibold text-[var(--color-background-default-foreground)]">
@@ -474,7 +606,8 @@ export function CatalogView() {
       <main className="flex flex-col gap-[var(--spacing-component-md)] p-[var(--spacing-component-lg)] lg:p-[var(--spacing-component-xl)]">
         {type !== LOADING && (
         <div className="flex w-full flex-wrap items-center gap-[var(--spacing-component-sm)]">
-          <div className="relative min-w-[240px] flex-1 sm:max-w-[380px]">
+          {/* Below `sm` the search shares its row with the Filters button, so it may shrink under 240px. */}
+          <div className="relative min-w-0 flex-1 sm:min-w-[240px] sm:max-w-[380px]">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--color-icon-muted)]" />
             <Input
               value={query}
@@ -484,42 +617,12 @@ export function CatalogView() {
               className="pl-9"
             />
           </div>
-          <Select value={layer} onValueChange={setLayer}>
-            <SelectTrigger className="w-[160px]" aria-label="Filter by layer">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value={ALL}>Shell and local</SelectItem>
-              <SelectItem value="shell">Shell (Agentic)</SelectItem>
-              <SelectItem value="local">Local (Accura)</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={moduleFilter} onValueChange={setModuleFilter}>
-            <SelectTrigger className="w-[180px]" aria-label="Filter by module">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value={ALL}>All modules</SelectItem>
-              {Object.entries(moduleLabels).map(([value, label]) => (
-                <SelectItem key={value} value={value}>
-                  {label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select value={status} onValueChange={setStatus}>
-            <SelectTrigger className="w-[160px]" aria-label="Filter by status">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value={ALL}>All statuses</SelectItem>
-              {(Object.keys(statusLabels) as Status[]).map((s) => (
-                <SelectItem key={s} value={s}>
-                  {statusLabels[s]}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="hidden sm:contents">
+            {filters.map((f) => (
+              <FilterSelect key={f.id} filter={f} />
+            ))}
+          </div>
+          <FilterSheet filters={filters} showing={visible.length} onClear={clearFilters} />
         </div>
         )}
 
@@ -565,8 +668,8 @@ export function CatalogView() {
                 className={[
                   "grid gap-[var(--spacing-component-lg)]",
                   g.type === "layout" || g.type === "template"
-                    ? "grid-cols-[repeat(auto-fill,minmax(360px,1fr))]"
-                    : "grid-cols-[repeat(auto-fill,minmax(300px,1fr))]",
+                    ? "grid-cols-[repeat(auto-fill,minmax(min(360px,100%),1fr))]"
+                    : "grid-cols-[repeat(auto-fill,minmax(min(300px,100%),1fr))]",
                 ].join(" ")}
               >
                 {g.items.map((item) => (
