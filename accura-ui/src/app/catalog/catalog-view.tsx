@@ -277,25 +277,6 @@ function Details({ item, onPick }: { item: CatalogItem; onPick: (id: string) => 
           <DetailRow label="Used in">
             {item.usedIn.length ? item.usedIn.map((m) => moduleLabels[m] ?? m).join(", ") : "No module imports it"}
           </DetailRow>
-          {item.examples && (
-            <DetailRow label="Live examples">
-              <ul className="flex flex-col gap-[var(--spacing-component-xs)]">
-                {item.examples.map((href) => (
-                  <li key={href}>
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-[var(--spacing-component-xxs)] text-[var(--color-text-link)] hover:underline"
-                    >
-                      {href.replace("/prototype/accura/", "")}
-                      <ExternalLink className="size-3.5" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </DetailRow>
-          )}
           <DetailRow label="Files">
             <ul className="flex flex-col gap-[var(--spacing-component-xs)]">
               {[...item.files, ...(item.meta ? [item.meta] : []), ...(item.doc ? [item.doc] : [])].map((f) => (
@@ -391,14 +372,6 @@ function ItemCard({
               </a>
             </Button>
           )}
-          {item.preview && (
-            <Button variant="ghost" size="sm" asChild>
-              <a href={item.preview} target="_blank" rel="noreferrer">
-                Open
-                <ExternalLink />
-              </a>
-            </Button>
-          )}
         </div>
       </div>
     </article>
@@ -407,8 +380,7 @@ function ItemCard({
 
 /* ── Loading tab ───────────────────────────────────────────────────────── */
 
-// Controls above a small scene that runs each loading case. The full Dashboard demo
-// stays one click away under Open.
+// Controls above a small scene that runs each loading case.
 function LoadingTab() {
   const item = catalog.items.find((i) => i.id === "acc-pat-loading")
   if (!item?.preview) return null
@@ -426,12 +398,6 @@ function LoadingTab() {
         </div>
         <div className="flex flex-wrap items-center gap-[var(--spacing-component-xs)]">
           <CopyIdButton value={item.id} />
-          <Button variant="ghost" size="sm" asChild>
-            <a href={item.preview} target="_blank" rel="noreferrer">
-              Full demo
-              <ExternalLink />
-            </a>
-          </Button>
         </div>
       </div>
       <LoadingPlayground />
